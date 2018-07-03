@@ -1,0 +1,24 @@
+<% if @story.errors.count != 0 %>
+	$('#story_publish_form').html("<%= escape_javascript(render(:partial=>"publish"))%>");	
+	$(document).ready(function() {
+		$('#publishModal').modal({
+			show: true
+		});
+    var varnam = new VarnamIME($("#story_title")[0], null, {name: '<%= @story.language.name %>'}, '<%= Settings.varnam.url %>')
+    .init();
+	});
+<% else %>
+ window.location.replace('/')
+/*	  $('#publishModal').modal('hide');
+      $("#submit_dailog").modal({
+              backdrop: 'static',
+            keyboard: false
+        }) 
+      $("#submit_model_redirect").click(function(){
+      	window.location.replace('/')
+      })
+      $("#modal_close").click(function(){
+      	window.location.replace('/')
+      })
+*/ 
+<% end %>

@@ -1,0 +1,66 @@
+<%= render :partial => "errors" %>
+<%= render :partial => "tabs" %>
+
+<div id="storyReader"></div>
+
+  <div class="col-md-12">
+    <table class="table table-striped">
+      <thead>
+        <tr class="table-heading-row">           
+          <th><%= t "dashboard.story_title"%></th>
+          <th><%= t "dashboard.language"%></th>
+          <th><%= t "dashboard.english_title"%></th>
+          <th><%= t "dashboard.action"%></th>
+        </tr>
+      </thead>
+      <tbody class="table-row-details">    
+        <% @stories.each_with_index do |story,index| %>
+          <tr>
+            <td><%= link_to story.title, story_page_path(story, story.pages.first), :remote => true %></td>
+            <td><%= story.language.name %></td>
+            <td><%= story.english_title %></td>
+            <td><button class="btn btn-info edit-btn" id="finished_review_<%= index %>" data-storyId = "<%= story.id %>">Finished Review</button></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div id="finished_review_dailog" title="Review Conformation">
+    <label>Do you want to mark this story as reviewed?</label>
+  </div>
+<script>
+  //profile_edit_story_flag_path(:story_id => story.id, :id => "")%>
+  $(document).ready(function(){
+      $("#finished_review_dailog").hide();
+    for (var i =0 ; i <= <%=@stories.size - 1 %>; i++) {
+      finished_review_dailog(i);    
+      }; 
+  });
+
+  function finished_review_dailog(i){
+    $("#finished_review_"+i).click(function(){
+      $('#finished_review_dailog').dialog({
+            autoOpen: true,
+            width: 400,
+            modal: true,
+            buttons : {
+              "Ok" : function() {
+                      $.ajax({
+                        type:'GET',
+                        dataType: 'script',
+                        url: "<%= profile_edit_story_flag_path%>",
+                        data: {
+                         story_id: $("#finished_review_"+i).data('storyid')
+                        }
+                      });
+                      $(this).dialog("close"); 
+                    },
+              "Cancel" : function() {
+                      $(this).dialog("close");
+                    }
+          },
+            dialogClass: 'change_orientation_dialog'
+        });
+    });
+  }
+</script>

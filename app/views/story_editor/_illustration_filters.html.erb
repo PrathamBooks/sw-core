@@ -1,0 +1,58 @@
+<div class="image-drawer-filters gutter-sm scrollbar-custom">
+  <div class="btn btn-app btn-brand-1 btn-block" data-dismiss="modal" ><%=t 'editor.editor_page.open_image_drawer.browse_all_images.back_to_editor'%></div>
+  <div class="spacing-v"></div>
+  <div class="gutter">
+    <p class="font-sm grey-gravel"><em><%=t 'editor.editor_page.open_image_drawer.browse_all_images.search_filters_message'%></em></p>
+    <div class="panel-group panel-group-filters grey-gravel" id="accordion" role="tablist" aria-multiselectable="true">
+
+      <%= simple_form_for(:search, url: '' , html: {:class => " " } , :remote => true, :method => :get) do |f| %>
+          <div class="panel panel-filter">
+            <div class="panel-heading-filter" role="tab" id="headingOne">
+              <h4 class="panel-title panel-title-filter">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  <%=t 'editor.editor_page.open_image_drawer.browse_all_images.categories'%>
+                </a>
+
+              </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body panel-body-filter">
+                <%= f.collection_check_boxes(:categories, @categories , :name , :name , {:item_wrapper_tag => 'div'}, :input_html => { :id => "IllustrationCategories" })  %>
+              </div> <!-- /panel-body -->
+            </div> <!-- /panel-collapse -->
+          </div> <!-- /panel -->
+          <div class="panel panel-filter">
+            <div class="panel-heading-filter" role="tab" id="headingTwo">
+              <h4 class="panel-title panel-title-filter">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                  <%=t 'editor.editor_page.open_image_drawer.browse_all_images.styles'%>
+                </a>
+              </h4>
+            </div>
+            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+              <div class="panel-body panel-body-filter">
+                <%= f.collection_check_boxes(:styles, @styles , :name , :name , {:item_wrapper_tag => 'div',:id=>"IllustrationStyles"})  %>
+              </div> <!-- /panel-body -->
+            </div> <!-- /panel-collapse -->
+          </div> <!-- /panel -->
+          <div class="panel panel-filter">
+            <div class="panel-heading-filter" role="tab" id="headingThree">
+              <h4 class="panel-title panel-title-filter">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  <%=t 'editor.editor_page.open_image_drawer.browse_all_images.publisher'%>
+                </a>
+              </h4>
+            </div>
+            <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+              <div class="panel-body panel-body-filter">
+                <%= f.collection_check_boxes(:organizations, sorted_illustrations_organizations, :organization_name , :organization_name , {:item_wrapper_tag => 'div'}, :input_html => { :id => "IllustrationPublishers" })  %>
+              </div> <!-- /panel-body -->
+            </div> <!-- /panel-collapse -->
+          </div> <!-- /panel -->
+          <div>
+            <input type="button" id="done" value="Search" name="commit" class="btn-app btn-brand-1" onclick="illustration_drawer.submitForm();">
+          </div>
+      <% end %>
+    </div> <!-- /panel-group -->
+  </div> <!-- /gutter -->
+</div> <!-- /image-drawer-filters -->

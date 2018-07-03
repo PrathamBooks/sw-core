@@ -1,0 +1,27 @@
+<div class="row image-drawer-sort">
+  <div class="row row-gutter-sm">
+    <div class="col-sm-6 gutter-sm">
+      <%= simple_form_for(:ill_search, url: '' , html: {:class => "input-group", :syyle=>"width:80%;" } , :remote => true, :method => :get) do |f| %>
+          <%= f.input :query, :label => false, :input_html => {:placeholder=>"Search by title, Illustrator or tags..", class: "illu_search_query input-brand"} %>
+          <span class="input-group-addon grey-mist-bg" onclick="illustration_drawer.submitForm();"><span class="fa fa-search brand-2"></span></span>
+      <% end %>
+
+    </div> <!-- /col -->
+    <div class="col-sm-6 gutter-sm">
+      <div class="row row-gutter">
+        <div class="col-xs-5">
+          <span class="btn btn-link btn-link-underline" onclick="$('#ill_search_query').val('');"><%= t 'editor.editor_page.open_image_drawer.browse_all_images.clear' %></span>
+        </div>
+        <div class="col-xs-7 text-right">
+          <label for="" class="label-images-sort"><%= t 'editor.editor_page.open_image_drawer.browse_all_images.sort_by' %></label>
+          <select class="select-images-sort form-control no-radius" onchange="illustration_drawer.submitForm();" id="StorySortOptions">
+            <option value=""><%= t 'editor.editor_page.open_image_drawer.browse_all_images.none' %></option>
+            <option value="updated_at"><%= t 'editor.editor_page.open_image_drawer.browse_all_images.new_arrivals' %></option>
+            <option value="reads"><%= t 'editor.editor_page.open_image_drawer.browse_all_images.most_viewed' %></option>
+            <option value="likes"><%= t 'editor.editor_page.open_image_drawer.browse_all_images.most_liked' %></option>
+          </select>
+        </div>
+      </div> <!-- /row -->
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+</div> <!-- /row -->

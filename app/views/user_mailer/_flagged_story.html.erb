@@ -1,0 +1,20 @@
+<tr>
+	<td align="center">
+	  <table width="432px" cellspacing="0" cellpadding="0" border="0" align="center">
+	   
+	    <tr style="margin-bottom: 20px; float: left;">
+	      	<td><strong>Dear Content Manager</strong>, </td>
+	    </tr>
+
+	    <tr style="margin-bottom: 20px; float: left;">
+	      	<td><br> <%= @user.first_name %> <%= @path.present? ? "(Reviewer)" : '' %> flagged <%= link_to( @story.title, react_stories_show_url(@story)) %> story for the following <%= @reason.size > 1 ? "reasons:" : "reason:" %>  <%= @reason %></td>
+	    </tr>
+
+			<tr style="margin-bottom: 20px; float: left;">
+		  		<td>
+						<p>Team StoryWeaver</p>
+					</td>
+			</tr>
+		</table>
+	</td>
+</tr>

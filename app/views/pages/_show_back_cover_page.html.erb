@@ -1,0 +1,30 @@
+<div class='<%= page.page_template.name + ' content' %>'>
+	<div class="back-cover-top">
+	  <div class="top-section">
+		<p class="title">
+      <span class="back_cover_title <%= page.story.language.script %>">
+        <%= page.story.title %>
+      </span>
+      <span class='english story_language'>(<%= page.story.language.name %>)</span>
+		</p>
+		<p class="<%= page.story.language.script %> synopsis">
+			 <%= page.story.synopsis %>
+		</p>
+  	  </div>
+	  <div class="<%= page.story.language.script %> reading_level_help">
+	  <p>
+	    <%= reading_level_help(page.story.language.locale,page.story.reading_level) %>
+	  </p>
+	  </div>
+    </div>
+  <div class="back-cover-bottom english">
+   <div class="spp_logo_placeholder">
+    <img src="<%= asset_path_as_per_request_format('pb-storyweaver-logo-01.png') %>" class="spp_logo"/>
+   </div>
+  <div class="spp_about_us_footer">
+    <span>
+      <%= spp_text %>
+    </span>
+  </div>
+ </div>
+</div>

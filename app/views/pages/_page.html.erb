@@ -1,0 +1,25 @@
+<div  id="<%= (page==@page)? 'selected_page':'' %>" class="<%= (page!=@page)? 'other-pages':'' %> page-container-<%= page.page_template.orientation %> story-page <%=page.story.language.script%>" >
+  <div class='<%= page.page_template.name %> <%= page.illustration_crop.nil? ? '' : 'has_illustration' %> illustration'>
+    <% if page.illustration_crop %>
+      <% if illustration_crop_missing(page) %>
+       <img src="<%= illustration_image_url(page) %>" style="<%= preview_illustration_crop_style(page) %>"/>
+      <% else %>
+      <img class='responsive_illustration'
+        data-size1-src="<%= page.illustration_crop.url(:size1) %>"
+        data-size2-src="<%= page.illustration_crop.url(:size2) %>"
+        data-size3-src="<%= page.illustration_crop.url(:size3) %>"
+        data-size4-src="<%= page.illustration_crop.url(:size4) %>"
+        data-size5-src="<%= page.illustration_crop.url(:size5) %>"
+        data-size6-src="<%= page.illustration_crop.url(:size6) %>"
+        data-size7-src="<%= page.illustration_crop.url(:size7) %>"
+        <% if @offline_processing %>
+          src="image_<%= page.position %>.jpg"
+        <% elsif (!size_to_render.nil? rescue false) %>
+          src="<%= page.illustration_crop.image.url(size_to_render) %>"
+        <% end %>
+      />
+     <% end %>
+    <% end %>
+  </div>
+  <%= render :partial => page_partial(page, @offline_processing), locals: {page: page, story_read_id: @story_read_id} %>
+</div>

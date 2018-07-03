@@ -1,0 +1,104 @@
+<% if user_signed_in? %>
+<div id="homepage_dropdown">
+    <button class=" btn dropdown-toggle profile-dropdown"  type="button" data-toggle="dropdown"><%= link_to current_user.first_name %>
+    <span class="caret"></span></button>
+        <ul class="dropdown-menu  profile-links" id="test" >
+          <li class="display_user">
+            <%= current_user.first_name %>
+          </li>
+          <li class="dash-line">
+            <%= link_to "Profile", profile_path if current_user && !current_user.admin? %>
+          </li>
+          <li class="menu-upload" >
+            <%= link_to "Dashboard", dashboard_path if current_user && current_user.content_manager? %>
+          </li>
+          <li class="menu-upload" >
+            <%= link_to "Contest Dashboard", contests_path if current_user && (current_user.promotion_manager? || current_user.content_manager?) %>
+          </li>
+          <li class="menu-upload" >
+            <%= link_to "Blog Dashboard", blog_dashboard_path if current_user && (current_user.promotion_manager? || current_user.content_manager?) %>
+          </li>
+          <li class="menu-upload" >
+            <%= link_to "Rating Dashboard" , reviewed_stroies_path  if current_user && current_user.content_manager? %>
+          </li>
+          <li class="menu-upload" >
+            <%= link_to "Translation Dashboard" , un_translated_stories_path  if current_user && current_user.content_manager? %>
+          </li>
+
+          <li class="menu-upload" >
+            <%= link_to "Analytics" , analytics_path  if current_user && (current_user.content_manager? || current_user.outreach_manager?) %>
+          </li>
+          <li>
+            <%= link_to "Rate a Story", reviewer_un_reviewed_stories_path if current_user && current_user.languages.any?  %>
+          </li>
+          <li>
+            <%=  link_to "Translate a Story", translator_un_translated_stories_path if current_user && current_user.tlanguages.any? %>
+          </li>
+          <li>
+            <%= link_to "Sign Out", destroy_user_session_path , :method => :delete %>
+          </li>
+        </ul>
+</div>
+<% else %>
+  <% if (ENV['FACEBOOK_AUTH']||"false")=="true" %>
+  <li class="loginLinks">
+   <div class="modal fade login-form" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="moreLinksModalLabel" aria-hidden="true">
+     <div class="modal-dialog">
+       <div class="modal-content">
+         <div class="modal-body">  
+         <div class="login-top">
+            <h3>Login</h3>
+            <button id="Register" class="btn btn-primary reg-btn">New? Join Story Weaver...</button>
+            </div>      	
+	          <%= render "devise/sessions/form"  %>
+            <div class="modal-footer">
+         
+           </div>
+        </div>
+       </div>
+     </div>
+   </div>
+<a class="btn btn-primary btn-lg sign-inbtn-mobile" data-toggle="modal" data-target="#loginModal"><i class="fa fa-user"></i></a>
+<a class="btn btn-primary btn-lg sign-inbtn" data-toggle="modal" data-target="#loginModal">Log in</a><span class="sig-slash"> | </span>
+<a class="btn btn-primary btn-lg sign-inbtn" data-toggle="modal" data-target="#registerModal">Sign up</a>
+    <div class="modal fade login-form" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="moreLinksModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">         
+         <div class="modal-body">
+            <div class="login-top">
+              <h3>Sign up</h3>
+              <button id="Login" class="btn btn-primary log-btn">Already have a password? Log in</button>
+            </div>
+              <%= render "devise/registrations/form" %>
+	            <div class="modal-footer">
+	            </div>
+           </div>
+         </div>
+       </div>
+    </div>
+  </li>
+<% else %>
+<div id="navigation_links" class="nav navbar-nav pull-right login_signup_link">
+   <li class="dash-line"> <%= link_to "Log In", new_user_session_path %></li>
+  <li>
+    <%= link_to "Sign Up", new_user_registration_path %>
+  </li>
+</div>
+<% end %>
+
+<% end %>
+<script>
+$('#Login').click(function() {	
+	$('#registerModal').modal('hide');
+	//Needed to ensure login modal opens only after closing registration modal
+	setTimeout(function(){
+    	$('#loginModal').modal('show');
+    }, 400);
+});
+$('#Register').click(function() {
+	$('#loginModal').modal('hide');
+	setTimeout(function(){
+    	$('#registerModal').modal('show');
+	}, 400);
+});
+</script>

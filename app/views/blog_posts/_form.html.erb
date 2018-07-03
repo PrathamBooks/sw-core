@@ -1,0 +1,29 @@
+<%= simple_form_for @blog_post , url: (@blog_post.new_record? ? create_blog_post_path(@blog_post) : @blog_post), method: (@blog_post.new_record? ? :post : :put) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs blog_post_image">
+    <%= f.input :title %>
+    <%= f.cktext_area :body %>
+    <%= f.input :status, collection: BlogPost.statuses.keys, selected: BlogPost.statuses.keys.first, input_html: {:style =>"width: 185px;" } %>
+    <%= f.input :scheduled, as: :string, input_html:  { :class => "form-control" }, input_html: {:style =>"width: 185px;" } %>
+    <%= f.input :tag_list,  label: "Tags", url: autocomplete_tag_name_blog_posts_path,as: :autocomplete,input_html: {'data-delimiter' => ','}   %>
+    <%#= f.file_field :blog_post_image, :id=> "logo", as: :file , :class => "user_logo blog_post_img" %>
+  </div>
+
+  <div class="form-actions create_blog_post">
+    <%= f.button :submit %>
+  </div>
+<% end %>
+
+<script>
+  if ($('#blog_post_status').val() == "scheduled"){
+    $(".blog_post_scheduled").show();
+  }else $(".blog_post_scheduled").hide();
+  $('#blog_post_scheduled').datetimepicker({format:'Y-m-d H:i:s'});
+  $("#blog_post_status").on('change', function(){
+    if ($(this).val() == "scheduled"){
+      $(".blog_post_scheduled").show();
+    }else $(".blog_post_scheduled").hide();
+  });
+
+</script>

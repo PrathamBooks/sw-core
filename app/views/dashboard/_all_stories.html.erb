@@ -1,0 +1,251 @@
+<%= render :partial => "dashboard/dashboard_datatables" %>
+
+<% if controller.controller_name == "dashboard" %>
+  <div style="margin-bottom: 10px;">
+    <div class="btn-group" style="margin-left: 310px;"><label>Time Period:</label></div>
+    <div class="btn-group">
+      <i class="dropdown-arrow dropdown-arrow-inverse"></i>
+      <button class="btn btn-app dropdown-toggle filter-btn" data-toggle="dropdown" ><%= params[:search_from] %></button>
+      <button class="btn btn-app dropdown-toggle" data-toggle="dropdown"> <span class="caret"></span></button>
+      <ul class="dropdown-menu dropdown">
+        <li><%= link_to "One Month", all_stories_path(:search_from => "One Month") %></li>
+        <li><%= link_to "Three Months", all_stories_path(:search_from => "Three Months") %></li>
+        <li><%= link_to "Six Months", all_stories_path(:search_from => "Six Months") %></li>
+        <li><%= link_to "One Year", all_stories_path(:search_from => "One Year") %></li>
+        <li><%= link_to "All Stories", all_stories_path(:search_from => "All Stories") %></li>
+      </ul>
+    </div>
+    <div class="stories_date_picker">
+      <ul id="myTab" role="tablist" class="nav nav-tabs profile">
+        <li role="presentation" class="pull-right">
+          <div class="input-group date" data-provide="datepicker" style="float: right;">
+            <label>From date</label>
+            <input class="datepicker" id="start_date" data-date-format="yy-mm-dd" value="<%= params[:start_date] if params[:start_date].present? %>">
+            <label>To date</label>
+            <input class="datepicker" id="end_date" data-date-format="yy-mm-dd" value="<%= params[:end_date] if params[:end_date].present? %>">
+            <button id="submit_dates" class="btn btn-app btn-brand-1">Submit</button>
+          </div>
+          <script type="text/javascript">
+            $('.datepicker').datepicker({
+              dateFormat: 'yy-mm-dd', autoclose: true
+            });
+            $("#submit_dates").click(function(){
+              if($("#start_date").val() > $("#end_date").val()){
+                alert("Start Date should be before the End Date");
+              }else{
+                jQuery.ajax({
+                  type: "GET",
+                  url: "<%= all_stories_path %>",
+                  data: {start_date: $("#start_date").val(), end_date: $("#end_date").val(), search_from: "selected"},
+                  dataType : "script"
+                });
+              }
+            });
+          </script> 
+        </li>
+      </ul>
+    </div>
+  </div>
+<% end %>
+<div class="row small"> * Click to toggle visibility of columns</div>
+<div class="stories_hide_btn">
+  <%= link_to "Id", "javascript:;", class: 'dt-column btn btn-danger', :"data-idx" => "0", :"data-col" => "0" %> 
+  <%= link_to "Title", "javascript:;", class: 'dt-column btn btn-success', :"data-idx" => "1", :"data-col" => "1" %> 
+  <%= link_to "Eng Title", "javascript:;", class: 'dt-column btn btn-success', :"data-idx" => "2", :"data-col" => "1" %> 
+  <%= link_to "Language", "javascript:;", class: 'dt-column btn btn-success', :"data-idx" => "3", :"data-col" => "1" %> 
+  <%= link_to "Level", "javascript:;", class: 'dt-column btn btn-danger', :"data-idx" => "4", :"data-col" => "0" %> 
+  <%= link_to "Status", "javascript:;", class: 'dt-column btn btn-danger', :"data-idx" => "5", :"data-col" => "0" %> 
+  <%= link_to "Organisation", "javascript:;", class: 'dt-column btn btn-danger', :"data-idx" => "6", :"data-col" => "0" %> 
+  <%= link_to "Story Type", "javascript:;", class: 'dt-column btn btn-danger', :"data-idx" => "7", :"data-col" => "0" %> 
+  <%= link_to "Flagged", "javascript:;", class: 'dt-column btn btn-danger', :"data-idx" => "8", :"data-col" => "0" %> 
+  <%= link_to "Author", "javascript:;", class: 'dt-column btn btn-success', :"data-idx" => "9", :"data-col" => "1" %> 
+  <%= link_to "No of Reads", "javascript:;", class: 'dt-column btn btn-success', :"data-idx" => "10", :"data-col" => "1" %> 
+  <%= link_to "No of Downloads", "javascript:;", class: 'dt-column btn btn-success', :"data-idx" => "11", :"data-col" => "1" %> 
+  <%= link_to "Copy Right year", "javascript:;", class: 'dt-column btn btn-danger', :"data-idx" => "12", :"data-col" => "0" %> 
+  <%= link_to "Child Created", "javascript:;", class: 'dt-column btn btn-danger', :"data-idx" => "13", :"data-col" => "0" %> 
+  <%= link_to "Contest", "javascript:;", class: 'dt-column btn btn-danger', :"data-idx" => "14", :"data-col" => "0" %> 
+  <%= link_to "Donor", "javascript:;", class: 'dt-column btn btn-danger', :"data-idx" => "15", :"data-col" => "0" %> 
+  <%= link_to "Synopsis", "javascript:;", class: 'dt-column btn btn-danger', :"data-idx" => "16", :"data-col" => "0" %> 
+  <%= link_to "Published at", "javascript:;", class: 'dt-column btn btn-danger', :"data-idx" => "17", :"data-col" => "0" %>
+</div>
+
+<div class="btn-group">
+  <span>Number of Stories Selected :</span>
+  <span class="badge" id="data_table_count"><%= @stories.count %></span>
+</div>
+
+<div>
+<table class="table table-striped" id="all_stories">
+  <tfoot style="display: table-header-group;">
+    <tr>
+      <th>Story Id        </th>
+      <th>Name            </th>
+      <th>Eng Title       </th>
+      <th>Language        </th>
+      <th>Reading Level   </th>
+      <th>Status          </th>
+      <th>Organisation    </th>
+      <th>Story Type      </th>
+      <th>Flagged         </th>
+      <th>Author          </th>
+      <th>No of Reads     </th>
+      <th>No of Downloads </th>
+      <th>Copy Right year </th>
+      <th>Child created   </th>
+      <th>Contest         </th>
+      <th>Donor           </th>
+      <th>Synopsis        </th>
+      <th>Published at    </th>
+    </tr>
+  </tfoot>
+  <thead>
+    <tr class="table-heading-row">
+      <th>Story Id        </th>
+      <th>Title           </th>
+      <th>Eng Title       </th>
+      <th>Language <span class="badge" id="language_count"><%= sum_of_reads_downloads(@stories, 'language') %></span>           </th>
+      <th>Level           </th>
+      <th>Status          </th>
+      <th>Organisation    </th>
+      <th>Story Type      </th>
+      <th>Flagged         </th>
+      <th>Author          </th>
+      <th>No of Reads <span class="badge" id="reads_count"><%= sum_of_reads_downloads(@stories, 'reads') %></span>              </th>
+      <th>No of Downloads <span class="badge" id="downloads_count"><%= sum_of_reads_downloads(@stories, 'downloads') %></span>  </th>
+      <th>Copy Right year </th>
+      <th>Child created   </th>
+      <th>Contest         </th>
+      <th>Donor           </th>
+      <th>Synopsis        </th>
+      <th>Published at    </th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @stories.each do |f| %>
+      <tr class="data_count">
+        <td><%= f.id %></td>
+        <td><%= link_to f.title, react_stories_show_path(f.to_param), :target => "_blank" %></td>
+        <td><%= f.english_title %></td>
+        <td class="l_count"><%= f.language.name %></td>
+        <td><%= f.reading_level %></td>
+        <td><%= f.status %></td>
+        <td><%= f.organization.organization_name if f.organization_id.present? %></td>
+        <td><%= f.derivation_type.present? ? f.derivation_type : "original" %></td>
+        <td><%= (f.flaggings.count > 0) ? "Yes" : "No" %></td>
+        <td><%= f.authors.collect(&:name).join(', ') %></td>
+        <td class="r_count"><%= f.reads %></td>
+        <td class="d_count"><%= f.downloads + f.high_resolution_downloads + f.epub_downloads %></td>
+        <td><%= f.copy_right_year if f.copy_right_year.present? %></td>
+        <td><%= f.chaild_created %></td>
+        <td><%= f.contest.name if f.contest_id.present? %></td>
+        <td><%= f.donor.name if f.donor_id.present? %></td>
+        <td><%= f.synopsis %></td>
+        <td><%= print_date_all_stories(f.published_at) if f.published_at.present? %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+</div>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+  var table = $('#all_stories').DataTable( {
+    searching: true,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 20,
+    order: [],
+    responsive: {
+        details: false
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  title: formatDatatableTitle('stories'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 ]
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  title: formatDatatableTitle('stories'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 ]
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  title: formatDatatableTitle('stories'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 ]
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  title: formatDatatableTitle('stories'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 ]
+                  }
+              }
+          ]
+      
+  });
+  $('#all_stories tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+  });
+
+  $(".dt-column").click(function(){
+    if( $(this).attr("data-col") === '0' ){
+      $(this).toggleClass("lang_count");
+    }else if( $(this).attr("data-col") === '1' ){
+      $(this).toggleClass("btn-danger");
+    }
+    var col_id = $(this).attr("data-idx");
+    var vis = table.column( col_id ).visible( );
+    table.column( col_id ).visible( !vis );
+  });
+
+    
+  var column_nu = [0, 4, 5, 6, 7, 8, 12, 13, 14, 15, 16, 17 ];
+    column_nu.forEach(function(entry) {
+    table.column( entry ).visible( false );
+  });
+  
+  function unique_filtered_data(){
+    var reads_count = 0;
+    var downloads_count = 0;
+    var languages = [];
+    table.$('tr',  {"filter":"applied"}).each( function(){
+      reads_count += parseInt( $(this).find('.r_count')[0].innerHTML);
+      downloads_count += parseInt( $(this).find('.d_count')[0].innerHTML);
+      languages.push($(this).find('.l_count')[0].innerHTML);
+    })
+    document.getElementById("reads_count").innerHTML = reads_count;
+    document.getElementById("downloads_count").innerHTML = downloads_count;
+    document.getElementById("language_count").innerHTML = new Set(languages).size;
+  }
+
+  var new_table = $('#all_stories').dataTable();
+  table.columns().every( function () {
+    var that = this;
+
+    $( 'input', this.footer() ).on( 'keyup change', function () {
+      if ( that.search() !== this.value ) {
+			  that.search( this.value ).draw();
+        document.getElementById("data_table_count").innerHTML = document.getElementById('all_stories').children[1].childElementCount;
+      } else {
+        document.getElementById("data_table_count").innerHTML = table.rows( '.data_count' ).count(); 
+      }
+      unique_filtered_data();
+    });
+  });
+  $( 'input').on( 'keyup change', function () {
+    document.getElementById("data_table_count").innerHTML = new_table.fnSettings().fnRecordsDisplay();
+    unique_filtered_data();
+  });
+
+  });
+</script>

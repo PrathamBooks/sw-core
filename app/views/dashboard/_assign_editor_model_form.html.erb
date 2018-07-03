@@ -1,0 +1,54 @@
+<div title="Assign Reviwer">
+  <input type="text" class="form-control" id="editor_email">
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+ 	$('#editor-model').dialog({
+        autoOpen: true,
+        width: 400,
+        modal: true,
+        buttons : {
+          "Submit" : function() {
+           if ($( "#editor_email").val() == ''){
+              alert("Email cant be blank");
+           }else if($("#editor_email").val().split(',')[0] == "<%= story.editor.email if story.editor %>" ){
+ 			        alert("User already assigned")
+ 			    }
+           else{
+              $.ajax({
+                type: 'POST',
+                dataType: 'script',
+                url: "<%= assign_editor_to_uploaded_story_path %>",
+                data: {
+                 story_id: "<%= story.id %>",
+                 editor_email: $( "#editor_email").val()
+                }
+              });
+              $(this).dialog("close");
+              $( "#editor_email").val() == ''
+           } 
+        },
+        "Cancel" : function() {
+          $(this).dialog("close");
+        }
+        },
+        dialogClass: 'change_orientation_dialog'
+  	});
+
+    $( "#editor_email").autocomplete({
+	 	source: function( request, response ) {
+	    $.ajax({
+	      url: "<%= users_autocomplete_path%>",
+	      dataType: "json",
+	      data: {
+	       query: request.term
+	      },
+	      success: function( data ) {
+	        response(data);
+	      }
+	    });
+  		}
+ 	 });
+});
+</script>

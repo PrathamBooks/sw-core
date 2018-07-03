@@ -1,0 +1,56 @@
+<div class="home-full-border">
+  <div class="blog-page-cont">
+    <div class="container">
+      <div class="row row-offcanvas row-offcanvas-left">
+
+        <%= render :partial => "blog_nav" %>
+
+        <div class="col-xs-12 col-sm-9  blog_posts">
+          <div class="blog_mob_search">
+            <form class="navbar-form" role="search">
+              <div class="input-group add-on">
+                <input class="form-control" placeholder="Search" name="srch-term" id="srch-term" type="text">
+                <div class="input-group-btn">
+                  <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="blog-header">
+            <h1><%= @blog_post.title %></h1>
+            <% if @blog_post.published_at.present? %><span class="posted_at">Posted by <i><%= @blog_post.user.name %></i> on <%= @blog_post.published_at.to_date.strftime("%B %d, %Y") %></span><% end %>
+          </div>
+          <%= raw @blog_post.body.html_safe %>
+          <%= social_share_button_tag(@blog_post.title, :url => "#{request.base_url}#{blog_post_path(@blog_post.id)}" ,:popup => "true") %>
+          <% if @blog_actions_authorization %>
+            <%= link_to 'Edit', edit_blog_post_path(@blog_post), :class => "btn btn-info edit-btn", :role => "button", :style => "float:left;"%>
+            <%= link_to 'Back', blog_posts_path, :class => "btn btn-info edit-btn", :role => "button", :style => "float:left;"%>
+          <% end %>
+          <br/>
+          <hr/>
+          <h2><i class="fa fa-comments"></i><%= @blog_post.comments_count %><%= @blog_post.comments_count == 1 ? ' Comment' : ' Comments'%> </h2>
+          <div id="comments">
+            <%= render :partial => @blog_post.comments %>
+          </div>
+          <%= simple_form_for(([@blog_post, @blog_post.comments.build]), :remote=> true) do |f| %>
+            <%= f.input :body, label: false %>
+            <% if current_user %>
+              <%= f.button :submit, "Post comment", :class => "btn btn-info edit-btn submit-comment"%>
+            <% else %>
+              <a class = "btn btn-info edit-btn submit-comment" href="/users/sign_in">Post comment</a>
+            <% end %>
+          <% end %>
+          <div class="blog-pagination">
+            <% unless @blog_post.previous.nil? %><%= link_to @blog_post.previous do %><span class="glyphicon glyphicon-circle-arrow-left"></span> Previous<%end %><%end %>
+            <%= link_to(blog_posts_path) do %>
+              <span class="glyphicon glyphicon-home" style="left:41%"></span>
+            <%end%>
+            <% unless @blog_post.next.nil? %><%= link_to @blog_post.next , :style=>"float:right;" do %>Next <span class="glyphicon glyphicon-circle-arrow-right"></span><%end %><% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

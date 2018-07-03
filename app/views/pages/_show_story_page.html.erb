@@ -1,0 +1,9 @@
+<% if (page.story.is_display_inline) %>
+<div class='newStories <%= page.story.language.script %> <%= page.page_template.name + ' content' %> ' dir="<%= @story.language.is_right_to_left? ? 'rtl' : 'auto'%>"><% page_contents = page.content.gsub('<br>', '<br/>') rescue page.content %><%=raw(page_contents)%></div>
+<% else%>
+  <div class='text-font-normal <%= page.page_template.name + ' content' %> ' dir="<%= @story.language.is_right_to_left? ? 'rtl' : 'auto'%>"><% page_contents = page.content.gsub('<br>', '<br/>') rescue page.content %><%= raw(page_contents) %></div>
+<% end %>
+<div class="page_number"><%=page.position%></div>
+<% if page.story.story_pages.last.position == page.position %>
+  <div id="lastSPage" data-story-title="<%= page.story.to_param %>" data-story-read-id="<%=story_read_id %>"></div>
+<% end %>

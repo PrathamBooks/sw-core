@@ -1,0 +1,13 @@
+<a class="page-control previous-page" href="javascript:void(0);">
+  <i class="fa fa-arrow-left"></i>
+</a>
+<% @story.pages.each_with_index do |page, index| %>
+  	<%= render :partial=>"/pages/page", locals: {page: page} %>
+<% end %>
+<a class="page-control next-page" href="javascript:void(0);">
+  <i class="fa fa-arrow-right animated shake"></i>
+</a>
+<script type="text/javascript">
+  $(document).ready(pages_init);
+  $(document).ready(setup_page_controls);
+</script>

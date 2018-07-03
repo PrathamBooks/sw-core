@@ -1,0 +1,78 @@
+{
+  "name": "qunitjs",
+  "title": "QUnit",
+  "description": "An easy-to-use JavaScript Unit Testing framework.",
+  "version": "1.15.0",
+  "homepage": "http://qunitjs.com",
+  "author": {
+    "name": "jQuery Foundation and other contributors",
+    "url": "https://github.com/jquery/qunit/blob/1.15.0/AUTHORS.txt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jquery/qunit.git"
+  },
+  "keywords": [
+    "testing",
+    "unit",
+    "jquery"
+  ],
+  "bugs": {
+    "url": "https://github.com/jquery/qunit/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/jquery/qunit/blob/1.15.0/LICENSE.txt"
+    }
+  ],
+  "files": [
+    "qunit/qunit.js",
+    "qunit/qunit.css",
+    "LICENSE.txt"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "commitplease": "1.7.0",
+    "grunt": "0.4.2",
+    "grunt-contrib-concat": "0.3.0",
+    "grunt-contrib-jshint": "0.10.0",
+    "grunt-contrib-watch": "0.5.3",
+    "grunt-coveralls": "0.3.0",
+    "grunt-git-authors": "1.2.0",
+    "grunt-jscs": "0.6.1",
+    "grunt-qunit-istanbul": "0.4.5",
+    "load-grunt-tasks": "0.3.0",
+    "testswarm": "1.1.0"
+  },
+  "scripts": {
+    "ci": "grunt && grunt coveralls",
+    "test": "grunt",
+    "prepublish": "grunt build"
+  },
+  "main": "qunit/qunit.js",
+  "_id": "qunitjs@1.15.0",
+  "_shasum": "3536a78204984dbcb82e62bcab7d8d1166485037",
+  "_from": "qunitjs@1.15.0",
+  "_npmVersion": "1.4.10",
+  "_npmUser": {
+    "name": "jzaefferer",
+    "email": "joern.zaefferer@gmail.com"
+  },
+  "maintainers": [
+    {
+      "name": "jzaefferer",
+      "email": "joern.zaefferer@gmail.com"
+    },
+    {
+      "name": "jamesmgreene",
+      "email": "james.m.greene@gmail.com"
+    }
+  ],
+  "dist": {
+    "shasum": "3536a78204984dbcb82e62bcab7d8d1166485037",
+    "tarball": "https://registry.npmjs.org/qunitjs/-/qunitjs-1.15.0.tgz"
+  },
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/qunitjs/-/qunitjs-1.15.0.tgz"
+}

@@ -1,0 +1,264 @@
+<%= render :partial => "dashboard_datatables" %>
+
+<%= render :partial => "flagged_content_tabs" %>
+
+  <div class="row">
+    <div class="col-md-12 col-sm-12">
+    	<label class="allusers">
+        <span><%= t 'dashboard.dashboard.number_of_illustrations_selected'%> :</span>
+        <span class="badge" id="pull_down_illustrations_count"><%= flagged_illustrations.count %></span>
+      </label>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 col-sm-12" id="user_details">
+      <table class="table table-striped" id="all_pull_down_illustrations">
+        <tfoot style="display: table-header-group;">
+          <tr>
+            <th><%= t 'dashboard.illustration'%></th>
+            <th><%= t 'dashboard.flagged_illustrations_tab.user_comments'%></th>
+            <th><%= t 'dashboard.flagged_illustrations_tab.flagged_by'%></th>
+            <th><%= t 'dashboard.flagged_illustrations_tab.illurtrators_email_id'%></th>
+            <th><%= t 'dashboard.flagged_illustrations_tab.used_in_stories'%></th>
+            <th><%= t 'dashboard.actions'%></th>
+          </tr>
+        </tfoot>
+        <thead>
+          <tr class="table-heading-row">
+            <th><%= t 'dashboard.illustration'%></th>
+            <th><%= t 'dashboard.flagged_illustrations_tab.user_comment'%></th>
+            <th><%= t 'dashboard.flagged_illustrations_tab.flagged_by'%></th>
+            <th><%= t 'dashboard.flagged_illustrations_tab.illurtrators_email_id'%></th>
+            <th><%= t 'dashboard.flagged_illustrations_tab.used_in_stories'%></th>
+            <th><%= t 'dashboard.actions'%></th>
+          </tr>
+        </thead>
+        <tbody class="table-row-details">    
+        <% flagged_illustrations.each_with_index do |illustration, index|%> 
+          <tr class="illustrations_count">
+            <td>
+              <%= link_to(image_tag(illustration.image.url(:search)), react_illustrations_show_path(illustration)) %>
+            </td>
+            <td><%= illustration.flaggings.first.try(:reason) %></td>
+            <td>
+              <%= illustration.flaggings.first.flagger.name %><br/>
+              (<%= illustration.flaggings.first.flagger.email %>)
+            </td>
+            <td><%= illustration.illustrators.collect(&:email).join(", ") %></td>
+            <td>
+              <% illustration.used_in_published_stories.each_with_index do |story,index| %>
+                <%= link_to "#{index+1}, #{story.title}", react_stories_show_path(story.to_param) , :target => "_blank" %><br/>
+              <% end %>
+            </td>
+            <td>
+              <div class="dropdown">
+                <button class=" btn btn-danger dropdown-toggle illustration_reason_button" style="padding:5px 10px;" type="button"  style="padding:5px 10px;" data-toggle="dropdown"><%= t 'dashboard.flagged_illustrations_tab.pull_down' %>
+                <span class="caret"></span></button>
+                <ul id="illustration_reason_<%= index%>" class="dropdown-menu illustration_reason_dropdown" role = "menu">
+                  <li>
+                      <a>
+                      <input type="checkbox" value="This is a copyrighted image that does not belong the person attributed." name="reason"/>This is a copyrighted image that does not belong the person attributed.</a>
+                  </li>
+                  <li>
+                    <a>
+                    <input type="checkbox" value=" This is a copyrighted image that belongs to me." name="reason" />This is a copyrighted image that belongs to me.</a>
+                  </li>
+                  <li>
+                    <a>
+                  <input type="checkbox" value=" This is inappropriate for children." name="reason" />This is inappropriate for children.</a>
+                </li>
+                  <li>
+                    <a>
+                  <input type="checkbox" value="This is a pixillated image." name="reason" />This is a pixillated image.</a>
+                </li>
+                  <li>
+                    <a>
+                  <input type="checkbox" value="Other comments: Please Specify" name="reason"  class="illustration_other_options_<%= index%>"/>Other comments: Please Specify</a>
+                </li>
+                <li><input type="text" class="form-control illustration_other_reasons" id="illustration_other_reason_<%= index%>" style="display: none;"></li>
+                <a class="btn btn-sm btn-danger pull_down_illustration" id="illustration_reason_save_<%= index%>" style="padding:5px 10px; margin-left: 45px; width: 60px; display: none; margin-top: 5px" data-path = "<%=pull_down_illustration_path(illustration) %>" >Save</a>
+                </ul>
+              </div>
+              <a class="btn btn-sm btn-success clear_illustration_flag illustration_reason_button" style="padding:5px 10px;" data-path = "<%= clear_illustration_flag_path(illustration) %>"><%= t 'dashboard.flagged_illustrations_tab.clear_flag' %></a>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="pull_down_illustration_dialog" title="Confirmation Required">
+    <%= t 'dashboard.flagged_illustrations_tab.pulled_down_ill_alert'%> 
+  </div>
+
+  <div id="clear_illustration_flag_dialog" title="Confirmation Required">
+    <%= t 'dashboard.flagged_illustrations_tab.clear_flag_ill_alert'%>
+  </div>
+
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+  initPulledDownStoryDialog();
+  initClearStoryFlagDialog();
+  for (var i =0 ; i <= <%=flagged_illustrations.size - 1%>; i++) {
+    if ($("#illustration_reason_"+i+" li").find("input:checked").length > 0){
+      if($(".illustration_other_options_"+i).is(":checked")){
+        $("#illustration_other_reason_"+i).show()
+      }
+      $("#illustration_reason_save_"+i).show();
+    }
+  };
+});
+
+function initPulledDownStoryDialog(){
+  var pull_down_illustration_dialog = $("#pull_down_illustration_dialog");
+  pull_down_illustration_dialog.dialog({
+      autoOpen: false,
+      width: 700,
+      modal: true,
+      buttons : {
+        "Confirm" : function() {
+          window.location = pull_down_illustration_path;
+        },
+        "Cancel" : function() {
+          $(this).dialog("close");
+        }
+      },
+      dialogClass: 'change_orientation_dialog'
+  });
+}
+
+function initClearStoryFlagDialog(){
+  var clear_illustration_flag_dialog = $("#clear_illustration_flag_dialog");
+  clear_illustration_flag_dialog.dialog({
+      autoOpen: false,
+      width: 700,
+      modal: true,
+      buttons : {
+        "Confirm" : function() {
+          window.location = clear_illustration_flag_path;
+        },
+        "Cancel" : function() {
+          $(this).dialog("close");
+        }
+      },
+      dialogClass: 'change_orientation_dialog'
+  });
+}
+
+/*$(".pull_down_illustration").click(function(){
+   pull_down_illustration_path = $(this).data('path');
+   $("#pull_down_illustration_dialog").dialog("open");
+});*/
+
+$(".clear_illustration_flag").click(function(){
+   clear_illustration_flag_path = $(this).data('path');
+   $("#clear_illustration_flag_dialog").dialog("open");
+});
+
+for (var i =0 ; i <= <%=flagged_illustrations.size - 1%>; i++) {
+  illustration_pulled_down_resons(i)
+};
+function illustration_pulled_down_resons(i){
+  $("#illustration_reason_"+i+" li").click(function () {
+    if ($("#illustration_reason_"+i+" li").find("input:checked").length > 0){
+      if($(".illustration_other_options_"+i).is(":checked")){
+        $("#illustration_other_reason_"+i).show()
+      }else{
+        $("#illustration_other_reason_"+i).hide()
+      }
+      $("#illustration_reason_save_"+i).show();
+    }else
+    {
+      $("#illustration_reason_save_"+i).hide();
+      $("#illustration_other_reason_"+i).hide()
+    }   
+  });
+
+  $("#illustration_reason_save_"+i).click(function(){
+    var collect_reason = [];
+     $("#illustration_reason_"+i+" li").find("input:checked").each(function () {
+        if($(this).val() == "Other comments: Please Specify"){
+          collect_reason.push($("#illustration_other_reason_"+i).val().replace(/\./g,' '));
+        }else{
+          collect_reason.push($(this).val().replace(/\./g,' '));
+        }    
+        });
+     pull_down_illustration_path = $(this).data('path')+'?reasons='+collect_reason;
+      window.location = pull_down_illustration_path;
+  });
+}
+
+$(document).ready(function() {
+  var table = $('#all_pull_down_illustrations').DataTable( {
+    searching: true,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 20,
+    order: [],
+    responsive: {
+        details: false
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  title: formatDatatableTitle('flagged-illustrations'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5 ]
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  title: formatDatatableTitle('flagged-illustrations'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5 ]
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  title: formatDatatableTitle('flagged-illustrations'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5 ]
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  title: formatDatatableTitle('flagged-illustrations'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5 ]
+                  }
+              }
+          ]
+  });
+
+  $('#all_pull_down_illustrations tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+  });
+
+  var new_table = $('#all_pull_down_illustrations').dataTable();
+  table.columns().every( function () {
+    var that = this;
+
+    $( 'input', this.footer() ).on( 'keyup change', function () {
+      if ( that.search() !== this.value ) {
+          that
+              .search( this.value )
+              .draw();
+        document.getElementById("pull_down_illustrations_count").innerHTML = document.getElementById('all_pull_down_illustrations').children[1].childElementCount;
+      }else{
+        document.getElementById("pull_down_illustrations_count").innerHTML = table.rows( '.illustrations_count' ).count(); 
+      }
+    });
+  });
+  $( 'input').on( 'keyup change', function () {
+    document.getElementById("pull_down_illustrations_count").innerHTML = new_table.fnSettings().fnRecordsDisplay();
+  });
+
+  });
+
+</script>

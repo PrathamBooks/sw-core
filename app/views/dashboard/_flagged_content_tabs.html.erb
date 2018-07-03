@@ -1,0 +1,14 @@
+<ul class="nav nav-tabs content-manager" role="tablist" id="myTab">
+  <li role="presentation" class="<%= @current_tab == 'flagged_stories' ? 'active' : '' %>">
+    <%= link_to "<span>#{t 'dashboard.flagged_contents.flagged_stories'}</span>".html_safe , flagged_stories_path %>
+  </li>
+  <li role="presentation" class="<%= @current_tab == 'flagged_illustrations' ? 'active' : '' %>">
+    <%= link_to "<span>#{t 'dashboard.flagged_contents.flagged_illustrations'}</span>".html_safe , flagged_illustrations_path %>
+  </li>
+  <li role="presentation" class="<%= @current_tab == 'pulled_down_stories' ? 'active' : '' %>">
+    <%= link_to "<span>#{t 'dashboard.flagged_contents.pulled_down_stories'}</span>".html_safe , pulled_down_stories_path %>
+  </li>
+  <li role="presentation" class="<%= @current_tab == 'pulled_down_illustrations' ? 'active' : '' %>">
+    <%= link_to "<span>#{t 'dashboard.flagged_contents.pulled_down_illustrations'}</span>".html_safe , pulled_down_illustrations_path %>
+  </li>
+</ul>

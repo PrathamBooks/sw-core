@@ -1,0 +1,28 @@
+<h2 class="total_stories_count">Total Stories Downloaded<%= "(#{stories_download_count})" if stories_download_count%></h2>
+<h2 class="organization_count">Total Organisational User Sign-ups<%= "(#{@organization_users_count})" if @organization_users_count%></h2>
+<h2 class="organization_count">Total Children Impacted<%= "(#{@children_impacted_count})" if @children_impacted_count%></h2>
+<div class="organization_days">
+  <%= link_to "day", organization_downloads_path(:group=>"day"), :remote=>true, :class=>(params[:group]=="day" || params[:group]== nil ? "btn active" : "btn")%>
+  <%= link_to "week", organization_downloads_path(:group=>"week"), :remote=>true, :class=>(params[:group]=="week"? "btn active" : "btn")%>
+  <%= link_to "month", organization_downloads_path(:group=>"month"), :remote=>true, :class=>(params[:group]=="month"? "btn active" : "btn")%>
+  <%= link_to "year", organization_downloads_path(:group=>"year"), :remote=>true, :class=>(params[:group]=="year"? "btn active" : "btn")%>
+</div>
+<div class="organization_chart">
+  <%= line_chart story_downloads %>
+</div>
+<table class="table table-striped">
+  <thead>
+  <tr class="table-heading-row">
+    <th><%= story_downloads[0][:type] == nil ? "Day" : story_downloads[0][:type] %></th>
+    <th>Bulk Downloads <%= story_downloads[0][:type] == nil || story_downloads[0][:type] == "day" ? " " : "During #{story_downloads[0][:type]}" %></th>
+  </tr>
+  </thead>
+  <tbody class="table-row-details">
+   <% story_downloads[0][:data].each do |key,value| %>
+    <tr>
+      <td><%=  story_downloads[0][:type] == "month" || story_downloads[0][:type] == "year" ? key.localtime.strftime("%b, %Y") : key.localtime.strftime("%b %d, %Y") %></td>
+      <td><%= value %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

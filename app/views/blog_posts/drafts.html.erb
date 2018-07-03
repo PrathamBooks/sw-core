@@ -1,0 +1,118 @@
+<%= render :partial => "dashboard/dashboard_datatables" %>
+
+<%= render :partial => "tabs" %>
+
+<div class="row">
+  <div class="col-md-12 col-sm-12">
+  	<label class="allusers">
+      <span>Number of Blogs selected :</span>
+      <span class="badge" id="blogs_drafts_count"><%= @blog_drafts.count %></span>
+    </label>
+  </div>
+</div>
+
+<div role="tabpanel" class="tab-pane" id="profile-drafts">
+  <div class="col-md-12">
+    <table class="table table-striped" id="blogs_draft">
+      <tfoot style="display: table-header-group;">
+        <tr>
+          <th>Title</th>
+          <th>Created at</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </tfoot>
+      <thead>
+        <tr class="table-heading-row">
+          <th>Title</th>
+          <th>Created at</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody class="table-row-details">
+        <% @blog_drafts.each do |blog_draft| %>
+          <tr class="draft_blogs">
+            <td><%= link_to blog_draft.title, blog_post_path(blog_draft.id) %></td>
+            <td><%= blog_draft.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
+            <td><%= link_to 'Edit', edit_blog_post_path(blog_draft.id), class:"btn btn-info edit-btn" %></td>
+            <td><%= link_to 'Destroy', blog_post_path(blog_draft.id),class:"btn btn-info edit-btn", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+$(document).ready(function() {
+  var table = $('#blogs_draft').DataTable( {
+    searching: true,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 20,
+    order: [],
+    responsive: {
+        details: false
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  title: formatDatatableTitle('drafts'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3 ]
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  title: formatDatatableTitle('drafts'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3 ]
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  title: formatDatatableTitle('drafts'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3 ]
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  title: formatDatatableTitle('drafts'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3 ]
+                  }
+              }
+          ]
+      
+  });
+  $('#blogs_draft tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+  });
+
+  var new_table = $('#blogs_draft').dataTable();
+  table.columns().every( function () {
+    var that = this;
+
+    $( 'input', this.footer() ).on( 'keyup change', function () {
+      if ( that.search() !== this.value ) {
+          that
+              .search( this.value )
+              .draw();
+        document.getElementById("blogs_drafts_count").innerHTML = document.getElementById('blogs_draft').children[1].childElementCount;
+      }else{
+        document.getElementById("blogs_drafts_count").innerHTML = table.rows( '.draft_blogs' ).count(); 
+      }
+    });
+  });
+  $( 'input').on( 'keyup change', function () {
+    document.getElementById("blogs_drafts_count").innerHTML = new_table.fnSettings().fnRecordsDisplay();
+  });
+
+  });
+
+</script>

@@ -1,0 +1,6 @@
+<label>Editor:</label>
+  <%= simple_form_for @story, url: :assign_change_editor do |f| %>
+    <%= f.text_field :editor_id, label: false, value: @story.editor.present? ?  @story.editor.email : "" %>
+    <%= f.button :submit, "Save", class: "btn btn-default" %>
+    <%= link_to "Cancel",close_assign_dailog_path,:remote => true, :class=>"btn btn-default"%>
+  <% end %>

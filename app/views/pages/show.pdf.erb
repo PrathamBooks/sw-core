@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <%= wicked_pdf_stylesheet_link_tag "fonts" -%>
+    <%= wicked_pdf_stylesheet_link_tag "language_fonts" -%>
+    <%= wicked_pdf_stylesheet_link_tag "stories" -%>
+    <%= wicked_pdf_stylesheet_link_tag "page" -%>
+    <%= wicked_pdf_stylesheet_link_tag "bootstrap3-wysihtml5-editor" -%>
+    <%= wicked_pdf_stylesheet_link_tag "story_pdf" -%>
+  </head>
+  <body class="pdf_body">
+    <div id="story_pdf">
+      <% @story.pages.each do |page| %>
+        <div class="page <%= @story.language.script %>">
+          <div class="page-container-<%= page.page_template.orientation %>">
+            <div class='<%= page.page_template.name %> <%= page.illustration_crop.nil? ? '' : 'has_illustration' %> illustration'>
+              <% unless page.illustration_crop.nil? %>
+              <% debug = defined?(debug) ? debug : params[:debug].present? ? params[:debug] : false %>
+              <% resolution = defined?(resolution) ? resolution : params[:high_resolution].present? ? "high" : "low" %>
+              <%= debug.present? ?
+                  image_tag(page.illustration_crop.image.url(resolution == "high" ? :original : :large)) :
+                  wicked_pdf_image_tag_for_illustration_crops(page.illustration_crop.image.try(Settings.illustration.path, resolution == "high" ? :original : :large)) %>
+              <% end %>
+            </div>
+            <% if page.page_template.name != "sp_h_text_overlay1" %>
+              <span class="<%= page.page_template.name %> content-container">
+                <%= render :partial => page_partial(page), locals: {page: page, story_read_id: nil} %>
+              </span>
+            <% else %>
+              <%= render :partial => page_partial(page), locals: {page: page, story_read_id: nil} %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </body>
+</html>
+

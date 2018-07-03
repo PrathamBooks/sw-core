@@ -1,0 +1,10 @@
+$('#newRelevelStoryForm').html("<%= escape_javascript(render(:partial=>"relevels/new"))%>");
+
+$(document).ready(function() {
+  $('#relevelStoryModal').modal({
+    backdrop: 'static',
+    keyboard: false,
+    show: true
+  });
+});
+

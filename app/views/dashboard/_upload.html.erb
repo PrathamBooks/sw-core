@@ -1,0 +1,199 @@
+<%= render :partial => "dashboard_datatables" %>
+
+<div class="row">
+  <div class="col-md-12 col-sm-12">
+  	<label class="allusers">
+      <span><%=t "dashboard.number_of_stories_selected" %>:</span>
+      <span class="badge" id="uploaded_stories_count"><%= @stories.count %></span>
+    </label>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6 col-sm-6 upl-row">
+    <%= simple_form_for :upload, url: '/dashboard/upload', html: { class: 'form-horizontal'} do |f| %>
+      <%=t "dashboard.legacy_upload.upload_stories_to_story_weaver" %>  <%= f.submit @upload_running ? 'Uploading...' : 'Start Upload', class: 'btn btn-info' + (@upload_running? ' disabled' : '')  %>
+    <% end %>
+  </div>
+  <div class="input-group tab-search">
+      <%= simple_form_for :search, url: '/dashboard' , method: :get do |f| %>
+      <%= f.input :query, label: false, placeholder: "search stories" , input_html: {:class => "form-control",:value => @search_query_dashboard.present? ? @search_query_dashboard : '', :style=>"width: 50% ;"} %>
+        <div class="input-group-btn tooltip-icon"i>
+          <%= button_tag(type: 'submit', class: "btn btn-warning") do %>
+            <span class='glyphicon glyphicon-search'></span>
+            <span class="arrow-left"></span>
+          <% end %>
+        </div>
+      <% end %> 
+  </div>
+</div>
+<hr/>
+<div class="row">
+  <div class="col-md-12 col-sm-12">
+    <div id="delete_story_dialog" title="Confirmation Required">
+      <%=t 'dashboard.legacy_upload.delete_story' %>
+    </div>
+    <table class="table table-striped" id="uploaded_stories">
+      <tfoot style="display: table-header-group;">
+        <tr>
+          <th><%=t "dashboard.story_title"%></th>
+          <th><%=t "dashboard.english_title"%></th>
+          <th><%=t "dashboard.legacy_upload.root_title"%></th>
+          <th><%=t "dashboard.legacy_upload.editor"%></th>
+          <th><%=t "dashboard.legacy_upload.author"%></th>
+          <th><%=t "dashboard.language"%></th>
+          <th></th>
+          <th><%=t "dashboard.total"%></th>
+        </tr>
+      </tfoot>
+      <thead>
+        <tr class="table-heading-row">
+          <th><%=t "dashboard.story_title"%></th>
+          <th><%=t "dashboard.english_title"%></th>
+          <th><%=t "dashboard.legacy_upload.root_title"%></th>
+          <th><%=t "dashboard.legacy_upload.editor"%></th>
+          <th><%=t "dashboard.legacy_upload.author"%></th>
+          <th class="noborder"><%=t "dashboard.language"%></th>
+          <th></th>
+          <th><%=t "dashboard.total"%>(<%=@stories.total_count%>)</th>
+        </tr>
+      </thead>
+      <tbody class="table-row-details">
+        <% @stories.each_with_index do |story, index| %>
+          <tr class="stories_uploaded">
+            <td class="<%=story.script %> underline-class"><%= link_to  story.title, react_stories_show_path(story.url_slug),  :target => "_blank" %></td>
+            <td><%= story.english_title %></td>
+            <td class="<%=story.script %>"><%= story.original_story_title %></td>
+            <td id="story_editor_name">
+              <% if story.editor_name.present? %>
+                <div id="assign_change_editor_<%= story.id %>">
+                  <%= story.editor_name %>
+                  <%= link_to("", assign_editor_modal_path(:story_id => story.id),:method=>:get,:remote => true, :class => "fa fa-pencil-square-o", :style => "font-size: large;")%>
+                  <%= link_to("", delete_editor_modal_path(:story_id => story.id, :path => 'dashboard'),:method=>:get,:remote => true, :class => "glyphicon glyphicon-remove-sign", :style => "font-size: large;")%>
+                </div>
+              <% else %>
+                <div id="assign_change_editor_<%= story.id %>">
+                  <%= button_to "#{t 'dashboard.legacy_upload.assign'}", assign_editor_modal_path(:story_id => story.id),:method=>:get, :remote => true, class: " btn btn-normal btn-warning dropdown-toggle" %>
+                </div>
+              <% end %>
+            </td>
+            <td><%= story.authors.join(",")%></td>
+            <td><%= story.language %></td>
+            <td><a class="btn btn-danger delete_story_link" data-story-id="<%= story.id %>"><%= t "dashboard.delete"%></a></td>
+            <td><%= link_to "#{t 'dashboard.legacy_upload.publish'}", publish_story_path(story), method: :patch, class: 'btn btn-info' if current_user.content_manager? %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div id="editor-model" title="<%=t 'dashboard.legacy_upload.assign_editor' %>"></div>
+<div id="delete_editor_model" title="<%=t 'dashboard.legacy_upload.remove_editor' %>"></div> 
+
+<script>
+$(document).ready(function(){
+  $('.delete_story_link').click(function(evt){
+    evt.preventDefault();
+    $('#delete_story_dialog').data('storyId', $(this).data('storyId'));
+    $('#delete_story_dialog').dialog("open");
+  });
+
+  $('#delete_story_dialog').dialog({
+    autoOpen: false,
+    width: 400,
+    modal: true,
+    buttons : {
+      "Confirm" : function() {
+        $.ajax({
+          type: 'DELETE',
+          dataType: 'script',
+          url: '/v0/stories/'+$(this).data('storyId'),
+          beforeSend: $.blockUI,
+          success: function(){ 
+            $.unblockUI;
+            window.location = "<%= dashboard_path %>";
+          },
+          error: function(e){
+            $.unblockUI();
+          }
+        });
+        $(this).dialog("close");
+      },
+      "Cancel" : function() {
+        $(this).dialog("close");
+      }
+    },
+    dialogClass: 'change_orientation_dialog'
+  });
+});
+
+$(document).ready(function() {
+  var table = $('#uploaded_stories').DataTable( {
+    searching: true,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 20,
+    order: [],
+    responsive: {
+        details: false
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  title: formatDatatableTitle('stories'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6, 7 ]
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  title: formatDatatableTitle('stories'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6, 7 ]
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  title: formatDatatableTitle('stories'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6, 7 ]
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  title: formatDatatableTitle('stories'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6, 7 ]
+                  }
+              }
+          ]
+      
+  });
+  $('#uploaded_stories tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+  });
+
+  var new_table = $('#uploaded_stories').dataTable();
+  table.columns().every( function () {
+    var that = this;
+
+    $( 'input', this.footer() ).on( 'keyup change', function () {
+      if ( that.search() !== this.value ) {
+          that
+              .search( this.value )
+              .draw();
+        document.getElementById("uploaded_stories_count").innerHTML = document.getElementById('uploaded_stories').children[1].childElementCount;
+      }else{
+        document.getElementById("uploaded_stories_count").innerHTML = table.rows( '.stories_uploaded' ).count(); 
+      }
+    });
+  });
+  $( 'input').on( 'keyup change', function () {
+    document.getElementById("uploaded_stories_count").innerHTML = new_table.fnSettings().fnRecordsDisplay();
+  });
+
+  });
+
+</script>

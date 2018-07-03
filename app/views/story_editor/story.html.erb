@@ -1,0 +1,412 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shepherd/1.8.1/css/shepherd-theme-arrows.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/themes/prism.css">
+<%= render :partial => "stories/prefetcher" %>
+
+<div class="container-fluid new-editor-container">
+  <section class="sc-title-block spacing-2-v">
+    <div class="row row-gutter">
+      <div class="col-sm-7">
+        <div class="row row-gutter">
+          <div class="heading-title gutter <%= @story.language.script %>"><%= @story.title %></div>
+          <div class="gutter float-left">
+            <div class="btn-sc-edit-book btn btn-app btn-default grey-gravel font-sm" id="edit_book"><%=t 'editor.editor_page.edit_book_information.button'%></div>
+            <a class="btn-sc-edit-book btn btn-app btn-default grey-gravel font-sm" id="tour_help" href="javascript:void(0);" onclick="openHelp()"><%=t 'editor.editor_page.help'%></a>
+          </div>
+        </div> <!-- /row-gutter -->
+      </div>
+      <div class="col-sm-5 text-right">
+        <div class="sc-saved-date grey-gravel font-sm gutter-sm">
+          <em><span id="last_saved_time_label"></span>&nbsp;<span id="last_saved_time"></span></em>
+        </div>
+        <span class="gutter-sm-x">
+          <%= link_to 'Save', save_to_draft_path, id:'save' , class:'btn btn-app btn-brand-1 font-sm', :onclick => "javascript:window.onbeforeunload = null;", title: "Clicking on 'Save' will save your story under Drafts."%>
+        </span>
+        <span class="gutter-sm-x">
+          <a id="preview" class="btn btn-app btn-brand-1 font-sm" data-remote="true" href="<%= story_page_path(@story, @story.pages.first)%>"><%=t 'editor.editor_page.preview'%></a>
+        </span>
+        <span class="gutter-sm-x">
+          <% if @story.contest.present? && @story.contest.is_campaign == false %>
+            <a class="btn btn-app btn-brand-1 font-sm" title="<%=t 'editor.editor_page.publish.tool_tip'%>" id="publish"><%=t 'editor.editor_page.submit'%></a>
+          <% else %>
+            <a class="btn btn-app btn-brand-1 font-sm" title="<%=t 'editor.editor_page.publish.tool_tip'%>" id="publish"><%=t 'editor.editor_page.publish.button'%></a>
+          <% end %>
+        </span>
+      </div>
+    </div> <!-- /row-gutter -->
+  </section> <!-- /sc-title-block -->
+  <div class="row row-gutter sc-parent-block">
+    <div class="sc-sidebar-story-block float-left">
+      <div class="sc-sidebar-block clearfix">
+        <div class="float-left sc-sidebar-page-block" >
+          <div id="keyboard-options"></div>
+          <%= render :partial => "/story_editor/pages" %>
+        </div> <!-- /float-left -->
+        <div class="sc-sidebar-img-block float-left">
+          <div class="form-group js-btn-story-creator-menu btn-story-creator-menu btn-app font-sm">
+              <span class="fa fa-times"></span>
+          </div>
+          <div class="form-group imgDrawer <%= @story.is_derivation? ? 'disabled' : '' %>">
+            <div id="open_image_drawer" class="btn btn-app btn-brand-1 font-sm" data-toggle="modal" data-target="#modal-image-drawer" ><%=t 'editor.editor_page.open_image_drawer.button'%></div>
+          </div>
+          
+          <div id="toolbarHead" class="toolbar">            
+            <%= render :partial => "editor_toolbar" %>
+          </div> <!-- /form-group -->
+          <%= render :partial => "/story_editor/template_drawer" %>
+          <div class="form-group discard_draft">
+            <label class="font-sm sc-discard-draft"><%=t 'editor.editor_page.discard_draft.info_1'%> <br> <%=t 'editor.editor_page.discard_draft.info_2'%></label>
+            <div>
+              <%= link_to( "#", { 'data-toggle' => 'modal', 'data-target' => '#Discard_modal' }) do %>
+                <div class="btn btn-app btn-default grey-gravel font-sm"><%=t 'editor.editor_page.discard_draft.discard_button'%></div>
+              <% end %>
+            </div>
+          </div> <!-- /form-group -->
+        </div> <!-- /sc-sidebar-img-block -->
+      </div> <!-- /sc-sidebar-block -->
+    </div> <!-- /sc-sidebar-story-block -->
+    <div class="modal fade" id="Discard_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel"><%=t 'editor.editor_page.discard_draft.popup_header'%></h4>
+          </div>
+          <div class="modal-body">
+            <%=t 'editor.editor_page.discard_draft.popup_message'%>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn cancel_button" data-dismiss="modal"><%=t 'editor.editor_page.discard_draft.cancel'%></button>
+            <button type="button" class="btn ok_button" onclick="discard_draft(event);"><%=t 'editor.editor_page.discard_draft.ok'%></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sc-content-block float-left">
+      <div id ="delete_warning" class = "alert alert-success alert-dismissible" role="alert" style="display: none">
+        <button type="button" class="close" aria-label="Close" onclick="$('.alert').hide()">
+         <span aria-hidden="true">&times;</span>
+        </button>
+        Delete key is not supported in this editor. Please use backspace key instead.
+      </div>
+      <div id ="tab_warning" class = "alert alert-success alert-dismissible" role="alert" style="display: none">
+        <button type="button" class="close" aria-label="Close" onclick="$('.alert').hide()">
+         <span aria-hidden="true">&times;</span>
+        </button>
+        Tab key is not supported in this editor. Please use space key instead.
+      </div>
+      <div class="js-btn-story-creator-menu btn-story-creator-menu btn btn-app btn-brand-2 font-sm">
+        <span class="fa fa-bars"></span>
+        <span>story creator menu</span>
+      </div>
+      <% if @page.page_template.orientation == "portrait" %>
+        <div id="right_side_editor" class="portrait_editor">
+      <% else %>
+        <div id="right_side_editor">
+      <% end %>
+          <%= render :partial => "/story_editor/page_editor" %>
+      </div>
+    </div> <!-- /sc-content-block -->
+  </div> <!-- /sc-parent-block -->
+</div> <!-- /container-fluid -->
+<div id="story_publish_form"></div>
+<div class="adding-pages">
+  <div id="delete_page_dialog" title="Confirmation Required"></div>
+  <div id="story_page_validation_errors_dialog" title="<%=t 'editor.editor_page.publish.validation_error_header'%>">
+    <div id="image_errors"></div>
+    <div id="orientation_errors"></div>
+  </div>
+  <div id="delete_last_story_page_dialog" title="Attention Required"></div>
+</div>
+<div id="storyReader"></div>
+<div id="edit_book_info"></div>
+<div id="illustration_drawer">
+  <%= render :partial => "story_editor/illustration_draw" %>
+</div>
+<div id="newTranslateStoryForm"></div>
+<div id="newRelevelStoryForm"></div>
+<div id="newStoryForm"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/shepherd/1.8.1/js/shepherd.min.js"></script>
+<script type="text/javascript">
+  window.onbeforeunload = function () {
+    return "You have not saved your Story yet.  If you continue, your work will not be saved.";
+  };
+ 
+  function discard_draft(e){
+    e.preventDefault();
+    window.onbeforeunload = false;
+    $.ajax({
+            data:{ id: "<%= @story.id %>" },
+            type: "delete",
+            url: "<%= delete_draft_story_path %>",
+            dataType: "script"
+           });
+  }
+
+  var timer_id = 0;
+  $(document).ready(function() {
+    if ("<%= @story.dummy_draft %>" == "true"){
+      if("<%= @story.derivation_type%>"=="translated"){
+        $.ajax({
+          url: "<%= new_story_translation_path(:story_id=>@story.id)%>",
+          type: 'GET',
+          dataType : "script",
+          failure: function(result) {
+            console.error('There was an error while processing your action, please retry after some time.');
+          }
+        });
+      }else if ("<%= @story.derivation_type%>"=="relevelled"){
+        $.ajax({
+          url: "<%= new_story_relevel_path(:story_id=>@story.id) %>",
+          type: 'GET',
+          dataType : "script",
+          failure: function(result) {
+            console.error('There was an error while processing your action, please retry after some time.');
+          }
+        });
+      }else {
+        $.ajax({
+          <% if @contest.present? %>
+           url: "<%= new_story_path(:id=>@story, :contest_id => @contest.id)%>",
+          <% else %>
+           url: "<%= new_story_path(:id=>@story)%>",
+          <% end %>
+          type: 'GET',
+          dataType : "script",
+          failure: function(result) {
+            console.error('There was an error while processing your action, please retry after some time.');
+          }
+        });
+      }
+    }
+
+    $(".js-btn-story-creator-menu").on("click", function(){
+      $(".sc-sidebar-story-block").toggleClass("sc-sidebar-story-block--show");
+      $(".sc-content-block").toggleClass("sc-content-block--show");
+    });
+
+    //$("#txtEditor").Editor();
+
+    $("#pages_list").children().first().addClass("active");
+    var story_editor = new StoryEditor(new StoryEditorPage(), new StoryEditorService());
+    story_editor.init();
+//    $('#selected_page ul.wysihtml-toolbar').attr('title','Drag Me');
+    $('#selected_page ul.wysihtml-toolbar').addClass("english");
+    
+    });
+
+    $('.search.editor .dropdown-menu').click(function(e) {
+          e.stopPropagation();
+    });
+    
+  jQuery('body').bind('click', function(e) {
+    if((jQuery(e.target).closest('.navbar').length == 0) &&  (jQuery(e.target).context.className != " btn dropdown-toggle profile-dropdown")) {
+      // click happened outside of .navbar, so hide
+      var opened = jQuery('.navbar-collapse1').hasClass('collapse in');
+      if ( opened === true ) {
+        jQuery('.navbar-collapse1').collapse('hide');
+      }
+    }
+  });
+  $("#open_image_drawer").click(function(){
+    $('#terms-condition > label').removeClass('highlight-terms');
+  });
+
+  $("#modal-image-drawer .close").click(function(){
+    $('body').removeClass('modal_img_body');
+  });
+
+  $("#preview").click(function(){$.blockUI();})
+
+ 
+  
+  function openHelp() {
+    shepherd.start();
+ /*   setTimeout(function() {
+      $('body').append('<script> $(".shepherd-cancel-link").click(function(){ $(\'.tour_help\').removeClass(\'visible_tour\')}); <\/script>');
+    }, 1000);*/
+  }
+</script>
+
+<script>
+    var shepherd, completeShepherd;
+    shepherd = new Shepherd.Tour({
+      defaults: {
+        classes: 'shepherd-theme-arrows',
+        showCancelLink: true
+      }
+    });
+
+    shepherd.addStep('Page Layout', {
+      title: 'Welcome to our new story creator!',
+      text: "Hi there! Based on your feedback, we've added some cool new features to help make your story weaving experience better. We've also  moved things about a little bit to make access easier! Take a quick tour here.",
+      attachTo: '.story-page left',
+      classes: 'shepherd shepherd-open shepherd-theme-arrows shepherd-transparent-text',
+      buttons: [
+        {
+          text: 'Exit',
+          classes: 'shepherd-button-secondary',
+          action: function() {
+              completeShepherd();
+              return shepherd.hide();
+            },
+          action: shepherd.cancel
+        },{
+          text: 'Next',
+          action: function() {
+            $('#tour_help').addClass('visible_tour');
+            return shepherd.next();
+          },          
+          classes: 'shepherd-button-example-primary'
+        }
+      ]
+    });
+    <% unless @story.is_derivation? %>
+      shepherd.addStep('Image Drawer', {
+        title: 'Image Drawer',
+        text: 'The all new image drawer allows you to search for, save and upload illustrations.',
+        attachTo: '.imgDrawer bottom',
+        classes: 'shepherd shepherd-open shepherd-theme-arrows shepherd-transparent-text',
+        buttons: [
+          {
+            text: 'Back',
+            classes: 'shepherd-button-secondary',
+            action: shepherd.back
+          },
+          {
+            text: 'Next',
+            action: function() {
+              $('#open_image_drawer').click();
+              $('#tab-favourites-link').click();
+              $('#tab-favourites-link').addClass("shepherd-color");
+              $('#modal-image-drawer').addClass("shepherd-open");
+              $('body').addClass('modal_img_body');
+              shepherd.next();
+            },
+            classes: 'shepherd-button-example-primary'
+          }
+        ]
+      });
+      shepherd.addStep('Favourites', {
+        title: 'Add to favourites',
+        text: "See an image you love but not sure where you'll use it? Save it under the favourites tab so that you can find it any time you like!",
+        attachTo: '#modal-image-drawer right',
+        classes: 'shepherd shepherd-open shepherd-theme-arrows shepherd-transparent-text shepherd_position',
+        buttons: [
+          {
+            text: 'Back',
+            classes: 'shepherd-button-secondary',
+            action: function(){
+              $('#open_image_drawer').click();
+              $('body').removeClass('modal_img_body');
+              shepherd.back();
+            }
+          },
+          {
+            text: 'Next',
+            action: function() {
+              $('#modal-image-drawer .close').click();
+              $('body').removeClass('modal-open');
+              $('#tab-favourites-link').removeClass("shepherd-color");
+              $('body').removeClass('modal_img_body');
+              shepherd.next();
+            },
+            classes: 'shepherd-button-example-primary'
+          }
+        ]
+      });
+
+    <% end %>
+    shepherd.addStep('Formatting', {
+      title: 'Formatting',
+      text: 'Control how the text in your story appears by using one of these formatting options.',
+      attachTo: '#toolbarHead right',
+      classes: 'shepherd shepherd-open shepherd-theme-arrows shepherd-transparent-text',
+      buttons: [
+        {
+          text: 'Back',
+          classes: 'shepherd-button-secondary',
+          action: function() {
+	    <% unless @story.is_derivation? %>
+              $('#open_image_drawer').click();
+              $('#tab-favourites-link').click();
+              $('#tab-favourites-link').addClass("shepherd-color");
+              $('body').addClass('modal_img_body');
+	    <% end %>
+            shepherd.back();
+          }
+        },{
+          text: 'Next',
+          action: shepherd.next,
+          classes: 'shepherd-button-example-primary'
+        }
+      ]
+    });
+    shepherd.addStep('Layouts', {
+      title: 'Layouts',
+      text: 'Want to change the orientation of your book or the template? Pick one of these!',
+      attachTo: '#page_templates top',
+      classes: 'shepherd shepherd-open shepherd-theme-arrows shepherd-transparent-text',
+      buttons: [
+        {
+          text: 'Back',
+          classes: 'shepherd-button-secondary',
+          action: shepherd.back
+        },{
+          text: 'Next',
+          action: shepherd.next,
+          classes: 'shepherd-button-example-primary'
+        }
+      ]
+    });
+    shepherd.addStep('Add a working title', {
+      title: 'Add a working title',
+      text: "In case you're planning to save your story as a draft, add a working title so that you can find it easily in your drafts folder later.",
+      attachTo: '#edit_book bottom',
+      classes: 'shepherd shepherd-open shepherd-theme-arrows shepherd-transparent-text',
+      buttons: [
+        {
+          text: 'Back',
+          classes: 'shepherd-button-secondary',
+          action: shepherd.back
+        },{
+          text: 'Next',
+          action: shepherd.next,
+          classes: 'shepherd-button-example-primary'
+        }
+      ]
+    });
+    shepherd.addStep('Start Over', {
+      title: 'Start Over',
+      text: "Don't like what you've done so far? Discard the draft and start afresh!",
+      attachTo: '.discard_draft bottom',
+      classes: 'shepherd shepherd-open shepherd-theme-arrows shepherd-transparent-text',
+      buttons: [
+        {
+          text: 'Back',
+          classes: 'shepherd-button-secondary',
+          action: shepherd.back
+        },{
+          text: 'Done',
+          action: function() {
+            $('#tour_help').removeClass('visible_tour');
+            shepherd.next();
+          }
+        }
+      ]
+    });
+    shepherd.on("cancel", function() {
+       $('#tour_help').removeClass('visible_tour');
+       $('#tab-favourites-link').removeClass("shepherd-color");
+       $('#tab-upload-link').removeClass("shepherd_change");
+     });
+  <% if current_user.tour_status == false %>
+       shepherd.start();
+      <% current_user.update_tour_status %>
+    <% end %>
+   $("#sw_tour").click(function(){
+      shepherd.start();
+    })
+  </script>
+
+</div>

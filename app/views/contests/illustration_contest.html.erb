@@ -1,0 +1,103 @@
+<%= render :partial => "contest_datatables" %>
+<%= render :partial => "contest_details" %>
+
+<div class="btn-group padding_top_10">
+  <span>Number of Illustrations Selected :</span>
+  <span class="badge" id="total_illustrations_count"><%= @illustrations.count %></span>
+</div>
+
+<div class="btn-group tr_stories_dashboard">
+  <table class="table table-striped" id="all_illustrations">
+    <tfoot style="display: table-header-group;">
+      <tr>
+        <th>Illustration Name  </th>
+        <th>User Name          </th>
+        <th>User Email Id      </th>
+      </tr>
+    </tfoot>
+    <thead>
+      <tr class="table-heading-row">
+        <th>Illustration Name   </th>
+        <th>User Name           </th>
+        <th>User Email Id       </th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @illustrations.each do |f| %>
+        <tr class="illustrations_count">
+          <td><%= link_to f.name, illustration_url(f) %></td>
+          <td><%= f.illustrators.first.user.name if f.illustrators.first.user.present? %></td>
+          <td><%= f.illustrators.first.user.email if f.illustrators.first.user.present? %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+  var table = $('#all_illustrations').DataTable( {
+    searching: true,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 20,
+    order: [],
+    responsive: {
+        details: false
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  exportOptions: {
+                      columns: [ 0, 1, 2 ]
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  exportOptions: {
+                      columns: [ 0, 1, 2 ]
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  exportOptions: {
+                      columns: [ 0, 1, 2 ]
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  exportOptions: {
+                      columns: [ 0, 1, 2 ]
+                  }
+              }
+          ]
+      
+  });
+  $('#all_illustrations tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+  });
+
+  var new_table = $('#all_illustrations').dataTable();
+  table.columns().every( function () {
+    var that = this;
+
+    $( 'input', this.footer() ).on( 'keyup change', function () {
+      if ( that.search() !== this.value ) {
+          that
+              .search( this.value )
+              .draw();
+        document.getElementById("total_illustrations_count").innerHTML = document.getElementById('all_illustrations').children[1].childElementCount;
+      }else{
+        document.getElementById("total_illustrations_count").innerHTML = table.rows( '.illustrations_count' ).count(); 
+      }
+    });
+  });
+  $( 'input').on( 'keyup change', function () {
+    document.getElementById("total_illustrations_count").innerHTML = new_table.fnSettings().fnRecordsDisplay();
+  });
+
+  });
+</script>

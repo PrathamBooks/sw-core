@@ -1,0 +1,24 @@
+{
+  "curly": true,
+  "eqeqeq": true,
+  "immed": true,
+  "latedef": true,
+  "newcap": true,
+  "noarg": true,
+  "sub": true,
+  "undef": true,
+  "unused": true,
+  "boss": true,
+  "eqnull": true,
+  "node": true,
+  "es3": true,
+  "es5": false,
+
+  /* Environment */
+  "browser": true,
+
+  /* Global */
+  "globals": {
+    "QUnit": false
+  }
+}

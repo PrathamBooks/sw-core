@@ -1,0 +1,6 @@
+$('#illustration_drawer').html("<%= escape_javascript(render(:partial=>"story_editor/illustration_draw"))%>");
+$(document).ready(function() {
+    $('#modal-image-drawer').modal({
+        show: true
+    });
+});

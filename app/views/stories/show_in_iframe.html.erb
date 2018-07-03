@@ -1,0 +1,32 @@
+  <div class="col-md-4 col-sm-12">
+    <a class="stories-link " href="<%= story_page_path(@story, @story.pages.first, disable_review_link: @disable_review_link)%>" data-remote=true>
+      <div class="front_cover_preview_details <%= @story.language.script %>">
+        <%= render :partial => 'pages/page', locals: {:@page => @story.pages.first, page: @story.pages.first, size_to_render: :size7} %>
+      </div>
+    </a>
+  </div>
+  <div id="storyReader"></div>
+  <div class="read-in_fullscreen <%= @disable_review_link == 'disable_review_link' ? 'review_form_read-in_fullscreen_'"#{@story.orientation}"'' : '' %>" >
+    <span>
+      <a href="#"  onclick="fullscreen_mode()"><i class="fa fa-arrows-alt" aria-hidden="true" title="In Full Screen Mode"></i></a>
+    </span>
+    <%if @disable_review_link == "disable_review_link" %>
+      <span class="read_icon">
+        <a href="<%= story_page_path(@story, @story.pages.first, disable_review_link: @disable_review_link)%>" aria-hidden="true" data-remote=true title="In Reader Mode">
+          <i class="fa fa-eye"></i></a>
+      </span>
+    <% else %>
+      <span>
+        <a href="<%= request.base_url%><%= react_stories_show_path(@story.to_param)%>" target="_blank"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
+      </span>
+    <% end %>
+  </div>
+
+<script>
+  function fullscreen_mode() {
+    $(".stories-link ").trigger("click");
+    var fullscrn = document.getElementById("storyReader");
+    req= fullscrn.requestFullScreen || fullscrn.webkitRequestFullScreen || fullscrn.mozRequestFullScreen;
+    req.call(fullscrn);
+  }
+</script>

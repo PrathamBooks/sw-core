@@ -1,0 +1,10 @@
+<%= render :partial => "errors" %>
+
+<%= render :partial => "analytics_tabs" %>
+
+<h5>High resolution downloads: <%= @high_res_pdf_downloads %></h5>
+<h5>Low resolution downloads: <%= @low_res_pdf_downloads %></h5>
+
+<div id="illustrations-list">
+  <%= render :partial => "most_downloaded_illustrations", :locals => {:illustrations => @downloads_by_filter, :reads => false}%>
+</div>

@@ -1,0 +1,56 @@
+<div role="tabpanel" class="tab-pane" id="profile-drafts">
+  <div class="col-md-12">
+    <table class="table table-striped">
+      <thead>
+        <tr class="table-heading-row">           
+          <th><%= t "dashboard.story_title"%></th>
+          <th><%= t "dashboard.parent_story"%></th>
+          <th><%= t "dashboard.publisher"%></th>
+          <th><%= t "dashboard.last_updated_on"%></th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody class="table-row-details">    
+        <% @drafts.each do |draft| %>
+          <tr>
+            <td class="underline-class"><a href="<%= react_stories_show_path(draft.to_param) %>"><%= draft.title? ? get_title(draft.language, draft.title).html_safe : "Untitled" %></a></td>
+            <td>
+              <% if draft.parent.present? %>
+                <a href="<%= react_stories_show_path(draft.parent.to_param) %>"><%= get_title(draft.language, draft.parent.title).html_safe  %></a>
+              <% end %>
+            </td>
+            <td>
+              <%= draft.organization.present? ? draft.organization.organization_name : "StoryWeaver Community" %>
+            </td>
+            <td><%= draft.updated_at.localtime.strftime("%Y-%m-%d %H:%M:%S") %></td>
+            <td>
+              <%= link_to "<span>#{t "dashboard.edit"}</span>".html_safe, story_editor_path(draft), class:"btn btn-info edit-btn" %>
+            </td>
+            <td>
+              <% if draft.is_childless? %>
+                <%= link_to "<span>#{t "dashboard.delete"}</span>".html_safe, delete_draft_story_path(draft), :method => "delete", data:{:confirm => "Are you sure you want to delete '#{draft.title}'?"}, "data-confirm-title" => "StoryWeaver", "data-confirm-cancel" => "Cancel", "data-confirm-cancel-class" => "btn btn-info btn-grey", "data-confirm-proceed" => "Ok", "data-confirm-proceed-class" => "btn-info edit-btn", :class=>"btn btn-info edit-btn" %>
+              <% else %>
+                <%= link_to "<span>#{t "dashboard.delete"}</span>".html_safe, "#", class: "btn btn-info edit-btn disable-delete",  data:{ toggle: "tooltip", title: "Unable to delete this draft because it has derivatives or translations"} %>
+              <% end %>
+            </td>
+            <td>
+              <%=  draft.contest_id.nil? ? "" : "Contest Entry" %>
+            </td>
+
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%= paginate @drafts %>
+
+
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>

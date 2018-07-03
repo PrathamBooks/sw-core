@@ -1,0 +1,15 @@
+<p>
+  <% if current_user.profile_image.present? %> 
+    <%= image_tag(current_user.profile_image.url(:original), height: 150, width: 150) %>
+  <% else %>
+    <img src="<%= asset_path('user.svg') %>">
+  <%end%>
+  <%= simple_form_for :user ,:url => profile_image_path,:remote => true, html: { multipart: true, id: "logo_form" }, :authenticity_token => true do |f| %>
+    <span class="prof_edit">
+     <label for="file-input">
+       <i class="fa fa-pencil"></i>
+     </label>    
+      <%= f.file_field :profile_image, :id=> "logo", as: :file , :class => "user_logo",:onchange => "update_profile_image();", :id => "file-input" %>
+    </span>
+  <% end %>
+</p>    

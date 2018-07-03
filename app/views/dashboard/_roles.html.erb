@@ -1,0 +1,34 @@
+<div class="row setroles">
+  <div class="col-md-12 col-sm-12">
+    <%= form_for(:user, url: :set_role, html: { class: '',  multipart: true}) do |f| %>
+    <label><%= t "dashboard.set_roles_tab.set_role"%></label>
+    <div class="ui-widget">
+       <%= f.text_field :user_email,  label: false, class: "usermailid", placeholder: 'Enter email'%>
+      </div>
+    <%= select_tag("user[role]", options_for_select([["Content Manager","content_manager"],["Promotion Manager","promotion_manager"],["Outreach Manager","outreach_manager"]]), :class => "selectpicker role" , :id=>"role" , :prompt => "Choose role" ,  :onchange => "Dashboard.showFileField(this)") %>
+     <%= f.file_field :logo, :id=> "logo", as: :file , :class => "hide user_logo" %>
+    <%= f.submit "Submit" , :class => "btn btn-success" %>
+    <% end %>
+  </div>
+</div>
+
+<div id="user_details">
+  <%= render :partial => "user_details" , locals: {:users => @users} %>
+</div>
+<%#= paginate @users %>
+<script>
+  $( "#user_user_email" ).autocomplete({
+    source: function( request, response ) {
+      $.ajax({
+        url: "<%= users_autocomplete_path%>",
+        dataType: "json",
+        data: {
+         query: request.term
+        },
+        success: function( data ) {
+          response(data);
+        }
+      });
+    }
+  });
+  </script>

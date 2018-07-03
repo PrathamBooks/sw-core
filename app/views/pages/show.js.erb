@@ -1,0 +1,9 @@
+$('#storyReader').html("<%= raw(escape_javascript(render(:partial=>"show").squish)) %>");
+setup_swipe();
+setTimeout($.unblockUI, 1);
+$('#myModal').modal({
+  show: true
+});
+ga('send', 'event', { eventCategory: 'read', eventAction: 'story', eventLabel: '<%= @story.title %>'});
+Statistics.trackStoryRead("<%=@story.id%>","<%=form_authenticity_token%>");
+$('#story-reads-<%= @story.id %>').text(parseInt($('#story-reads-<%= @story.id %>').text())+1);

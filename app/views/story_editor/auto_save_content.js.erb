@@ -1,0 +1,2 @@
+$("#story_page_content_<%= @page.id%>").html("<%= escape_javascript(render(partial: "page_thumbnail_content", locals: {page: @page})) %>");
+

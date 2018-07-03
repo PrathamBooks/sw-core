@@ -1,0 +1,539 @@
+<%= render :partial => "prefetcher" %>
+<% disable_class = policy(@story).is_active? ? '' : 'disabled' %>
+
+<% unless policy(@story).is_active? %>
+  <div class="alert alert-danger">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+    <div id="flash_alert">Oops! Looks like the story you are looking for is currently undergoing a makeover. Please come back later.  </div>
+  </div>
+<% end %>
+<section class="<%= disable_class %>" id="search-details-temp">
+  <div class="row">
+    <div class="col-md-4 col-sm-12">
+      <a class="stories-link <%= disable_class %>" href="<%= story_page_path(@story, @story.pages.first)%>" data-remote=true>
+        <%if @story.winner.present? %>
+          <%if @story.contest.present? %>
+            <div><%= image_tag("winner_badge.png", :class=>"winner_badge_details",:title => "#{@story.youngsters.present? ? "Winning Children's Entry" : "Winning Entry"} : #{@story.contest.name}", :rel => 'tooltip') %></div>
+          <% else %>
+            <div><%= image_tag("digital_award_winner.png", :class=>"winner_badge_details",:title => "Winner of Publishing Next's Digital Book of the Year 2016", :rel => 'tooltip') %></div>
+          <%end%>
+        <%end%>
+        <div class="front_cover_preview_details <%= @story.language.script %>">
+          <%= render :partial => 'pages/page', locals: {:@page => @story.pages.first, page: @story.pages.first, size_to_render: :size7} %>
+        </div>       
+      </a>
+    </div>
+
+    <div class="col-md-8 col-sm-12 col-pad">
+      <div class="full-stry-dt">
+        <div class="col-md-12 col-sm-12 nopadding">
+          <div class="story-details-left col-md-9 col-sm-9 nopadding">
+            <div class="det-bk-tit">
+              <div class="col-md-12 col-sm-12 author-dt <%= @story.language.script %>">
+                <%= @story.title? ? @story.title : "Untitled" %>
+                <% if @story.de_activated? %>
+                  <span class="label label-danger">deactivated</span>
+              <% end %>
+              </div> 
+              <span id="id" class="hidden"><%= @story.id %></span>
+              <span id="reads" class="hidden"><%= @story.reads %></span>
+            </div>
+
+            <div class="det-bk-trans">
+               <% if @story.is_translation? %>
+                 <label><em><%= @story.translators.length >1 ? "Translators" :  "Translator" %></em></label>
+               <% elsif  @story.is_relevel? %>
+                <label><em>Re-level by </em></label>
+               <% else  %>
+                <label><em>Author </em></label>
+              <% end %>
+              <% @story.authors.sort{|a1, a2| a1.first_name <=> a2.first_name}.each_with_index do | author, index | %>
+                <em>
+                  <span>
+                    <%= link_to author.name, '/users/' + author.slug %>
+                  </span>
+                  <% unless index == @story.authors.length - 1  %>,<% end %>
+                </em>
+               <% end %>
+           </div>
+
+           <% if @story.is_derivation? %>
+          <div class="det-bk-origi">
+            <label>Original story:</label>
+            <span>'<%= link_to @story.root.title , story_path(@story.root), class: "#{@story.root.language.script}" %>'</span>, <span class="origi-lang"><%= @story.root.language.name %></span> ,  <span class="origi-level">Level <%= @story.root.reading_level %> by</span>
+            <% @story.original_authors.each_with_index do | author, index | %>
+              <span>
+                <%= link_to author.name, '/users/' + author.slug %> 
+              </span>
+              <% unless index == @story.original_authors.length - 1  %>,<% end %>
+            <% end %>
+          </div>
+        <% end %>
+
+            <% if @story.has_illustrators? %>
+              <div class="det-bk-illust">
+                <label>Illustrator </label>
+                <% @story.illustrators.each_with_index do | illustrator, index | %>
+                  <span>
+                    <%= link_to illustrator.name, '/users/'+ illustrator.user.slug %>
+                  </span>
+                  <% unless index == @story.illustrators.length - 1  %>,<% end %>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+
+          <div class="story-details-right col-md-3 col-sm-3 nopadding">
+            <div class="col-md-5 col-sm-5 likes">
+            
+              <% if !current_user.nil? && !current_user.liked?(@story) %>
+                <span id="story-like" class="btn story-like likeable">
+                  <i class='fa fa-eye fa-2x'></i>
+                </span>
+              <% elsif !current_user.nil? && current_user.liked?(@story) %>
+                <span id="story-like" class="story-like liked">
+                  <i class='fa fa-eye fa-2x'></i>
+                </span>
+              <% else %>
+                <span id="story-like" class="btn story-like disabled">
+                  <i title="Please log in to like the story" class='fa fa-eye fa-2x'></i>
+                </span>
+              <% end %>
+              <span class="number-of-likes" id="story-likes-<%= @story.id %>"><%= @story.likes %></span>
+            </div>
+           <% if current_user %> 
+              <% if policy(@story).flag? %>
+                <div class="det-flag col-md-6 col-sm-6 nopadding">
+                  <a href="<%= new_flag_story_path(@story) %>" data-remote="true"><i class="fa fa-flag"></i></a><label>report</label>
+                </div>
+              <% elsif @story.flagged? %>
+                <div class="det-flag col-md-6 col-sm-6 nopadding" title="flagged story">
+                  <a href="<%= new_flag_story_path(@story) %>" data-remote="true" class="disabled">
+                    <i class="fa fa-flag active"></i></a>
+                </div>
+              <% end %>
+            <% else %>
+                <div class="det-flag col-md-6 col-sm-6 nopadding" title="please login to flag this story">
+                  <a href="<%= new_flag_story_path(@story) %>" data-remote="true" class="disabled">
+                    <i class="fa fa-flag"></i></a><label>report</label>
+                </div>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="det-lev">
+          <label>Reading Level </label>
+          <span class="det-read"><strong><%= @story.reading_level %></strong> <%= reading_level_story_details(@story.reading_level) %></span>
+        </div>
+        <div class="det-lang">
+          <span class="mobile-left-align"><label>Language </label>
+            <span class="det-lan"><%= @story.language.name %></span>
+          </span>
+        </div>	
+        <% if @story.other_languages_available_in.length > 0 %>
+        <div class="det-lang">
+          <label>Other Versions: </label>
+          <% @story.other_versions.each_with_index do |version, index| %>
+            <span><%= link_to version.show_version_label, story_versions_path(@story.id, version.language.id, version.reading_level) %></span>
+            <% unless index == @story.other_versions.length - 1  %>,<% end %>
+            <% end %>
+        </div>
+        <% end %>
+          <div class="det-publisher">
+            <label>Publisher </label><span> <%= link_to @story.organization ? @story.organization.organization_name : "StoryWeaver Community",search_path(:search => {:organization => @story.organization ? @story.organization.organization_name : "storyweaver"}) %></span>
+          </div>
+        <div class="col-md-12 nopadding views-story-full">
+        <div class="story-views">
+          <span><i class='fa fa-eye fa-2x'></i></span>
+          <span id="story-reads-<%= @story.id %>"><%= @story.reads %></span>
+        </div>
+        <% if @story.recommended_status == "recommended" || @story.recommended_status == "home_recommended" %>
+          <div class="recommended-details"><%= image_tag("icons/icons-18.svg") %></div>
+        <% end %>
+        <div class="show_recommend_tick">
+          <% if current_user && current_user.content_manager? && @story.published? %>
+            <span id = "home-recommend">
+            <%= render :partial => "recommend_home", :locals => {:story => @story} %>
+            </span>
+        <% end %>
+        </div>
+        </div>
+        <div class="det-synop">
+          <label>Synopsis </label>
+          <span class="<%= @story.language.script %>"><%= @story.synopsis %></span>
+        </div>
+        <div class="col-md-12 col-sm-12 nopadding">
+          <div class="stry-det-catagory">
+            <label>Categories </label>
+            <% @story.categories.each_with_index do | category, index | %>
+              <span>
+                <%= link_to category.name, search_path(:search => {:categories => [category.name]}) %>
+              </span>
+              <% unless index == @story.categories.length - 1  %>|<% end %>
+            <% end %>
+          </div>          
+        </div>
+        <div class="col-md-12 col-sm-12 nopadding">
+          <div class="stry-det-catagory">
+            <label>Tags </label>
+            <% @story.tag_list.each_with_index do | tag, index | %>
+            <span><%= link_to tag, search_path(:search => {:query => tag}) %></span><% unless index == @story.tag_list.length - 1  %>|<% end %>
+            <% end %>
+          </div>
+        </div>
+        <% if policy(@story).editor_assignable? %>
+          <div id="assign_change_editor">
+            <%= render :partial => "assign_change_editor" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div id="delete_editor_model" title="Remove Editor"></div> 
+
+  <div id="edit_published_story_dialog" title="Confirmation Required">
+    
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 col-sm-12 icons-div">
+      <div class="full-icons">
+        <% if current_user && policy(@story).editable? %>
+          <% if @story.published? %>
+            <span class="dt-add-page hide-in-edit">
+              <a id="editPublishedStory" class="<%= disable_class %>" data-link="<%= story_editor_editable_path(@story)%>">
+                <i class="fa fa-plus"></i>Edit
+              </a>
+            </span>
+          <% else %>
+            <span class="dt-add-page hide-in-mob">
+              <a class="<%= disable_class %>" href="<%= story_editor_path(@story)%>">
+                <i class="fa fa-plus"></i>Edit
+              </a>
+            </span>
+          <% end %> 
+        <% end %>
+        <% if @story.pages.any? %>
+          <span class="dt-read">
+            <a id="story-read" class="<%= disable_class %>" data-remote="true" href="<%= story_page_path(@story, @story.pages.first)%>">
+              <i class="fa fa-eye"></i>Read
+            </a>
+          </span>
+        <% end %>
+        <span class="dt-download <%= @story.uploading? ? 'download-tooltip':'' %>" id="search-details-dropdown" data-title="<%= @story.uploading? ? 'Your story will be ready for download very soon.' : '' %>">
+          <div class="dropdown">
+            <a id="download" class="btn-slide animation animated-item-3 <%= @story.uploading? ? 'disabled' : '' %>" data-toggle="modal" data-target="#downloadModal"><i class="fa fa-download"></i><span>Download</span></a>
+          </div>
+
+        </span>
+       <% if policy(@story).share_and_translate? %>
+         <span class="">
+          <a class="btn-slide <%= disable_class %>" id="share-social-card"  data-toggle="modal" data-target="#shareModal-<%= @story.id %>"><i class="fa fa-share"></i>Share         
+          </a>
+        </span>
+        <span class="dt-translate hide-in-translate">
+
+          <a class="<%= disable_class %>" href="<%= @contest.present? ? story_translations_path(@story, :contest_id => @contest.id ) : story_translations_path(@story)%>" data-method="post">
+            <i class="fa fa-sort-alpha-asc"></i>
+            Translate
+          </a>
+        </span>
+        <span class="dt-re-level hide-in-relevel">
+          <a class="<%= disable_class %>" href="<%= story_relevels_path(@story)%>" data-method="post" data-toggle="tooltip" data-title="Re-level is a simple tool that allows users to increase or decrease the reading complexity of a book. The storyline of the book must not change while re-levelling, it should stay EXACTLY the same. One can increase or decrease the words/ lines per page, the number of pages or change the complexity of the text or story. See an example <a href='https://storyweaver.org.in/stories/978-gulli-s-box-of-things' target='_blank'>here</a>. See the Reading Levels guidelines <a href='/reading_levels' target='_blank'>here</a>.">
+            <i class="fa fa-refresh"></i>
+            Re-Level
+           </a>
+        </span>
+       <% end %>
+
+        <% if @story.status == "published" %>
+          <span class="embeded-code">
+            <a class="dropdown-toggle" data-toggle="dropdown" data-title="Copy paste the source code on to your website or blog to embed this story!"><i class="fa fa-code" aria-hidden="true"></i>Embed</a>
+            <div id="copied-message">Copied to clipboard!</div>
+            <ul class="dropdown-menu">
+              <% iframe_style= @story.orientation=="landscape" ? 'height:365px; width:513px;' : 'height:673px; width:485px;' %>
+              <li><%=text_area_tag "embeded_text", "<iframe src=#{host_url}#{show_story_in_iframe_path(@story, :iframe=>true)}  style='#{iframe_style}' allowfullscreen webkitallowfullscreen mozallowfullscreen >"%>
+                <button class="copy" data-clipboard-target="#embeded_text">
+                  <i class="fa fa-clipboard" aria-hidden="true"></i>
+                </button>
+              </li>
+            </ul>
+          </span>
+        <% end %>
+        <% if @story.other_languages_available_in.length > 0 %>
+         <span id="search-details-dropdown" class="versions-story">
+            <%= render "versions_form" %>
+         </span>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="modal fade downloadModal" id="downloadModal" tabindex="-1" role="dialog" aria-labelledby="moreLinksModalLabel1" aria-hidden="true">
+  <div class="vertical-alignment-helper" >
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button aria-label="Close" data-dismiss="modal" class="close mypopup-close" type="button"><span aria-hidden="true"><i class="fa fa-times"></i> Close</span></button>
+          <h2 class="modal-title text-left">download</h2>
+          <hr class="form-hr">
+        </div>
+          <div class="modal-body nopadding">
+            <div id="download-type-list" style="text-align: center;">
+              <% if user_signed_in? %>
+                <ul class="nopadding">
+                  <% if @story.status == "draft" || @story.status == "uploaded" || @story.status == "edit_in_progress"%>
+                    <li role="presentation">
+                      <a class="download-link" href="<%= story_page_path(@story, @story.pages.first, format: :pdf) %>">Low resolution pdf </a>
+                    </li>
+                    <li role="presentation">
+                      <a class="download-link" href="<%= story_page_path(@story, @story.pages.first, format: :pdf, high_resolution: true) %>">A4 size (Print ready pdf)</a>
+                    </li>
+                    <li role="presentation">
+                      <a class="download-link" href="<%= story_page_path(@story, @story.pages.first, format: :epub) %>">epub</a>
+                    </li>
+                  <% else %>
+                    <li role="presentation">
+                      <a class="download-link" href="<%= download_story_path(@story, format: :pdf) %>" onClick="ga('send', 'event', { eventCategory: 'download', eventAction: 'low resolution', eventLabel: '<%= @story.title %>'});">Low resolution pdf </a>
+                    </li>                    
+                    <li role="presentation">
+                      <a class="download-link" href="<%= download_story_path(@story, format: :pdf, high_resolution: true) %>" onClick="ga('send', 'event', { eventCategory: 'download', eventAction: 'high resolution', eventLabel: '<%= @story.title %>'});">A4 size (Print ready pdf)</a>
+                    </li>
+                    <li role="presentation">
+                      <a class="download-link" href="<%= download_story_path(@story, format: :epub) %>" onClick="ga('send', 'event', { eventCategory: 'download', eventAction: 'epub', eventLabel: '<%= @story.title %>'});">epub</a>
+                    </li>
+                <% end %>
+                </ul>
+              <div id="download-start" style="display:none">
+                Your download should start soon, you can continue working
+                </div>
+              <% else %>
+                You need to be logged in to download an illustration
+                <br/>
+                <%= link_to "Login", new_user_session_path, :class=>"btn signin-button"%>
+              <% end %>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade downloadModal" id="downloadStartModal" tabindex="-1" role="dialog" aria-labelledby="moreLinksModalLabel1" aria-hidden="true">
+  <div class="vertical-alignment-helper" >
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-left">Your download should start soon, you can continue working.</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade downloadModal" id="downloadMessageModal" tabindex="-1" role="dialog" aria-labelledby="moreLinksModalLabel1" aria-hidden="true">
+  <div class="vertical-alignment-helper" >
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close mypopup-close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times"></i> Close</span></button>
+          <h5 class="modal-title text-left"><%= @story.root.download_message %></h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+         <div class="modal fade shareModal" id="shareModal-<%= @story.id %>" tabindex="-1" role="dialog" aria-labelledby="moreLinksModalLabel1" aria-hidden="true">
+            <div class="vertical-alignment-helper" >
+                <div class="modal-dialog vertical-align-center">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close mypopup-close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times"></i> Close</span></button>
+                        <h2 class="modal-title text-left">share</h2>
+                        <hr class="form-hr">
+                      </div>
+                        <div class="modal-body nopadding">
+                          <div id="social-share-btn">
+                              <%= social_share_button_tag(@story.title.gsub(/^(.{30,}?).*$/m,'\1...'), :url => "#{request.base_url}#{story_path(@story).split("-")[0]}" ,:via => "pbstoryweaver", :popup => "true") %>
+                          </div>
+                          <div class="modal-footer">
+                          </div>
+                        </div>
+                    </div>
+                </div>
+              </div>
+          </div> 
+<section id="story-category-mobile" class="modal-list">
+  <div class="row">
+    <div class="col-md-12 col-sm-12 nopadding">
+      <!-- Modal -->
+      <div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="moreLinksModalLabel" aria-hidden="true">
+        <div class="vertical-alignment-helper" >
+        <div class="modal-dialog vertical-align-center">
+          <div class="modal-content">
+            <div class="modal-body">
+              <div class="cate-list">
+                <ul>
+                  <% @story.categories.each do | category | %>
+                    <li><%= link_to category.name, search_path(:search => {:categories => [category.name]}) %></li>
+                  <% end %>
+                </ul>
+              </div>
+              <div class="modal-footer">
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+      <div class="story-cat-button">
+        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#categoryModal">CATEGORIES</button>
+      </div>
+    </div>
+  </div>
+</section>
+<!--<div class="col-md-12 col-sm-12 nopadding">
+  <div class="story-cat-button toggle-click">
+    <button class="btn btn-primary btn-lg" type="button">VIEW OTHER VERSIONS OF THIS BOOK</button>
+  </div>
+</div>-->
+
+<section class="carousel-thumbnail">
+  <div class="row slider-carousel common-style">
+    <% if @similar_stories.any? %>
+    <h2>If you liked this, you will also like <i class="fa fa-circle"></i> <i class="fa fa-circle"></i> <i class="fa fa-circle"></i></h2>
+      <ul class="bxslider story-slides">
+    <% @similar_stories.each do |story|%>
+        <li>
+        <div class="carousel-img lands">
+          <a href="<%= react_stories_show_path(story.url_slug) %>" target="_blank"><img src="<%= story.image_url %>"></a>
+        </div>
+        <div class="carousel-content <%= @story.language.script %>">  
+          <h3><a class="title <%= @story.language.script %>" href="<%= react_stories_show_path(story.url_slug) %>" target="_blank"><%= story.title %></a></h3>
+          <h6><%= story.language %> | Reading Level <%= story.reading_level %></h6>
+          <p><%= story.synopsis[0..150] %></p>
+          <% if story.synopsis.length > 150 %>
+            <a href="<%= react_stories_show_path(story.url_slug) %>" target="_blank">Read more ></a>
+          <% end %>
+        </div>  
+        </li>
+    <% end %>
+      </ul>
+      <% end %>
+  </div>
+</section>
+
+<div id="storyReader"></div>
+<div id="newTranslateStoryForm"></div>
+<div id="newRelevelStoryForm"></div>
+<div id="FlagStoryForm"></div>
+
+<%= render 'desktop_only_action_message' %>
+
+<% content_for :title do %>
+  <%= "'#{@story.title.to_s}' by #{@story.authors.collect(&:name).join(',')} on StoryWeaver" %>
+<% end %>
+
+<% content_for :fb_title do %>
+  <%= "'#{@story.title.to_s}' by #{@story.authors.collect(&:name).join(',')} on StoryWeaver" %>
+<% end %>
+
+<% content_for :description do %>
+  <%= @story.synopsis[0..100] rescue '' %>
+<% end %>
+
+<% content_for :fb_description do %>
+  <%= @story.synopsis[0..100] rescue '' %>
+<% end %>
+
+<% content_for :fb_url do %>
+  <%= story_url(@story) %>
+<% end %>
+
+<% content_for :fb_image_url do %>
+  <%= @story.front_cover_page.illustration_crop.image.url(:size7) rescue '' %>
+<% end %>
+
+<%= content_for :no_index do %>
+    <% unless @story.status == "published" %>
+      <meta name="robots" content="noindex">
+    <% end %>
+<% end %>
+
+
+
+<script>
+$(document).ready(function(){
+var clipboard = new Clipboard('.copy');
+clipboard.on('success', function(e) {
+  $( "div#copied-message" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
+  e.clearSelection();
+});
+  stories_init();
+  $('.bxslider').bxSlider({
+    pager: false,
+    minSlides: 1,
+    maxSlides: 3,
+    slideWidth: 350,
+    slideMargin: 10	  
+  });
+  initEditPublishedStoryDialog();
+  $('[data-toggle="tooltip"], .dropdown-toggle, .download-tooltip').tooltip({'delay': { hide: 1000 }, html: true});
+
+  $(".download-link").click(function(){
+    $("#downloadStartModal").modal('show');
+    setTimeout(function(){
+      $('#downloadStartModal').modal('hide')
+    }, 5000);
+      <% if @story.root.download_message %>
+      setTimeout(function(){
+          $('#downloadMessageModal').modal('show')
+        }, 5001);
+      <% end %>
+      $("#downloadModal").hide();
+  });
+  <% if params[:story_read]%>
+    $("#story-read").trigger('click');
+  <% end %>
+});
+
+function initEditPublishedStoryDialog(){
+  var edit_published_story_dialog = $("#edit_published_story_dialog");
+  edit_published_story_dialog.dialog({
+      autoOpen: false,
+      width: 700,
+      modal: true,
+      buttons : {
+        "Confirm" : function() {
+          $(this).dialog("close");
+          window.location = story_path;
+        },
+        "Cancel" : function() {
+          $(this).dialog("close");
+        }
+      },
+      dialogClass: 'change_orientation_dialog not_in_mobile'
+  });
+}
+
+$( ".toggle-click" ).click(function() {
+  $(".str-dt-drop").animate({width: 'toggle'}).focus();
+});
+$('.story-like.likeable').click(function(){
+  Statistics.trackStoryLike(<%= @story.id %>);
+  if($(this).attr('class').indexOf('liked')===-1){
+    $(this).removeClass('btn likeable');
+    $(this).addClass('liked');
+    ga('send', 'event', { eventCategory: 'like', eventAction: 'story', eventLabel: '<%= @story.title %>'});
+    $('#story-likes-'+<%= @story.id %>).text(parseInt($('#story-likes-'+<%= @story.id %>).text())+1);
+  }
+});
+
+$("#editPublishedStory").click(function(){
+  story_path = $(this).data('link');
+  $("#edit_published_story_dialog").html("Hi,Please note: for the time you are editing the story, the story will NOT be visible to other users. You will have to Re-Publish the story after you finish editing it.");
+  $("#edit_published_story_dialog").dialog("open");
+});
+
+
+</script>
+

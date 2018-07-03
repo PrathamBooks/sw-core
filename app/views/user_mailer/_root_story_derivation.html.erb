@@ -1,0 +1,24 @@
+<tr>
+	<td align="center">
+	  <table width="432px" cellspacing="0" cellpadding="0" border="0" align="center">
+	   
+	    <tr style="margin-bottom: 20px; float: left;">
+	      	<td><strong>Dear User</strong>, </td>
+	    </tr>
+
+	    <tr style="margin-bottom: 20px; float: left;">
+	      	<td><br>Greetings from StoryWeaver! We are pleased to tell you that (<%= link_to( @root_story.title, react_stories_show_url(@root_story)) %>), a story you helped create is now reaching more children in a brand new avatar. Read the new version of your story here (<%= link_to( @story.title, react_stories_show_url(@story)) %>).</td>
+	    </tr>
+      <% if @root_story.other_languages_available_in.count > 2 && @root_story.reads > 50 %>
+      <tr style="margin-bottom: 20px; float: left;">
+	      	<td><br>You'll be pleased to know that (<%= link_to( @root_story.title, react_stories_show_url(@root_story)) %>) has been translated into <%= @root_story.other_languages_available_in.count %> languages and read <%= @root_story.reads %> number of times. Spread the joy of reading to more children by sharing your story on Social Media.</td>
+	    </tr>
+      <% end %>
+			<tr style="margin-bottom: 20px; float: left;">
+		  		<td>
+						<p>Team StoryWeaver</p>
+					</td>
+			</tr>
+		</table>
+	</td>
+</tr>

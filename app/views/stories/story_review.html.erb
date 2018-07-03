@@ -1,0 +1,187 @@
+<%= render :partial => "iframe_for_review_form" %>
+<div>
+   <div class="flagging_form"><strong>
+     The first 3 questions here are crucial as it gives you a chance to report major issues in the story, if any. By reporting an issue, you are asking us to consider pulling down a story as it is unsuitable for our community of readers. Your inputs will be taken very seriously by our team. Do ensure that you respond to these 3 before you proceed to other questions.
+     </strong>
+   </div>
+   <div class="flagging_form">
+     <b><label>1. Being an open source platform, we welcome everyone to create stories and art on StoryWeaver. Since these are children's stories, we have to watch out for inappropriate content. You can help us by indicating if this story contains any of the following:</label></b>
+     <div class="review_options">
+      <div id="flag_reasons1">
+         <% ReviewerComment.content_types.each do|key,value| %>
+           <%= check_box_tag :reasons,key,false,:onclick => "disable_last_option(last_option1)" %>
+           <%= label_tag :reasons_label,key, class: "form_text" %><br>
+         <%end%>	
+       </div>
+        <%= check_box_tag :reasons,"Nothing to worry about!",false,:id=> "last_option1",:onclick => "diable_flag_options(last_option1,flag_reasons1)"%>
+        <%= label_tag :reasons_label,"Nothing to worry about!",class: "form_text" %><br>
+      </div>
+    </div>
+
+   <div class="flagging_form">
+     <b><label>2. It'll be great if you could help us do a quality check on images as well. Do the images in the story contain any of the following?</label></b>
+     <div class="review_options">
+      <div id="flag_reasons2">
+        <% ReviewerComment.image_qualities.each do|key,value| %>
+          <%= check_box_tag :reasons,key,false,:onclick => "disable_last_option(last_option2)"%>
+          <%= label_tag :reasons_label,key,class: "form_text" %><br>
+        <%end%>
+      </div>
+      <%= check_box_tag :reasons,"Nothing to worry about!",false,:id => "last_option2",:onclick => "diable_flag_options(last_option2,flag_reasons2)" %>
+      <%= label_tag :reasons_label,"Nothing to worry about!",class: "form_text" %><br>
+     </div>
+    </div>
+
+   <div class="flagging_form"	>
+     <b><label>3. Please bring to our notice any other issues that may compromise the overall reading experience of the story. Some of them could be:</label></b>
+     <div class="review_options" >
+       <div id="flag_reasons3" >
+         <% ReviewerComment.overall_experiences.each do|key,value| %>
+           <%= check_box_tag :reasons,key,false,:onclick => "disable_last_option(last_option3)"%>
+           <%= label_tag :reasons_label,key,class: "form_text" %><br>
+         <%end%>
+       </div>
+       <input type="textarea" id = "other_options" placeholder = "Tell us about any other issues here"><br>
+       <%= check_box_tag :reasons,"Nothing to worry about!",false,:id => "last_option3",:onclick => "diable_flag_options(last_option3,flag_reasons3)" %>
+       <%= label_tag :reasons_label,"No, all good!",class: "form_text" %><br>
+      </div>
+    </div>
+   <div class="flagging_form"><strong>Thank you for drawing our attention to the story. 'Please note that we take your feedback very seriously and a highlighted story will move out of the rating cycle and draw a hard, long look from us. Click on Submit to highlight the story.</strong></div>
+   <button class= "btn btn-normal btn-warning review_options" id="flag_form">Submit</button>
+	 </div>
+
+<div id="review_form">
+  <% if @story.derivation_type != nil %>
+    <%= render :partial => "translated_story_review_form" %>
+  <% else %>
+    <%= render :partial => "original_story_review_form" %>
+  <% end %>
+</div>
+
+<div id="review_form_conform" title="Thank You!" class="modal"></div>
+<div id="flag_story_conform" title="Highlight Story" class="modal">Do you want to highlight the story?</div>
+<div id="highlight_story_popup" title="Incomplete Form" class="modal">Please answer all the questions to highlight a story.</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#flag_form").addClass("disabled")
+  $("#review_form").addClass("disabled")
+  $("#review_form *").children().prop('disabled',true);
+});
+
+function diable_flag_options(last_option,flag_reasons){
+  if($(last_option).is(":checked")){
+    $(flag_reasons).find("input:checkbox").each(function () {
+      $(this).prop('checked', false); 
+    });
+    if($(last_option).context.id == "last_option3"){
+      $("#other_options").val('')
+    }
+  }
+   highlight_story();
+}
+
+$("#other_options").bind('input propertychange', function() {
+   if(!($(this).val().length >= 3) && $("#flag_reasons3").find("input:checked").length < 0){
+      highlight_story();
+   }else if($(this).val().length >= 3 || $("#flag_reasons3").find("input:checked").length > 0){
+      highlight_story();
+      $('#last_option3').prop('checked', false);
+   }else if($(this).val().length < 3)
+   {
+    highlight_story();
+   }else{}
+ })
+
+function disable_last_option(last_option){
+  if($(last_option).is(":checked")){
+     $(last_option).prop('checked', false);
+     $("#other_options").prop('disabled',false); 
+   }
+   highlight_story();
+}
+
+function highlight_story(){
+  var flag_reason1 = $("#flag_reasons1").find("input:checked").length;
+  var flag_reason2 = $("#flag_reasons2").find("input:checked").length;
+  var flag_reason3 = $("#flag_reasons3").find("input:checked").length;
+
+  if(flag_reason1 > 0 && flag_reason2 >0 && flag_reason3 >0)
+  {
+    flag_form(true);
+    review_from(false)
+  }else if($('#last_option1').is(":checked") && $('#last_option2').is(":checked") && $('#last_option3').is(":checked")){
+    flag_form(false);
+    review_from(true)
+  }else if((flag_reason1 > 0 || $('#last_option1').is(":checked")) && (flag_reason2 > 0 || $('#last_option2').is(":checked")) && (flag_reason3 > 0 || $('#last_option3').is(":checked") || $("#other_options").val().length >= 3)){
+     flag_form(true);
+     review_from(false)
+  }else{
+     review_from(false)
+     flag_form(false);
+  }
+}
+
+function flag_form(value){
+  if(value){
+    $("#flag_form").removeClass("disabled")
+  }else{
+     $("#flag_form").addClass("disabled")
+  }
+}
+
+function review_from(value){
+  if(value){
+    $("#review_form *").removeAttr('disabled');
+    $("#review_form").removeClass("disabled")
+    $("#reviewer_comment_rating").rating('refresh', {disabled: false,showClear: false, showCaption: false});
+    $("#flag_form").addClass("disabled")
+  }else{
+    $("#review_form").addClass("disabled")
+    $("#review_form *").children().prop('disabled',true);
+  }
+}
+
+function get_collect_reasons(collect_reason){ 	
+ $("#flag_reasons1").find("input:checked").each(function () {
+   collect_reason.push("stories-"+$(this).val());
+ });
+ $("#flag_reasons2").find("input:checked").each(function () {
+   collect_reason.push("images-"+$(this).val());
+ });
+ $("#flag_reasons3").find("input:checked").each(function () {
+   collect_reason.push("other_comments-"+$(this).val());
+ });
+ if($("#other_options").val() != ""){
+  collect_reason.push("other_options-"+$("#other_options").val());
+ }
+ return collect_reason;
+}
+
+$("#flag_form").click(function(){
+   var collect_reason = [];
+   $('#flag_story_conform').dialog({
+     autoOpen: true,
+     width: 400,
+     modal: true,
+     buttons : {
+      "Yes" : function() {
+       flag_story_path = '/v0/stories/flag_story/<%= "#{@story.id}"%>'+'?reasons='+get_collect_reasons(collect_reason);
+       jQuery.ajax({
+         type: "POST",
+         url: flag_story_path,
+         data: {type: "reviewer_path"},
+         dataType : "script"
+       });
+       $('#flag_story_conform').dialog('close'); 
+      },
+     "Cancel" : function(){
+       $('#flag_story_conform').dialog('close');
+       $("body").removeClass("modal-open");
+      }
+    },
+     dialogClass: 'change_orientation_dialog'
+   });
+ });
+
+</script>

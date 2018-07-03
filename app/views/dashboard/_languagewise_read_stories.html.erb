@@ -1,0 +1,76 @@
+
+<div class="row">
+  <div class="col-md-4 col-sm-4 upl-row">
+    <div class="btn-group pull-left" style="margin-top: 15px; margin-left: 50px;"><label>Time Period:</label></div>
+    <div class="btn-group"  style="margin-right: 50px;>
+      <i class="dropdown-arrow dropdown-arrow-inverse"></i>
+      <button class="btn btn-primary dropdown-toggle filter-btn" data-toggle="dropdown" > <%= params[:search_from] ? params[:search_from] : "All Languages" %></button>
+      <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"> <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu dropdown">
+        <li><%= link_to "One Month", languagewise_read_stories_path(:search_from => "One Month", :limit=>params[:limit]? params[:limit] : 10, :start_date => "", :end_date => "") %></li>
+        <li><%= link_to "Three Months", languagewise_read_stories_path(:search_from => "Three Months", :limit=>params[:limit]? params[:limit] : 10, :start_date => "", :end_date => "") %></li>
+        <li><%= link_to "Six Months", languagewise_read_stories_path(:search_from => "Six Months", :limit=>params[:limit]? params[:limit] : 10, :start_date => "", :end_date => "") %></li>
+        <li><%= link_to "One Year", languagewise_read_stories_path(:search_from => "One Year", :limit=>params[:limit]? params[:limit] : 10, :start_date => "", :end_date => "") %></li>
+        <li><%= link_to "All Languages", languagewise_read_stories_path(:search_from => "All Languages", :limit=>params[:limit]? params[:limit] : 10, :start_date => "", :end_date => "") %></li>
+      </ul>
+    </div>
+  </div>
+  <div class="col-md-6 col-sm-6 upl-row">
+    <div class="input-group date" data-provide="datepicker" style="float: left; margin-top: 10px;">
+      <label>From date</label>
+      <input class="datepicker" id="start_date" data-date-format="yy-mm-dd" value="<%= params[:start_date] if params[:start_date].present? %>">
+      <label>To date</label>
+      <input class="datepicker" id="end_date" data-date-format="yy-mm-dd" value="<%= params[:end_date] if params[:end_date].present? %>">
+      <button id="submit_dates" class="btn btn-app btn-brand-1">Submit</button>
+    </div>
+  </div>
+  <div class="col-md-2 col-sm-2 upl-row">
+    <div class="btn-group">
+      <i class="dropdown-arrow dropdown-arrow-inverse"></i>
+      <button class="btn btn-primary dropdown-toggle filter-btn limit-dropdown" data-toggle="dropdown" value = <%= params[:limit] ? params[:limit] : 10 %>>Top <%= params[:limit] ? params[:limit] : 10 %></button>
+      <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"> <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu dropdown">
+        <% [10, 20, 30, 40, 50, 100].each do |limit| %>
+          <li><%= link_to "Top #{limit}", languagewise_read_stories_path(:limit => limit, :search_from =>params[:search_from]? params[:search_from] : "All Languages", :end_date => params[:end_date] ? params[:end_date] : "" , :start_date => params[:start_date] ? params[:start_date] : ""), :remote => true%></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<table class="table table-striped">
+  <thead>
+  <tr class="table-heading-row">
+    <th>Language</th>
+    <th>Total No of Reads</th>
+  </tr>
+  </thead>
+  <tbody class="table-row-details">
+    <% languagewise_read_count.each do |language| %>
+      <tr>
+        <td><%= language.name%></td>
+        <td><%= language.read_count||0 %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<script>
+  $('.datepicker').datepicker({
+    dateFormat: 'yy-mm-dd', autoclose: true
+  });
+  $("#submit_dates").click(function(){
+    if($("#start_date").val() > $("#end_date").val()){
+      alert("Start Date should be before the End Date");
+    }else{
+      jQuery.ajax({
+        type: "GET",
+        url: "<%= languagewise_read_stories_path %>",
+        data: {start_date: $("#start_date").val(), end_date: $("#end_date").val(), search_from: "All Languages", limit: ($(".limit-dropdown").val() ? $(".limit-dropdown").val() : 10)},
+        dataType : "script"
+      });
+    }
+  });
+</script>

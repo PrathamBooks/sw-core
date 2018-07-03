@@ -1,0 +1,95 @@
+<div class="modal modal--story-creator fade modal_img_creator" id="modal-image-drawer" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content modal-content--img-drawer">
+      <div class="modal-body modal-body-app">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <ul class="nav nav-tabs nav-tabs-alt nav-tabs-image-drawer" role="tablist">
+          <li role="presentation" class="active"><a href="#tab-all-images" id="tab-all-images-trigger" aria-controls="home" role="tab" data-toggle="tab"><%= t 'editor.editor_page.open_image_drawer.browse_all_images.tab' %></a></li>
+          <li role="presentation"><a href="#tab-favourites" id="tab-favourites-link" aria-controls="profile" role="tab" data-toggle="tab"><%= t 'editor.editor_page.open_image_drawer.favourites' %></a></li>
+          <li role="presentation"><a href="#tab-upload-image" id="tab-upload-link" aria-controls="messages" role="tab" data-toggle="tab"><%= t 'editor.editor_page.open_image_drawer.upload_image.upload_link' %></a></li>
+        </ul>
+        <div class="row row-gutter-sm">
+          <div class="image-drawer-content">
+            <div class="tab-content tab-content-alt">
+              <div role="tabpanel" class="tab-pane active" id="tab-all-images">
+                <%= render :partial => "all_illustrations" %>
+              </div>
+              <div role="tabpanel" class="tab-pane" id="tab-favourites">
+              </div>
+              <div role="tabpanel" class="tab-pane" id="tab-upload-image">
+              </div>
+            </div> <!-- /tab-content -->
+          </div> <!-- /image-drawer-content -->
+        </div> <!-- /row -->
+      </div> <!-- /modal-body -->
+    </div> <!-- /modal-content -->
+  </div> <!-- /modal-dialog -->
+</div> <!-- /modal -->
+<!-- Button trigger modal -->
+<div class="modal fade" id="upload-success">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Successful!</h4>
+      </div>
+      <div class="modal-body">
+        Your illustration has been uploaded successfully. It will appear in 'favourites' shortly.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-app btn-default grey-gravel" data-dismiss="modal" onclick="$('#tab-all-images-trigger').trigger('click');$('body').addClass('modal-open');">Browse all images</button>
+        <button type="button" class="btn btn-app btn-brand-1"  data-dismiss="modal" onclick="$('body').addClass('modal-open');$('#new_illustration')[0].reset(); $('#tab-upload-link').trigger('click');">Upload more images</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="application/javascript">
+  $(document).ready(function(){
+    $('#modal-image-drawer').on('shown.bs.modal', function() {
+      if($('.nav-tabs-image-drawer .active').text() == "browse all images"){
+        url = "/v0/illustrations";
+        editor_fav_images = false;
+        favorites_of_story = <%= @story.id %>
+        illustration_drawer = new IllustrationDrawerService();
+        illustration_drawer.initialize(url,18, editor_fav_images, favorites_of_story);
+      }
+    });
+
+  $(document).on('shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
+    var target = $(e.target).attr("href"); // activated tab
+    if (target == "#tab-all-images"){
+      $.ajax({
+        url: "/v0/editor/get-all-illustrations",
+        type: 'GET',
+        data: {story_id:<%= @story.id%>},
+        dataType : "script",
+        failure: function(result) {
+          console.error('Unable to load illustrations.');
+        }
+      });
+    }
+    else if (target == "#tab-favourites"){
+      $.ajax({
+        url: "/v0/editor/get-favourite-illustrations",
+        type: 'GET',
+        data: {story_id:<%= @story.id%>},
+        dataType : "script",
+        failure: function(result) {
+          console.error('Unable to load illustrations.');
+        }
+      });
+    }
+    else if (target == "#tab-upload-image"){
+      $.ajax({
+        url: "/v0/editor/upload-illustration",
+        type: 'GET',
+        data: {story_id:<%= @story.id%>},
+        dataType : "script",
+          failure: function(result) {
+            console.error('Unable to load illustrations.');
+          }
+      });
+    }
+  })
+  });
+
+</script>

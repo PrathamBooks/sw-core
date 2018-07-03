@@ -1,0 +1,10 @@
+- Some illustrators do not have users attached to them.
+- Signup emails not going
+- While doing tag based search for Images on that page try to select any filter it is redirecting to 'Read' page.
+- For recently uploaded Images like symbol is correct but for old images like symbol is different
+- Unable to do list download
+- on Story details page, clicking on organisation name is redirecting to an error page.
+- Books upload using API
+  - reindex after save
+- imageMagick fix and update Dockerfile in deploy
+- Simplify the documentation and scripts to not pass settings at multiple places

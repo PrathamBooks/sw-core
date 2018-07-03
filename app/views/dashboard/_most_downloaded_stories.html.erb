@@ -1,0 +1,150 @@
+
+<div class="col-md-12">
+  <br>
+  </br>
+</div>
+
+<h5>High resolution downloads: <%= @high_res_pdf_downloads %></h5>
+<h5>Low resolution downloads: <%= @low_res_pdf_downloads %></h5>
+<h5>Epub  downloads: <%= @epub_downloads %></h5>
+
+<div class="stories_btn">
+  <%= render :partial => "language_filter", :locals => {:path => most_downloaded_stories_path(:limit => params[:limit]? params[:limit] : 10, :level=>params[:level]? params[:level] : '')}%>
+</div>
+<div class="btn-group">
+  <i class="dropdown-arrow dropdown-arrow-inverse"></i>
+  <button class="btn btn-primary dropdown-toggle filter-btn" data-toggle="dropdown" ><%= params[:level] && params[:level] != ''? "Level #{params[:level].to_i + 1}" : "All Levels" %></button>
+  <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"> <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu dropdown-levels">
+     <li><%= link_to "All Levels", most_downloaded_stories_path(:level => '', :language=>params[:language]? params[:language] : '', :limit => params[:limit]? params[:limit] : 10), :remote => true%></li>
+    <% (0..3).each do |level| %>
+     <li><%= link_to "Level #{level+1}", most_downloaded_stories_path(:level => level, :language=>params[:language]? params[:language] : '', :limit => params[:limit]? params[:limit] : 10), :remote => true%></li>
+    <% end %>
+  </ul>
+</div>
+<div class="btn-group">
+  <i class="dropdown-arrow dropdown-arrow-inverse"></i>
+  <button class="btn btn-primary dropdown-toggle filter-btn" data-toggle="dropdown" >Top <%= params[:limit] ? params[:limit] : 10 %></button>
+  <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"> <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu dropdown-limit">
+    <% [10, 20, 30, 40, 50, 100].each do |limit| %>
+     <li><%= link_to "Top #{limit}", most_downloaded_stories_path(:limit => limit, :level=>params[:level]? params[:level] : '', :language=>params[:language]? params[:language] : ''), :remote => true%></li>
+    <% end %>
+  </ul>
+</div>
+
+<div class="btn-group pull-left">
+  <span>Number of Stories Selected :</span>
+  <span class="badge" id="downloaded_stories_count"><%= stories.count %></span>
+</div>
+
+<table class="table table-striped" id="all_downloaded_stories">
+  <tfoot style="display: table-header-group;">
+    <tr>
+      <th>Story Title      </th>
+      <th>English Title    </th>
+      <th>Organization        </th>
+      <th>Language         </th>
+      <th>Reading level    </th>
+      <th>No of Downloads  </th>
+    </tr>
+  </tfoot>
+  <thead>
+    <tr class="table-heading-row">
+      <th>Story Title       </th>
+      <th>English Title     </th>
+      <th>Organization         </th>
+      <th>Language          </th>
+      <th>Reading level     </th>
+      <th>No of Downloads   </th>
+    </tr>
+  </thead>
+  <tbody class="table-row-details">
+    <% if stories %>
+      <% stories.each do |story| %>
+        <tr class="download_count">
+          <td><%= link_to story.title, react_stories_show_path(story.to_param) %></td>
+          <td><%= story.english_title %></td>
+          <td><%= story.organization.present? ? story.organization.organization_name : 'Storyweaver Community' %></td>
+		      <td><%= story.language.name%></td>
+		      <td><%= story.reading_level%></td>
+          <td><%= story.downloads + story.high_resolution_downloads + story.epub_downloads%></td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+  var table = $('#all_downloaded_stories').DataTable( {
+    searching: true,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 20,
+    order: [],
+    responsive: {
+        details: false
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  title: formatDatatableTitle('popular-stories'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5 ]
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  title: formatDatatableTitle('popular-stories'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5 ]
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  title: formatDatatableTitle('popular-stories'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5 ]
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  title: formatDatatableTitle('popular-stories'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5 ]
+                  }
+              }
+          ]
+      
+  });
+  $('#all_downloaded_stories tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+  });
+
+  var new_table = $('#all_downloaded_stories').dataTable();
+  table.columns().every( function () {
+    var that = this;
+
+    $( 'input', this.footer() ).on( 'keyup change', function () {
+      if ( that.search() !== this.value ) {
+          that
+              .search( this.value )
+              .draw();
+        document.getElementById("downloaded_stories_count").innerHTML = document.getElementById('all_downloaded_stories').children[1].childElementCount;
+      }else{
+        document.getElementById("downloaded_stories_count").innerHTML = table.rows( '.download_count' ).count(); 
+      }
+    });
+  });
+  $( 'input').on( 'keyup change', function () {
+    document.getElementById("downloaded_stories_count").innerHTML = new_table.fnSettings().fnRecordsDisplay();
+  });
+
+  });
+</script>

@@ -1,0 +1,8 @@
+<label>Editor:</label>
+<% if @story.editor_id != nil %>
+     <%= @story.editor.name %>
+    <span><%= link_to "Change", edit_story_editor_path, :remote => true  if current_user && current_user.content_manager?%></span>
+    <span><%= link_to "Remove", delete_editor_modal_path(:story_id => @story.id, :path => "story_details"), :remote => true  if current_user && current_user.content_manager?%></span>
+<% else %>
+<span><%= link_to "Assign", edit_story_editor_path, :remote => true  if current_user && current_user.content_manager?%></span>
+<% end %>

@@ -1,0 +1,3 @@
+$('#image-draw-full').replaceWith("<div id='image-draw-full'><div id='process_illustration' class='alert alert-info hide' role='alert'>The Illutration which you uploaded is still in process. it may take some time to appear on illustration drawer</div><div id='illustration_list' class='img-selct'><%= escape_javascript(render(:partial=>"illustration_list" , :locals => {:illustrations => @illustrations})) %></div></div>");
+var story_editor = new StoryEditor(new StoryEditorPage(), new StoryEditorService());
+story_editor.init_illustration_drawer();

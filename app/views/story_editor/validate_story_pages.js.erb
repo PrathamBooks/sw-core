@@ -1,0 +1,2 @@
+var story_editor = new StoryEditor(new StoryEditorPage(), new StoryEditorService());
+story_editor.handle_story_page_validation_errors(JSON.parse('<%= @image_errors.to_json().html_safe %>'), JSON.parse('<%= @orientation_errors.to_json().html_safe %>'));

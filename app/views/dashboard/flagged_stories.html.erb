@@ -1,0 +1,11 @@
+<%= render :partial => "errors" %>
+
+<%= render :partial => "tabs" %>
+
+<div class="tab-content">
+  <div role="tabpanel" class="tab-pane active common-class" id="LegacyUpload">
+      <%= render :partial => "flagged_stories" ,:locals => {:flagged_stories => @flagged_stories}%>
+  </div>
+</div>
+
+<%#= paginate @flagged_stories %>

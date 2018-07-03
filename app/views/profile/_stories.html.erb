@@ -1,0 +1,48 @@
+<div role="tabpanel" class="tab-pane" id="profile-stories">
+  <div class="col-md-12">
+    <table class="table table-striped">
+      <thead>
+        <tr class="table-heading-row">
+          <th><%= t "dashboard.story_title"%></th>
+          <th><%= t "dashboard.number_of_reads"%></th>
+          <th><%= t "dashboard.derivatives"%></th>
+        </tr>
+      </thead>
+      <tbody class="table-row-details">  
+        <% @stories.each do |story| %>
+          <tr>
+            <td class="underline-class"><%= link_to get_title(story.language,story.title).html_safe, react_stories_show_path(story.to_param), :target => "_blank" %></td>
+            <td><%= story.reads %></td>
+            <td>
+              <% if story.children.length > 0 %>
+                <span id="search-details-dropdown" class="versions-story derivatives-story">
+                  <div class="dropdown">
+                    <label>
+                      <%= Story.unscoped.children_of(story).where(status: Story.statuses[:published]).count %>
+                    </label>
+                    <a class="dropdown-toggle myclickdrop derivativesDropDown"
+                      type="button"
+                      id="dropdownMenu1"
+                      data-toggle="dropdown"
+                      aria-expanded="true">
+                      <i class="fa fa-chevron-circle-down" aria-hidden="true"></i>
+                    </a>
+                    <ul class="dropdown-menu derivatives-dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                      <% story.other_versions_derivatives.each do |version| %>
+                        <li role="presentation">
+                          <%= link_to version.version_label, story_versions_path(story.id, version.language.id, version.reading_level) %>
+                        </li>
+                      <% end %>
+                    </ul>
+                  </div>
+                </span>
+              <% end %> 
+            </td>
+          </tr>
+        <% end %>            
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%= paginate @stories %>

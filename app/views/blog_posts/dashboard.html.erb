@@ -1,0 +1,126 @@
+<%= render :partial => "dashboard/dashboard_datatables" %>
+
+<%= render :partial => "tabs" %>
+
+<div class="row">
+  <div class="col-md-12 col-sm-12">
+  	<label class="allusers">
+      <span>Number of Blogs selected :</span>
+      <span class="badge" id="blogs_count"><%= @blog_posts.count %></span>
+    </label>
+  </div>
+</div>
+
+
+<div role="tabpanel" class="tab-pane" id="profile-drafts">
+  <div class="col-md-12">
+    <table class="table table-striped" id="blogs">
+      <tfoot style="display: table-header-group;">
+        <tr>
+          <th>Title</th>
+          <th>Created at</th>
+          <th>Comments</th>
+          <th>Reads</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </tfoot>
+      <thead>
+        <tr class="table-heading-row">
+          <th>Title</th>
+          <th>Created at</th>
+          <th>Comments</th>
+          <th>Reads</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody class="table-row-details">
+        <% @blog_posts.each do |blog_post| %>
+          <tr class="selected_blogs">
+            <td><%= link_to blog_post.title, blog_post_path(blog_post.id) %></td>
+            <td><%= blog_post.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
+            <td><%= blog_post.comments_count %></td>
+            <td><%= blog_post.reads %></td>
+            <td><%= link_to 'Edit', edit_blog_post_path(blog_post.id), class:"btn btn-info edit-btn" %></td>
+            <td><%= link_to 'Destroy', blog_post_path(blog_post.id), class:"btn btn-info edit-btn", method: :delete, data: { confirm: 'Are you sure?' }, "data-confirm-title" => "StoryWeaver", "data-confirm-cancel" => "Cancel", "data-confirm-cancel-class" => "btn btn-info btn-grey", "data-confirm-proceed" => "Ok", "data-confirm-proceed-class" => "btn-info edit-btn" %></td>
+
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <%= link_to 'Write new post', new_blog_post_path, :class => "btn btn-info edit-btn submit-comment", :role => "button" if @blog_actions_authorization%>
+</div>
+
+<script>
+$(document).ready(function() {
+  var table = $('#blogs').DataTable( {
+    searching: true,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 20,
+    order: [],
+    responsive: {
+        details: false
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  title: formatDatatableTitle('posts'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4 ]
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  title: formatDatatableTitle('posts'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4 ]
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  title: formatDatatableTitle('posts'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4 ]
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  title: formatDatatableTitle('posts'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4 ]
+                  }
+              }
+          ]
+      
+  });
+  $('#blogs tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+  });
+
+  var new_table = $('#blogs').dataTable();
+  table.columns().every( function () {
+    var that = this;
+
+    $( 'input', this.footer() ).on( 'keyup change', function () {
+      if ( that.search() !== this.value ) {
+          that
+              .search( this.value )
+              .draw();
+        document.getElementById("blogs_count").innerHTML = document.getElementById('blogs').children[1].childElementCount;
+      }else{
+        document.getElementById("blogs_count").innerHTML = table.rows( '.selected_blogs' ).count(); 
+      }
+    });
+  });
+  $( 'input').on( 'keyup change', function () {
+    document.getElementById("blogs_count").innerHTML = new_table.fnSettings().fnRecordsDisplay();
+  });
+
+  });
+
+</script>

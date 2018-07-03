@@ -1,0 +1,93 @@
+<%= render :partial => "errors" %>
+<%= render :partial => "tabs" %>
+<div class="profile_img col-md-2 col-sm-2" id="update_logo">
+    <%= render :partial => "org_logo_update" %>
+</div>
+<%= simple_form_for(@org, :url => edit_org_path(:org_id => @org.id ) ) do |f| %>
+  <div class="prof_wrapper">
+    <div class="prof_form org_form">
+      <div class="col-md-9 col-sm-9">
+        <div class="col-md-12 col-sm-12 prof_bio name_field">
+          <label><%= t "dashboard.name" %></label>
+          <div class="nopadding">
+            <%= f.input :organization_name,  label: false, input_html: {class: "pro-inp email-pro", value: @org.organization_name } %>
+          </div>
+        </div>
+        <div class="col-md-12 col-sm-12 prof_bio name_field">
+          <label><%= t "dashboard.my_org_tab.country" %></label>
+          <div class="nopadding">
+            <%= f.input :country,  label: false, input_html: {class: "pro-inp email-pro", value: @org.country } %>
+          </div>
+        </div>
+        <div class="col-md-12 col-sm-12 nopadding prof_bio mar-bot">
+          <div class="nopadding padding-left bio_field">
+          <label><%= t "dashboard.my_org_tab.about" %></label>
+            <%= f.input :description,  label: false,as: :text, input_html: {value: @org.description,style: "resize: none;"} %>
+          </div>
+        </div>
+        <div class="col-md-12 col-sm-12 nopadding prof_bio mar-bot prof_child">
+          <div class="col-sm-6 num_child">
+            <div class="nopadding padding-left bio_field">
+             <label><%= t "dashboard.my_org_tab.classrooms_impacted" %></label>
+            <%= f.input :number_of_classrooms,  label: false, input_html: {class: "pro-inp email-pro", value: @org.number_of_classrooms} %>
+            </div>
+          </div>
+          <div class="col-sm-6 num_class">
+            <div class="nopadding padding-left bio_field">
+             <label><%= t "dashboard.my_org_tab.children_impacted" %></label>
+             <%= f.input :children_impacted,  label: false, input_html: {class: "pro-inp email-pro", value: @org.children_impacted} %>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 col-sm-12 nopadding prof_bio mar-bot">
+          <div class="nopadding email-mob">
+            <label><%= t "dashboard.email" %></label>
+              <%= f.input :email,  label: false, input_html: {class: "pro-inp email-pro", value: @org.email, } %>
+          </div>
+        </div>
+        <div class="col-md-12 col-sm-12 nopadding prof_website mar-bot">
+          <div class="nopadding padding-left website_field">
+          <label><%= t "dashboard.my_org_tab.website" %></label>
+            <%= f.input :website,  label: false, input_html: {class: "pro-inp email-pro", value: @org.website, } %>
+          </div>
+        </div>
+        <div class="col-md-12 col-sm-12 nopadding prof_website mar-bot">
+          <div class="nopadding padding-left website_field">
+          <label><%= t "dashboard.my_org_tab.facebook_page" %></label>
+            <%= f.input :facebook_url,  label: false,input_html: {class: "pro-inp email-pro", value: @org.facebook_url } %>
+          </div>
+        </div>
+        <div class="col-md-12 col-sm-12 nopadding prof_website mar-bot">
+          <div class="nopadding padding-left website_field">
+          <label><%= t "dashboard.my_org_tab.twitter_feed" %></label>
+            <%= f.input :twitter_url,  label: false,input_html: {class: "pro-inp email-pro", value: @org.twitter_url } %>
+          </div>
+        </div>
+        <div class="col-md-12 col-sm-12 nopadding prof_website mar-bot">
+          <div class="nopadding padding-left website_field">
+          <label><%= t "dashboard.my_org_tab.youtube_channel" %></label>
+            <%= f.input :youtube_url,  label: false,input_html: {class: "pro-inp email-pro", value: @org.youtube_url } %>
+          </div>
+        </div>
+        <div class="col-md-12 col-sm-12 nopadding prof_website mar-bot">
+          <div class="nopadding padding-left website_field">
+          <label><%= t "dashboard.my_org_tab.rss_feed" %></label>
+            <%= f.input :rss_url,  label: false,input_html: {class: "pro-inp email-pro", value: @org.rss_url, } %>
+          </div>
+        </div>
+        <div class="col-md-2 col-sm-2 nopadding save_button update_btn">
+            <%= f.submit "#{t "dashboard.my_org_tab.update"}" , :class=>"btn btn-info edit-btn" %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>        
+
+<script>
+$(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip();
+});
+function update_logo(){
+ $('#logo_form').submit()
+}
+</script>

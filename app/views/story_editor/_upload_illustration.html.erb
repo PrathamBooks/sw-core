@@ -1,0 +1,246 @@
+
+  <div class="row row-gutter">
+    <%= simple_nested_form_for @illustration, html: { :onsubmit=>"return validateForm()", class: 'form-horizontal',  multipart: true}, :authenticity_token => true do |f| %>
+        <% if @illustration.errors.count != 0 %>
+            <div class="alert alert-danger">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+              <div id="flash_error"><%= @illustration.errors.full_messages.join(", ") %></div>
+            </div>
+        <% end %>
+      <div class="col-sm-6">
+        <!--<div class="upload-full-browse">
+          <input id="uploadFile" placeholder="Upload only jpeg or png images" disabled="disabled" />
+          <div class="fileUpload btn btn-primary">
+            <span>Browse</span>
+            <input id="uploadBtn" type="file" class="upload" name="illustration[image]" />
+          </div>
+        </div>-->
+        <div class="form-group form-group-lg-pad">
+          <p>Please upload your <span class="text-uppercase">original</span> image here and have a look at <a href="/uploading_an_illustration#faq2" class="link-underline" target="_blank">good practices</a> to follow. Please ensure that your image is at least 150 dpi resolution and PNG or JPEG format.</p>
+
+          <div class="js-file-custom-wrap file-custom-wrap">
+            <input type="file" class="js-input-file-custom input-file-custom" id="file-profile-upload" name="illustration[image]">
+            <label for="file-profile-upload" class="js-label-file-custom">
+              <span class="btn btn-app btn-brand-1"><%= t 'editor.editor_page.open_image_drawer.upload_image.choose_image'%></span>
+            </label>
+            <span class="js-label-file-custom-text label-file-custom-text"></span>
+          </div> <!-- /file-custom-wrap -->
+        </div> <!-- /form-group -->
+        <div class="form-group col-md-12 nopadding">
+          <p><%= t 'editor.editor_page.open_image_drawer.upload_image.terms_and_conditions_1'%> <a href="/terms_and_conditions" class="link-underline" target="_blank"><%= t 'editor.editor_page.open_image_drawer.upload_image.terms_and_conditions_2'%></a><%= t 'editor.editor_page.open_image_drawer.upload_image.terms_and_conditions_3'%> <a href="http://creativecommons.org/licenses/by/4.0/" class="link-underline" target="_blank">here</a>.</p>
+        </div> <!-- /form-group -->
+        <div id="terms-condition" class="form-group form-group-lg-pad col-md-12 nopadding">
+          <label for="checkbox-terms-of-use" class="label-checkbox vertical-i-middle upload-terms">
+            <input type="checkbox" id="checkbox-terms-of-use" autofocus/>
+            <span><%= t 'editor.editor_page.open_image_drawer.upload_image.accept_terms_1'%> 
+              <a href="/terms_and_conditions" class="link-underline"  target="_blank"><%= t 'editor.editor_page.open_image_drawer.upload_image.accept_terms_2'%></a>
+            </span>
+          </label>
+        </div> <!-- /form-group -->
+        <div class="form-group form-group-lg-pad col-md-12 nopadding">
+          <div class="btn btn-link btn-link-underline" data-dismiss="modal"><%= t 'editor.editor_page.open_image_drawer.upload_image.go_back'%></div>
+        </div> <!-- /form-group -->
+      </div> <!-- /col -->
+      <div class="col-sm-6">
+        <div class="form-group form-group-lg-pad">
+          <label class="heading-section label-required"><%= t 'editor.editor_page.open_image_drawer.upload_image.image_title'%></label>
+          <div class="help-block help-block-brand"><%= t 'editor.editor_page.open_image_drawer.upload_image.image_title_message'%></div>
+          <%= f.input :name , label: false, input_html: { class: 'input-brand' } %>
+        </div> <!-- /form-group -->
+
+        <div class="form-group form-group-lg-pad">
+          <label class="heading-section label-required"><%= t 'editor.editor_page.open_image_drawer.upload_image.category'%></label>
+          <div class="help-block help-block-brand"><%= t 'editor.editor_page.open_image_drawer.upload_image.category_message'%>
+          </div>
+          <div class="row row-gutter font-sm">
+            <%= f.association :categories, multiple: true,label: false %>
+          </div> <!-- /row -->
+        </div> <!-- /form-group -->
+        <div class="form-group form-group-lg-pad">
+          <label class="heading-section label-required"><%= t 'editor.editor_page.open_image_drawer.upload_image.image_style'%></label>
+          <div class="help-block help-block-brand"><%= t 'editor.editor_page.open_image_drawer.upload_image.image_style_message'%></div>
+          <div class="row row-gutter font-sm">
+            <%= f.association :styles, multiple: true,label: false %>
+          </div> <!-- /row -->
+        </div> <!-- /form-group -->
+        <div class="form-group form-group-lg-pad">
+          <label class="heading-section"><%= t 'editor.editor_page.open_image_drawer.upload_image.tags'%></label>
+          <div class="help-block help-block-brand"><%= t 'editor.editor_pageopen_image_drawer..upload_image.tags_message'%></div>
+          <%= f.input :tag_list,  label: false, url: autocomplete_tag_name_illustrations_path,as: :autocomplete,input_html: {'data-delimiter' => ',', :placeholder=>"Add as many tags as you like, comma separated", :class => "form-control input-brand"}   %>
+        </div> <!-- /form-group -->
+        <div class="form-group form-group-lg-pad sel-des">
+          <label class="heading-section label-required"><%= t 'editor.editor_page.open_image_drawer.upload_image.image_license'%></label>
+          <div class="row row-gutter font-sm">
+            <% license_types = current_user.organization? ? [["CC BY 4.0","CC BY 4.0"],["Public Domain","Public Domain"]] : [["CC BY 4.0","CC BY 4.0"]]%>
+            <%= f.input :license_type, label: false, collection: license_types %>
+          </div>
+        </div> <!-- /form-group -->
+      </div> <!-- /col -->
+
+        <% if current_user.organization? || current_user.content_manager?%>
+            <div class="col-md-12 sel-des">
+              <%= f.input :copy_right_year, collection: (1940..Time.now.year).to_a.reverse, :label => "Image copyright year", :input_html => {:id=>"illustration_license_type"} %>
+            </div>
+
+            <div class="col-md-12 sel-des">
+              <%= f.input :copy_right_holder_id, label: "#{t 'editor.editor_page.open_image_drawer.upload_image.image_copyright'}", collection:[["Organization","Organization"],["Illustrator","Illustrator"]] , :input_html => {:id=>"illustration_license_type" }%>
+            </div>
+
+            <div class="col-md-12 sel-des">
+              <% if current_user.content_manager?  %>
+                  <%= f.input :organization_id, label: "#{t 'dashboard.organization'}",collection: get_publisher_orgs,:input_html => {:id=>"illustration_license_type"} %>
+              <% end %>
+            </div>
+            <div class="col-md-12">
+              <%= f.fields_for(:illustrators , :input_html => {:style=>""}) do |fa|  %>
+                <div class="illustrator-details col-md-12">
+                  <span class="container-title">
+                    <b>Illustrator Details</b>
+                  </span>
+                  <%= fa.input :email,hint: 'Search for a user account by email address. If no user is found, then provide name and bio to create an account for the illustrator.', input_html: { class: 'form-control' }, :url => autocomplete_user_email_illustrations_path, :as => :autocomplete %>
+                  <%= fa.input :first_name, label: "Illustrator First Name" , :required =>  true %>
+                  <%= fa.input :last_name, label: "Illustrator Last Name" , :required =>  true %>
+                  <%= fa.input :bio, as: :text %>
+                  <%= fa.link_to_remove "Remove" %>
+
+                  <script type="text/javascript">
+                      $('.illustration_illustrators_email').bind('railsAutocomplete.select', function(event, data) {
+                          $(this).siblings('.illustration_illustrators_first_name').find('input').val(data.item.first_name);
+                          $(this).siblings('.illustration_illustrators_last_name').find('input').val(data.item.last_name);
+                          $(this).siblings('.illustration_illustrators_bio').find('input').val(data.item.bio);
+                      });
+                  </script>
+                </div>
+              <% end %>
+            </div>
+            <div class="col-md-12">
+              <%= f.link_to_add "Add new Illustrator", :illustrators, class: 'btn btn-app btn-default grey-gravel' %>
+            </div>
+            <div class="col-md-12">
+              <%= f.input :attribution_text, as: :text,label: "Image attribution text" %>
+            </div>
+            <div  class="col-md-12 private_images">
+              <%= f.input :image_mode, as: :boolean, checked_value: true, unchecked_value: false,label: "Make image as private",:input_html => {:style=>""}%>
+            </div>
+        <% end %>
+
+        <div class="col-md-12">
+          <label><%= t 'editor.editor_page.open_image_drawer.upload_image.child_message'%></label>
+          <%= f.fields_for :child_illustrators do |a| %>
+              <div class="col-md-12 illustrator-details">
+                <span class="container-title col-md-12 nopadding">
+                  <b><%= t 'editor.editor_page.open_image_drawer.upload_image.add_child_details.header'%></b>
+                </span>
+                <div class="col-md-8">
+                  <%= a.input :name, label: "#{t 'editor.editor_page.open_image_drawer.upload_image.add_child_details.name'}", :required =>  true %>
+                </div>
+                <div class="col-md-4">
+                  <%= a.input :age, label: "#{t 'editor.editor_page.open_image_drawer.upload_image.add_child_details.age'}", collection: (3..16).to_a, :required =>  true %>
+                </div>
+                <div class="col-md-12">
+                  <%= a.link_to_remove "Remove", class: 'remove_child_link' %>
+                </div>
+              </div>
+          <% end %>
+        </div>
+        <div class="col-md-12">
+          <%= f.link_to_add "#{t 'editor.editor_page.open_image_drawer.upload_image.add_child_details.button'}", :child_illustrators, class: 'btn btn-app btn-default grey-gravel add_child_link' %>
+        </div>
+        <div class="col-md-12">
+          <%= f.input :story_id, :as => :hidden, :input_html => { :value => @story.id } %>
+          <%= f.input :upload_from_editor, :as => :hidden, :input_html => { :value => true } %>
+          <%= f.submit "#{t 'editor.editor_page.open_image_drawer.upload_image.upload'}", class: "btn btn-lg disabled illustrator-up btn btn-app btn-brand-1" , id: "sub_illustration",   :onclick => "javascript:window.onbeforeunload = null;"%>
+        </div>
+        <div class="col-md-12">
+          <%= link_to "#{t 'editor.editor_page.open_image_drawer.upload_image.accept_terms_message'}", "#terms-condition", class: 'link-underline interlink-url', id: "accept_link"%>
+        </div>
+    <% end %>
+  </div> <!-- /row -->
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('[data-toggle="tooltip"]').tooltip();
+
+        $('#illustration_style_ids').multiselect({
+            buttonWidth : '100%',
+            selectedList: 1
+        });
+        $('#illustration_category_ids').multiselect({
+            buttonWidth : '100%',
+            selectedList: 1
+        });
+
+        $('#new_illustration').ajaxForm({
+            dataType:  'script',
+            beforeSubmit: function(){$.blockUI()},
+            success: function(){$.unblockUI()},
+            error: function (xhr,status,error) {delay()}
+        });
+       /* document.getElementById("uploadBtn").onChange = function() {
+            document.getElementById("uploadFile").value = this.value;
+        };*/
+
+        // File upload: Custom
+
+        $(".js-input-file-custom").each(function(){
+            var domElement = $(this).get(0);
+            domElement.onchange =function(){
+                if (this.files) {
+                    var file = this.files[0];
+                    $(this).closest(".js-file-custom-wrap").find(".js-label-file-custom-text").html(file.name);
+                }
+            }
+        });
+    });
+    function delay(){
+        var t  = setTimeout(liftBlock, 10000);
+        $('#myDiv').load(myUrl, function() {
+            clearTimeout(t);
+        });
+    };
+    function liftBlock() {
+        $('.blockMsg').append('<button type="button" class="close mypopup-close upload-close" id="closeBlock" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times"></i> Close</span></button>');
+        $('#closeBlock').bind('click', $.unblockUI);
+    };
+
+    $("#illustration_tag_list").on('autocompleteresponse', function(event, ui) {
+        var content;
+        if (((content = ui.content) != null ? content[0].id.length : void 0) === 0) {
+            $(this).autocomplete('close');
+        }
+    });
+
+    function validateForm(){
+        if($("#checkbox-terms-of-use").prop("checked")){
+            return true;
+        }
+        else
+        {
+            alert("Please accept Terms and Conditions");
+            return false;
+        }
+    }
+    $('#accept_link').click(function() {
+      if (!$(this).is(':checked')) {
+        $('#terms-condition > label').addClass('highlight-terms');
+      }
+    });
+
+    $('#checkbox-terms-of-use').click(function() {
+        if (!$(this).is(':checked')) {
+            $('#accept_link').show();
+            $('#terms-condition > label').addClass('highlight-terms');
+            $('#sub_illustration').addClass("disabled");
+        }
+        else{
+            $('#accept_link').hide();
+            $('#terms-condition > label').removeClass('highlight-terms')
+            $('#sub_illustration').removeClass("disabled");
+        }
+    });
+
+    $("#confirm").click(function(){
+        $('#confirm_form').css("display", "none");
+    });
+</script>

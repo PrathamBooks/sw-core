@@ -1,0 +1,72 @@
+upload:
+  base_dir: /home/spp_user/stories
+  file_name: upload_stories.csv
+
+illustration:
+  storage: fog
+  path: public_url
+
+ckeditor_assets:
+  storage: fog
+  path: public_url
+
+logo:
+  storage: fog
+  path: public_url
+
+donor_logo:
+  storage: fog
+  path: donor_logo_path
+
+profile_image:
+  storage: fog
+  path: profile_image_path
+
+blog_post_image:
+  storage: fog
+  path: blog_post_image_path
+
+banner_image:
+  storage: fog
+  path: banner_image_path
+
+category_banner:
+  storage: fog
+  path: category_banner_path
+
+category_home_image:
+  storage: fog
+  path: category_home_image_path
+
+fog:
+  fog_host:
+  directory: story-weaver
+  path: illustrations/:id/:style/:basename.:extension
+  logo_path: publishers/logos/:id/:style/:basename.:extension
+  donor_logo_path: donors/logos/:id/:style/:basename.:extension
+  profile_image_path: users/profile_images/:id/:style/:basename.:extension
+  blog_post_image_path: blog_posts/blog_post_image/:id/:style/:basename.:extension
+  banner_image_path: banners/banner_image/:id/:style/:basename.:extension
+  crop_path: illustration_crops/:id/:style/:basename.:extension
+  ck_picture_path: ckeditor_assets/pictures/:id/:style/:basename.:extension
+  ck_attachment_path: ckeditor_assets/attachments/:id/:filename
+  category_banner_path: categories/banners/:id/:style/:basename.:extension
+  category_home_image_path: categories/home_images/:id/:style/:basename.:extension
+
+varnam:
+  url: https://api.varnamproject.com/
+
+facebook:
+  app_id: "1592977060937483"
+  secret_key: "42b902207f39680627fee9f4fb8d9af1"
+
+google:
+  app_id: "157667450361-ri7ti420m83q27r2jpdlb62dqtm6kut5.apps.googleusercontent.com"
+  secret_key: "FzrRSUNWMkL83S1OrmYGEY13"
+
+analytics:
+  tracking_id: a_tracking_id
+
+org_info:
+  prefix: "SW"
+  url: "https://storyweaver.org.in"

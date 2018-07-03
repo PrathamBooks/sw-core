@@ -1,0 +1,107 @@
+<%= render :partial => "dashboard_datatables" %>
+
+<div class="btn-group">
+  <span><%= t 'dashboard.number_of_stories_selected'%> :</span>
+  <span class="badge" id="all_published_stories_count"><%= stories.count %></span>
+</div>
+
+<table class="table table-striped" id="all_published_stories">
+  <tfoot style="display: table-header-group;">
+    <tr>
+      <th><%= t 'dashboard.story_title'%></th>
+      <th><%= t 'dashboard.english_title'%></th>
+      <th><%= t 'dashboard.author'%></th>
+      <th><%= t 'dashboard.language'%></th>
+    </tr>
+  </tfoot>
+  <thead>
+    <tr class="table-heading-row">
+      <th><%= t 'dashboard.story_title'%></th>
+      <th><%= t 'dashboard.english_title'%></th>
+      <th><%= t 'dashboard.author'%></th>
+      <th class="noborder"><%= t 'dashboard.language'%></th>
+    </tr>
+  </thead>
+  <tbody class="table-row-details">
+    <% stories.each do |story| %>
+      <tr class="published_stories_count">
+        <td class="<%=story.language.script %> underline-class"><%= link_to story.title, react_stories_show_path(story.to_param) , :target => "_blank" %></td>
+        <td><%= story.english_title %></td>
+        <td><%= story.authors.collect(&:name).join(",")%></td>
+        <td><%= story.language.name %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+  var table = $('#all_published_stories').DataTable( {
+    searching: true,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 20,
+    order: [],
+    responsive: {
+        details: false
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  title: formatDatatableTitle('recently-published-stories'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3 ]
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  title: formatDatatableTitle('recently-published-stories'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3 ]
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  title: formatDatatableTitle('recently-published-stories'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3 ]
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  title: formatDatatableTitle('recently-published-stories'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3 ]
+                  }
+              }
+          ]
+      
+  });
+  $('#all_published_stories tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+  });
+
+  var new_table = $('#all_published_stories').dataTable();
+  table.columns().every( function () {
+    var that = this;
+
+    $( 'input', this.footer() ).on( 'keyup change', function () {
+      if ( that.search() !== this.value ) {
+          that
+              .search( this.value )
+              .draw();
+        document.getElementById("all_published_stories_count").innerHTML = document.getElementById('all_published_stories').children[1].childElementCount;
+      }else{
+        document.getElementById("all_published_stories_count").innerHTML = table.rows( '.published_stories_count' ).count(); 
+      }
+    });
+  });
+  $( 'input').on( 'keyup change', function () {
+    document.getElementById("all_published_stories_count").innerHTML = new_table.fnSettings().fnRecordsDisplay();
+  });
+
+  });
+</script>

@@ -1,0 +1,31 @@
+<div>
+  <label>Want to remove "<%= editor.name %>" as a editor for "<%= story.title %>" story?</label>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#delete_editor_model').dialog({
+        autoOpen: true,
+        width: 400,
+        modal: true,
+        buttons : {
+	        "Ok" : function() {
+		              $.ajax({
+		                type: 'DELETE',
+		                dataType: 'script',
+		                url: "<%= delete_story_reviewer_path %>",
+		                data: {
+		                 story_id: "<%= story.id %>",
+		                 editor_id: "<%= editor.id %>",
+		                 path: "<%= path %>"
+		                }
+		              });
+		              $(this).dialog("close"); 
+            		},
+	        "Cancel" : function() {
+	          			$(this).dialog("close");
+	        			}
+    	},
+        dialogClass: 'change_orientation_dialog'
+  	});
+ });
+</script>

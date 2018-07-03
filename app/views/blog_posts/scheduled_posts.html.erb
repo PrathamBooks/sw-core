@@ -1,0 +1,36 @@
+<%= render :partial => "tabs" %>
+
+<div role="tabpanel" class="tab-pane" id="profile-drafts">
+  <div class="col-md-12">
+    <table class="table table-striped">
+      <thead>
+      <tr class="table-heading-row">
+        <th>Title</th>
+        <th>Created at</th>
+        <th></th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody class="table-row-details">
+      <% @blog_scheduled_posts.each do |blog_scheduled| %>
+      <tr>
+        <td>
+          <%= link_to blog_scheduled.title, blog_post_path(blog_scheduled.id) %>
+        </td>
+        <td>
+          <%= blog_scheduled.created_at %>
+        </td>
+        <td>
+          <%= link_to 'Edit', edit_blog_post_path(blog_scheduled.id), class:"btn btn-info edit-btn" %>
+        </td>
+        <td>
+          <%= link_to 'Destroy', blog_post_path(blog_scheduled.id),class:"btn btn-info edit-btn", method: :delete, data: { confirm: 'Are you sure?' } %>
+        </td>
+
+      </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<%= paginate @blog_scheduled_posts %>

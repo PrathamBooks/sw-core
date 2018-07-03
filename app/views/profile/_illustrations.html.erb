@@ -1,0 +1,60 @@
+<div role="tabpanel" class="tab-pane" id="profile-illustration">
+  <div class="col-md-12">
+    <table class="table table-striped">
+      <thead>
+        <tr class="table-heading-row">
+          <th><%= t "dashboard.my_illustrations_tab.illustration"%></th>
+          <th><%= t "dashboard.title"%></th>
+          <th><%= t "dashboard.my_illustrations_tab.no_of_stories_used_in"%></th>
+          <th><%= t "dashboard.contest"%></th>
+        </tr>
+      </thead>
+      <tbody class="table-row-details">
+        <% if @illustrations %>
+		      <% @illustrations.each do |illustration| %>
+		        <tr>
+		          <td><a href="<%= react_illustrations_show_path(illustration) %>"><img src="<%= illustration.image.url(:search) %>" height="100px" /></a></td>
+		          <td class="underline-class"><%= link_to illustration.name, react_illustrations_show_path(illustration)  %></td>
+		          <td><% if illustration.number_of_parent_stories_used_in > 0 %>
+                <span id="search-details-dropdown" class="versions-story derivatives-story">
+                  <div class="dropdown">
+                    <label>
+                      <%= illustration.number_of_parent_stories_used_in %>
+                      <%= "(#{illustration.number_of_child_stories_used_in})" if illustration.number_of_child_stories_used_in > 0%>
+                    </label>
+                    <a class="dropdown-toggle myclickdrop derivativesDropDown"
+                      type="button"
+                      id="dropdownMenu1"
+                      data-toggle="dropdown"
+                      aria-expanded="true">
+                      <i class="fa fa-chevron-circle-down" aria-hidden="true"></i>
+                    </a>
+                    <ul class="dropdown-menu derivatives-dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                      <% illustration.parent_story_links.each_with_index do|story,index| %>
+                        <% unless index >= 5 %>
+                          <li role="presentation" class="illustration_stories_dropdown">
+                            <%= link_to story.title, react_stories_show_path(story.to_param), :class => "illustration_stories", :target => "_blank" if story %>
+                          </li>
+                        <% else %>
+                          <li role="presentation">
+                            <%= link_to "More Stories", search_path(:illustration_id => illustration.id), :target => "_blank" %>
+                          </li>
+                          <% break %>
+                        <% end %>
+                      <% end %>
+                    </ul>
+                  </div>
+                </span>
+                <% end %>
+              </td>
+              <% contest = illustration.contests %>
+              <td><%= contest.present? ? contest.first.name : "" %></td> 
+		        </tr>
+		      <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>  
+</div>
+
+<%= paginate @illustrations if @illustrations%>

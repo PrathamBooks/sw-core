@@ -1,0 +1,7 @@
+$('#modal-body').html("<%= escape_javascript(render(:partial=>"navigate_to")) %>");
+
+$('.modal-dialog').removeClass('portrait');
+$('.modal-dialog').removeClass('landscape');
+$('.modal-dialog').addClass('<%= @page.page_template.orientation %>');
+$('#myModal').focus();
+

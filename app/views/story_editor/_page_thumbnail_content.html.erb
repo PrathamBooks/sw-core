@@ -1,0 +1,10 @@
+<div class="illustration_container">
+  <div class="<%= page.page_template.name %> <%= page.illustration_crop.nil? ? '' : 'has_illustration' %> illustration">
+    <% if illustration_crop_missing(page) %>
+      <img src="<%= illustration_thumbnail_url(page) %>" style="<%= illustration_thumb_style(page) %>"/>
+    <% else %>
+      <%= image_tag(illustration_crop_thumbnail_url(page,"page_"+page.page_template.orientation.to_s)) %>
+    <% end %>
+  </div>
+  <%= render :partial => page_partial(page), locals: {page: page,story_read_id: nil} %>
+</div>

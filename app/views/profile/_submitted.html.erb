@@ -1,0 +1,26 @@
+<div role="tabpanel" class="tab-pane" id="profile-drafts">
+  <div class="col-md-12">
+    <table class="table table-striped">
+      <thead>
+        <tr class="table-heading-row">           
+          <th><%= t "dashboard.story_title"%></th>
+          <th><%= t "dashboard.language"%></th>
+          <th><%= t "dashboard.english_title"%></th>
+          <th><%= t "dashboard.contest_name"%></th>
+        </tr>
+      </thead>
+      <tbody class="table-row-details">    
+        <% @submitted_stories.each do |story| %>
+          <tr>
+            <td><%= get_title(story.language, story.title).html_safe %></td>
+            <td><%= story.language.name %></td>
+            <td><%= story.english_title %></td>
+            <td><%= Contest.find(story.contest_id).name %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%= paginate @submitted_stories %>

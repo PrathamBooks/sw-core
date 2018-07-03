@@ -1,0 +1,10 @@
+$('#newTranslateStoryForm').html("<%= escape_javascript(render(:partial=>"translations/new"))%>");
+
+$(document).ready(function() {
+	$('#translateStoryModal').modal({
+        backdrop: 'static',
+        keyboard: false,
+		show: true
+	});
+});
+

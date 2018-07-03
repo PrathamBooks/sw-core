@@ -1,0 +1,42 @@
+<div class="row">
+<div class="row">
+  <div class="col-md-5 col-sm-5">
+    <table class="table table-striped">
+      <thead>
+        <tr class="table-heading-row">
+          <th><%= t 'dashboard.illustration_categories_tab.category_name' %></th>
+        </tr>
+      </thead>
+      <tbody class="table-row-details">    
+      <% @categories.each_with_index do |category,index| %> 
+        <tr>
+          <td>
+            <div>
+              <label><%= category.name %></label>  
+            	<input id="<%= index %>" type="button" name="submit" data-category="<%= category.name %>" value="Edit" class="btn btn-info edit-btn" onclick="Dashboard.showForm(<%= index %>);" />
+            </div>
+
+            <div id="index_<%= index %>" style="display:none;padding-top:5px;">
+              <%= simple_form_for(:category, :url => edit_illustration_category_path(category), html: { id: "form_#{index}"}) do |f| %>
+                <%= f.input :name, value: category.name , label: false , input_html: {style: "float:left;width:60%;margin-right:15px;" , value: category.name} %>
+                <%= f.submit "submit" , :class=>"btn btn-success" %>
+                <input class="btn btn-inverse" name="commit" onclick="Dashboard.hideForm(<%= index %>)" type="button" value="cancel">
+              <% end %>
+            </div>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= paginate @categories %>
+  </div>
+  <div class="col-md-1 col-sm-1">
+  </div>
+  <div class="col-md-5 col-sm-5">
+    <%= simple_form_for(:category, :url => create_illustration_category_path) do |f| %>
+      <%= f.input :name, label: false ,:placeholder => "category name", input_html: {:class => "new-cat-add" } %>
+      <input type="text" class = "string required form-control new-cat-add"  placeholder= "hindi translation" name="category[translated_name]">
+      <%= f.submit "#{t 'dashboard.story_categories_tab.add_category'}" , :class=>"btn btn-info new-cat-btn" %>
+    <% end %>
+  </div>
+</div>

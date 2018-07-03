@@ -1,0 +1,16 @@
+<% if @story.errors.count != 0 %>
+$('#story_publish_form').html("<%= escape_javascript(render(:partial=>"publish"))%>");	
+$(document).ready(function() {
+	$('#publishModal').modal({
+		show: true
+	});
+	var varnam = new VarnamIME($("#publishModal #story_title")[0], null, {name: '<%= @story.language.name %>'}, '<%= Settings.varnam.url %>').init();
+	});
+<% else %>
+ <% if @is_campaign_page == true %>
+  var url = "<%= contest_path(:id => @contest.id) %>"
+ <% else %>
+  var url = "<%= root_path %>"
+ <% end %>
+ window.location.replace(url);
+<% end %>

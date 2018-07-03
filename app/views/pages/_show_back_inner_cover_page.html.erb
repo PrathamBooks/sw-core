@@ -1,0 +1,85 @@
+<div class='<%= page.page_template.name %> content english'>
+  <div class="attrb-full">
+    <div class="attrib-logo">
+      <img src="<%= asset_path_as_per_request_format('pb-storyweaver-logo-01.png') %>" />
+    </div>
+    <div class="attrib-synopsis">
+      <p>
+        This book was made possible by Pratham Books' StoryWeaver platform. Content under Creative Commons licenses can be downloaded, translated and can even be used to create new stories ­ provided you give appropriate credit, and indicate if changes were made. To know more about this, and the full terms of use and attribution, please visit the following <a href = "<%= host_url %>/terms_and_conditions" target="_blank">link</a>.
+      </p>
+    </div>
+  </div>
+  <div class="attribution-text">
+    <div class="attribution-center">
+      <%
+        self_attribution = @story.attributions(page).select{|a| a.class == SelfAttribution}.first rescue nil
+        parent_story_attribution = @story.attributions(page).select{|a| a.class == ParentStoryAttribution}.first rescue nil
+        original_story_attribution = @story.attributions(page).select{|a| a.class == OriginalStoryAttribution}.first rescue nil
+        illustration_attributions = @story.attributions(page).select{|a| a.class == IllustrationAttribution}
+      %>
+      <% unless self_attribution.nil? %>
+        <p class="story-attribution-section">Story Attribution:</p>
+        <span class="self-attribution">
+          This story: <span class="<%= self_attribution.script %>"><%=self_attribution.title%></span> is <%= self_attribution.story_action_type %> by
+          <%= render :partial => "pages/author_links", locals: {authors: self_attribution.authors}, :formats => [:html] %>.
+          <% if self_attribution.is_original_story %>
+          <%= render :partial => "pages/copyright_and_license", locals: {attribution: self_attribution}, :formats => [:html] %>
+          <% else %>
+            The © for this <%= self_attribution.derivation_type == 'translated' ? 'translation' : 're-level' %> lies with <%= self_attribution.copyright_holder %>, <%= self_attribution.copy_right_year %>. Some rights reserved. Released under <%= @story.license_type %> license.
+          <% end %>
+        </span>
+      <%end%>
+      <% unless parent_story_attribution.nil? %>
+        <span class="parent-story-attribution">
+          Derived from: <span class="<%= parent_story_attribution.script %>">'<%= link_to parent_story_attribution.title , host_url+"/stories/#{parent_story_attribution.url_slug}" %>'</span>, by
+          <%= render :partial => "pages/author_links", locals: {authors: parent_story_attribution.authors}, :formats => [:html] %>.
+          <%= render :partial => "pages/copyright_and_license", locals: {attribution: parent_story_attribution}, :formats => [:html] %>
+        </span>
+      <%end%>
+      <% unless original_story_attribution.nil? %>
+        <span class="original-story-attribution">
+          Based on Original story: <span class="<%= original_story_attribution.script %>">'<%= link_to original_story_attribution.title , host_url+"/stories/#{original_story_attribution.url_slug}" %>'</span>, by
+          <%= render :partial => "pages/author_links", locals: {authors: original_story_attribution.authors} %>.
+          <%= render :partial => "pages/copyright_and_license", locals: {attribution: original_story_attribution } %>
+        </span>
+      <%end%>
+      <% unless parent_story_attribution.nil? %>
+        <span class="derived-story-text">
+          This story may have intermediate versions between the root and parent story. To see all versions, please visit the links.
+        </span>
+      <%end%>
+      <% unless self_attribution.nil? || @story.other_credits.blank? %>
+        <p class="other-credits-section">Other Credits:</p>
+        <span class="other-credits"><%= @story.other_credits %></span>
+      <%end%>
+      <p class="illustration-attributions-section">Images Attributions:</p>
+      <% illustration_attributions.each do |attribution|  %>
+        <span class="illustration-attribution">
+          <%= attribution.page_number == 1 ? "Cover page" : "Page #{attribution.page_number}" %>:
+          <%= link_to attribution.name, host_url+"/illustrations/#{attribution.url_slug}" %>, by
+          <%= render :partial => "pages/illustrator_links", locals: {illustrators: attribution.illustrators, illustrators_id: attribution.illustrators_id} %><%= attribution.photographers.empty? ? '' : ',' %>
+          <%= render :partial => "pages/photographer_links", locals: {photographers: attribution.photographers, photographers_slug: attribution.photographers_slug} %>
+          <% if attribution.license_type == 'Public Domain' %>
+            <%= attribution.photographers.empty? ? '' : ',' %><%= attribution.copy_right_year %>.
+            Released under Public Domain Mark by <%=attribution.copyright_holders.join(', ')%>.
+          <% else %>
+            © <%=attribution.copyright_holders.join(', ')%>, 
+            <%= attribution.copy_right_year %>. Some rights reserved. Released under <%=attribution.license_type %> license.
+          <% end %>
+        </span>
+      <% end %>
+    </div>
+  </div>
+  <div class="license_container">
+    <div class="license_cont-middle">
+      <span class="discl-txt">Disclaimer:<a href="<%= host_url %>/terms_and_conditions" target="_blank">https://www.storyweaver.org.in/terms_and_conditions</a> </span>
+      <%= render :partial => "pages/license", locals: {license: @story.license_type } %>
+      <% @additional_illustration_license_types.each do |license|  %>
+        <%= render :partial => "pages/license", locals: {license: license} %>
+      <% end %>
+    </div>
+		  <div class="donor-container">
+				  <%= render :partial => "pages/donor", locals: {donor: @story.donor} if @story.donor%>
+		  </div>
+  </div>
+</div>

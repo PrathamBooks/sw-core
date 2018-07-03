@@ -1,0 +1,148 @@
+.pdf_body{
+  margin-bottom: 0;
+}
+
+#story_pdf {
+  .page-container-landscape{
+    display:block;
+    clear:both;
+    page-break-after:always;
+    position:relative;
+    overflow: hidden;
+    width: 284mm;
+    height: 204mm;
+  }
+  .page-container-portrait{
+    display:block;
+    clear:both;
+    page-break-after:always;
+    position:relative;
+    overflow: hidden;
+    width: 197mm;
+    height: 291mm;
+    .text-font-largest{
+      font-size: 44px;
+      display: inline;
+    }
+    .text-font-large{
+      font-size: 37px;
+      display: inline;
+    }
+    .text-font-normal{
+      font-size: 28px;
+      display: inline;
+    }
+    .text-font-medium{
+      font-size: 26.3px;
+      display: inline;
+    }
+    .text-font-small{
+      font-size: 26px;
+      display: inline;
+    }
+    .text-font-smallest{
+      font-size: 24px;
+      display: inline;
+    }
+  }
+  .text-font-largest {
+    font-size: 30px;
+    display: inline;
+  }
+  .text-font-large {
+    font-size: 26px;
+    display: inline;
+  }
+  .text-font-normal {
+    font-size: 20px;
+    display: inline;
+  }
+  .text-font-medium {
+    font-size: 18.5px;
+    display: inline;
+  }
+  .text-font-small {
+    font-size: 15.5px;
+    display: inline;
+  }
+  .text-font-smallest {
+    font-size: 14.5px;
+    display: inline;
+  }
+  .content-container:not(.bic_h_c100):not(.bc_h_c100):not(.bc_v_c100):not(.bic_v_c100):not(.sp_h_iL66_cR33):not(.sp_h_iL50_cR50){
+    padding: 25px;
+    display: block;
+  }
+  .sp_h_iL66_cR33.content-container{
+    padding: 25px 25px 0 100px;
+    display: block;
+  }
+  .sp_h_iL50_cR50.content-container{
+    padding: 25px 25px 0 70px;
+    display: block;
+  }
+  .content{
+    padding: 0;
+  }
+  .content:not(.bc_h_c100):not(.bic_h_c100):not(.bic_v_c100):not(.bc_v_c100) p{
+    margin: 0;
+  }
+  .sp_h_iL66_cR33, .sp_h_iL50_cR50, .sp_h_text_overlay, .sp_h_iT75_cB25 {
+    span{
+      display: initial;
+    }
+  }
+  .bc_v_c100.content .reading_level_help{
+    height: 6.2%;
+    margin-top: 12px;
+  }
+
+  .sp_h_text_overlay.content {
+    margin-left: 15% !important;
+    margin-top: 4.7% !important;
+    font-size: 22.5px;
+  }
+
+// Wkhtml2pdf and Chromium are adding margin-top to p elements. It is not clear where 
+// the margin is coming from. Override it here. Note that newer browsers do not show that margin. 
+  .sp_h_text_overlay1.content > p {
+    margin: 0px;
+  }
+  .sp_h_text_overlay1.content.text-font-normal, .sp_h_text_overlay1.content .text-font-normal {
+    font-size: 22px;
+  }
+
+  .sp_h_text_overlay1.content .text-font-large, .sp_h_text_overlay1.content.text-font-large {
+    font-size: 28px;
+  }
+
+  .sp_h_text_overlay1.content .text-font-largest, .sp_h_text_overlay1.content.text-font-largest {
+    font-size: 32px;
+  }
+
+  .sp_h_text_overlay1.content .text-font-medium, .sp_h_text_overlay1.content.text-font-medium {
+    font-size: 21px;
+  }
+
+  .sp_h_text_overlay1.content .text-font-small, .sp_h_text_overlay1.content.text-font-small {
+    font-size: 17.5px;
+  }
+
+  .sp_h_text_overlay1.content .text-font-smallest, .sp_h_text_overlay1.content.text-font-smallest {
+    font-size: 15.5px;
+  }
+}
+
+#story_pdf .page-container-portrait .fc_v_iT66_cB33.content .logo-level .pub-logo {
+  width: 45% !important;
+}
+#story_pdf .page-container-landscape .fc_h_iT66_cB33.content .logo-level .pub-logo {
+  width: 36% !important;
+}
+
+// SW - 2863: In PDF one of the template which it is having text above and image below is not 
+// working, as it is appearing normally. To show like that we need to add position absolute for that // template.
+
+#story_pdf .sp_h_iB66_cT33.illustration, #story_pdf .sp_v_iB66_cT33.illustration{
+  position: absolute;
+}

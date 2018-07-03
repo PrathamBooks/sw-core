@@ -1,0 +1,27 @@
+<tr>
+	<td align="center">
+	  <table width="432px" cellspacing="0" cellpadding="0" border="0" align="center">
+	   
+	    <tr style="margin-bottom: 20px; float: left;">
+	      	<td><strong>Dear <%= @illustrator.name.titleize %></strong>,</td>
+	    </tr>
+	    <tr style="margin-bottom: 10px; float: left;">
+	      	<td>We're sorry to let you know that your image (<%= link_to(@illustration.name, react_illustrations_show_url(@illustration)) %>) has been pulled down from StoryWeaver and will no longer be visible to other users. Your image was red flagged by a community member because they felt that.</td>
+	    </tr>
+	    <tr style="margin-bottom: 10px; float: left;">
+	    	<% @reasons.each do |reason| %>
+	    	<tr><%= reason %></tr>
+	    	<% end %>
+	    </tr>
+	    <tr style="margin-bottom: 20px; margin-top: 10px; float: left;">
+		  		<td>If you do have any queries, you can send us an email to <a href="mailto:help@storyweaver.org.in" target="_top">help@storyweaver.org.in</a> and we'll get back to you as soon as we can.
+		  		</td>
+			</tr>
+			<tr style="margin-bottom: 20px; float: left;">
+		  	<td>
+					<p>Team<br/>StoryWeaver</p>
+				</td>
+			</tr>
+		</table>
+	</td>
+</tr>

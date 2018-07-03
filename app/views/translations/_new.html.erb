@@ -1,0 +1,47 @@
+<div class="modal fade" id="translateStoryModal" tabindex="-1" role="dialog" aria-labelledby="moreLinksModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header trans_popup_head">
+        <h2 class="modal-title">Translate Story</h2>
+        <% if @tr_story && @tr_story.errors.any? %>
+          <%= display_errors(@tr_story) %>
+        <% end %>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <%= simple_form_for @tr_story,
+            url: {action: :update, controller: :translations, id: @story},
+            html: { class: 'form-horizontal translate_story',  multipart: true },
+            authenticity_token: true do |f| %>
+            <%= f.hidden_field :story_id , :value => @story.id %>
+            <%= f.hidden_field :contest_id , :value => @contest_id %>
+            <%= f.association :language , collection: @languages.collect {|language| [language.get_name,language.id]  if language.name != @story.language.name }.compact %>
+            <p class="translate_lang_hint">Can't find your language here? Email us at <a href="mailto:help@storyweaver.org.in">help@storyweaver.org.in</a> to add it. We will try to add it as soon as possible.</p>
+            <div class="center-align-btn"><%= f.button :submit, "Translate Story" , id: "translate_form_submit", class: "btn btn-app btn-brand-1 font-sm" %></div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+$(document).ready(function() {
+  var story_details = new StoryDetails(new StoryDetailsPage());
+  story_details.init_translate_story_form();
+
+  // #t_language is the id of target language selected in translation search
+  selected_target_lang = $('#t_language option:selected').val();
+
+  if(typeof selected_target_lang !== 'undefined' && selected_target_lang != ''){
+    // reaching here means #t_language element is found on page.
+   
+    language_element = $('#story_language_id option').filter(function () { return $(this).html() == selected_target_lang; });
+    if (language_element.length == 1){ // set the language and submit if found in dropdown
+      language_element.attr('selected', 'selected'); 
+      $('#new_story').submit();   // #new_story is the form id
+    }
+  }
+
+});
+</script>

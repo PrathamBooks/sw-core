@@ -1,0 +1,22 @@
+<div class="row">
+  <div class="col-md-6 col-sm-8 div-center-align">
+  	<div class="div-full-width">
+		<h2>Resend confirmation instructions</h2>
+		<div id="loginForm">
+			<%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
+			  <%= devise_error_messages! %>
+			
+			  <div class="field">
+			    <%= f.label :email %><br />
+			    <%= f.email_field :email, autofocus: true %>
+			  </div>
+			
+			  <div class="actions log-sig-btn log-signin-btn">
+			    <%= f.submit "Resend confirmation instructions" %>
+			  </div>
+			<% end %>		
+		</div>
+    <div class="share-links"><%= render "devise/shared/links" %></div>
+  	</div>
+  </div>
+</div>

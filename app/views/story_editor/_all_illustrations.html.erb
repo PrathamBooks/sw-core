@@ -1,0 +1,32 @@
+<%= render :partial => "story_editor/illustration_sort" %>
+<div class="spacing-v"></div>
+<%= render :partial => "story_editor/illustration_filters" %>
+<div class="image-drawer-content-inner scrollbar-custom">
+  <div id="image-draw-full" style="">
+  <div class="masonry-img-grid row row-gutter-sm">
+    <div class="masonry-img-grid-sizer"></div>
+    <div id="process_illustration" class="alert alert-info hide" role="alert">
+      The Illutration which you uploaded is still in process. it may take some time to appear on illustration drawer
+    </div>
+    <div id="illustration-holder">
+      <div id="DIV_ILLUSTRATION_FEED">
+
+      </div>
+      <div id="NO_RESULTS" class="results-searched hide">
+        <div>Oops! We couldn't find anything related to your illustration search.</div>
+        <div class="no-results-found-try">Here is what you can try:</div>
+        <ul>
+          <li>Make sure the spelling is correct.</li>
+          <li>Search with other words that are similar in meaning.</li>
+          <li>Search with fewer filters.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+<div id="load_cards">
+  <%= render :partial => "/story_editor/illustration_card" %>
+</div>
+
+

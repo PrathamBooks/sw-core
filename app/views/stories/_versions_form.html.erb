@@ -1,0 +1,20 @@
+<div class="dropdown">
+    <a class="dropdown-toggle myclickdrop" 
+    type="button" 
+    id="dropdownMenu1" 
+    data-toggle="dropdown" 
+    aria-expanded="true">
+    <i class="fa fa-dropdown"></i>
+    View other versions of this story
+    </a>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+      <% @story.other_versions.each do |version| %>
+        <li role="presentation">
+        <%= link_to version.version_label, story_versions_path(@story.id, version.language.id, version.reading_level) %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<script>
+	$('.dropdown-toggle.myclickdrop').dropdownHover();
+</script>

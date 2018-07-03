@@ -1,0 +1,46 @@
+<div id="toolbar" class="toolbar">
+<div class="form-group form-group--sc-sidebar font-sm <%= @page.is_story_page? ? '' : 'disabled'%>" >
+  <div><label><%=t 'editor.editor_page.alignment'%></label></div>
+  <a data-wysihtml-command="justifyLeft" title="Align left"><span class="richtext-icon icon-square-wrap"><i class="icon-square fa fa-align-left"></i></span></a>
+  <a data-wysihtml-command="justifyRight" title="Align right"><span class="richtext-icon icon-square-wrap"><i class="icon-square fa fa-align-right"></i></span></a>
+  <a data-wysihtml-command="justifyCenter" title="Align center"><span class="richtext-icon icon-square-wrap"><i class="icon-square icon-square fa fa-align-center"></i></span></a>
+  <a data-wysihtml-command="justifyFull" title="Justify"><span class="richtext-icon icon-square-wrap"><i class="icon-square fa fa-align-justify"></i></span></a>
+</div> <!-- /form-group -->
+<div class="form-group form-group--sc-sidebar font-sm <%= @page.is_story_page? ? '' : 'disabled'%>">
+  <div><label><%=t 'editor.editor_page.style.header'%></label></div>
+  <a data-wysihtml-command="bold" title="<%=t 'editor.editor_page.style.bold'%>"><span class="richtext-icon icon-square-wrap"><i class="icon-square fa fa-bold"></i></span></a>
+  <a data-wysihtml-command="italic" title="<%=t 'editor.editor_page.style.italic'%>"><span class="richtext-icon icon-square-wrap"><i class="icon-square fa fa-italic"></i></span></a>
+  <a data-wysihtml-command="underline" title="<%=t 'editor.editor_page.style.underline'%>"><span class="richtext-icon icon-square-wrap"><i class="icon-square fa fa-underline"></i></span></a>
+  <a data-wysihtml-command="subscript" title="<%=t 'editor.editor_page.style.subscript'%>"><span class="richtext-icon icon-square-wrap"><i class='icon-square fa fa-subscript'></i></span></a>
+  <a data-wysihtml-command="superscript" title="<%=t 'editor.editor_page.style.superscript'%>"><span class="richtext-icon icon-square-wrap"><i class='icon-square fa fa-superscript'></i></span></a>
+</div> <!-- /form-group -->
+
+<div class="form-group form-group--sc-sidebar font-sm <%= @page.is_story_page? ? '' : 'disabled'%>">
+  <div><label><%=t 'editor.editor_page.text_size.header'%></label></div>
+  <div class="dropdown">
+    <div data-behavior="showfontsizes" title="<%=t 'editor.editor_page.text_size.font_size'%>" id="richtext-font-sizes" class="btn btn-sm btn-default dropdown-toggle btn-richtext-font-trigger" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <span class="current-font"><%=t 'editor.editor_page.text_size.normal'%></span>&nbsp;<b class="caret"></b>
+    </div>
+    <ul class="dropdown-menu dropdown-menu--richtext-font-size menu-size" aria-labelled-by="richtext-font-sizes">
+      <li class="">
+        <a class="normal" data-wysihtml-command="fontSize" data-wysihtml-command-value="normal"><%=t 'editor.editor_page.text_size.normal'%></a>
+      </li>
+      <li>
+        <a class="largest" data-wysihtml-command="fontSize" data-wysihtml-command-value="largest"><%=t 'editor.editor_page.text_size.largest'%></a>
+      </li>
+      <li>
+        <a class="large" data-wysihtml-command="fontSize" data-wysihtml-command-value="large"><%=t 'editor.editor_page.text_size.large'%></a>
+      </li>
+      <li>
+        <a class="medium" data-wysihtml-command="fontSize" data-wysihtml-command-value="medium"><%=t 'editor.editor_page.text_size.medium'%></a>
+      </li>
+      <li>
+        <a class="small" data-wysihtml-command="fontSize" data-wysihtml-command-value="small"><%=t 'editor.editor_page.text_size.small'%></a>
+      </li>
+      <li>
+        <a class="smallest" data-wysihtml-command="fontSize" data-wysihtml-command-value="smallest"><%=t 'editor.editor_page.text_size.smallest'%></a>
+      </li>       
+    </ul>
+  </div> <!-- /dropdown -->
+</div> 
+</div><!-- /toolbar -->

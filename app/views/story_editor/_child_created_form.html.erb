@@ -1,0 +1,49 @@
+			        <div class="form-group">
+			        	<div class="spacing-half-v"></div>
+			        	<div class="child-author-block row row-gutter">			
+			        		<div class="col-sm-7">
+						        <div class="heading-title"><span class="text-uppercase">Publish:</span> Add details of child author(s)</div>
+						        <div class="spacing-half-v"></div>
+			        		</div>        		
+			        		<div class="col-sm-4 float-right">
+						        <span class="btn btn-app btn-brand-1 float-right"  id="save_and_close_form1">save and publish later</span>
+						      </div>
+			        	</div> <!-- /row -->
+			        </div>			        
+								<%= f.fields_for :youngsters do |a| %>
+									<div class="row row-gutter">
+											<div class="col-sm-6">
+	                      <div class="form-group form-group-lg-pad">  
+	                        <label class="heading-section label-required">Name of the child</label>
+	                          <%= a.input :name, label: false, :required =>  true, class: "form-control input-brand input-brand--lg" %>
+	                      </div>
+	                  	</div>
+
+			              	<div class="col-sm-6">
+								        <div class="form-group form-group-lg-pad">
+									        <label class="heading-section label-required">Age</label>
+									        <%= a.input :age, label: false, collection: (3..16).to_a, :required =>  true, class: "form-control input-brand input-brand--lg" %>
+											  </div> <!-- /form-group -->
+							        </div> <!-- /col -->
+							        <div class="text-right">
+                          <a href="" class="link-delete">         
+                            <span class="fa fa-times"></span>
+                            <span><%= a.link_to_remove "Remove"%></span>
+                          </a>
+                      </div>
+	                </div>
+                <% end %>
+                  <div class="form-group form-group-lg-pad">
+                    <%= f.link_to_add "Add details of child", :youngsters, class: 'add_child_link btn btn-app btn-default grey-gravel' %>
+                  </div>
+					    <div class="row row-gutter">
+						    <div class="col-xs-4">
+							    <div class="btn btn-link btn-link-underline"  data-dismiss="modal">Cancel</div>
+						    </div>
+						    <div class="col-xs-8 text-right">
+						    	<div class="row row-gutter-sm-x">
+							    	<%= button_tag "previous", id: "child_form_previous", type: 'button' , class: "btn btn-app btn-brand-1"  %>
+							    	<%= button_tag "next", id: "child_form_next", type: 'button' , class: "btn btn-app btn-brand-1"  %>
+						    	</div> <!-- /row -->
+						    </div>
+					    </div>

@@ -1,0 +1,39 @@
+<div class="btn-group">
+  <i class="dropdown-arrow dropdown-arrow-inverse"></i>
+  <button class="btn btn-primary dropdown-toggle filter-btn" data-toggle="dropdown" >Top <%= params[:limit] ? params[:limit] : 10 %></button>
+  <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"> <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu dropdown-limit">
+    <% [10, 20, 30, 40, 50, 100].each do |limit| %>
+    <li><%= link_to "Top #{limit}", most_downloaded_illustrations_path(:limit => limit, :style=>params[:style]? params[:style] : '', :category=>params[:category]? params[:category] : ''), :remote => true%></li>
+    <% end %>
+  </ul>
+</div>
+<table class="table table-striped">
+  <thead>
+  <tr class="table-heading-row">
+    <th>Name</th>
+    <th>Organization</th>
+    <th>category</th>
+    <th>Style</th>
+    <th>No of Downloads</th>
+    <th></th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody class="table-row-details">
+  <% if illustrations %>
+    <% illustrations.each do |illustration| %>
+      <tr>
+        <td><%= link_to illustration.name, react_illustrations_show_path(illustration) %></td>
+        <td><%= illustration.organization.present? ? illustration.organization.organization_name : 'Storyweaver Community' %></td>
+        <td><%= illustration.categories.collect(&:name).join(",") %></td>
+        <td><%= illustration.styles.collect(&:name).join(",")%></td>
+        <td><%= illustration.illustration_downloads.count %></td>
+        <td></td>
+        <td></td>
+      </tr>
+    <% end %>
+  <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,142 @@
+<div class="page-container-<%= @page.page_template.orientation %> story-page">
+  <%
+     parent_story_page = @story.parent_story_page(@page)
+     original_text = parent_story_page.content rescue ''
+     sanitised_original_text = parent_story_page.sanitised_content rescue ''
+     is_derivation = sanitised_original_text.blank? ? false : true
+  %>
+  <div id="original_text" class="original_text <%= @page.class != StoryPage || sanitised_original_text.blank? ? 'hidden' : '' %>">
+    <div class="drag-icon">
+	   <i class="fa fa-arrows"></i>
+	   <span><%= t 'editor.editor_page.reference_text_1'%> <br/><%= t 'editor.editor_page.reference_text_2'%></span>
+	</div>
+  <div class="origi-text"> 
+	  <span class="text <%= @story.parent.language.script rescue '' %>" dir="<%= @story.parent && @story.parent.language.is_right_to_left? ? 'rtl' : 'auto' %>">
+	    <%= raw(original_text) %>
+	  </span>
+    </div>
+  </div>
+  <div
+  id="reading_level_help"
+  data-level1-help= "<%= reading_level_help(@story.language.locale, 1) %>"
+  data-level2-help= "<%= reading_level_help(@story.language.locale, 2) %>"
+  data-level3-help= "<%= reading_level_help(@story.language.locale, 3) %>"
+  data-level4-help= "<%= reading_level_help(@story.language.locale, 4) %>"
+  ></div>
+
+  <% if @page.page_template.name == "sp_v_iB66_cT33" || @page.page_template.name == "sp_h_iB66_cT33" %>
+    <%= render :partial => "story_editor/#{@page.class.to_s.underscore}"%>
+  <% end %>
+  <div id="illustration_container" class='<%= @page.page_template.name %> <%= @page.illustration_crop.nil? ? '' : 'has_illustration' %> illustration <%= @story.is_translated? ? "top_line_40" : "" %>'>
+    <% if (crop_data_illustration_id(@illustration,@page).nil?) %>
+      <div class="add-btn-overlay">
+        <span class="btn-slide-add-img btn btn-app btn-default grey-gravel font-sm <%= @story.is_derivation? ? 'disabled' : '' %>" data-toggle="modal" data-target="#modal-image-drawer" >add an image</span>
+      </div>
+    <% else %>
+      <% if illustration_crop_missing(@page) %>
+        <img id='illustration' data-page-id="<%= @page.id %>" data-original-illustration-id="<%= @page.try(:illustration_crop).try(:illustration).try(:id) %>" data-illustration-id="<%= crop_data_illustration_id(@illustration,@page) %>" src="<%= illustration_image_url(@page) %>" style="<%= illustration_crop_style(@page) %>"/>
+      <% else %>
+        <img id='illustration' data-page-id="<%= @page.id %>" data-original-illustration-id="<%= @page.try(:illustration_crop).try(:illustration).try(:id) %>" data-illustration-id="<%= crop_data_illustration_id(@illustration,@page) %>" src="<%= illustration_crop_image_url(@page) %>"/>
+      <% end %>
+    <% end %>
+  </div>
+  <% if @page.page_template.name != "sp_v_iB66_cT33" && @page.page_template.name != "sp_h_iB66_cT33" %>
+    <%= render :partial => "story_editor/#{@page.class.to_s.underscore}"%>
+  <% end %>
+</div>
+
+<script type="text/javascript">
+
+  var disable_blur = false;
+
+  $(document).ready( function() {
+    // var illustration = <%= @page.try(:illustration_crop).try(:id) || false %>;
+
+    var data = {};
+    data.page={};
+    story_editor_page = new StoryEditorPage();
+    var page_id = story_editor_page.page_id();
+    var story_editor = new StoryEditor(story_editor_page, new StoryEditorService());
+    story_editor.init_original_text();
+    story_editor.init_auto_save();
+    story_editor.hide_illustration_drawer_based_on_orientation();
+    story_editor.setup_page_manipulation_links($('.page-list').find('.active').attr('class'));
+     
+
+
+  $("#txtEditor").wysihtml({
+    "font-styles":  true, //Font styling, e.g. h1, h2, etc
+    "color":        false, //Button to change color of font
+    "emphasis":     true, //Italics, bold, etc
+    "textAlign":    true, //Text align (left, right, center, justify)
+    "lists":        false, //(Un)ordered lists, e.g. Bullets, Numbers
+    "blockquote":   false, //Button to insert quote
+    "link":         false, //Button to insert a link
+    "table":        false, //Button to insert a table
+    "image":        false, //Button to insert an image
+    "video":        false, //Button to insert YouTube video
+    "html":         false, //Button which allows you to edit the generated HTML
+    "events": {
+      "blur": function() {
+        story_editor.save_on_blur();
+        setTimeout( function () {
+          // Setting 500ms timeout for the click to happen before the blur happens
+          // and hide the suggestions box
+        $('#varnam_ime_suggestions').hide(); 
+      }, 500)
+      },
+      "aftercommand:composer": function() {
+        $('#varnam_ime_suggestions').hide();
+      }
+     }
+    });
+
+  //scrolling the original text box to the first sentence in translated and relevelled stories.
+  if ("<%=is_derivation%>" !== "false") {
+    var container = $("#original_text .origi-text");
+
+    container.find("p").each(function(){
+      if ($(this).text().trim() !== ""){
+        $(this).attr("id","first_sentence")
+        return false;
+      }
+    });
+
+    var scrollTo = $("#first_sentence");
+    
+    // Check if a any objects with the above Id exists.
+    if(scrollTo[0]){
+      container.scrollTop(
+        scrollTo.offset().top - container.offset().top + container.scrollTop()
+      );
+    }
+  }
+
+  });
+
+  <% if @page.page_template.orientation == "portrait" %>
+    $('#right_side_editor').addClass('portrait_editor');
+  <% else %>
+    $('#right_side_editor').removeClass('portrait_editor');
+  <% end %>
+
+  var croppicContainerModalOptions = {
+    uploadUrl:'img_save_to_file.php',
+    cropUrl:'img_crop_to_file.php',
+    modal:true,
+    imgEyecandyOpacity:0.2
+  };
+  var cropContainerModal = new Croppic('illustration_container', croppicContainerModalOptions);
+  if($("#txtEditor").length != 0) {
+    $('#keyboard-options').empty();
+    var varnam = new VarnamIME($("#txtEditor"), "#keyboard-options",{name: '<%= @story.language.name %>'}, '<%= Settings.varnam.url %>').initForWsyiEditor();
+  }
+</script>
+<script>
+$(function() {
+    
+   $('[data-toggle="tooltip"]').tooltip();
+	 $( "ul.wysihtml-toolbar" ).draggable({containment: ".right-side-editor", scroll: false});
+});
+</script>
+

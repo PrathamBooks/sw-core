@@ -1,0 +1,30 @@
+<div id="pages_ribbon" >
+  <div class="page-list">
+    <div class="covers">
+      <% @story.pages.select{|page| page.type == FrontCoverPage.name}.each do |page| %>
+        <p class="<%= page.page_template.orientation %>">Front cover</p>
+        <%= render :partial => "/story_editor/page_thumbnail", locals: {page: page} %>
+      <% end %>
+    </div>
+    <span id="sortable">
+      <% @story.pages.select{|page| page.type == StoryPage.name}.each do |page| %>
+        <%= render :partial => "/story_editor/page_thumbnail", locals: {page: page} %>
+      <% end %>
+    </span>
+    <div class="covers">
+      <% @story.pages.select{|page| page.type == BackCoverPage.name}.each do |page| %>
+        <p class="<%= page.page_template.orientation %>">Back cover</p>
+        <%= render :partial => "/story_editor/page_thumbnail", locals: {page: page} %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+var story_editor = new StoryEditor(new StoryEditorPage(), new StoryEditorService());
+story_editor.init_page_rearrange();
+story_editor.init_page_click();
+story_editor.setup_page_manipulation_links($('.page-list').find('.active').attr('class'));
+story_editor.set_pages_ribbon_width();
+story_editor.hide_illustration_drawer_based_on_orientation();
+</script>

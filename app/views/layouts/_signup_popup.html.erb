@@ -1,0 +1,40 @@
+<% unless session[:check_user_signed_in] %>
+  <div class="modal fade signupModal" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="moreLinksModalLabel1" aria-hidden="true">
+    <div class="vertical-alignment-helper" >
+      <div class="modal-dialog vertical-align-center">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close signupClose" data-dismiss="modal" aria-label="Close" onclick="ga('send', 'event', { eventCategory: 'pop up', eventAction: 'close', eventLabel: '<%= request.path %>'});">
+              <span aria-hidden="true"><i class="fa fa-times-circle"></i></span>
+            </button>
+            <h2 class="modal-title text-left">Sign up now!</h2>
+            <hr class="form-hr">
+          </div>
+          <div class="modal-body nopadding">
+            <div id="signup-btn">
+              We'll send piping hot stories and the latest news right to your inbox!
+              <br/>
+              <%= link_to "Sign Up Now!", new_user_registration_path(:popup=>true), :class=>"btn signin-button", :onclick => "ga('send', 'event', { eventCategory: 'pop up', eventAction: 'sign up', eventLabel: '#{request.path}'});" %>
+              <%= link_to "Log In", new_user_session_path(:popup=>true), :onclick => "ga('send', 'event', { eventCategory: 'pop up', eventAction: 'log in', eventLabel: '#{request.path}'});" %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <% unless session[:viewed_popup] %>
+    <script type="text/javascript" charset="utf-8">
+      $(document).ready(function(){
+        var popup_time = <%= session[:popup_time].to_i%>;
+        setTimeout(function(){
+          $('#signupModal').modal({
+            show: true
+          });
+          ga('send', 'event', { eventCategory: 'pop up', eventAction: 'load', eventLabel: '<%= request.path %>'});
+          Statistics.trackPopupViewed();
+        }, popup_time);
+      });
+    </script>
+  <% end %>
+<% end %>

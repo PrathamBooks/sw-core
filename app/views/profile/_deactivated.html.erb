@@ -1,0 +1,32 @@
+<div role="tabpanel" class="tab-pane" id="profile-drafts">
+  <div class="col-md-12">
+    <table class="table table-striped">
+      <thead>
+        <tr class="table-heading-row">           
+          <th><%= t "dashboard.story_title"%></th>
+          <th><%= t "dashboard.parent_story"%></th>
+          <th><%= t "dashboard.last_updated_on"%></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody class="table-row-details">    
+        <% @deactivated_stories.each do |story| %>
+          <tr>
+            <td class="underline-class"><a href="<%= react_stories_show_path(story.to_param) %>"><%= story.title? ? get_title(story.language, story.title).html_safe : "Untitled" %></a></td>
+            <td>
+              <% if story.parent.present? %>
+                <a href="<%= react_stories_show_path(story.parent.to_param) %>"><%= get_title(story.language, story.parent.title).html_safe  %></a>
+              <% end %>
+            </td>
+            <td><%= story.updated_at.localtime.strftime("%Y-%m-%d %H:%M:%S") %></td>
+            <td>
+              <%= link_to "#{t "dashboard.edit"}", story_editor_path(story), class:"btn btn-info edit-btn" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%= paginate @deactivated_stories %>

@@ -1,0 +1,50 @@
+<div class="row">
+<div class="row">
+  <div class="col-md-5 col-sm-5">
+    <table class="table table-striped">
+      <thead>
+        <tr class="table-heading-row">
+          <th><%= t "dashboard.story_categories_tab.category_name" %></th>
+          <th><%= t "dashboard.story_categories_tab.private" %></th>
+          <th><%= t "dashboard.actions" %></th>
+        </tr>
+      </thead>
+      <tbody class="table-row-details">    
+      <% @categories.each_with_index do |category,index| %> 
+        <tr>
+          <td>
+            <div>
+              <label><%= category.name %></label>  
+
+            </div>
+
+            <div id="index_<%= index %>" style="display:none;padding-top:5px;">
+              <%= simple_form_for(:category, :url => edit_story_category_path(category), html: { id: "form_#{index}"}) do |f| %>
+                <%= f.input :name, value: category.name , label: false , input_html: {style: "float:left;width:100%;margin-right:15px;" , value: category.name} %>
+                <%= f.input :private, as: :boolean, checked_value: true, unchecked_value: false, label: false, input_html: {:class => 'private-category'} %>
+                <div class="category-submit">
+                  <%= f.submit "submit" , :class=>"btn btn-success" %>
+                  <input class="btn btn-inverse" name="commit" onclick="Dashboard.hideForm(<%= index %>)" type="button" value="cancel">
+                </div>
+              <% end %>
+            </div>
+          </td>
+          <td><span id="private_<%= index %>"><%= category.private ? 'Yes' : 'No' %></span></td>
+          <td><input id="<%= index %>" type="button" name="submit" data-category="<%= category.name %>" value="<%= t 'dashboard.edit' %>" class="btn btn-info edit-btn edit_<%= index %>" onclick="Dashboard.showForm(<%= index %>);" /></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= paginate @categories %>
+  </div>
+  <div class="col-md-1 col-sm-1">
+  </div>
+  <div class="col-md-5 col-sm-5">
+    <%= simple_form_for(:category, :url => create_story_category_path) do |f| %>
+      <%= f.input :name, label: false ,:placeholder => "category name", input_html: {:class => "new-cat-add" } %>
+      <input type="text" class = "string required form-control new-cat-add"  placeholder= "hindi translation" name="category[translated_name]">
+      <%= f.input :private, as: :boolean, checked_value: true, unchecked_value: false, inline_label: "#{t 'dashboard.story_categories_tab.private_category'}", label: false %>
+      <%= f.submit "#{t 'dashboard.story_categories_tab.add_category'}" , :class=>"btn btn-info new-cat-btn" %>
+    <% end %>
+  </div>
+</div>

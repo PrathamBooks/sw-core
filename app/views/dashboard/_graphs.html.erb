@@ -1,0 +1,76 @@
+
+<div class="btn-group" >
+  <i class="dropdown-arrow dropdown-arrow-inverse"></i>
+  <button class="btn btn-primary languages dropdown-toggle filter-btn" data-toggle="dropdown" ><%= @stories ? "Stories" : (@derivative_stories ? "Derivatives" : (@original_stories ? "Original Stories" : "Users")) %></button>
+  <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"> <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu dropdown-languages">
+    <li><%= link_to "Users", analytics_path, :remote => true%></li>
+    <li><%= link_to "Stories", analytics_path(:stories=>true), :remote => true%></li>
+    <li><%= link_to "Derivatives", analytics_path(:derivatives => true), :remote => true%></li>
+    <li><%= link_to "Original Stories", analytics_path(:original_stories=>true), :remote => true%></li>
+
+  </ul>
+</div>
+<div>
+<% if @users %>
+    <h1>Users<%= "(#{@user_count})" if @user_count%></h1>
+      <h3>Unconfirmed users(<%= @unconfirmed_user%>) </h3>
+    <div class="days">
+      <%= link_to "day", analytics_path(:group=>"day"), :remote=>true, :class=>(params[:group]=="day" || params[:group]== nil ? "btn active" : "btn")%>
+      <%= link_to "week", analytics_path(:group=>"week"), :remote=>true, :class=>(params[:group]=="week"? "btn active" : "btn")%>
+      <%= link_to "month", analytics_path(:group=>"month"), :remote=>true, :class=>(params[:group]=="month"? "btn active" : "btn")%>
+      <%= link_to "year", analytics_path(:group=>"year"), :remote=>true, :class=>(params[:group]=="year"? "btn active" : "btn")%>
+    </div>
+    <div id="users">
+      <%= line_chart @users%>
+      <div id="user_graphs">
+        <%= render :partial => "graphs_table"%>
+      </div>
+    </div>
+<% elsif @original_stories %>
+    <h1>Original Stories<%= "(#{@original_stories_count})" if @original_stories_count%></h1>
+    <div class="days">
+      <%= link_to "day", analytics_path(:original_stories => true, :group=>"day"), :remote=>true, :class=>(params[:group]=="day"? "btn active" : "btn")%>
+      <%= link_to "week", analytics_path(:original_stories => true, :group=>"week"), :remote=>true, :class=>(params[:group]=="week"? "btn active" : "btn")%>
+      <%= link_to "month", analytics_path(:original_stories => true, :group=>"month"), :remote=>true, :class=>(params[:group]=="month"? "btn active" : "btn")%>
+      <%= link_to "year", analytics_path(:original_stories => true, :group=>"year"), :remote=>true, :class=>(params[:group]=="year"? "btn active" : "btn")%>
+
+    </div>
+    <div id="original_stories">
+      <%= line_chart @original_stories%>
+      <div id="original_stories_graphs">
+        <%= render :partial => "graphs_table"%>
+      </div>
+    </div>
+<% elsif @derivative_stories %>
+    <h1>Derivative Stories<%= "(#{@derivative_stories_count})" if @derivative_stories_count%></h1>
+    <div class="days">
+      <%= link_to "day", analytics_path(:derivatives => true, :group=>"day"), :remote=>true, :class=>(params[:group]=="day"? "btn active" : "btn")%>
+      <%= link_to "week", analytics_path(:derivatives => true, :group=>"week"), :remote=>true, :class=>(params[:group]=="week"? "btn active" : "btn")%>
+      <%= link_to "month", analytics_path(:derivatives => true, :group=>"month"), :remote=>true, :class=>(params[:group]=="month"? "btn active" : "btn")%>
+      <%= link_to "year", analytics_path(:derivatives => true, :group=>"year"), :remote=>true, :class=>(params[:group]=="year"? "btn active" : "btn")%>
+
+    </div>
+    <div id="derivative_stories">
+      <%= line_chart @derivative_stories%>
+      <div id="derivative_stories_graphs">
+        <%= render :partial => "graphs_table"%>
+      </div>
+    </div>
+<% elsif @stories %>
+    <h1>Stories<%= "(#{@story_count})"%></h1>
+    <div class="days">
+      <%= link_to "day", analytics_path(:stories=> true, :group=>"day"), :remote=>true, :class=>(params[:group]=="day"? "btn active" : "btn")%>
+      <%= link_to "week", analytics_path(:stories=> true, :group=>"week"), :remote=>true, :class=>(params[:group]=="week"? "btn active" : "btn")%>
+      <%= link_to "month", analytics_path(:stories=> true, :group=>"month"), :remote=>true, :class=>(params[:group]=="month"? "btn active" : "btn")%>
+      <%= link_to "year", analytics_path(:stories=> true, :group=>"year"), :remote=>true, :class=>(params[:group]=="year"? "btn active" : "btn")%>
+    </div>
+    <div id="stories">
+      <%= line_chart @stories%>
+      <div id="stories_graphs">
+        <%= render :partial => "graphs_table"%>
+      </div>
+    </div>
+<% end %>
+</div>

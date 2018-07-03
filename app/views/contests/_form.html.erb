@@ -1,0 +1,38 @@
+<%= simple_form_for @contest  do |f| %>
+  <%= f.input :name, label: "Contest name", input_html: {:class =>"contest_creation_form"} %>
+  <%= f.input :contest_type, as: :select, collection:[["Story","story"], ["Illustration","illustration"]], input_html: {:class =>"contest_creation_form"} %>
+  <%= f.input :tag_name, label: "Tag name", input_html: {:class =>"contest_creation_form"} %>
+  <%= f.input :start_date, as: :string, input_html: {:class => "datepicker contest_creation_form", :id => "start_date"} %>
+  <%= f.input :end_date, as: :string, input_html: {:class => "datepicker contest_creation_form",:id => "end_date"} %>
+  <%= f.input :is_campaign, label: "Is it a Campaign?", as: :boolean, checked_value: true, unchecked_value: false, input_html: {:class =>"contest_creation_form"} %>
+  <%= f.simple_fields_for :story_category do |category_form| %>
+    <%= category_form.input :name, label: "Category name", input_html: {:class =>"contest_creation_form"}, :required => false %>
+  <% end %>
+  <%= f.input :custom_flash_notice, label: "Custom Flash Message" %>
+  <%= f.association :languages,   as: :check_boxes, item_wrapper_class: 'contest-languages'%>
+  <%= f.button :submit, :class=>"btn btn-info new-cat-btn" %>
+<% end %>
+
+<script>
+$(document).ready(function(){
+  $(".datepicker").datepicker(
+  	{dateFormat: 'yy-mm-dd', minDate: 0}
+  	);
+})
+
+$("#start_date").change(function(){
+  	if($("#start_date").val() > $("#end_date").val() && $("#end_date").val() != ''){
+  		$("#end_date").val('');
+  	}
+  });
+
+$("#end_date").change(function(){
+  	if($("#start_date").val() == ''){
+  		$("#end_date").val('');
+  		alert('Please select the start date')
+  	}else if($("#end_date").val() < $("#start_date").val()){
+  		$("#end_date").val('');
+  		alert('End date should not be greate that start')
+  	}
+  });
+</script>

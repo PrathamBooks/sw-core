@@ -1,0 +1,20 @@
+<div
+  id="<%= (page==@page)? 'selected_page':'' %>"
+  class="<%= (page!=@page)? 'other-pages':'' %> page-container-<%= page.page_template.orientation %> story-page">
+  <h1>Your Ratings for This Story</h1>
+  <div class="top-section">
+    <p class="title">
+      <span class="back_cover_title <%= page.story.language.script %>">
+        <%= page.story.title %>
+      </span>
+      <span class='english story_language'>(<%= page.story.language.name %>)</span>
+  	 </p>
+    <div>
+      <label class="control-label">Your Rating:</label>
+      <input id="my_rating" class="rating" value="<%= page.story_rating(current_user) %> " readonly="true" data-size = 'xs'>
+    </div>
+    <div>
+      <label class="control-label">Your comment: <%= page.story_comment(current_user) %></label>
+    </div>
+  </div>
+</div>

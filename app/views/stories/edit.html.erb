@@ -1,0 +1,88 @@
+<section id="selection-template" style="padding:0;">
+  <div class="top-head-text">
+    <div class="container">
+      <h2>Create a new story</h2>
+    </div>
+  </div>
+</section>
+
+<section id="full-editor-container" style="padding:0;">
+  <div class="container">
+
+    <%= render :partial => "/stories/illustration_draw" %>
+
+    <%= render :partial => "/stories/page_editor" %> 
+  </div>
+</section>
+
+  <%= render :partial => "/stories/pages" %>
+
+<section id="editor-temp-bot" style="padding:0;">
+  <div class="container">
+    <div class="col-sm-11"></div>
+  </div>
+</section>
+
+
+
+<script type="text/javascript">
+var state = false;
+
+$("#toggle-slide-button").click(function () {
+    jQuery('html,body').animate({scrollTop: 100}, 200);
+    if (!state) {
+    $('#map-legend').animate({width: "toggle"}, 200);
+    $("#toggle-slide-button h2").addClass("new-content");
+    $("#map-legend-control").animate({left:'+=1000px'}, 200);
+
+    state = true;
+    }
+    else {
+    $('#map-legend').animate({width: "toggle"}, 200);
+    $("#toggle-slide-button h2").removeClass("new-content");
+    $("#map-legend-control").animate({left:'-=1000px'}, 200);
+    state = false;
+    }
+    });
+
+</script>
+
+<script type="text/javascript">
+$(function () {
+    $(".font-button").bind("click", function () {
+      var size = parseInt($('#contentarea').css("font-size"));
+      if ($(this).hasClass("plus")) {
+      size = size + 2;
+      } else {
+      size = size - 2;
+      if (size <= 10) {
+      size = 10;
+      }
+      }
+      $('#contentarea').css("font-size", size);
+      });
+    });
+
+var state1 = false;
+
+$("#txt-icons-slide").click(function () {
+    if (!state1) {
+    $('#menuBarDiv, #txt1-icons').css("visibility", "visible");
+    $('#font-size-icon').css("visibility", "visible");
+
+    state1 = true;
+    }
+    else {
+    $('#menuBarDiv, #txt1-icons').css("visibility", "hidden");
+    $('#font-size-icon').css("visibility", "hidden");
+
+    state1 = false;
+    }
+    });
+</script>
+
+<script type="text/javascript">
+$(document).ready( function() {    
+    $("#txtEditor").Editor();    
+    });
+</script>

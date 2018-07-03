@@ -1,0 +1,15 @@
+or:
+  spp:
+    about_us: "Pratham Books goes digital to weave a whole new chapter in the realm of multilingual children's stories. Knitting together children, authors, illustrators and publishers. Folding in teachers, and translators. To create a rich fabric of openly licensed multilingual stories for the children of India ­­ and the world. Our unique online platform, StoryWeaver, is a playground where children, parents, teachers and librarians can get creative. Come, start weaving today, and help us get a book in every child's hand!"
+    license_tips: "This book was made possible by Pratham Books' StoryWeaver platform. Content under Creative Commons licenses can be downloaded, translated and can even be used to create new stories provided you give appropriate credit, and indicate if changes were made. To know more about this, and the full terms of use and attribution, please visit the TnC link."
+    license:
+      cc_by_4_html: "Some rights reserved. This book is CC­-BY­-4.0 licensed. You can copy, modify, distribute and perform the work, even for commercial purposes, all without asking permission. For full terms of use and attribution, <a href='http://creativecommons.org/licenses/by/4.0/'>http://creativecommons.org/licenses/by/4.0/</a>"
+      pd_html: "Some of the elements of this work have been identified as being free of known restrictions under copyright law, including all related and neighbouring rights. You can copy, modify, distribute and perform the work, even for commercial purposes, all without asking permission. <a href='http://creativecommons.org/about/pdm'>http://creativecommons.org/about/pdm</a>"
+  story:
+    cover_text:
+      reading_levels:
+        level_1: "ପଢ଼ିବା ଆରମ୍ଭ କରିବା ପାଇଁ ଆଗଭର ପିଲାଙ୍କ ନିମନ୍ତେ ଏହି ୧ମ ସୋପାନ ବହି ।"
+        level_2: "ଚିହ୍ନା ଶବ୍ଦମାନ ପଢ଼ିପାରୁଥିବା ଏବଂ ସାମାନ୍ୟ ସାହାଯ୍ୟ ନେଇ ନୂଆ ଶବ୍ଦ ପଢ଼ିପାରୁଥିବା ପିଲାମାନଂକ ପାଇଁ ଏହି ୨ ୟ ସୋପାନ ବହି ।"
+        level_3: "ନିଜେ ନିଜେ ପଢ଼ିବାକ୍ଷମ ପିଲାଙ୍କ ପାଇଁ ଏହି ୩ୟ ସୋପାନ ବହି ।"
+        level_4: "ଭରସି ପ୍ରାଞ୍ଜଳ ଭାବେ ପଢ଼ିପାରୁଥିବା ପିଲାଙ୍କ ପାଇଁ ଏହି ୪ର୍ଥ ସୋପାନ ବହି ।"
+

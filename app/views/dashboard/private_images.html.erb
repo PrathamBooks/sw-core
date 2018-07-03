@@ -1,0 +1,112 @@
+<%= render :partial => "dashboard_datatables" %>
+
+<%= render :partial => "tabs" %>
+
+<div class="row">
+  <div class="col-md-12 col-sm-12">
+  	<label class="allusers">
+      <span><%= t 'dashboard.number_of_illustrations_selected'%> :</span>
+      <span class="badge" id="private_images_count"><%= @illustrations.count %></span>
+    </label>
+  </div>
+</div>
+
+<div class="col-md-12">
+  <table class="table table-striped" id="private_images">
+    <tfoot style="display: table-header-group;">
+    	<tr>
+        <th><%= t 'dashboard.illustration'%></th>
+        <th><%= t 'dashboard.title'%></th>
+        <th><%= t 'dashboard.action'%></th>
+      </tr>
+    </tfoot>
+    <thead>
+    	<tr class="table-heading-row">
+    		<th><%= t 'dashboard.illustration'%></th>
+        <th><%= t 'dashboard.title'%></th>
+        <th><%= t 'dashboard.action'%></th>
+    	</tr>
+    </thead>
+    <tbody class="table-row-details">	
+      <% @illustrations.each do|illustration| %>
+        <tr class="selected_private_images">
+   		    <td><a href="<%= react_illustrations_show_path(illustration) %>"><img src="<%= illustration.image.url(:search) %>" height="100px" /></a></td>
+          <td class="underline-class"><%= link_to illustration.name, react_illustrations_show_path(illustration)  %></td>
+	        <td><%= button_to "#{t 'dashboard.make_public'}", make_image_public_path(:id => illustration.id),:method=>:get, class: " btn btn-normal btn-warning" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  var table = $('#private_images').DataTable( {
+    searching: true,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 20,
+    order: [],
+    responsive: {
+        details: false
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  title: formatDatatableTitle('private-images'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2 ]
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  title: formatDatatableTitle('private-images'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2 ]
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  title: formatDatatableTitle('private-images'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2 ]
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  title: formatDatatableTitle('private-images'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2 ]
+                  }
+              }
+          ]
+  });
+
+  $('#private_images tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+  });
+
+  var new_table = $('#private_images').dataTable();
+  table.columns().every( function () {
+    var that = this;
+
+    $( 'input', this.footer() ).on( 'keyup change', function () {
+      if ( that.search() !== this.value ) {
+          that
+              .search( this.value )
+              .draw();
+        document.getElementById("private_images_count").innerHTML = document.getElementById('private_images').children[1].childElementCount;
+      }else{
+        document.getElementById("private_images_count").innerHTML = table.rows( '.selected_private_images' ).count(); 
+      }
+    });
+  });
+  $( 'input').on( 'keyup change', function () {
+    document.getElementById("private_images_count").innerHTML = new_table.fnSettings().fnRecordsDisplay();
+  });
+
+  });
+
+</script>

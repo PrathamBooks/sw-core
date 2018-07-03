@@ -1,0 +1,333 @@
+<% synopsis_label = if @story.is_derivation? && @story.is_translated?
+  "(Synopsis: Since you have translated this story, please use the above synopsis and translate the same in the language of the story.)"
+elsif @story.is_derivation? && @story.is_relevelled?
+  "(Synopsis:
+Since you have re-levelled the story please alter the reference synopsis text given above to suit your story. Use the box below for the same. If you have not changed the storyline too much, we recommend copy pasting the above synopsis in the box below.)"
+else
+  "(Synopsis: What is your story about? Enter a short description below.)"
+end
+%>
+
+<div class="modal modal-image-drawer fade modal--story-creator publish-img-modal" id="publishModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body modal-body-app">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <%= simple_nested_form_for @story, url: '',
+        html: { class: 'form-horizontal publish_story',html: { novalidate: true },  multipart: true, id: "publish_form"}, authenticity_token: true do |f| %>
+          <% if @story.errors.count != 0 %>
+            <div class="alert alert-danger">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+              <div id="flash_error"><%= @story.errors.full_messages.join(", ") %></div>
+            </div>
+          <% end %>
+          <div id="publish_model" class="items">
+            <div class="form-group">
+              <div class="spacing-half-v"></div>
+              <div class="row row-gutter">
+                <div class="col-sm-7">
+                  <div class="heading-title"><span class="text-uppercase"><%=t 'editor.editor_page.publish.header_1'%>:</span><%=t 'editor.editor_page.publish.header'%></div>
+                  <div class="spacing-half-v"></div>
+                </div>
+                <div class="col-sm-4 float-right">
+                  <span class="btn btn-app btn-brand-1 float-right" id="save_and_close"><%=t 'editor.editor_page.publish.save_button'%></span>
+                </div>
+              </div> <!-- /row -->
+            </div>
+      
+            <div class="row row-gutter">
+              <div class="col-sm-6">
+                <% if @story.is_derivation? %>
+                  <div class="alert alert-info text"><%=t 'editor.editor_page.original_story_title'%> <b><%= @story.parent.title %></b></div>
+                <% end %>
+                <div class="form-group required form-group-lg-pad">
+                  <label class="heading-section required"><abbr title="required">*</abbr> Story Title</label>
+                  <div class="help-block help-block-brand">In the language of the story</div>
+                  <%= f.input :title ,label: false, required: true, input_html: { autocomplete: 'off',required: true, value: @story.user_title? ? @story.title.strip : '',  placeholder: "Write your story title here", class: "input-brand input-brand--lg #{@story.language.script}"} %>
+                </div>
+
+                <% unless @story.language.name == 'English' %>
+                  <div class="form-group required form-group-lg-pad">
+                    <% text = @story.is_derivation? && @story.is_translated? ? "(Please type the local language title here phonetically in English. e.g. If your Hindi title is मोटा राजा दुबला कुत्ता, type Mota Raja Dubla Kutta here. If your Kannada title is ಡುಮ್ಮರಾಜ ಸಣಕಲು ನಾಯಿ, type Dummaraja Sanakalu Naayi here)" : "(In English)" %>
+                    <label class="heading-section"><abbr title="required">*</abbr>Story Title</label>
+                    <div class="help-block help-block-brand"><%= text %></div>
+                     <%= f.input :english_title ,label: false, input_html: {class: "input-brand input-brand--lg",required: true} %>
+                  </div>
+                <% end %>
+
+                <% if @story.is_derivation? %>
+                  <div class="alert alert-info text"><b>Original Story Synopsis</b>: <%= @story.parent.synopsis %></div>
+                <% end %>
+                <div class="form-group form-group-lg-pad">
+                  <label class="heading-section"><abbr title="required">*</abbr>Synopsis</label>
+                  <div class="help-block help-block-brand"><%= synopsis_label %></div>
+                  <%= f.input :synopsis, label: false, as: :text, input_html: { required: true, maxlength: 750, class: "input-brand input-brand--lg #{@story.language.script}"} %>
+                </div>
+                <!-- CM and organization should get the reading levels and categories here for normal stories and relevelled stories -->
+                <% if !@story.is_translation? && (current_user.content_manager? || current_user.organization?)%>
+                  <div class="form-group form-group-lg-pad">
+                    <label class="heading-section required"><abbr title="required">*</abbr> Reading Level</label>
+                    <div class="radio radio-no-margin">
+                      <div>
+                        <% if @contest.present? && @contest.name == "RetellRemixRejoice2018" %>
+                          <%= f.input :reading_level, label: false, as: :radio_buttons, collection: Story::CONTEST_READING_LEVELS.collect {|key,value| ["<strong>Level #{key}:</strong> #{Story::READING_LEVEL_INFO[key]}".html_safe,key] }.compact%>
+                        <% else %>
+                          <%= f.input :reading_level, label: false, as: :radio_buttons, collection: Story::READING_LEVELS.collect {|key,value| ["<strong>Level #{key}:</strong> #{Story::READING_LEVEL_INFO[key]}".html_safe,key] }.compact%>
+                        <% end %>
+                      </div>
+                    </div> <!-- /radio -->
+                  </div> <!-- /form-group -->
+                  <div class="form-group form-group-lg-pad">
+                    <label class="heading-section required"><abbr title="required">*</abbr>Category</label>
+                    <div class="col-md-12 nopadding">
+                      <%= f.association :categories, collection: @categories, multiple: true, label: false, required: true, class: "input-brand input-brand--lg" %>
+                    </div>
+                  </div>
+                <% end %>
+                <% if current_user.content_manager? || current_user.organization?  %>
+                  <div class="form-group form-group-lg-pad">
+                    <div class="help-block help-block-brand">Want to add more information? (example: name of an adult/teacher who helped, if the story was part of a class/ school project, or just anything that you feel is relevant)</div>
+                    <%= f.input :more_info, label: false, as: :text, input_html: { required: true,maxlength: 125, class: "input-brand textarea-lg" }%>
+                  </div> <!-- /form-group -->
+
+                  <div class="form-group form-group-lg-pad">
+                    <div class="help-block help-block-brand">Is this story created by a child?</div>
+                    <div class="radio radio-no-margin">
+                      <div class="row row-gutter" id="child_created">
+                        <%= f.input :youngsters, label: false, as: :radio_buttons, collection: [['Yes', true] ,['No', false]], checked: @story.youngsters.present?,  input_html: { required: true, class: "radio-inline" }%>
+                      </div> <!-- /row -->
+                    </div> <!-- /radio -->
+                  </div> <!-- /form-group -->
+                <% end %>
+              </div> <!-- /col -->
+
+              <div class="col-sm-6">
+                <div class="form-group required form-group-lg-pad">
+                  <label class="heading-section">Tags</label>
+                  <div class="help-block help-block-brand">(Tag your story in a way that will help users find it easily. For example: Friendship, Elephant, Nature)</div>
+                  <%= f.input :tag_list,  label: false, url: autocomplete_tag_name_stories_path,as: :autocomplete,input_html: {'data-delimiter' => ',', :style=>"width:100%", class: "form-control input-brand input-brand--lg"}   %>
+                </div>
+                <!-- Visible for normal story or relevelled story created by normal user -->
+                <% if !@story.is_translation? && !current_user.content_manager? && !current_user.organization? %>
+                  <div class="form-group form-group-lg-pad">
+                    <label class="heading-section required"><abbr title="required">*</abbr>Category</label>
+                    <div class="col-md-12 nopadding">
+                      <%= f.association :categories, collection: @categories, multiple: true, label: false, required: true, class: "input-brand input-brand--lg" %>
+                    </div>
+                  </div>
+                  <div class="form-group form-group-lg-pad">
+                    <label class="heading-section required"><abbr title="required">*</abbr> Reading Level</label>
+                    <div class="radio radio-no-margin">
+                      <div>
+                        <% if @contest.present? && @contest.name == "RetellRemixRejoice2018" %>
+                          <%= f.input :reading_level, label: false, as: :radio_buttons, collection: Story::CONTEST_READING_LEVELS.collect {|key,value| ["<strong>Level #{key}:</strong> #{Story::READING_LEVEL_INFO[key]}".html_safe,key] }.compact%>
+                        <% else %>
+                          <%= f.input :reading_level, label: false, as: :radio_buttons, collection: Story::READING_LEVELS.collect {|key,value| ["<strong>Level #{key}:</strong> #{Story::READING_LEVEL_INFO[key]}".html_safe,key] }.compact%>
+                        <% end %>
+                      </div>
+                    </div> <!-- /radio -->
+                  </div> <!-- /form-group -->
+                <% end %>
+                <% if !current_user.content_manager? && !current_user.organization? %>
+                  <div class="form-group form-group-lg-pad">
+                    <div class="help-block help-block-brand">Want to add more information? (example: name of an adult/teacher who helped, if the story was part of a class/ school project, or just anything that you feel is relevant)</div>
+                    <%= f.input :more_info, label: false, as: :text, input_html: { required: true,maxlength: 125, class: "input-brand textarea-lg" }%>
+                  </div> <!-- /form-group -->
+
+                  <div class="form-group form-group-lg-pad">
+                    <div class="help-block help-block-brand">Is this story created by a child?</div>
+                    <div class="radio radio-no-margin">
+                      <div class="row row-gutter" id="child_created">
+                        <%= f.input :youngsters, label: false, as: :radio_buttons, collection: [['Yes', true] ,['No', false]], checked: @story.youngsters.present?,  input_html: { required: true, class: "radio-inline" }%>
+                      </div> <!-- /row -->
+                    </div> <!-- /radio -->
+                  </div> <!-- /form-group -->
+                <% end %>
+                <% if current_user.organization? || current_user.content_manager? %>
+                  <div class="form-group form-group-lg-pad">
+                    <label class="heading-section required"><abbr title="required">*</abbr> Copyright Year</label>
+                    <%= f.input :copy_right_year, label: false, collection: (1980..Time.now.year).to_a, class: "form-control input-brand input-brand--lg" %>
+                  </div>
+
+                  <div class="form-group form-group-lg-pad">
+                    <label class="heading-section">Credits</label>
+                    <div class="help-block help-block-brand">As a organization, if you are uploading a translation and need to credit a group, you can add it here. If there are any other funding related credits to be given, you can include the same here.</div>
+                    <%= f.input :attribution_text, label: false, as: :text, class: "form-control input-brand input-brand--lg" %>
+                  </div>
+
+                  <div class="form-group form-group-lg-pad">
+                    <label class="heading-section">Copyright Holder</label>
+                    <%= f.association :copy_right_holder,label: false,
+                      input_html: { class: 'form-control input-brand input-brand--lg',value: @story.copy_right_holder.present? ? @story.copy_right_holder.email : ''}, url: '/v0/editor/autocomplete_user_email', as: :autocomplete %>
+                  </div>
+
+                  <div class="form-group form-group-lg-pad">
+                    <label class="heading-section">Donor Name</label>                 
+                    <%= f.association :donor, label: false, class: "form-control input-brand input-brand--lg" %>
+                  </div>
+
+                  <div class="form-group form-group-lg-pad">
+                    <label class="heading-section">Donor Credit Line</label>                  
+                    <%= f.input :credit_line, label: false, class: "form-control input-brand input-brand--lg" %>
+                  </div> 
+
+                  <% if current_user.content_manager? %>
+                    <div class="form-group form-group-lg-pad">
+                      <label class="heading-section">Organisations</label>
+                      <%= f.input :organization_id, label: false, collection: get_publisher_orgs,class: "form-control input-brand input-brand--lg" %>
+                    </div>
+                  <% end %>
+
+                  <%= f.fields_for :authors do |a| %>
+                    <div class="form-group form-group-lg-pad">
+                      <div class="section-chunk nested_form"> 
+                        <div class="form-group form-group-lg-pad">
+                          <label class="heading-section">Author / Translator / Re-level by details</label><br>
+                          <label class="label-required">Email</label>
+                          <%= a.input :email,label: false,
+                            input_html: { class: 'form-control input-brand input-brand--lg' },
+                            url: '/v0/editor/autocomplete_user_email',
+                            as: :autocomplete %>
+                          <div class="help-block help-block-brand">Search for a user account by email address. If no user is found, then provide name and bio to create an account for the author.</div>
+                        </div>
+                        <div class="form-group form-group-lg-pad first_name">
+                          <label class="label-required">First Name</label>
+                          <%= a.input :first_name, label: false, :required =>  true, class: "form-control input-brand input-brand--lg" %>
+                        </div>
+
+                        <div class="form-group form-group-lg-pad last_name">
+                          <label>Last Name</label>
+                          <%= a.input :last_name, label: false, class: "form-control input-brand input-brand--lg" %>
+                        </div>
+                        <div class="text-right link-delete">
+                          <span class="fa fa-times"></span>
+                          <span><%= a.link_to_remove "Remove", id: "remove_the_link", :onclick => "common('test_remove');" %></span>
+                        </div>
+                        <script type="text/javascript">
+                          $('.story_authors_email').bind('railsAutocomplete.select', function(event, data) {
+                            $(this).parent().siblings(".first_name").find('input').val(data.item.first_name);
+                            $(this).parent().siblings(".last_name").find('input').val(data.item.last_name).trigger('input');
+                          });
+                        </script>
+                      </div>
+                    </div>
+                  <% end %>
+                  <div class="form-group form-group-lg-pad">
+                    <% if @story.authors.present? %>
+                      <%= f.link_to_add "Add New Author", :authors, class: 'add_author_link text_size_16', id: "add_the_link", :onclick => "common('test_add_new');" %>
+                    <% else %>
+                      <%= f.link_to_add "Add an Author", :authors, class: 'add_author_link text_size_16', id: "add_the_link", :onclick => "common('test_add_an');" %>
+                    <% end %>  
+                  </div>
+                <% end %>
+            </div>
+          </div> <!-- /row -->
+
+            <div class="row row-gutter">
+              <div class="col-xs-6">
+              <div class="btn btn-link btn-link-underline" data-dismiss="modal">Cancel</div>
+              </div>
+              <div class="col-xs-6 text-right">
+              <%= button_tag "next", id: "next", type: 'button' , class: "btn btn-app btn-brand-1"  %>
+              <!-- <span class="btn btn-app btn-brand-1" >save</span> -->
+              </div>
+            </div>
+        </div>
+        <div id="child_created_model" class="items hidden">
+         <%= render :partial => "child_created_form", :locals=>{:f=>f} %>
+        </div>
+        <div id="review_book_covers" class="items hidden">
+         <%= render :partial => "review_book_covers", :locals=>{:f=>f} %>
+        </div>
+            <% end %>
+      </div> <!-- /modal-body -->
+    </div> <!-- /modal-content -->
+  </div> <!-- /modal-dialog -->
+</div> <!-- /modal -->
+<div id="campaign_popup">
+</div>
+<div id="google_form">
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+  $('.disable_action *').children().prop('disabled', true);
+  var story_editor = new StoryEditor(new StoryEditorPage(), new StoryEditorService());
+  story_editor.init_publish_story_form();
+  $(".add_child_link").click(function(){
+    $(this).text("Add details of another child");
+  });
+  /*$('.multiselect').multiselect({ 
+   numberDisplayed: 1,
+  });*/
+});
+$("#next").click(function(){
+ if($("#child_created input:radio:checked").val() == "true"){
+   $.when($('.items').fadeOut('fast')).done(function () {
+        $('#child_created_model').removeClass("hidden");
+        $('#child_created_model').fadeIn('fast');
+        $(".modal").scrollTop(0);
+    });
+ }else{
+    $.when($('.items').fadeOut('fast')).done(function () {
+        $('#review_book_covers').removeClass("hidden");
+        $('#review_book_covers').fadeIn('fast');
+        $(".modal").scrollTop(0);
+    });
+  }
+});
+$("#child_form_previous").click(function(){
+  $.when($('.items').fadeOut('fast')).done(function () {
+        $('#publish_model').fadeIn('fast');
+        $(".modal").scrollTop(0);
+    });
+});
+$("#child_form_next").click(function(){
+  $.when($('.items').fadeOut('fast')).done(function () {
+        $('#review_book_covers').removeClass("hidden");
+        $('#review_book_covers').fadeIn('fast');
+        $(".modal").scrollTop(0);
+    });
+});
+$("#book_cover_previous").click(function(){
+ if($("#child_created input:radio:checked").val() == "true"){
+   $.when($('.items').fadeOut('fast')).done(function () {
+        $('#child_created_model').removeClass("hidden");
+        $('#child_created_model').fadeIn('fast');
+        $(".modal").scrollTop(0);
+    });
+ }else{
+    $.when($('.items').fadeOut('fast')).done(function () {
+        $('#publish_model').fadeIn('fast');
+        $(".modal").scrollTop(0);
+    });
+  }
+});
+$("#edit_back_cover").click(function(){
+  $.when($('.items').fadeOut('fast')).done(function () {
+    $('#publish_model').fadeIn('fast');
+    $(".modal").scrollTop(0);
+  });
+});
+$("#edit_front_cover").click(function(){
+  $('#publishModal').modal("hide");
+  $("a.FrontCoverPage").trigger("click")
+});
+  var authors_count = "<%= @story.authors.count %>"
+  localStorage.setItem(authors_count, authors_count);
+  function common(f){
+    var count = parseInt(localStorage.getItem(authors_count));
+    if(f == "test_add_an"){
+      localStorage.setItem(authors_count, count + 1);
+    }else if(f == "test_add_new"){
+      localStorage.setItem(authors_count, count + 1);
+    }else if(f == "test_remove"){
+      localStorage.setItem(authors_count, count - 1);
+    }
+    if (localStorage.getItem(authors_count) <= 0){
+      document.getElementById("add_the_link").innerHTML = "Add an Author"; 
+    } else {
+      document.getElementById("add_the_link").innerHTML = "Add New Author"; 
+    }
+  }
+</script>
+</div>

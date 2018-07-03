@@ -1,0 +1,233 @@
+
+<div id="storyReader"></div>
+<div style="margin-bottom: 10px;">
+  <div class="btn-group" style="margin-left: 15px;"><label>Filters:</label></div>
+  <%= render :partial => "language_filter", :locals => {:path => get_language_stories_path(:level=> params[:level] ? params[:level] : '', :limit => params[:limit]? params[:limit] : 10, :current_tab => @current_tab, :story_type  => params[:story_type] ? params[:story_type] : '' )} %>
+  <div class="btn-group">
+    <i class="dropdown-arrow dropdown-arrow-inverse"></i>
+    <button class="btn btn-app dropdown-toggle filter-btn" data-toggle="dropdown" ><%= params[:level] && params[:level] != ''? "Level #{params[:level].to_i + 1}" : "All Reading Levels" %></button>
+    <button class="btn btn-app dropdown-toggle" data-toggle="dropdown"> <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu dropdown">
+      <li><%= link_to "All Reading Levels", get_language_stories_path(:level => '', :language=>params[:language]? params[:language] : '', :limit => params[:limit]? params[:limit] : 10,:current_tab => @current_tab,:story_type  => params[:story_type] ? params[:story_type] : ''), :remote => true%></li>
+      <% (0..3).each do |level| %>
+       <li><%= link_to "Level #{level+1}", get_language_stories_path(:level => level, :language=>params[:language]? params[:language] : '', :limit => params[:limit]? params[:limit] : 10,:current_tab => @current_tab,:story_type  => params[:story_type] ? params[:story_type] : ''), :remote => true%></li>
+      <% end %>
+    </ul>
+  </div>
+  <div class="btn-group">
+    <i class="dropdown-arrow dropdown-arrow-inverse"></i>
+    <button class="btn btn-app dropdown-toggle filter-btn" data-toggle="dropdown" ><%= params[:story_type] && params[:story_type] != ''? params[:story_type] : "All Story Types" %></button>
+    <button class="btn btn-app dropdown-toggle" data-toggle="dropdown"> <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu dropdown">
+      <li><%= link_to "All Story Types", get_language_stories_path(:story_type => '',:level => params[:level] ? params[:level] : '', :language => params[:language] ? params[:language] : '', :limit => params[:limit] ? params[:limit] : 10,:current_tab => @current_tab), :remote => true%></li>
+      <% ["Translation", "Original", "Re-levelled"].each do |story_type| %>
+       <li><%= link_to story_type, get_language_stories_path(:story_type => story_type,:level => params[:level] ? params[:level] : '', :language=>params[:language] ? params[:language] : '', :limit => params[:limit] ? params[:limit] : 10,:current_tab => @current_tab), :remote => true%></li>
+      <% end %>
+    </ul>
+  </div>
+</div>
+
+<div class="btn-group" style="margin-left: 15px;">
+  <span>Number of Stories Selected :</span>
+  <span class="badge" id="<%= @current_tab == 'un_reviewed_stories' ? 'stories_to_rate_count' : 'rated_stories_count' %>"><%= @stories.count %></span>
+</div>
+
+<div class="col-md-12">
+  <table class="table table-striped" id="<%= @current_tab == 'un_reviewed_stories' ? 'stories_to_rate' : 'rated_stories' %>">
+    <tfoot style="display: table-header-group;">
+      <tr>
+        <th>Story Title        </th>
+        <th>Language           </th>
+        <th>English Title      </th>
+        <th>Reading Level      </th>
+        <% if @current_tab == "reviewed_stories" %>
+          <th>Rated By         </th>
+          <th>Story Rating     </th>
+          <th>Language Rating  </th>
+          <th>Comments         </th>
+          <th>Overall Rating   </th>
+          <th>Action           </th>
+        <% end %>
+      </tr>
+    </tfoot> 
+    <thead>
+      <tr class="table-heading-row">
+        <th>Story Title         </th>
+        <th>Language            </th>
+        <th>English Title       </th>
+        <th>Reading Level       </th>
+        <% if @current_tab == "reviewed_stories" %>
+          <th>Rated By          </th>
+          <th>Story Rating      </th>
+          <th>Language Rating   </th>
+          <th>Comments          </th>
+          <th>Overall Rating    </th>
+          <th>Action            </th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody class="table-row-details">
+      <% @stories.each do |story| %>
+       <% unless story.flagged? %>
+        <tr class="<%= @current_tab == 'un_reviewed_stories' ? 'stories_count' : 'rated_count' %>" style= "<%= @current_tab == "reviewed_stories" ? (story.get_trishold ? 'background-color:  #fc917a' : '') : '' %>" >
+          <td><%= link_to story.title, story_page_path(story, story.pages.first), :remote => true %></td>
+          <td><%= story.language.name %></td>
+          <td><%= story.english_title || story.title %></td>
+          <td style="text-align: center;"><%= story.reading_level %></td>
+          <% if @current_tab == "reviewed_stories" %>
+            <td><%= story.reviewer_comment.user.first_name %> <br> <span type = 'email'><%= story.reviewer_comment.user.email%></span> </td>
+            <td><%= story.reviewer_comment.story_rating == "It's alright." ? story.reviewer_comment.story_rating : story.reviewer_comment.story_rating.split(' ')[0] %></td>
+            <td><%= story.reviewer_comment.language_rating == "It's alright. " ?  story.reviewer_comment.language_rating : story.reviewer_comment.language_rating.split(' ')[0] %></td>
+            <td><%= story.reviewer_comment.comments %></td>
+            <td><input class="rating sample" value = "<%= story.reviewer_comment.rating %>" data-size = 's' readonly="true"></td>
+            <td><%= link_to "Edit", edit_review_form_path(:id => story.id), class: 'btn btn-normal btn-warning', style: "color: black !important"%>
+          <% end %> 
+        </tr>
+       <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+  var table = $('#stories_to_rate').DataTable( {
+    searching: true,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 20,
+    order: [],
+    responsive: {
+        details: false
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  title: 'StoryWeaver',
+                  exportOptions: {
+                      columns: [ 1, 2, 3 ]
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  title: 'StoryWeaver',
+                  exportOptions: {
+                      columns: [ 1, 2, 3 ]
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  title: 'StoryWeaver',
+                  exportOptions: {
+                      columns: [ 1, 2, 3 ]
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  title: 'StoryWeaver',
+                  exportOptions: {
+                      columns: [ 1, 2, 3 ]
+                  }
+              }
+          ]
+      
+  });
+  $('#stories_to_rate tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+  });
+
+  var new_table = $('#stories_to_rate').dataTable();
+  table.columns().every( function () {
+    var that = this;
+
+    $( 'input', this.footer() ).on( 'keyup change', function () {
+      if ( that.search() !== this.value ) {
+          that
+              .search( this.value )
+              .draw();
+        document.getElementById("stories_to_rate_count").innerHTML = document.getElementById('stories_to_rate').children[1].childElementCount;
+      }else{
+        document.getElementById("stories_to_rate_count").innerHTML = table.rows( '.stories_count' ).count(); 
+      }
+    });
+  });
+  $( 'input').on( 'keyup change', function () {
+    document.getElementById("stories_to_rate_count").innerHTML = new_table.fnSettings().fnRecordsDisplay();
+  });
+
+  });
+
+$(document).ready(function() {
+  var table = $('#rated_stories').DataTable( {
+    searching: true,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 20,
+    order: [],
+    responsive: {
+        details: false
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  title: 'StoryWeaver',
+                  exportOptions: {
+                      columns: [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  title: 'StoryWeaver',
+                  exportOptions: {
+                      columns: [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  title: 'StoryWeaver',
+                  exportOptions: {
+                      columns: [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  title: 'StoryWeaver',
+                  exportOptions: {
+                      columns: [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]
+                  }
+              }
+          ]
+      
+  });
+  $('#rated_stories tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+  });
+
+  var new_table = $('#rated_stories').dataTable();
+  table.columns().every( function () {
+    var that = this;
+
+    $( 'input', this.footer() ).on( 'keyup change', function () {
+      if ( that.search() !== this.value ) {
+          that
+              .search( this.value )
+              .draw();
+        document.getElementById("rated_stories_count").innerHTML = document.getElementById('rated_stories').children[1].childElementCount;
+      }else{
+        document.getElementById("rated_stories_count").innerHTML = table.rows( '.rated_count' ).count(); 
+      }
+    });
+  });
+  $( 'input').on( 'keyup change', function () {
+    document.getElementById("rated_stories_count").innerHTML = new_table.fnSettings().fnRecordsDisplay();
+  });
+
+  });
+</script>

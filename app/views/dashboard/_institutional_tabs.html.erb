@@ -1,0 +1,13 @@
+<div class="col-md-12">
+    <ul id="myTab" role="tablist" class="nav nav-tabs profile">
+       <li role="presentation" class="<%= @organization_current_tab == 'summery' ? 'active' : '' %>">
+        <%= link_to "<span>Summary</span>".html_safe , organization_downloads_path %>
+      </li>
+      <li role="presentation" class="<%= @organization_current_tab == 'bulk_downloads' ? 'active' : '' %>">
+        <%= link_to "<span>Bulk Downloads</span>".html_safe , story_bulk_downloads_path %>
+      </li>
+      <li role="presentation" class="<%= @organization_current_tab == 'organization_users' ? 'active' : '' %>">
+        <%= link_to "<span>Organisational Users</span>".html_safe , organization_users_path %>
+      </li>
+    </ul>
+  </div>

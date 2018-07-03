@@ -1,0 +1,15 @@
+<tr>
+  <td align="center">
+    <table width="432px" cellspacing="0" cellpadding="0" border="0" align="center">
+
+      <tr style="margin-bottom: 20px; float: left;">
+        <td><strong>Dear Content Manager/Promotion Manager</strong>, </td>
+      </tr>
+
+      <tr style="margin-bottom: 20px; float: left;">
+        <td><br>A story has been submitted for <%= @contest.name %>. To read the entry click <%= link_to( "here", react_stories_show_url(@story)) %>. To see all the stories submitted till date, click <%= link_to( "here", contest_details_url(@contest.to_param)) %>.</td>
+      </tr>
+
+    </table>
+  </td>
+</tr>

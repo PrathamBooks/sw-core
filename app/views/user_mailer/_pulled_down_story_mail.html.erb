@@ -1,0 +1,39 @@
+<tr>
+	<td align="center">
+	  <table width="432px" cellspacing="0" cellpadding="0" border="0" align="center">
+	   
+	    <tr style="margin-bottom: 20px; float: left;">
+	      	<td><strong>Dear <%= @user.name.titleize %></strong>,</td>
+	    </tr>
+	    <tr style="margin-bottom: 10px; float: left;">
+	      	<td>We're sorry to let you know that your story <%= link_to( @story.title, react_stories_show_url(@story)) %> has been pulled down from StoryWeaver and will no longer be visible to other users. Your story was red flagged by a community member because they felt that.</td>
+	    </tr>
+
+	    <tr style="margin-bottom: 10px; float: left;">
+	    	<% @reasons.each do |reason| %>
+	    	<tr><%= reason %></tr>
+	    	<% end %>
+	    </tr>
+
+	    <tr style="margin-bottom: 20px; margin-top: 10px; float: left;">
+		  	<td>On the bright side, you can re-publish your story through the following steps.
+				 <ol>
+					 <li>Go to your 'Profile' and look under 'De-activated stories'. Your story will be here.</li>
+					 <li>Click on the 'Edit' button to make changes based on the reasons for your story having been pulled down. Please make sure that there is no longer any reason for your story to be reported.</li> 
+					 <li>Re-publish your story</li> 
+				 </ol>
+				</td>
+			</tr>
+			<tr style="margin-bottom: 20px; float: left;">
+				<td>
+					If you do have any queries, you can send us an email to <a href="mailto:help@storyweaver.org.in" target="_top">help@storyweaver.org.in</a> and we'll get back to you as soon as we can.
+				</td>
+			</tr>
+			<tr style="margin-bottom: 20px; float: left;">
+		  	<td>
+					<p>Team<br/>StoryWeaver</p>
+				</td>
+			</tr>
+		</table>
+	</td>
+</tr>

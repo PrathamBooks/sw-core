@@ -1,0 +1,33 @@
+<tr>
+  <td align="center">
+    <table width="432px" cellspacing="0" cellpadding="0" border="0" align="center">
+
+      <tr style="margin-bottom: 20px; float: left;">
+        <td><strong>Dear <%= @first_name %></strong>, </td>
+      </tr>
+      <br>
+      
+      <tr style="margin-bottom: 20px; float: left;">
+        <td>Greetings from StoryWeaver!</td>
+      </tr>
+
+      <tr style="margin-bottom: 20px; float: left;">
+        <td>
+          We noticed that you started translating a story and didn’t finish it. Here’s a little reminder to publish your work. The translations that are unfinished for more than 3 weeks will automatically be deleted and removed from your 'My Drafts’ folder.
+        </td>    
+      </tr>
+
+      <tr style="margin-bottom: 20px; float: left;">
+        <td>
+          Click <%= link_to "here", react_stories_show_url(@story) %> to complete your story and click on 'Submit’. Drop us a line at <a href="mailto:storyweaver@prathambooks.org" target="_top">storyweaver@prathambooks.org</a> with feedback or issues, we are all ears! 
+        </td>    
+      </tr>
+
+      <tr style="margin-bottom: 20px; float: left;">
+        <td>
+          <p>Warmly,<br>Team StoryWeaver</p>
+        </td>
+      </tr>
+    </table>
+  </td>
+</tr>

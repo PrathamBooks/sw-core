@@ -1,0 +1,61 @@
+<div class="col-md-9">
+  <div class="btn-group" style = "margin-bottom:12px;">
+    <i class="dropdown-arrow dropdown-arrow-inverse"></i>
+    <button class="btn btn-app dropdown-toggle filter-btn" data-toggle="dropdown" ><%= sort_value.present? && sort_value == "language" ? "Languages" : "Translators" %></button>
+    <button class="btn btn-app dropdown-toggle" data-toggle="dropdown"> <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu dropdown">
+      <li><%= link_to "Translators", assign_translator_path(:query => "translator"), :remote => true%></li>
+      <li><%= link_to "Languages", assign_translator_path(:query => "language"), :remote => true%></li>
+    </ul>
+  </div>
+</div>
+ <div class="row">  
+    <div class="col-md-9">
+      <table class="table table-striped" >
+        <thead>
+          <tr class="table-heading-row">
+            <% if sort_value == "language" %> 
+            <th><%= sortable "Language" %></th>  
+            <th><%= sortable "Translator" %></th>
+            <%else%>
+            <th><%= sortable "Translator" %></th>
+            <th><%= sortable "Language" %></th>  
+            <%end%>
+          </tr>
+        </thead>
+        <tbody class="table-row-details">   
+        <% if sort_value == "language" %> 
+          <% language_translators.each do |language|%> 
+            <% if language.translators.present? %>
+                <tr>
+                    <td><%= language.name %></td>
+                    <td>
+                      <% language.translators.each do|translator| %>
+                        <span type="button" class="btn btn-app btn-default grey-gravel"  style="border-radius: 15px;">
+                          <%= translator.name + " "%><span class="icon-round-wrap icon-round-wrap-brand"> <%= link_to "", delete_language_translator_dialog_path(:language_id => language.id, :translator_id => translator.id),:remote => true,:class => "icon-round fa fa-times" %></span></span>
+                      <% end %>
+                    </td>
+                </tr>
+            <% end %>
+          <% end %>
+        <% else %>
+          <% language_translators.each do |user|%> 
+            <% if user.tlanguages.present? %>
+                <tr>
+                    <td><%= user.name %></td>
+                    <td><% user.tlanguages.each do|language|%>
+                      <span type="button" class="btn btn-app btn-default grey-gravel" style="border-radius: 15px;">
+                        <%= language.name%> <span class="icon-round-wrap icon-round-wrap-brand"> <%= link_to "", delete_language_translator_dialog_path(:language_id => language.id, :translator_id => user.id),:remote => true, :class => "icon-round fa fa-times" %>
+                      </span></span>
+                      <% end %>
+                    </td>
+                </tr>
+            <% end %>
+          <% end %>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div id="delete_translator_dialog" title = "Remove Translator"></div>

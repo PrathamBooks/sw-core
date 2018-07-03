@@ -1,0 +1,1 @@
+$("#illustrations-list").html("<%= escape_javascript(render :partial => "most_downloaded_illustrations", :locals => {:illustrations => @downloads_by_filter, :reads => false}) %>");

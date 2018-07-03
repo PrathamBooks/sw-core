@@ -1,0 +1,59 @@
+<div id="leftmenu">
+  <h4 class="<%= @menu == 'about' ? 'active-color' : '' %>"><a href="/about" class="<%= @sub_menu == 'about' ? 'active-link' : '' %>">about us</a></h4>
+  <ul class="<%= @menu == 'about' ? 'active-ul' : '' %>">
+    <li><a href="/about" class="<%= @sub_menu == 'about' ? 'active-link' : '' %>">StoryWeaver</a></li>
+    <li><a href="/story_weaver_and_you" class="<%= @sub_menu == 'story_weaver_and_you' ? 'active-link' : '' %>">StoryWeaver &amp; You</a></li>
+    <li><a href="/blog" class="<%= @sub_menu == 'blog' ? 'active-link' : '' %>">Blog</a></li>
+    <li id="campaign"><a href="/campaign" class="<%= @sub_menu == 'campaign' ? 'active-link' : '' %>">Campaigns</a></li>
+    <li><a href="/our_supporters" class="<%= @sub_menu == 'our_supporters' ? 'active-link' : '' %>">Our Supporters</a></li>
+    <li><a href="/prathambooks" class="<%= @sub_menu == 'prathambooks' ? 'active-link' : '' %>">Pratham Books</a></li>
+  </ul>
+  <h5><a href="/open_content" class="<%= @menu == 'open_content' ? 'active-link' : '' %>">open content</a></h5>
+  <h4 class="<%= @menu == 'help' ? 'active-color' : '' %>"><a href="/faqs">help</a></h4>
+  <ul class="<%= @menu == 'help' ? 'active-ul' : '' %>">
+    <li><a href="/faqs" class="<%= @sub_menu == 'faqs' ? 'active-link' : '' %>">FAQs</a></li>
+    <li><a href="/tutorials" class="<%= @sub_menu == 'tutorials' ? 'active-link' : '' %>">Tutorials</a></li>
+    <li><a href="/translation_tools_and_tips" class="<%= @sub_menu == 'translation_tools_and_tips' ? 'active-link' : '' %>">Translation Tools &amp; Tips</a></li>
+    <li><a href="/dos_and_donts" class="<%= @sub_menu == 'dos_and_donts' ? 'active-link' : '' %>">Do's and Don't</a></li>
+    <li><a href="/reading_levels" class="<%= @sub_menu == 'reading_levels' ? 'active-link' : '' %>">Reading Levels</a></li>
+  </ul>
+
+  <h4 class="<%= @menu == 'terms of use' ? 'active-color' : '' %>"><a href="/terms_and_conditions">terms of use</a></h4> 
+  <ul class="<%= @menu == 'terms of use' ? 'active-ul' : '' %>">
+    <li><a href="/terms_and_conditions" class="<%= @sub_menu == 'terms_and_conditions' ? 'active-link' : '' %>">Terms &amp; Conditions</a></li>
+    <li><a href="/privacy_policy" class="<%= @sub_menu == 'privacy_policy' ? 'active-link' : '' %>">Privacy Policy </a></li>
+  </ul>
+
+  <h4 class="<%= @menu == 'press' ? 'active-color' : '' %>"><a href="/press" class="<%= @sub_menu == 'press' ? 'active-link' : '' %>">media</a></h4> 
+  <ul class="<%= @menu == 'press' ? 'active-ul' : '' %>">
+    <li><a href="/press" class="<%= @sub_menu == 'press' ? 'active-link' : '' %>">Press Release</a></li>
+    <li>
+      <a href="/in_the_news" class="<%= @sub_menu == 'in_the_news' ? 'active-link' : '' %>">In the News</a>
+      <ul class="news_arch">
+        <li><a href="/archive" class="<%= @sub_menu == 'archive' ? 'active-link' : '' %>">archive</a></li>
+      </ul>
+    </li>
+    <li><a href="/picture_gallery" class="<%= @sub_menu == 'picture_gallery' ? 'active-link' : '' %>">Gallery </a></li>
+  </ul>
+
+  <h4 class="last-tab <%= @menu == 'contact' ? 'active-color' : '' %>"><a href="/contact" class="<%= @sub_menu == 'contact' ? 'active-link' : '' %>">contact</a></h4>
+  <ul class="last-tab <%= @menu == 'contact' ? 'active-ul' : '' %>">
+    <li><a href="/contact" class="<%= @sub_menu == 'contact' ? 'active-link' : '' %>">Contact</a></li>
+    <li><a href="/careers" class="<%= @sub_menu == 'careers' ? 'active-link' : '' %>">Careers</a></li>
+    <li><a href="/feedback_and_comments" class="<%= @sub_menu == 'feedback_and_comments' ? 'active-link' : '' %>">Feedback and Comments</a></li>
+    <li><a href="/volunteer" class="<%= @sub_menu == 'volunteers' ? 'active-link' : '' %>">Volunteer</a></li>
+  </ul>
+</div>
+<script>
+$(document).ready(function() {
+  $('#leftmenu ul').not('#leftmenu ul.active-ul').hide();          
+    $('#leftmenu h4').click( 
+      function() {
+        var $this = $(this);
+        $this.next('ul').siblings('ul').slideUp();
+        $this.next('ul').find('ul').slideUp();
+        $this.next().slideToggle(300); 
+    });
+});
+
+</script>

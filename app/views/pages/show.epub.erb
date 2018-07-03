@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html[<!ENTITY nbsp "&#160;">]>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<%= @story.language.locale %>" lang="<%= @story.language.locale %>">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <%= wicked_pdf_stylesheet_link_tag "language_fonts" -%>
+    <%= wicked_pdf_stylesheet_link_tag "bootstrap3-wysihtml5-editor" -%>
+    <%= wicked_pdf_stylesheet_link_tag "story_epub" -%>
+    <%= render "pages/epub_fonts" %>
+  </head>
+  <body id="story_epub_body">
+    <div id="story_epub">
+      <div id="storyReader" class="<%= @story.language.script %>">
+        <%= render :partial=>"pages/page", locals: {page: @page} %>
+      </div>
+    </div>
+  </body>
+</html>

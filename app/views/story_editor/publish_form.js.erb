@@ -1,0 +1,11 @@
+$('#story_publish_form').html("<%= escape_javascript(render(:partial=>"publish"))%>");
+
+$(document).ready(function() {
+	$('#publishModal').modal({
+		show: true
+	});
+  new VarnamIME($("#story_publish_form #story_title")[0], null, {name: '<%= @story.language.name %>'}, '<%= Settings.varnam.url %>')
+  .init();
+  new VarnamIME($("#story_publish_form #story_synopsis")[0], null, {name: '<%= @story.language.name %>'}, '<%= Settings.varnam.url %>')
+  .init();
+});

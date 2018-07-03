@@ -1,0 +1,111 @@
+<header id="header" class="full-modal-pop">
+  <div class="top-bar">
+  	<div class="top-links">  		
+        <%= render 'layouts/navigation_links' %>
+  	</div>	
+    <div>
+      <div class="row">        
+        <div class="col-md-12 col-sm-12 logo">
+          <div class="navbar-header">
+            <%= link_to(image_tag('Storyweaver-Beta.svg'), root_path, class: 'navbar-brand') %>
+          </div>
+        </div>
+      </div>     
+      <div class="row">
+        <div class="col-md-12 col-sm-12 menu-nav-but">
+          <nav class="navbar navbar-inverse" role="banner">
+            <div class="col-md-12 col-sm-12">
+              <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+
+              </div>
+              <div class="collapse navbar-collapse menu-nav">
+                <ul id="menu" class="nav navbar-nav">
+                  <%= render :partial => 'layouts/menu', locals: {editor: false} %>
+                </ul>             
+              </div>
+              <div class="search-head">
+                <% url = @blog_search ? '/blog/search' : @illustration_search ? '/illustrations' :  '/search'  %>
+                <%= simple_form_for :search, url: url , method: :get, html: { class: 'form-vertical hide-toggle' } do |f| %>
+                  <div class="input-group">
+                    <%= f.input :contest_id, :as => :hidden, :input_html => { :value => @contest.id ,:name => "contest_id"} if @contest %>
+                    <%= f.input :bulk_download, :as => :hidden, :input_html => { :value => @bulk_download_page  ,:name => "bulk_download"} if @bulk_download_page %>
+                    <%= f.input :query, label: false, placeholder: @blog_search ? "Search by blog title, tags, keywords" : @illustration_search ? "search by title, Illustrator or tags" : "Search for stories, languages, authors or categories",input_html: {:class => "form-control", :value =>  @search_query ? @search_query : '', id: "search_query"} %>
+
+                  <div class="input-group-btn tooltip-icon"i>
+                    <%= button_tag(type: 'submit', class: "btn btn-warning") do %>
+                      <span class='glyphicon glyphicon-search mobile-hide-search'></span>         
+                      <span class="arrow-left"></span>                                 
+                  <% end %>                  
+                  </div>
+                </div>
+              <% end %>
+              <span class='glyphicon glyphicon-search mobile-icon'></span>
+              <span class="close-search">&#10006;</span> 
+              </div>
+              <div class="mobile-user-icon">
+                 <i class="fa fa-user"></i>
+              </div>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<script>
+
+$('.menu-nav-but').addClass('original').clone().insertAfter('.menu-nav-but').addClass('cloned').css('position','fixed').css('top','0').css('margin-top','0').css('z-index','50000').css('background','#fff').removeClass('original').hide();
+scrollIntervalID = setInterval(stickIt, 10);
+function stickIt() {
+  if ($(window).width() > 767) {
+    var orgElementPos = $('.original').offset();
+    orgElementTop = orgElementPos.top;               
+    if ($(window).scrollTop() >= (orgElementTop)) {
+      // scrolled past the original position; now only show the cloned, sticky element.		
+      // Cloned element should always have same left position and width as original element.     
+      orgElement = $('.original');
+      coordsOrgElement = orgElement.offset();
+      leftOrgElement = coordsOrgElement.left;  
+      widthOrgElement = orgElement.css('width');
+      $('.cloned').css('left',leftOrgElement+'px').css('top',0).css('width',widthOrgElement).show();
+      $('.original').css('visibility','hidden');
+    } else {
+      // not scrolled past the menu; only show the original menu.
+      $('.cloned').hide();
+      $('.original').css('visibility','visible');
+    }
+  }
+}
+$( document ).ready(function() {
+	$(".mobile-icon").click(function(){
+	    $(".hide-toggle").show();
+	    $(".close-search").show();
+	});
+	$(".close-search").click(function(){
+		$(".hide-toggle").hide();
+		$(".close-search").hide();
+	});
+	$(".mobile-user-icon").click(function(){   
+      $(".top-links #navigation_links").slideToggle('slow');
+      $(".top-links #test").slideToggle('slow');
+	});
+	$('#menu a').on('mouseenter focus', function () {
+			$('#menu a').removeClass("menu-hover");
+			$('#menu a').children("span").removeClass("common-bird-hover");
+		 $(this).addClass("menu-hover");
+		 $(this).children("span").addClass("common-bird-hover");
+	});
+
+	$('#menu a').on('mouseleave blur', function (){
+			$(this).removeClass("menu-hover");
+			$(this).children("span").removeClass("common-bird-hover");
+	});
+});
+
+</script>

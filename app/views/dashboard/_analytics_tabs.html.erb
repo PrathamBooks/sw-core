@@ -1,0 +1,37 @@
+<div class="row full-content-dash">
+  <div class="col-md-12">
+    <ul id="myTab" class="nav nav-tabs content-manager analytics-tabs" role="tablist" >
+      <li role="presentation" class="<%= @current_tab == 'graphs' ? 'active' : '' %>">
+        <%= link_to "<span>Graphs</span>".html_safe , analytics_path %>
+      </li>
+      <li role="presentation" class="<%= @current_tab == 'most_read_stories' ? 'active' : '' %>">
+        <%= link_to "<span>Most read stories</span>".html_safe , most_read_stories_path %>
+      </li>
+      <li role="presentation" class="<%= @current_tab == 'most_viewed_illustrations' ? 'active' : '' %>">
+        <%= link_to "<span>Most viewed illustrations</span>".html_safe , most_viewed_illustrations_path %>
+      </li>
+      <li role="presentation" class="<%= @current_tab == 'most_used_illustrations' ? 'active' : '' %>">
+        <%= link_to "<span>Most used illustrations</span>".html_safe , most_used_illustrations_path %>
+      </li>
+      <li role="presentation" class="<%= @current_tab == 'most_downloaded_stories' ? 'active' : '' %>">
+        <%= link_to "<span>Total downloaded stories</span>".html_safe , most_downloaded_stories_path %>
+      </li>
+      <li role="presentation" class="<%= @current_tab == 'most_downloaded_illustrations' ? 'active' : '' %>">
+        <%= link_to "<span>Most downloaded illustrations</span>".html_safe , most_downloaded_illustrations_path %>
+      </li>
+      <li role="presentation" class="<%= @current_tab == 'organization_downloads' ? 'active' : '' %>">
+        <%= link_to "<span>Organisational downloads</span>".html_safe , organization_downloads_path %>
+      </li>
+      <li role="presentation" class="<%= @current_tab == 'all_stories' ? 'active' : '' %>">
+        <%= link_to "<span>Stories</span>".html_safe , all_stories_path(:search_from => "One Month") %>
+      </li>
+      <li role="presentation" class="<%= @current_tab == 'all_illustrations' ? 'active' : '' %>">
+        <%= link_to "<span>Illustrations</span>".html_safe , all_illustrations_path(:search_from => "One Month") %>
+      </li>
+      <li role="presentation" class="<%= @current_tab == 'languages_added' ? 'active' : '' %>">
+        <%= link_to "<span>Languages</span>".html_safe , languages_added_path %>
+      </li>
+    </ul>
+  </div>
+  <hr />
+</div>

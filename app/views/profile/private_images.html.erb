@@ -1,0 +1,23 @@
+<%= render :partial => "tabs" %>
+<div class="col-md-12">
+  <table class="table table-striped">
+    <thead>
+    	<tr class="table-heading-row">
+        <th><%= t "dashboard.illustration"%></th>
+        <th><%= t "dashboard.title"%></th>
+        <th><%= t "dashboard.action"%></th>
+    	</tr>
+    </thead>
+    <tbody class="table-row-details">	
+      <% @illustrations.each do|illustration| %>
+       <tr>
+   		 <td><a href="<%= react_illustrations_show_path(illustration) %>"><img src="<%= illustration.image.url(:search) %>" height="100px" /></a>
+   		 </td>
+          <td class="underline-class"><%= link_to illustration.name, react_illustrations_show_path(illustration)  %></td>
+	     <td><%= button_to "Make public", make_image_public_path(:id => illustration.id),:method=>:get, class: " btn btn-normal btn-warning" %></td>
+       </tr>
+      <% end %>
+    </tbody>
+   </table>
+</div>
+<%= paginate @illustrations %>

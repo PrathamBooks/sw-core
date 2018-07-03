@@ -1,0 +1,31 @@
+<script id="illustration_card" type="text/x-handlebars-template">
+<div class="masonry-img-grid-item gutter-sm" id="ILLUSTRATION_DIV_{{id}}">
+  <div class="img-card-wrap white-bg">
+      <div class="img-card-img">
+          <a data-illustration-id="{{id}}" class="illustration_drawer_img" >
+            <img src="{{image_url}}" width="190px"/>
+            <div class="img-card-action-block dead-center">
+              {{#if is_favorite}}
+                <div class="btn btn-app btn-default black-transparent font-sm update_fav" id="fav-illustration-{{id}}" data-illustration-id="{{id}}">remove from favourites</div>
+              {{else}}
+                <div class="btn btn-app btn-default black-transparent font-sm update_fav" id="fav-illustration-{{id}}" data-illustration-id="{{id}}">save to favourites</div>
+              {{/if}}
+              <div class="btn btn-app btn-default black-transparent font-sm" data-illustration-id="{{id}}" id="illustration_{{id}}">add to current page</div>
+            </div>
+          </a>
+
+      </div>
+   <div class="img-card-content font-sm">
+      <div><span class="text-bold">{{name}}</span> by <span class="text-bold text-underline">{{illustrators}}</span></div>
+   </div> <!-- /img-card-content -->
+  </div>
+</div>
+</script>
+
+<script id="load_more" type="text/x-handlebars-template">
+  <div id="LoadMore">
+    <div align="center" style="padding:3px;">
+      Load More
+    </div>
+  </div>
+</script>

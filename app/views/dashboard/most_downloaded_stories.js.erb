@@ -1,0 +1,5 @@
+$("#stories-list").html("<%= escape_javascript(render :partial => "most_downloaded_stories", :locals => {:stories => @downloads_by_filter, :reads => false}) %>");
+$('#tabs a').click(function (e) {
+  e.preventDefault()
+  $(this).tab('show')
+})

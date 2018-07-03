@@ -1,0 +1,43 @@
+<div class="row full-content-dash">
+  <div class="col-md-12">
+    <ul class="nav nav-tabs content-manager" role="tablist" id="myTab">
+      <li role="presentation" class="<%= @current_tab == 'upload' ? 'active' : '' %>">
+        <%= link_to "<span>Legacy Upload</span>".html_safe , dashboard_path %>
+      </li>
+      <li role="presentation" class="<%= @current_tab == 'roles' ? 'active' : '' %>">
+        <%= link_to "<span>Set roles</span>".html_safe , roles_path %>
+      </li>
+      <li role="presentation" class="<%= @current_tab == 'story categories' ? 'active' : '' %>">
+        <%= link_to "<span>Story Categories</span>".html_safe , story_categories_path %>
+      </li>
+      <li role="presentation" class="<%= @current_tab == 'illustration categories' ? 'active' : '' %>">
+        <%= link_to "<span>Illustration Categories</span>".html_safe , illustration_categories_path %>
+      </li>
+      <li role="presentation" class="<%= @current_tab == 'languages' ? 'active' : '' %>">
+        <%= link_to "<span>Language</span>".html_safe , languages_path %>
+      </li>
+      <li role="presentation" class="<%= @current_tab == 'styles' ? 'active' : '' %>">
+        <%= link_to "<span>Illustration Style</span>".html_safe , styles_path %>
+      </li>
+      <li role="presentation" class="<%= @current_tab == 'flagged_stories' ? 'active' : '' %>">
+        <%= link_to "<span>Flagged Contents</span>".html_safe , flagged_stories_path %>
+      </li>
+      <li role="presentation" class="<%= @current_tab == 'recently_published' ? 'active' : '' %>">
+        <%= link_to "<span>Recently published</span>".html_safe , recently_published_stories_path %>
+      </li>
+      <li role="presentation" class="<%= @current_tab == 'donors' ? 'active' : '' %>">
+        <%= link_to "<span>Donors</span>".html_safe , donors_path %>
+      </li>
+      <li role="presentation" class="<%= @current_tab == 'private_images' ? 'active' : '' %>">
+        <%= link_to "<span>Private Images</span>".html_safe , dashboard_private_images_path %>
+      </li>
+      <li role="presentation" class="<%= @current_tab == 'image_upload' ? 'active' : '' %>">
+        <%= link_to "<span>Images Upload</span>".html_safe , images_upload_new_path %>
+      </li>
+      <li role="presentation" class="<%= @current_tab == 'lists' ? 'active' : '' %>">
+        <%= link_to "<span>Lists</span>".html_safe , lists_path %>
+      </li>
+    </ul>
+  </div>
+  <hr />
+</div>

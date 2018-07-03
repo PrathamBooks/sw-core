@@ -1,0 +1,42 @@
+<div class="modal-dialog modal-lg" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <h2 class="modal-title text-left"><%= t "dashboard.organization_name"%>: <%=  story_download.user.organization.organization_name %></h2>
+      <h3 class="modal-title text-left"><%= t "dashboard.organisational_downloads.stories_downloaded_on"%>: <%= story_download.created_at.localtime.strftime("%Y-%m-%d") %></h3>
+    </div>
+    <div class="modal-body modal-body-app">
+      <div class="row">
+        <table class="table table-striped">
+          <thead>
+            <tr class="table-heading-row">
+              <th><%= t "dashboard.story_title"%></th>
+              <th><%= t "dashboard.language"%></th>
+              <th><%= t "dashboard.level"%></th>
+              <th><%= t "dashboard.format"%></th>
+            </tr>
+          </thead>
+          <tbody class="table-row-details">
+            <% stories.each do|story| %>
+              <tr>
+               <td><%= story.title %></td>
+               <td><%= story.language.name %></td>
+               <td><%= story.reading_level %></td>
+               <td><%= story_download.download_format %></td>
+              </tr> 
+            <% end %>  
+         </tbody>
+        </table>
+      </div> <!-- /row -->        
+    </div> <!-- /modal-body -->
+    <div class="modal-footer">
+      <div class="row row-gutter">
+        <div class="text-right footer-container">
+          <span class="gutter-sm-x vertical-i-top spacing-half-v">
+            <span class="btn btn-app btn-brand-1" id="cancel"><%= t "dashboard.cancel"%></span>
+          </span>
+        </div>
+      </div>
+    </div> <!-- /modal-footer -->
+  </div> <!-- /modal-content -->
+</div> <!-- /modal-dialog -->

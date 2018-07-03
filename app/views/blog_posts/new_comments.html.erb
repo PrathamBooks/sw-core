@@ -1,0 +1,118 @@
+<%= render :partial => "dashboard/dashboard_datatables" %>
+
+<%= render :partial => "tabs" %>
+
+<div class="row">
+  <div class="col-md-12 col-sm-12">
+  	<label class="allusers">
+      <span>Number of Blogs selected :</span>
+      <span class="badge" id="blogs_comments_count"><%= @comments.count %></span>
+    </label>
+  </div>
+</div>
+
+
+<div role="tabpanel" class="tab-pane" id="profile-drafts">
+  <div class="col-md-12">
+    <table class="table table-striped" id="blogs_comments">
+      <tfoot style="display: table-header-group;">
+        <tr>
+          <th>Blog title       </th>
+          <th>Comments         </th>
+          <th>Commented by     </th>
+          <th>Commented on     </th>
+        </tr>
+      </tfoot>
+      <thead>
+        <tr class="table-heading-row">
+          <th>Blog title       </th>
+          <th>Comments         </th>
+          <th>Commented by     </th>
+          <th>Commented on     </th>
+        </tr>
+      </thead>
+      <tbody class="table-row-details">
+        <% @comments.each do |comment| %>
+          <tr class="comments_blogs">
+            <td><%= link_to comment.blog_post.title, blog_post_path(comment.blog_post.id) %></td>
+            <td><%= comment.body %></td>
+            <td><%= comment.user.name %></td>
+            <td><%= comment.created_at.strftime("%d,%b,%Y") %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+$(document).ready(function() {
+  var table = $('#blogs_comments').DataTable( {
+    searching: true,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 20,
+    order: [],
+    responsive: {
+        details: false
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  title: formatDatatableTitle('comments'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3 ]
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  title: formatDatatableTitle('comments'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3 ]
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  title: formatDatatableTitle('comments'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3 ]
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  title: formatDatatableTitle('comments'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3 ]
+                  }
+              }
+          ]
+      
+  });
+  $('#blogs_comments tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+  });
+
+  var new_table = $('#blogs_comments').dataTable();
+  table.columns().every( function () {
+    var that = this;
+
+    $( 'input', this.footer() ).on( 'keyup change', function () {
+      if ( that.search() !== this.value ) {
+          that
+              .search( this.value )
+              .draw();
+        document.getElementById("blogs_comments_count").innerHTML = document.getElementById('blogs_comments').children[1].childElementCount;
+      }else{
+        document.getElementById("blogs_comments_count").innerHTML = table.rows( '.comments_blogs' ).count(); 
+      }
+    });
+  });
+  $( 'input').on( 'keyup change', function () {
+    document.getElementById("blogs_comments_count").innerHTML = new_table.fnSettings().fnRecordsDisplay();
+  });
+
+  });
+
+</script>

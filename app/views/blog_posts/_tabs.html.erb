@@ -1,0 +1,22 @@
+<div class="row full-content-dash">
+  <div class="col-md-12">
+    <ul class="nav nav-tabs content-manager" role="tablist" id="myTab">
+      <li role="presentation" class="<%= @current_tab == 'published' ? 'active' : '' %>">
+        <%= link_to "<span>Published Posts</span>".html_safe , blog_dashboard_path %>
+      </li>
+      <li role="presentation" class="<%= @current_tab == 'drafts' ? 'active' : '' %>">
+        <%= link_to "<span>Drafts</span>".html_safe , blog_drafts_path %>
+      </li>
+      <li role="presentation" class="<%= @current_tab == 'scheduled' ? 'active' : '' %>">
+        <%= link_to "<span>Scheduled Posts</span>".html_safe, blog_scheduled_posts_path  %>
+      </li>
+      <li role="presentation" class="<%= @current_tab == 'de_activated' ? 'active' : '' %>">
+        <%= link_to "<span>Deactivated Posts</span>".html_safe, blog_de_activated_path   %>
+      </li>
+      <li role="presentation" class="<%= @current_tab == 'new_comments' ? 'active' : '' %>">
+        <%= link_to "<span>New comments</span>".html_safe, new_comments_path   %>
+      </li>
+    </ul>
+  </div>
+  <hr />
+</div>

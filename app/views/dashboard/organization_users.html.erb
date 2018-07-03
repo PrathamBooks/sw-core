@@ -1,0 +1,99 @@
+<%= render :partial => "dashboard/dashboard_datatables" %>
+
+<%= render :partial => "errors" %>
+
+<%= render :partial => "analytics_tabs" %>
+<%= render :partial => "organization_tabs" %>
+<table id="org_users_analytics" class="table table-striped">
+  <tfoot style="display: table-header-group;">
+    <tr>
+      <th>Org Id             </th>
+      <th>Org Name           </th>
+      <th>City               </th>
+      <th>Country            </th>
+      <th>Classrooms         </th>
+      <th>Children           </th>
+      <th>First Name         </th>
+      <th>Email              </th>
+      <th>Reg Date           </th>
+    </tr> 
+  </tfoot>
+  <thead>
+    <tr class="table-heading-row">
+      <th>Org Id             </th>
+      <th>Org Name           </th>
+      <th>City               </th>
+      <th>Country            </th>
+      <th>Classrooms         </th>
+      <th>Children           </th>
+      <th>First Name         </th>
+      <th>Email              </th>
+      <th>Reg Date           </th>
+    </tr>
+  </thead>
+  <tbody class="table-row-details">
+    <% @organization_users.each do |i_user| %>
+      <tr>
+        <td><%= i_user.organization.id %></td>
+        <td><%= i_user.organization.organization_name %></td>
+        <td><%= i_user.organization.city %></td>
+        <td><%= i_user.organization.country %></td>
+        <td><%= i_user.organization.number_of_classrooms %></td>
+        <td><%= i_user.organization.children_impacted %></td>
+        <td><%= i_user.first_name %></td>
+        <td><%= i_user.email%></td>
+        <td><%= i_user.org_registration_date.present? ? i_user.org_registration_date.localtime.strftime("%Y-%m-%d") : "" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    var table = $('#org_users_analytics').DataTable( {
+      searching: true,
+      lengthChange: false,
+      showNEntries: false,
+      pageLength: 20,
+      responsive: {
+          details: false
+      },
+      dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+      buttons: [
+        {
+          extend: 'copyHtml5',
+          title: formatDatatableTitle('org-users')
+        },
+        {
+          extend: 'csvHtml5',
+          title: formatDatatableTitle('org-users')
+        },
+        {
+          extend: 'excelHtml5',
+          title: formatDatatableTitle('org-users')
+        },
+        {
+          extend: 'pdfHtml5',
+          title: formatDatatableTitle('org-users')
+        }
+      ]
+    });
+
+    $('#org_users_analytics tfoot th').each( function () {
+        var title = $(this).text();
+        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    });
+ 
+    table.columns().every( function () {
+        var that = this;
+ 
+        $( 'input', this.footer() ).on( 'keyup change', function () {
+            if ( that.search() !== this.value ) {
+                that
+                    .search( this.value )
+                    .draw();
+            }
+        });
+    });
+} );
+</script>

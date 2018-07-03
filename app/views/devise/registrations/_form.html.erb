@@ -1,0 +1,183 @@
+
+<div id="registerForm">
+  <%= form_for(@user, :url => registration_path(:user)) do |f| %>
+    <%#= devise_error_messages! if @user %>
+    <% if @user.errors.count != 0 %>
+      <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <div id="flash_error"><%= @user.errors.full_messages.join(", ") %></div>
+      </div>
+    <% end %>
+    <div class="field">
+        <span class="fname"><label>First Name</label>
+        <%= f.text_field :first_name, autofocus: true %></span>
+         <span class="lname"><label>Last Name</label>
+        <%= f.text_field :last_name, autofocus: true %></span>
+    </div>
+
+    <div class="field">
+      <%= f.label "email id" %><em> (Verification email will be sent to this id) </em><br />
+      <%= f.email_field :email %>
+    </div>
+
+    <div class="field">
+      <%= f.label :password %>
+      <% if @validatable %>
+      <em>(<%= @minimum_password_length %> characters minimum)</em>
+      <% end %><br />
+      <%= f.password_field :password, autocomplete: "off" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :password_confirmation %><br />
+      <%= f.password_field :password_confirmation, autocomplete: "off" %>
+    </div>
+
+    <div class="row row-gutter">
+      <div class="col-sm-12">
+            <label class="big-margin-bottom">Please do take a few minutes to share some additional information about yourself.</label>
+            <div class="form-group form-group-lg-pad">
+              <label class="label-required normal-font-weight">Do you work / volunteer with an organisation that works with children?</label>
+              <div class="radio radio-no-margin">
+                <div>
+                  <label>
+                  <input id="organization-user" type="radio" value="true" name="user_opinion" >
+                  Yes
+                </label>
+                </div>
+                <div>
+                  <label>
+                  <input id ="organization-user-no" type="radio" name="user_opinion" value="false" checked>
+                  No
+                </label>
+            </div>
+          </div>
+          </div>
+          <div id="demo" class="collapse">
+            <%= f.fields_for :organization do |ff| %>
+              <div class="field">
+                  <label class="label-required">Name of the Organisation</label>
+                  <%= ff.text_field :organization_name, value: @org.present? ? @org[:organization_name] : nil %>
+              </div>
+              <div class="field">
+                   <label class="label-required">Country name</label>
+                  <%= ff.collection_select(:country, { }, :id, :name, { :prompt => 'Select Country'}, {:class => 'country'})  %>
+              </div>
+              <div id="organization_autofill">
+                <div class="field">
+                    <label class="label-required">Number of classrooms</label>
+                   <%= ff.number_field :number_of_classrooms, min: 1, value: @org.present? ? @org[:number_of_classrooms] : nil%>
+                </div>
+                <div class="field">
+                    <label class="label-required">Number of children impacted (approximately)</label>
+                    <%= ff.number_field :children_impacted,  min: 1, value: @org.present? ? @org[:children_impacted] : nil%>
+                    <%= ff.text_field :status, class: "hidden", value: "New" %>
+                </div>
+              </div>
+              
+            <% end %>
+            <div class="field">
+              <label>Which states/cities are you working in?</label>
+              <%= f.text_field :city, autofocus: true, value: @user.city %></span>
+            </div>
+          </div>
+      </div>
+    </div>
+    <div class="actions reg-sig-btn">
+      <%= f.submit "Sign up" %>
+    </div>
+    <div class="login-bottom">
+                <p>or</p>
+              <p>Sign up with:</p>
+              <div class="log-soc">
+              <a href="<%= user_omniauth_authorize_path(:facebook) %>" target="_blank" class="facebk"><i class="fa fa-facebook"></i></a>
+              <a href="<%= user_omniauth_authorize_path(:google_oauth2) %>" target="_blank" class="google-plus"><i class="fa fa fa-google-plus"></i></a>
+              </div>
+           </div>
+
+    <script type="text/javascript">
+    $(document).ready(function() {
+      $('input[name="user_opinion"]').click( function() {
+      if ($('#organization-user').is(":checked")){
+
+        $('#demo').collapse('show');
+
+      } else {
+
+        $('#demo').collapse('hide');
+      }
+    })
+     <% if @org_data.present? %>
+      $("#organization_autofill *").children().prop('readonly',true);
+    <% else %>
+      $("#organization_autofill *").children().prop('readonly',false);
+     <% end %>
+
+    <% if @organization_error.present? %>
+      $('#organization-user').prop('checked', true);
+      $('#demo').collapse('show');
+      //$(".country").append('<option>' + "<%#= @org[:country].blank? ? 'Select Country' : @org[:country] %>" + '</option>');
+    <% end %>
+    $('.country').selectpicker('val', "<%= @org.present? ? @org[:country] : '' %>");
+    });
+  function myFunction() {
+    var data = getCountryData();
+    $.each(data, function(index,country) {
+      $(".country").append('<option id='+ country.iso2 + '>' + country.countryname + '</option>');
+    });
+    $('.country').selectpicker({
+      liveSearch:true
+    });
+  }
+  myFunction();
+
+    </script>
+  <% end %>
+</div>
+<script type="text/javascript">
+  $( "#user_organization_attributes_organization_name" ).autocomplete({
+    source: function( request, response ) {
+      $.ajax({
+        url: "<%= organizations_autocomplete_path%>",
+        dataType: "json",
+        data: {
+         query: request.term
+        },
+        success: function( data ) {
+          response(data);
+        }
+      });
+    }
+  });
+   
+  $('.country').on('change', function(){
+    $.ajax({
+        url: "<%= validate_org_name_country_path %>",
+        dataType: "json",
+        data: {
+            org_name: $( "#user_organization_attributes_organization_name" ).val(),
+            country: $(this).find("option:selected").val()
+          },
+        success: function( data ) {
+          console.log(data)
+          if(data.org_present == "true"){
+            $('#user_organization_attributes_number_of_classrooms').val(data.org.number_of_classrooms);
+            $('#user_organization_attributes_children_impacted').val(data.org.children_impacted);
+            $("#organization_autofill *").children().prop('readonly',true);
+          }else{
+            $("#organization_autofill *").children().prop('readonly',false);
+            $('#user_organization_attributes_number_of_classrooms').val("")
+            $('#user_organization_attributes_children_impacted').val("")
+          }
+          response(data);
+        }
+      });
+  });
+
+  $('#user_organization_attributes_organization_name').keyup('change', function(e) {
+    $('#user_organization_attributes_city, #user_organization_attributes_number_of_classrooms, #user_organization_attributes_children_impacted').val("")
+    $('.country').selectpicker('val', "");
+    $("#organization_autofill *").children().prop('readonly',false);
+    $('.country').find('.selectpicker').attr('disabled',false)
+  })
+</script>

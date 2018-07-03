@@ -1,0 +1,2 @@
+$('#logoModal').modal('hide');
+$('#user_details').html("<%= escape_javascript(render(:partial=>"user_details",:locals => {:users => @users})) %>");

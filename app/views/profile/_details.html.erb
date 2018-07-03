@@ -1,0 +1,144 @@
+<div class="profile_img col-md-2 col-sm-2" id="profile_image">
+    <%= render :partial => "profile_logo_update" %>
+</div>
+<%= simple_form_for(:user, :url => edit_profile_path, html: {:id => "edit_profile"}) do |f| %>
+  <div class="prof_wrapper">
+    <div class="profile_img col-md-2 col-sm-2" id="update_profile_image" >
+    </div>
+    <div class="prof_form">
+      <div class="col-md-9 col-sm-9">
+        <div class="mar-bot">
+          <p class="form_head"><%= t "dashboard.my_details_tab.change_text" %></p>
+          <div class="col-md-12 col-sm-12 name_field">
+            <div class="col-sm-6 num_class nopadding">
+              <label class="org_details_form"><%= t "dashboard.my_details_tab.first_name" %></label>
+              <div class="nopadding">
+                <%= f.input :first_name,  label: false, input_html: { class: 
+                "pro-inp", value: current_user.first_name} %>
+              </div>
+            </div>
+            <div class="col-sm-6 num_class num_last_class">
+              <label class="org_details_form"><%= t "dashboard.my_details_tab.last_name" %></label>
+              <div class="nopadding">
+                <%= f.input :last_name,  label: false, input_html: { class: 
+                "pro-inp", value: current_user.last_name} %>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 col-sm-12 nopadding label_note">
+            <span><%= t "dashboard.my_details_tab.update_note" %></span>
+          </div>
+          <div class="col-md-12 col-sm-12 nopadding prof_bio mar-bot">
+            <div class="nopadding padding-left bio_field">
+              <label class="org_details_form"><%= t "dashboard.my_details_tab.profile_description" %></label>
+              <%= f.input :bio,  label: false ,as: :text, input_html: {style: "resize: none;", value: current_user.bio} %>
+            </div>
+          </div>
+          
+              <% if current_user.organization.present? %>
+                <label class="org_details_form"><%= t "dashboard.my_details_tab.organisation_name" %></label>
+                <label><%= current_user.organization.organization_name %></label>
+              <% end %>
+            
+          <div class="col-md-12 col-sm-12 nopadding prof_bio mar-bot">
+            <div class="nopadding email-mob">
+              <label class="org_details_form"><%= t "dashboard.my_details_tab.email" %></label>
+              <label><%= current_user.email %></label>
+            </div>
+          </div>
+          <div class="col-md-12 col-sm-12 nopadding prof_website mar-bot">
+            <div class="nopadding padding-left website_field">
+              <label class="org_details_form"><%= t "dashboard.my_details_tab.website" %></label>
+                <%= f.input :website,  label: false,  input_html: {class: "pro-inp email-pro", value: current_user.website, } %>
+            </div>
+          </div>        
+          <div class="row prof_read_pre">
+            <h2><%= t "dashboard.my_details_tab.reading_preferences" %></h2>
+            <p><%= t "dashboard.my_details_tab.reading_pref_text" %></p>
+            <div class="col-sm-12 col-md-12 nopadding">
+              <div class="col-md-6 col-sm-6 nopadding mar-bot lang_pre">
+                <label class="org_details_form"><%= t "dashboard.my_details_tab.language_preferences" %></label>
+                <%= f.input :language_preferences, collection: Language.all.map{|l| [l.name,l.id]}, input_html: { multiple: true,:style => "width: 50%;",required: true }, label: false%>
+              </div>
+              <div class="col-md-6 col-sm-6 nopadding mar-bot">
+                <label class="org_details_form"><%= t "dashboard.my_details_tab.reading_levels" %></label>
+                   <%= f.input :reading_levels, collection: Story::READING_LEVELS.collect {|key,value| ["<strong>Level #{key}:</strong> #{Story::READING_LEVEL_INFO[key]}".html_safe,key] }.compact, input_html: {required: true, multiple: true,:style => "width: 50%;" }, label: false%>
+              </div>  
+            </div>
+          </div>
+          <div class="col-md-12 col-sm-12 nopadding check-box-prof">
+            <span><%= t "dashboard.my_details_tab.updates_prompt" %></span>
+            <%= f.input :email_preference, as: :boolean,  label: false , input_html: {class: "pro-inp", checked: current_user.email_preference } %>
+          </div>
+          <div class="change-pass">
+            <%= link_to "Change Password", edit_password_path, :remote => true , :class => "btn btn-primary btn-lg org_details_form" %>
+          </div>
+          <div class="col-md-3 col-sm-3 nopadding save_button">
+            <%= f.submit "#{t "dashboard.my_details_tab.submit"}" , :class=>"btn btn-info edit-btn" %>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+<% unless current_user.organization.present? %>
+  <div class="col-md-12 col-sm-12 nopadding signup_user prof_user">
+    <a href="<%= organization_sign_up_model_path %>" data-dismiss="modal" data-remote="true" class="open_sign_up_model btn btn-info edit-btn"><%= t "dashboard.my_details_tab.org_sign_up_button" %></a>
+    <i class="fa fa-info-circle level-tooltip" data-toggle="tooltip" data-title="Organisational Users can download multiple books in multiple formats in one click."></i> 
+  </div>
+<% end %>
+
+   
+<div id="organization_signup_model" class="modal fade"  tabindex="-1" role="dialog">
+</div>
+
+<div id="editPasswordForm">
+
+</div>    
+
+<script>
+$(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip();
+  $('#user_language_preferences, #user_reading_levels').selectpicker({
+      liveSearch:true
+    });
+   $('#user_language_preferences').selectpicker('val', "<%= current_user.language_preferences %>".split(','))
+   $('#user_reading_levels').selectpicker('val', "<%= current_user.reading_levels %>".split(','))
+});
+function update_profile_image(){
+ $('#logo_form').submit()
+}
+// Gets a reference to the form element, assuming
+// it contains the id attribute "edit_profile".
+var edit_form = document.getElementById('edit_profile');
+
+// Adds a listener for the "submit" event.
+edit_form.addEventListener('submit', function(event) {
+
+  // Prevents the browser from submitting the form
+  // and thus unloading the current page.
+  event.preventDefault();
+
+  // Creates a timeout to call `submitForm` after one second.
+  setTimeout(submitForm, 1000);
+
+  // Keeps track of whether or not the form has been submitted.
+  // This prevents the form from being submitted twice in cases
+  // where `hitCallback` fires normally.
+  var formSubmitted = false;
+
+  function submitForm() {
+    if (!formSubmitted) {
+      formSubmitted = true;
+      edit_form .submit();
+    }
+  }
+
+  // Sends the event to Google Analytics and
+  // resubmits the form once the hit is done.
+  ga('send', 'event', 'Profile edit', 'submit', {
+    hitCallback: submitForm
+  });
+});
+</script>

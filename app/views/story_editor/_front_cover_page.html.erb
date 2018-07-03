@@ -1,0 +1,54 @@
+<div class='<%= @page.page_template.name + ' content front-cover-page' %>'>
+	<div class="logo-level">
+    	<div class="pub-logo">
+    		 <img src="<%= organization_logo(@page.story) %>" class="publisher-logo" />
+    	</div>
+    	<img src="<%= level_band_image(@page.story) %>" width="100%" height="100%" class="book-levels" />
+    </div>
+    <div class="cover-text">
+		<div class="textual">
+			<p class="cover_title <%= @story.language.script %>"><%= @page.story.title %></b><p>
+			<p class="cover_attribution english">
+		    <%=who_label(@page.story)%>
+		      <span class="contributor_attribution authors english">
+		        <%= who_did_it(@page.story) %>
+		      </span>
+		  </p>
+	  <% if(@page.story.has_illustrators?) %>
+		 <p class="cover_attribution english">
+	   <%= illustrators_label(@page.story) %>
+	      <span class="contributor_attribution illustrators english">
+	         <%= display_illustrators(@page.story,@page.page_template.max_limit) %>
+	      </span>
+	   </p>
+	  <% end %>
+	  <% if(@page.story.is_translation?) %>
+		 <p class="cover_attribution english">
+		 	<%= derivator_label(@page.story) %>
+	      <span class="contributor_attribution authors derivation_authors english">
+	        <%= translator_names(@page.story) %>
+	      </span>
+	   </p>
+	  <% end %>
+		</div>
+	  <div class="cover-level">
+	    Level
+	    <img
+	      <% if @offline_processing %>
+	        src="<%= absolute_path(reading_level_logo(@page.story)) %>"
+	      <% else %>
+	        src="<%= reading_level_logo(@page.story) %>"
+	      <% end %>
+	    />
+	  </div>
+  </div>
+</div>
+<div id="cover_title_click_dialog" title="Message">
+    Your story title can be edited at the final stage after you hit the Publish button. If you don't like the way your Cover Page looks, we have a few templates you can play around with. Please click the 'Change Layout' button on your right. 
+</div>
+<script>
+$(document).ready(function(){
+  var story_editor = new StoryEditor(new StoryEditorPage(), new StoryEditorService());
+  story_editor.init_cannot_edit_front_cover_dialog();	
+});
+</script>

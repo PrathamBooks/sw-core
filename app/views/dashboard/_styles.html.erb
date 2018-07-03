@@ -1,0 +1,58 @@
+<div class="row">
+  <div class="col-md-5 col-sm-5">
+    <table class="table table-striped">
+      <thead>
+        <tr class="table-heading-row">
+          <th><%= t 'dashboard.illustration_style_tab.style_name' %></th>
+        </tr>
+      </thead>
+      <tbody class="table-row-details">    
+      <% @styles.each_with_index do |style,index| %> 
+        <tr>
+          <td>
+            <div>
+              <label><%= style.name %></label>  
+            	<input type="button" name="submit" data-style="<%= style.name %>" value="Edit" class="btn btn-info edit-btn" onclick="Dashboard.showForm(<%= index %>);"/>
+            </div>
+
+            <div id="index_<%= index %>" style="display:none;padding-top:5px;">
+               <%= simple_form_for(:style, :url => edit_style_path(style), html: { id: "form_#{index}"}) do |f| %>
+                <%= f.input :name,  label: false , input_html: {style: "float:left;width:60%;margin-right:15px;" , value: style.name} %>
+                <%= f.submit "#{t 'dashboard.submit'}" , :class=>"btn btn-success" %>
+                <input class="btn btn-inverse" name="commit" onclick="Dashboard.hideForm(<%= index %>)" type="button" value="<%= t 'dashboard.cancel' %>">
+              <% end %>
+            <div> 
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= paginate @styles %>
+  </div>
+    <div class="col-md-1 col-sm-1">
+   	</div>
+  <div class="col-md-5 col-sm-5">
+  	<%= simple_form_for(:style, :url => create_style_path) do |f| %>
+      <%= f.input :name, label: false ,:placeholder => "style name", input_html: {:class => "new-cat-add" } %>
+      <input type="text" class = "string required form-control new-cat-add"  placeholder= "hindi translation"  name="style[translated_name]">
+      <%= f.submit "#{t 'dashboard.illustration_style_tab.add_new_style'}" , :class=>"btn btn-info new-cat-btn" %>
+    <% end %>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+
+function showForm(id){
+  var el = $("#index_"+id)
+  el.show()
+  el.siblings("div").addClass('hide')
+}
+
+function hideForm(id){
+  var el = $("#index_"+id)
+  el.hide()
+  el.siblings("div").removeClass('hide')
+} 
+
+</script>

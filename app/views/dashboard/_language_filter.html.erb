@@ -1,0 +1,28 @@
+<%= select_tag('language', options_from_collection_for_select(Language.all, 'name', 'name'), prompt: "All Languages", :onchange => "language_filters();")%>
+
+<script>
+  $(document).ready(function(){
+    $('#language').selectpicker({
+      liveSearch:true
+    });
+    <% if params[:language] %>
+      $('#language').selectpicker('val', "<%= params[:language]%>");
+    <% end %>
+  });
+
+  function language_filters(){
+    var language = $("#language").val();
+    $.ajax({
+      type: 'GET',
+      url: "<%= path %>",
+      data: {language: language},
+      beforeSend: $.blockUI,
+      success: $.unblockUI,
+      error: function(e){
+        $.unblockUI();
+        alert('There was an error while processing your action, please retry after some time.');
+      },
+      dataType: 'script'
+    });
+  }
+</script>

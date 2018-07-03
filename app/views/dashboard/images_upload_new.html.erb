@@ -1,0 +1,125 @@
+<%= render :partial => "dashboard_datatables" %>
+
+<%= render :partial => "tabs" %>
+<%= simple_form_for :upload_images, url: images_upload_path do |f|%>
+    <h5><%= t 'dashboard.images_upload_tab.upload_csv_file'%>:</h5><%= f.file_field :csv %>
+    <h5><%= t 'dashboard.images_upload_tab.upload_zip_file'%>:</h5><%= f.file_field :zip %>
+    <%= f.submit "#{t 'dashboard.images_upload_tab.upload'}"%>
+<% end %>
+
+<div class="row">
+  <div class="col-md-12 col-sm-12">
+  	<label class="allusers">
+      <span><%= t 'dashboard.number_of_illustrations_selected'%> :</span>
+      <span class="badge" id="uploaded_images_new_count"><%= @illustrations.count %></span>
+    </label>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12 col-sm-12">
+    <table class="table table-striped" id="uploaded_images_new">
+      <tfoot style="display: table-header-group;">
+        <tr>
+          <th><%= t 'dashboard.images_upload_tab.name'%></th>
+          <th><%= t 'dashboard.images_upload_tab.illustrators'%></th>
+          <th><%= t 'dashboard.images_upload_tab.category'%></th>
+          <th><%= t 'dashboard.images_upload_tab.styles'%></th>
+          <th><%= t 'dashboard.images_upload_tab.tags'%></th>
+        </tr>
+      </tfoot>
+      <thead>
+        <tr class="table-heading-row">
+          <th><%= t 'dashboard.images_upload_tab.name'%></th>
+          <th><%= t 'dashboard.images_upload_tab.illustrators'%></th>
+          <th><%= t 'dashboard.images_upload_tab.category'%></th>
+          <th><%= t 'dashboard.images_upload_tab.styles'%></th>
+          <th><%= t 'dashboard.images_upload_tab.tags'%></th>
+        </tr>
+      </thead>
+      <tbody class="table-row-details">
+        <% @illustrations.each_with_index do |ill, index| %>
+          <tr class="uploaded_new_images">
+            <td class="<%=ill.name %> underline-class"><%= link_to ill.name, react_illustrations_show_path(ill) , :target => "_blank" %></td>
+            <td><%= ill.illustrators.collect(&:email).join(",") %></td>
+            <td><%= ill.categories.collect(&:name).join(",") %></td>
+            <td><%= ill.styles.collect(&:name).join(",") %></td>
+            <td><%= ill.tag_list %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+$(document).ready(function() {
+  var table = $('#uploaded_images_new').DataTable( {
+    searching: true,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 20,
+    order: [],
+    responsive: {
+        details: false
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  title: formatDatatableTitle('images-upload-new'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4 ]
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  title: formatDatatableTitle('images-upload-new'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4 ]
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  title: formatDatatableTitle('images-upload-new'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4 ]
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  title: formatDatatableTitle('images-upload-new'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4 ]
+                  }
+              }
+          ]
+      
+  });
+  $('#uploaded_images_new tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+  });
+
+  var new_table = $('#uploaded_images_new').dataTable();
+  table.columns().every( function () {
+    var that = this;
+
+    $( 'input', this.footer() ).on( 'keyup change', function () {
+      if ( that.search() !== this.value ) {
+          that
+              .search( this.value )
+              .draw();
+        document.getElementById("uploaded_images_new_count").innerHTML = document.getElementById('uploaded_images_new').children[1].childElementCount;
+      }else{
+        document.getElementById("uploaded_images_new_count").innerHTML = table.rows( '.uploaded_new_images' ).count(); 
+      }
+    });
+  });
+  $( 'input').on( 'keyup change', function () {
+    document.getElementById("uploaded_images_new_count").innerHTML = new_table.fnSettings().fnRecordsDisplay();
+  });
+
+  });
+
+</script>

@@ -1,0 +1,31 @@
+<div title="Delete Reviewer">
+  <label>Want to remove "<%= reviewer.name %>" as a reviewer for "<%= language.name %>" language?</label>
+</div>
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#delete_reviewer_dailog').dialog({
+        autoOpen: true,
+        width: 400,
+        modal: true,
+        buttons : {
+	        "Ok" : function() {
+		              $.ajax({
+		                type: 'DELETE',
+		                dataType: 'script',
+		                url: "<%= delete_language_reviewer_path %>",
+		                data: {
+		                 language_id: "<%= language.id %>",
+		                 reviewer_id: "<%= reviewer.id %>"
+		                }
+		              }); 
+            		},
+	        "Cancel" : function() {
+	          			$(this).dialog("close");
+	        			}
+    	},
+        dialogClass: 'change_orientation_dialog'
+  	});
+ });
+</script>

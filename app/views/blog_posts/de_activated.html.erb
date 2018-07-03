@@ -1,0 +1,36 @@
+<%= render :partial => "tabs" %>
+
+<div role="tabpanel" class="tab-pane" id="profile-drafts">
+  <div class="col-md-12">
+    <table class="table table-striped">
+      <thead>
+      <tr class="table-heading-row">
+        <th>Title</th>
+        <th>Created at</th>
+        <th></th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody class="table-row-details">
+      <% @blog_de_activated.each do |blog_de_activated| %>
+      <tr>
+        <td>
+          <%= link_to blog_de_activated.title, blog_post_path(blog_de_activated.id) %>
+        </td>
+        <td>
+          <%= blog_de_activated.created_at %>
+        </td>
+        <td>
+          <%= link_to 'Edit', edit_blog_post_path(blog_de_activated.id), class:"btn btn-info edit-btn" %>
+        </td>
+        <td>
+          <%= link_to 'Destroy', blog_post_path(blog_de_activated.id),class:"btn btn-info edit-btn", method: :delete, data: { confirm: 'Are you sure?' } %>
+        </td>
+
+      </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<%= paginate @blog_de_activated %>

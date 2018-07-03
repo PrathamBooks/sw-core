@@ -1,0 +1,1474 @@
+.modal-body {
+  padding-top: 5px;
+}
+.modal-dialog{
+  margin-left:auto;
+  margin-right:auto;
+  margin-top: 1px;
+  margin-bottom: 1px;
+}
+#illustration-view .close-reader, #storyReader .close-reader {
+  color: #ffcc47;
+  position: absolute;
+  right: 5px;
+  top: 2px;
+  background:#fff;
+  border-radius: 15px;
+  z-index: 9;
+  opacity: 1;
+  width: 25px;
+  height: 25px;
+  font-size: 25px;
+  i{
+    padding-top: 1px;
+  }
+}
+
+#storyReader .screen-mode {
+  background-color: #ffcc47;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  border-radius: 15px;
+  z-index: 9;
+  opacity: 1;
+  width: 22px;
+  height: 22px;
+  font-size: 13px;
+  img {
+    background-color:initial;
+  }
+  i{
+    color: #fff;
+    padding-left: 4.5px;
+    padding-top: 3px;
+  }
+}
+.review_story_landscape{
+  background-color: #ffcc47;
+  bottom: 0px;
+  float: right;
+  height: 15px;
+  margin: 0 auto;
+  position: absolute;
+  right: 2%;
+  padding: 0px 10px 22px 10px;
+  border-radius: 8px 8px 0px 0px;
+  a{
+    color: black;
+    font-size: 11px !important;
+    font-family: "Noto Sans",sans-serif !important; 
+  }
+}
+.review_story_portrait{
+  background-color: #ffcc47;
+  bottom: 18px;
+  height: 15px;
+  margin: 0 auto;
+  position: relative;
+  width: 42%;
+  text-align:center;
+  padding: 0px 0px 22px 0px;
+  border-radius: 8px 8px 0px 0px;
+  a{
+    color: black;
+    font-size: 11px !important;
+    font-family: "Noto Sans",sans-serif !important; 
+  }
+}
+.reviewed_story_landscape{
+  background-color: #ffcc47;
+  bottom: 0px;
+  float: right;
+  height: 15px;
+  margin: 0 auto;
+  position: absolute;
+  right: 19px;
+  width: 10%;
+  padding: 0px 7px 22px 8px;
+  border-radius: 8px 8px 0px 0px;
+  label{
+    margin-bottom: -10px;
+    font-size: 9px !important;
+    font-family: "Noto Sans",sans-serif !important;
+  }
+}
+.reviewed_story_portrait{
+  background-color: #ffcc47;
+  bottom: 0px;
+  float: right;
+  height: 15px;
+  margin: 0 auto;
+  position: absolute;
+  right: 19px;
+  width: 20%;
+  padding: 0px 7px 22px 8px;
+  border-radius: 8px 8px 0px 0px;
+  label{
+    margin-bottom: -10px;
+    font-size: 9px !important;
+    font-family: "Noto Sans",sans-serif !important;
+  }
+}
+#imagepreview {
+  display: none;
+  width: 100%;
+  height: 100%;
+}
+// Best for 1600+
+// .modal-dialog.landscape{
+//   width:1230px;
+// }
+//
+// .page-container-landscape {
+//   width: 1200px;
+//   height: 863px;
+// }
+
+// Best for 1280px
+// .modal-dialog.landscape{
+//   width:900px;
+// }
+//
+// .page-container-landscape {
+//   width: 862px;
+//   height: 620px;
+// }
+
+// Best for 1440px * 900px
+// .modal-dialog.landscape{
+//   width:1032px;
+// }
+// .page-container-landscape {
+//   width: 1000px;
+//   height: 719px;
+// }
+
+// Best for 1366px * 768px
+.modal-dialog.landscape{
+  width:989px;
+}
+
+.front-cover-page .cover-text .textual {
+  .urdu > b {
+    line-height: 2.3em;
+  }
+}
+
+.full-stry-dt .det-bk-tit div.urdu, .author-dt.urdu {
+  line-height: 2.3em;
+}
+
+.urdu {
+  > div#txtEditor .text-font-medium, > div#txtEditor .text-font-small, > div#txtEditor .text-font-smallest, 
+  > div#txtEditor  .text-font-normal > div#txtEditor .text-font-largest, > div#txtEditor .text-font-large, div#txtEditor {
+    line-height: 2.3em;
+  }
+}
+
+#full-editor-container {
+  .urdu {
+    .text-font-largest, .text-font-large, .text-font-normal, .text-font-medium, .text-font-small, .text-font-smallest {
+      line-height: 2.3em;
+    }
+  }
+}
+
+#selected_page .bc_h_c100.content .synopsis {
+  font-size: 0.7em;
+}
+
+@import 'default_fonts';
+//For Publish popup SW-1371
+#publish_form .publish-cover-block .page-container-portrait {
+  width: 415px;
+  height: 612px;
+}
+//Publisher modal pop book cover adjustment SW-1371
+#publish_form > #review_book_covers > .row > div {
+  padding: 0px 6px;
+}
+
+.urdu .text-font-normal, .kurdish_arabic .text-font-normal, .hebrew .text-font-normal,
+.urdu .text-font-large, .kurdish_arabic .text-font-large, .hebrew .text-font-large,
+.urdu .text-font-largest, .kurdish_arabic .text-font-largest, .hebrew .text-font-largest,
+.urdu .text-font-medium, .kurdish_arabic .text-font-medium, .hebrew .text-font-medium,
+.urdu .text-font-small, .kurdish_arabic .text-font-small, .hebrew .text-font-small,
+.urdu .text-font-smallest, .kurdish_arabic .text-font-smallest, .hebrew .text-font-smallest {
+  line-height: 2.3em;
+}
+
+$portrait-readers-width-1365: 415px;
+$portrait-readers-width-900: 415px;
+$portrait-readers-width-767: 415px;
+$portrait-readers-width-490: 428px;
+$portrait-readers-width-479: 308px;
+$portrait-readers-width-359: 268px;
+
+$landscape-readers-width-1365: 805px;
+$landscape-readers-width-900: 708px;
+$landscape-readers-width-767: 452px;
+$landscape-readers-width-490: 396px;
+$landscape-readers-width-479: 308px;
+$landscape-readers-width-359: 268px;
+
+@media only screen and (min-width: 1365px) {
+  .urdu .text-font-normal, .kurdish_arabic .text-font-normal, .hebrew .text-font-normal,
+  .urdu .text-font-large, .kurdish_arabic .text-font-large, .hebrew .text-font-large,
+  .urdu .text-font-largest, .kurdish_arabic .text-font-largest, .hebrew .text-font-largest,
+  .urdu .text-font-medium, .kurdish_arabic .text-font-medium, .hebrew .text-font-medium,
+  .urdu .text-font-small, .kurdish_arabic .text-font-small, .hebrew .text-font-small,
+  .urdu .text-font-smallest, .kurdish_arabic .text-font-smallest, .hebrew .text-font-smallest {
+    line-height: 2.3em;
+  }
+}
+
+@media only screen and (min-width: 475px) {
+  .page-container-portrait {
+    width: 475px;
+    height: 700px;
+  }
+  .page-container-portrait .content .logo-level .pub_story_logo {
+    height: auto;
+  }
+  .page-container-portrait .content .logo-level .pub_story_logo img {
+    height: auto;
+  }
+  .page-container-portrait .content .book-levels {
+    margin-top: 6%;
+  }
+}
+//size4
+@media only screen and (max-width: 475px) {
+   .sp_h_text_overlay1 > p {
+       line-height: 1.5em !important;
+   }
+  .page-container-portrait {
+    width: 475px;
+    height: 700px;
+    overflow: hidden;
+  }
+
+  .page-container-portrait .content p{
+    margin: 0;
+    padding: 0;
+  }
+
+ .page-container-portrait{
+    .text-font-largest{
+      font-size: 28px;
+    }
+
+    .text-font-large{
+      font-size: 25px;
+    }
+
+    .text-font-normal{
+      font-size: 20px;
+    }
+
+    .text-font-medium{
+      font-size: 18px;
+    }
+
+    .text-font-small{
+      font-size: 16px;
+    }
+
+    .text-font-smallest{
+      font-size: 14px;
+    }
+  }
+
+ .page-container-portrait.kannada {
+    .text-font-largest{
+      font-size: 30px;
+    }
+    .text-font-large{
+      font-size: 26px;
+    }
+    .text-font-normal{
+      font-size: 22px;
+    }
+    .text-font-medium {
+      font-size: 19px;
+    }
+    .text-font-small{
+      font-size: 16.5px;
+    }
+    .text-font-smallest {
+      font-size: 14px;
+    }
+  }
+  .page-container-portrait.telugu{
+    .text-font-largest {
+      font-size: 30px;
+    }
+    .text-font-large{
+      font-size: 26px;
+    }
+    .text-font-normal{
+      font-size: 22px;
+    }
+    .text-font-medium{
+      font-size: 19px;
+    }
+    .text-font-small{
+      font-size: 17px;
+    }
+    .text-font-smallest{
+      font-size: 14.5px;
+    }
+  } 
+  .page-container-portrait.devanagri {
+    .text-font-largest{
+      font-size: 30px;
+    }
+
+    .text-font-large{
+      font-size: 26px;
+    }
+
+    .text-font-normal{
+      font-size: 22px;
+    }
+
+    .text-font-medium{
+      font-size: 19px;
+    }
+
+    .text-font-small{
+      font-size: 16.5px;
+    }
+
+    .text-font-smallest{
+      font-size: 15px;
+    }
+  }
+  .page-container-portrait.gujrati{
+    .text-font-largest{
+      font-size: 30px;
+    }
+
+    .text-font-large{
+      font-size: 26px;
+    }
+
+    .text-font-normal{
+      font-size: 22px;
+    }
+
+    .text-font-medium{
+      font-size: 19px;
+    }
+
+    .text-font-small{
+      font-size: 17px;
+    }
+
+    .text-font-smallest{
+      font-size: 15px;
+    }
+  }
+  .page-container-portrait.bengali {
+    .text-font-largest{
+      font-size: 30px;
+    }
+
+    .text-font-large{
+      font-size: 27px;
+    }
+
+    .text-font-normal{
+      font-size: 22px;
+    }
+
+    .text-font-medium{
+      font-size: 20px;
+    }
+
+    .text-font-small{
+      font-size: 17px;
+    }
+
+    .text-font-smallest{
+      font-size: 15.5px;
+    }
+  }
+
+  .page-container-portrait.urdu {
+    .text-font-largest, .text-font-largest > p[class*="wysiwyg-text-align-"] {
+      font-size: ($portrait-readers-width-900 / $portrait-container-size-width) * $largest-font-size;
+    }
+    .text-font-large, .text-font-large > p[class*="wysiwyg-text-align-"] {
+      font-size: ($portrait-readers-width-900 / $portrait-container-size-width) * $large-font-size;
+    }
+    .text-font-normal, .text-font-normal > p[class*="wysiwyg-text-align-"] {
+      font-size: ($portrait-readers-width-900 / $portrait-container-size-width) * $normal-font-size;
+    }
+    .text-font-medium, .text-font-medium > p[class*="wysiwyg-text-align-"] {
+      font-size: ($portrait-readers-width-900 / $portrait-container-size-width) * $medium-font-size;
+    }
+    .text-font-small, .text-font-small > p[class*="wysiwyg-text-align-"] {
+      font-size: ($portrait-readers-width-900 / $portrait-container-size-width) * $small-font-size;
+    }
+    .text-font-smallest, .text-font-smallest > p[class*="wysiwyg-text-align-"] {
+      font-size: ($portrait-readers-width-900 / $portrait-container-size-width) * $smallest-font-size;
+    }
+    .text-font-smallest, .text-font-smallest > p[class*="wysiwyg-text-align-"], .text-font-small, .text-font-small > p[class*="wysiwyg-text-align-"], .text-font-medium, .text-font-medium > p[class*="wysiwyg-text-align-"], .text-font-normal, .text-font-normal > p[class*="wysiwyg-text-align-"], .text-font-large, .text-font-large > p[class*="wysiwyg-text-align-"], .text-font-largest, .text-font-largest > p[class*="wysiwyg-text-align-"] {
+      line-height: 2.3em;
+    }
+  }
+
+  .page-container-portrait {
+    .content {
+      .cover-text {
+        .textual {
+          .cover_title {
+            font-size: 1.55em;
+            line-height: 1.2em;
+            margin-bottom: 0.2em;
+          }
+          .cover_attribution {
+            font-size: 1em;
+            line-height: 1.2em;
+          }
+         .authors {
+            font-size: 0.85em;
+            line-height: 1.4em;
+          }
+        }
+      }
+    }
+  }
+  .page-container-portrait .content .book-levels {
+    margin-top: 6% !important;
+  }
+  .page-container-portrait {
+    .content {
+      .logo-level {
+        .pub_story_logo img {
+          height: auto;
+        }
+      }
+    }
+  }
+
+  .page-container-portrait {
+    .content{
+      .attrb-full {
+        .attrib-synopsis p {
+          font-size: 0.65em;
+          line-height: 1.2em;
+        }
+      }
+      .attribution-text {
+        .attribution-center {
+          .story-attribution-section, .other-credits-section, .illustration-attributions-section {
+            font-size: 1.2em;
+          }
+          .self-attribution, .illustration-attribution, .other-credits {
+            font-size: 1.1em;
+            line-height: 1.5em;
+          }
+        }
+      }
+      .license_container {
+        .license_cont-middle {
+          width: 43% !important;
+          .discl-txt {
+            font-size: 0.49em;
+          }
+          .cc_footer p {
+            font-size: 0.5em;
+          }
+        }
+      }
+      .back-cover-top {
+        .reading_level_help p {
+          font-size: 0.65em;
+        }
+      }
+      .back-cover-bottom {
+        .spp_about_us_footer {
+          font-size: 0.65em;
+        }
+      }
+      .original-story-attribution, .parent-story-attribution, .other-credits, .other-credits, .illustration-attribution, .derived-story-text, .other-credits{
+        line-height: 11px;
+      }
+      .story-attribution-section, .other-credits-section, .illustration-attributions-section {
+        font-size: 0.9em;
+      }
+    }
+  }
+}
+
+//size3
+@media only screen
+and (max-width: 415px) {
+  .page-container-portrait {
+    width: 415px;
+    height: 612px;
+    overflow: hidden;
+  }
+
+  .page-container-portrait .content {
+    padding: 1.3em;
+  }
+
+  .page-container-portrait .content p{
+    margin: 0;
+    padding: 0;
+  }
+
+  .page-container-portrait{
+    .text-font-largest{
+      font-size: 24px;
+      line-height: 1.2em;
+    }
+
+    .text-font-large{
+      font-size: 21px;
+    }
+
+    .text-font-normal{
+      font-size: 16.8px;
+    }
+
+    .text-font-medium{
+      font-size: 15.1px;
+    }
+
+
+    .text-font-small{
+      font-size: 13.5px;
+    }
+
+    .text-font-smallest{
+      font-size: 12px;
+    }
+  }
+
+  .page-container-portrait.tamil {
+    .text-font-largest{
+      font-size: 25px;
+    }
+
+    .text-font-large{
+      font-size: 22px;
+      line-height: 1.5em;
+    }
+
+    .text-font-normal{
+      font-size: 18px;
+      line-height: 1.45em;
+    }
+
+    .text-font-medium{
+      line-height: 1.42em;
+    }
+
+    .text-font-small{
+      font-size: 14px;
+      line-height: 1.55em;
+    }
+
+    .text-font-smallest{
+      font-size: 12px;
+      line-height: 1.57em;
+    }
+  }
+  .page-container-portrait.kannada {
+    .text-font-large{
+      font-size: 21.5px;
+      line-height: 1.45em;
+    }
+    .text-font-normal{
+      line-height: 1.44em;
+    }
+    .text-font-medium {
+      font-size: 16.5px;
+      line-height: 1.4em;
+    }
+    .text-font-small{
+      font-size: 14px;
+    }
+    .text-font-smallest {
+      font-size: 11.7px;
+      line-height: 1.65em;
+    }
+  }
+  .page-container-portrait.telugu {
+    .text-font-largest {
+      font-size: 25.5px;
+      line-height: 1.43em;
+    }
+    .text-font-large{
+      font-size: 21.6px;
+      line-height: 1.49em;
+    }
+    .text-font-normal{
+      font-size: 18.3px;
+      line-height: 1.45em;
+    }
+    .text-font-medium{
+      font-size: 16px;
+      line-height: 1.45em;
+    }
+    .text-font-small{
+      font-size: 14.4px;
+      line-height: 1.48em;
+    }
+    .text-font-smallest{
+      font-size: 12.2px;
+      line-height: 1.6em;
+    }
+  } 
+  .page-container-portrait.devanagri {
+    .text-font-largest{
+      font-size: 25.1px;
+      line-height: 1.42em;
+    }
+
+    .text-font-large{
+      font-size: 22px;
+      line-height: 1.42em;
+    }
+
+    .text-font-normal{
+      font-size: 19px;
+      line-height: 1.37em;
+    }
+
+    .text-font-medium{
+      font-size: 16px;
+      line-height: 1.41em;
+    }
+
+    .text-font-small{
+      font-size: 13.7px;
+      line-height:1.5em;
+    }
+
+    .text-font-smallest{
+      font-size: 12.6px;
+      line-height:1.5em;
+    }
+  }
+  .page-container-portrait.gujrati{
+    .text-font-largest{
+      font-size: 25px;
+      line-height: 1.4em;
+    }
+
+    .text-font-large{
+      font-size: 22px;
+      line-height:1.41em;
+    }
+
+    .text-font-normal{
+      font-size: 18.5px;
+      line-height:1.41em;
+    }
+
+    .text-font-medium{
+      font-size: 15.9px;
+      line-height: 1.42em;
+    }
+
+    .text-font-small{
+      font-size: 14.3px;
+      line-height:1.52em;
+    }
+
+    .text-font-smallest{
+      font-size: 12.6px;
+      line-height:1.52em;
+    }
+  }
+  .page-container-portrait.bengali {
+    .text-font-largest{
+      font-size: 25px;
+    }
+
+    .text-font-large{
+      font-size: 22.6px;
+    }
+
+    .text-font-normal{
+      font-size: 18.5px;
+    }
+
+    .text-font-small{
+      font-size: 14.1px;
+    }
+
+    .text-font-smallest{
+      font-size: 13.03px;
+    }
+  }
+
+  .page-container-portrait.urdu {
+    .text-font-largest, .text-font-largest > p[class*="wysiwyg-text-align-"] {
+      font-size: ($portrait-readers-width-900 / $portrait-container-size-width) * $largest-font-size;
+    }
+    .text-font-large, .text-font-large > p[class*="wysiwyg-text-align-"] {
+      font-size: ($portrait-readers-width-900 / $portrait-container-size-width) * $large-font-size;
+    }
+    .text-font-normal, .text-font-normal > p[class*="wysiwyg-text-align-"] {
+      font-size: ($portrait-readers-width-900 / $portrait-container-size-width) * $normal-font-size;
+    }
+    .text-font-medium, .text-font-medium > p[class*="wysiwyg-text-align-"] {
+      font-size: ($portrait-readers-width-900 / $portrait-container-size-width) * $medium-font-size;
+    }
+    .text-font-small, .text-font-small > p[class*="wysiwyg-text-align-"] {
+      font-size: ($portrait-readers-width-900 / $portrait-container-size-width) * $small-font-size;
+    }
+    .text-font-smallest, .text-font-smallest > p[class*="wysiwyg-text-align-"] {
+      font-size: ($portrait-readers-width-900 / $portrait-container-size-width) * $smallest-font-size;
+    }
+    .text-font-smallest, .text-font-smallest > p[class*="wysiwyg-text-align-"], .text-font-small, .text-font-small > p[class*="wysiwyg-text-align-"], .text-font-medium, .text-font-medium > p[class*="wysiwyg-text-align-"], .text-font-normal, .text-font-normal > p[class*="wysiwyg-text-align-"], .text-font-large, .text-font-large > p[class*="wysiwyg-text-align-"], .text-font-largest, .text-font-largest > p[class*="wysiwyg-text-align-"] {
+      line-height: 2.3em;
+    }
+  }
+
+  .page-container-portrait {
+    .content{
+      .cover-text{
+        .textual{
+        .cover_title{
+            font-size: 1.2em;
+          }
+          .cover_attribution{
+            font-size: 0.85em;
+            line-height: 1.2em;
+          }
+        }
+      }
+    }
+  }
+  .page-container-portrait .cover_attribution{
+    font-size: 1.2em;
+  }
+  .page-container-portrait {
+    .content{
+      .attrb-full {
+        .attrib-synopsis p {
+          font-size: 0.55em;
+          line-height: 1.2em;
+        }
+      }
+      .attribution-text {
+        font-size: 0.4em !important;
+      }
+      .self-attribution, .original-story-attribution, .parent-story-attribution, .other-credits, .other-credits, .illustration-attribution, .derived-story-text, .other-credits{
+        font-size: 1.1em !important;
+        line-height: 1.3em !important;
+      }
+      .story-attribution-section, .other-credits-section, .illustration-attributions-section {
+        font-size: 1.2em;
+      }
+      .license_container {
+        .license_cont-middle {
+          .discl-txt {
+            font-size: 0.25em !important;
+          }
+           .cc_footer p {
+            font-size: 0.4em;
+           }
+        }
+      }
+      .back-cover-top{
+        .title {
+          font-size: 1.2em;
+          line-height: 1.2em;
+        }
+        .synopsis {
+          font-size: 0.5em;
+        }
+        .reading_level_help p{
+          font-size: 0.55em;
+        }
+      }
+      .back-cover-bottom {
+        .spp_about_us_footer {
+          font-size: 0.5em;
+        }
+      }
+    }
+  }
+  .page-container-portrait .donor-text {
+    font-size: 0.3em !important;
+  }
+}
+
+//size2
+@media only screen
+and (max-width: 308px) {
+  .page-container-portrait .text-font-normal.content p {
+    line-height: 1.2em;
+  }
+  .page-container-portrait #selected_stories_list .close {
+    top: -16px;
+  }
+
+  .page-container-portrait {
+    width: 308px;
+    height: 455px;
+    overflow: hidden;
+  }
+  .page-container-portrait .content {
+    padding: 1.3em;
+  }
+  .page-container-portrait .content p{
+    margin: 0;
+    padding: 0;
+    // line-height: 0.6em;
+  }
+
+  .page-container-portrait .content2{
+    line-height: 1em;
+  }
+  .page-container-portrait .content > p[class*="wysiwyg-text-align-"] {
+    line-height: 1.1em;
+  }
+
+  .page-container-portrait .text-font-largest{
+    font-size: 13.2px;
+  }
+
+  .page-container-portrait .text-font-large{
+    font-size: 11.8px;
+  }
+
+  .page-container-portrait .text-font-normal{
+    font-size: 9.4px;
+  }
+
+  .page-container-portrait .text-font-medium{
+    font-size: 8.5px;
+  }
+
+  .page-container-portrait .text-font-small{
+    font-size: 7.55px;
+  }
+
+  .page-container-portrait .text-font-smallest{
+    font-size: 6.6px;
+  }
+
+  .page-container-portrait.urdu .text-font-normal.content p, .urdu .content > p[class*="wysiwyg-text-align-"], .urdu .content > p {
+    line-height: 2.3em;
+  }
+
+  .page-container-portrait.tamil {
+    .text-font-largest{
+      line-height: 1.53em;
+      font-size: 18px;
+    }
+
+    .text-font-large{
+      font-size: 17px;
+    }
+
+    .text-font-normal{
+      font-size: 14px;
+    }
+
+    .text-font-medium{
+      line-height: 1.5em;
+      font-size: 12.5px;
+    }
+
+    .text-font-small{
+      font-size: 11px;
+      line-height: 1.5em;
+    }
+
+    .text-font-smallest{
+      font-size: 9.3px;
+      line-height: 1.5em;
+    }
+  }
+  .page-container-portrait.kannada {
+    .text-font-largest{
+      font-size: 19px;
+    }
+    .text-font-large{
+      font-size: 16.5px;
+      line-height: 1.45em;
+    }
+    .text-font-normal{
+      font-size: 13.5px;
+      line-height: 1.5em;
+    }
+    .text-font-medium {
+      font-size: 12.5px;
+      line-height: 1.45em;
+    }
+    .text-font-small{
+      font-size: 10.8px;
+      line-height: 1.63em;
+    }
+    .text-font-smallest {
+      font-size: 9px;
+      line-height: 1.62em;
+    }
+  }
+  .page-container-portrait.telugu {
+    .text-font-largest {
+      font-size: 19.5px;
+      line-height: 1.4em;
+    }
+    .text-font-large{
+      font-size: 16.8px;
+      line-height: 1.5em;
+    }
+    .text-font-normal{
+      font-size: 14.2px;
+      line-height: 1.5em;
+    }
+    .text-font-medium{
+      font-size: 12.35px;
+      line-height: 1.5em;
+    }
+    .text-font-small{
+      font-size: 11px;
+      line-height: 1.57em;
+    }
+    .text-font-smallest{
+      font-size: 9.4px;
+      line-height: 1.65em;
+    }
+  } 
+  .page-container-portrait.devanagri {
+    .text-font-largest{
+      font-size: 19.5px;
+      line-height: 1.43em;
+    }
+
+    .text-font-large{
+      font-size: 17.1px;
+      line-height: 1.39em;
+    }
+
+    .text-font-normal{
+      font-size: 14.4px;
+      line-height:1.41em;
+    }
+
+    .text-font-medium{
+      font-size: 12.3px;
+      line-height: 1.42em;
+    }
+
+    .text-font-small{
+      font-size: 10.58px;
+      line-height:1.52em;
+    }
+
+    .text-font-smallest{
+      font-size: 9.7px;
+      line-height:1.51em;
+    }
+  }
+  .page-container-portrait.gujrati {
+    .text-font-largest{
+      font-size: 19.26px;
+      line-height: 1.37em;
+    }
+
+    .text-font-large{
+      font-size: 17px;
+      line-height:1.38em;
+    }
+
+    .text-font-normal{
+      font-size: 14.4px;
+      line-height:1.42em;
+    }
+
+    .text-font-medium{
+      font-size: 12.3px;
+      line-height: 1.41em;
+    }
+
+    .text-font-small{
+      font-size: 11.05px;
+      line-height:1.52em;
+    }
+
+    .text-font-smallest{
+      font-size: 9.9px;
+      line-height:1.52em;
+    }
+  }
+  .page-container-portrait.bengali {
+    .text-font-largest{
+      font-size: 19.2px;
+    }
+
+    .text-font-large{
+      font-size: 17.5px;
+    }
+
+    .text-font-normal{
+      font-size: 14.4px;
+      line-height:1.43em;
+    }
+
+    .text-font-medium{
+      font-size: 13px;
+      line-height:1.43em;
+    }
+
+    .text-font-small{
+      font-size: 10.9px;
+      line-height:1.45em;
+    }
+
+    .text-font-smallest{
+      font-size: 10px;
+      line-height:1.45em;
+    }
+  }
+
+  .page-container-portrait.urdu {
+    .text-font-largest, .text-font-largest > p[class*="wysiwyg-text-align-"] {
+      font-size: ($portrait-readers-width-767 / $portrait-container-size-width) * $largest-font-size;
+    }
+    .text-font-large, .text-font-large > p[class*="wysiwyg-text-align-"] {
+      font-size: ($portrait-readers-width-767 / $portrait-container-size-width) * $large-font-size;
+    }
+    .text-font-normal, .text-font-normal > p[class*="wysiwyg-text-align-"] {
+      font-size: ($portrait-readers-width-767 / $portrait-container-size-width) * $normal-font-size;
+    }
+    .text-font-medium, .text-font-medium > p[class*="wysiwyg-text-align-"] {
+      font-size: ($portrait-readers-width-767 / $portrait-container-size-width) * $medium-font-size;
+    }
+    .text-font-small, .text-font-small > p[class*="wysiwyg-text-align-"] {
+      font-size: ($portrait-readers-width-767 / $portrait-container-size-width) * $small-font-size;
+    }
+    .text-font-smallest, .text-font-smallest > p[class*="wysiwyg-text-align-"] {
+      font-size: ($portrait-readers-width-767 / $portrait-container-size-width) * $smallest-font-size;
+    }
+    .text-font-smallest, .text-font-smallest > p[class*="wysiwyg-text-align-"], .text-font-small, .text-font-small > p[class*="wysiwyg-text-align-"], .text-font-medium, .text-font-medium > p[class*="wysiwyg-text-align-"], .text-font-normal, .text-font-normal > p[class*="wysiwyg-text-align-"], .text-font-large, .text-font-large > p[class*="wysiwyg-text-align-"], .text-font-largest, .text-font-largest > p[class*="wysiwyg-text-align-"] {
+      line-height: 2.3em;
+    }
+  }
+
+  .page-container-portrait {
+    .content{
+      .cover-text{
+        .textual{
+          .cover_title {
+            font-size: 1em;
+          }
+          .cover_attribution{
+            font-size: 0.6em;
+            line-height: 1.2em;
+          }
+        }
+      }
+      .attrb-full {
+        .attrib-synopsis p {
+          font-size: 0.4em !important;
+        }
+      }
+      .self-attribution, .original-story-attribution, .parent-story-attribution, .other-credits, .other-credits, .illustration-attribution, .derived-story-text, .other-credits{
+        font-size: 0.9em !important;
+        line-height: 1.3em !important;
+      }
+      .story-attribution-section, .other-credits-section, .illustration-attributions-section {
+        font-size: 1em !important;
+      }
+      .attribution-text {
+        font-size: 0.4em;
+      }
+      .license_container {
+        .license_cont-middle {
+          .discl-txt {
+            font-size: 0.3em !important;
+          }
+          .cc_footer p {
+            font-size: 0.3em !important;
+          }
+        }
+      }
+      .back-cover-top {
+        .title {
+          font-size: 0.9em;
+        }
+        .reading_level_help p {
+          font-size: 0.4em;
+        }
+      }
+      .back-cover-bottom {
+        .spp_about_us_footer {
+          font-size: 0.45em;
+        }
+      }
+    }
+  }
+  .page-container-portrait .close-reader-button, .modal-title {
+    font-size: 0.9em;
+  }
+  .page-container-portrait .modal-title {
+    padding: 1% 0 0 3%;
+  }
+
+  .page-container-portrait .modal-header {
+    padding: 1% 3% 0 0;
+    border-bottom: none;
+  }
+  .page-container-portrait .cover_attribution{
+    font-size: 1.3em;
+  }
+}
+
+//size1
+@media only screen
+and (max-width: 268px) {
+
+  .page-container-portrait {
+    width: 268px;
+    height: 396px;
+    overflow: hidden;
+  }
+  .page-container-portrait .page-control .fa{
+    font-size: 12px;
+  }
+
+  .page-container-portrait .content p{
+    margin: 0;
+    padding: 0;
+    line-height: 0.5em;
+  }
+  .page-container-portrait .content > p[class*="wysiwyg-text-align-"] {
+    line-height: 1.1em;
+  }
+
+  .page-container-portrait .text-font-largest{
+    font-size: 7.8px;
+  }
+
+  .page-container-portrait .text-font-large{
+    font-size: 7px;
+  }
+
+  .page-container-portrait .text-font-normal{
+    font-size: 5.55px;
+  }
+
+  .page-container-portrait .text-font-medium{
+    font-size: 5px;
+  }
+
+  .page-container-portrait .text-font-small{
+    font-size: 4.45px;
+  }
+
+  .page-container-portrait .text-font-smallest{
+    font-size: 3.925px;
+  }
+
+  .page-container-portrait{
+    line-height:1.1em;
+    .content {
+      padding: 1.3em;
+    }
+  }
+  .page-container-portrait.tamil {
+    .text-font-largest{
+      font-size: 16px;
+      line-height: 1.55em;
+    }
+
+    .text-font-large{
+      font-size: 14.5px;
+      line-height: 1.53em;
+    }
+
+    .text-font-normal{
+      font-size: 12px;
+      line-height: 1.5em;
+    }
+
+    .text-font-medium{
+      font-size: 10.5px;
+      line-height: 1.52em;
+    }
+
+    .text-font-small{
+      font-size: 9.4px;
+      line-height: 1.52em;
+    }
+
+    .text-font-smallest{
+      font-size: 8px;
+      line-height: 1.55em;
+    }
+  }
+
+  .page-container-portrait.kannada {
+    .text-font-largest{
+      font-size: 16.2px;
+      line-height: 1.46em;
+    }
+    .text-font-large{
+      font-size: 14px;
+      line-height: 1.42em;
+    }
+    .text-font-normal{
+      font-size: 11.5px;
+      line-height: 1.49em;
+    }
+    .text-font-medium {
+      font-size: 11px;
+      line-height: 1.45em;
+    }
+    .text-font-small{
+      font-size: 9.2px;
+      line-height: 1.62em;
+    }
+    .text-font-smallest {
+      font-size: 7.7px;
+      line-height: 1.63em;
+    }
+  }
+
+  .page-container-portrait.telugu{
+    .text-font-largest {
+      font-size: 17px;
+      line-height: 1.42em;
+    }
+    .text-font-large{
+      font-size: 14.4px;
+      line-height: 1.52em;
+    }
+    .text-font-normal{
+      font-size: 12.1px;
+      line-height: 1.5em;
+    }
+    .text-font-medium{
+      font-size: 10.55px;
+      line-height: 1.5em;
+    }
+    .text-font-small{
+      font-size: 9.5px;
+      line-height: 1.55em;
+    }
+    .text-font-smallest{
+      font-size: 8.05px;
+      line-height: 1.7em;
+    }
+  } 
+
+  .page-container-portrait.devanagri {
+    .text-font-largest{
+      font-size: 17px;
+      line-height: 1.4em;
+    }
+
+    .text-font-large{
+      font-size: 14.5px;
+      line-height: 1.4em;
+    }
+
+    .text-font-normal{
+      font-size: 12.4px;
+      line-height:1.4em;
+    }
+
+    .text-font-medium{
+      font-size: 10.55px;
+      line-height: 1.4em;
+    }
+
+    .text-font-small{
+      font-size: 9.05px;
+      line-height:1.54em;
+    }
+
+    .text-font-smallest{
+      font-size: 8.3px;
+      line-height:1.52em;
+    }
+  }
+  .page-container-portrait.gujrati {
+    .text-font-largest{
+      font-size: 16.55px;
+      line-height: 1.39em;
+    }
+
+    .text-font-large{
+      font-size: 14.1px;
+      line-height:1.42em;
+    }
+
+    .text-font-normal{
+      font-size: 12.1px;
+      line-height:1.42em;
+    }
+
+    .text-font-medium{
+      font-size: 10.6px;
+      line-height: 1.4em;
+    }
+
+    .text-font-small{
+      font-size: 9.45px;
+      line-height:1.52em;
+    }
+
+    .text-font-smallest{
+      font-size: 8.4px;
+      line-height:1.5em;
+    }
+  }
+  .page-container-portrait.bengali {
+    .text-font-largest{
+      font-size: 16.5px;
+      line-height:1.4em;
+    }
+
+    .text-font-large{
+      font-size: 15px;
+      line-height:1.4em;
+    }
+
+    .text-font-normal{
+      font-size: 12.3px;
+      line-height:1.45em;
+    }
+
+    .text-font-medium{
+      font-size: 11px;
+      line-height:1.46em;
+    }
+
+    .text-font-small{
+      font-size: 9.4px;
+      line-height:1.45em;
+    }
+
+    .text-font-smallest{
+      font-size: 8.6px;
+      line-height:1.45em;
+    }
+  }
+  .page-container-portrait.urdu {
+    .text-font-largest, .text-font-largest > p[class*="wysiwyg-text-align-"] {
+      font-size: ($portrait-readers-width-490 / $portrait-container-size-width) * $largest-font-size;
+    }
+    .text-font-large, .text-font-large > p[class*="wysiwyg-text-align-"] {
+      font-size: ($portrait-readers-width-490 / $portrait-container-size-width) * $large-font-size;
+    }
+    .text-font-normal, .text-font-normal > p[class*="wysiwyg-text-align-"] {
+      font-size: ($portrait-readers-width-490 / $portrait-container-size-width) * $normal-font-size;
+    }
+    .text-font-medium, .text-font-medium > p[class*="wysiwyg-text-align-"] {
+      font-size: ($portrait-readers-width-490 / $portrait-container-size-width) * $medium-font-size;
+    }
+    .text-font-small, .text-font-small > p[class*="wysiwyg-text-align-"] {
+      font-size: ($portrait-readers-width-490 / $portrait-container-size-width) * $small-font-size;
+    }
+    .text-font-smallest, .text-font-smallest > p[class*="wysiwyg-text-align-"] {
+      font-size: ($portrait-readers-width-490 / $portrait-container-size-width) * $smallest-font-size;
+    }
+    .text-font-smallest, .text-font-smallest > p[class*="wysiwyg-text-align-"], .text-font-small, .text-font-small > p[class*="wysiwyg-text-align-"], .text-font-medium, .text-font-medium > p[class*="wysiwyg-text-align-"], .text-font-normal, .text-font-normal > p[class*="wysiwyg-text-align-"], .text-font-large, .text-font-large > p[class*="wysiwyg-text-align-"], .text-font-largest, .text-font-largest > p[class*="wysiwyg-text-align-"] {
+      line-height: 2.3em;
+    }
+  }
+  .page-container-portrait .cover_attribution{
+    font-size: 1em;
+  }
+  .page-container-portrait .front-cover-page{
+    .cover-text{
+      .textual{
+        .cover_attribution{
+          font-size: 0.5em;
+          line-height: 1.2em;
+        }
+      }
+    }
+  }
+
+  .page-container-portrait .page_number {
+    border-radius: 1em;
+    bottom: 0.2em;
+    font-size: 0.5em;
+    line-height: 1em;
+    padding: 0.5em;
+    right: 0.2em;
+  }
+
+  .page-container-portrait .next-page {
+    right: 5%;
+  }
+
+  .page-container-portrait .previous-page {
+    left: 5%;
+  }
+  .page-container-portrait .cover_title{
+    font-size: 1.7em;
+  }
+  .page-container-portrait .cc-logo-container p {
+    float: left;
+    width: 80%;
+  }
+  .page-container-portrait {
+    .content {
+      .cover-text {
+        .textual {
+          .cover_title {
+            font-size: 0.9em;
+          }
+        }
+      }
+      .attrb-full {
+        .attrib-synopsis p {
+          font-size: 0.4em !important;
+        }
+      }
+      .license_container {
+        .license_cont-middle {
+          .discl-txt {
+            font-size:0.25em !important;
+          }
+          .cc_footer p {
+            font-size: 0.25em;
+          }
+        }
+      }
+      .back-cover-top {
+        .title {
+          font-size: 0.8em;
+        }
+        .synopsis {
+          font-size: 0.3em;
+        }
+      }
+      .back-cover-bottom {
+        .spp_about_us_footer {
+          font-size: 0.3em;
+        }
+      }
+    }
+  }
+  .page-container-portrait .dd_v_c100.content{
+    .attribution-text {
+      .helped-authors {
+        font-size: 0.9em;
+        margin-left: -0.2em;
+      }
+      .more-info {
+        line-height: 1.2;
+        font-size: 0.7em;
+      }
+    }
+  }
+}
+
+

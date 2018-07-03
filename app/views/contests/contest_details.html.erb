@@ -1,0 +1,261 @@
+<%= render :partial => "dashboard/dashboard_datatables" %>
+<%= render :partial => "contest_details" %>
+<%= render :partial => "tabs" %>
+<%= render :partial => "subtabs" %>
+
+<% if params[:filter] == "over_view" %>
+  <%= render :partial => "contest_overview" %>
+<% else %>
+
+<div class="btn-group">
+  <span>Number of Stories Selected :</span>
+  <span class="badge" id="all_contest_stories_count"><%= @story.count %></span>
+</div>
+
+<table class="table table-striped" id="all_contest_stories">
+  <tfoot style="display: table-header-group;">
+    <tr>
+      <th>Story name</th>
+      <th>Language</th>
+      <th>English title</th>
+      <th>Level</th>
+      <th>Your ratings</th>
+      <% if params[:reviewed].present? && params[:reviewed] == "reviewed" %>
+        <th>Total ratings</th>
+      <% end %>
+    </tr>
+  </tfoot>
+  <thead>
+    <tr class="table-heading-row">
+      <th>Story name</th>
+      <th>Language</th>
+      <th>English title</th>
+      <th>Level</th>
+      <th>Your ratings</th>
+      <% if params[:reviewed].present? && params[:reviewed] == "reviewed" %>
+        <th>Total ratings</th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody class="table-row-details">
+    <% @story.each_with_index do |story , index| %>
+      <%# if !story.reviewed_by_user(current_user) && !story.is_child_created %>
+          <tr class="contest_count">
+            <td><%= link_to story.title, react_stories_show_path(story.to_param),:target => "_blank" %></td>
+            <td><%= story.language.name %></td>
+            <td><%= story.english_title%></td>
+            <td><%= story.reading_level %></td>
+            <% if params[:reviewed].present? && params[:reviewed] == "reviewed" %>
+                <td><input id="my_rating_<%= index%>" class="rating" value = "<%= story.story_rating(current_user.id) %>" data-storyId = "<%= story.id %>"  data-size = 'xs' data-toggle="modal" data-target="#myModal">
+                </td>
+                <td><span id="total_ratings_<%= index%>" data-toggle="tooltip" data-title="<div><%= story.user_rating %></div>"><input class="rating" value = "<%= story.total_ratings %>"data-size = 'xs' data-toggle="modal" readonly="true" data-target="#myModal"></span></td></td>
+                </tr>
+                <div class="modal fade" id="UserComments_<%= index%>"  tabindex="-1" role="dialog" aria-labelledby="    moreLinksModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title " id="user_rating_label_<%= index%>"></h4>
+                      </div>
+                      <h4 class="modal-title " >Your Comment</h4>
+                      <div class="modal-body">
+                        <textarea class="form-control" id="comment_field_<%= index%>"  ><%= story.story_comment(current_user.id) %></textarea>
+                      </div>
+                      <a class="btn btn-normal btn-warning" data-dismiss="modal" id="save_without_comment_<%= index%>" aria-label="Close" style="margin-right: 20px !important; float: right;" >Save Without Comment</a>
+
+                      <a class="btn btn-normal btn-warning " data-dismiss="modal" id="user_comments_<%= index%>" aria-label="Close" style="margin-left: 260px !important; margin-bottom: 5px;">Save Comment</a>
+
+                    </div><!-- /.modal-content -->
+                  </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+            <% else %>
+            <td><input id="my_rating_<%= index%>" class="rating" data-size = 'xs' data-toggle="modal" data-target="#myModal"></td>
+          </tr>
+            <div class="modal fade" id="UserComments_<%= index%>"  tabindex="-1" role="dialog" aria-labelledby="moreLinksModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title " id="user_rating_label_<%= index%>"></h4>
+                </div>
+                <%= simple_form_for @rating, url: :story_rating_comments, :method => "POST"  do |f| %>
+                    <div class="modal-body"> <%= f.input :user_comment, :input_html => {:class => "validate_comment_#{index}"}, label: "Your Comment", as: :text%></div>
+                    <%= f.input :user_rating,  as: :hidden ,:input_html => {:class => "rating_#{index}" }%>
+                    <%= f.input :story_id,  as: :hidden ,:input_html => { :value => story.id }%>
+                    <%= f.input :contest_id,  as: :hidden ,:input_html => { :value => @contest.id }%>
+                    <input type="text" class="hidden" id="get_params_<%= index%>" name="rating[filter]"/>
+                    <!-- <a class="btn btn-normal btn-warning" data-dismiss="modal" id="save_without_comment_<%= index%>" aria-label="Close" style="margin-right: 20px !important; float: right;">Save Without Comment</a> -->
+                    <%= f.button :submit, "Save Without Comment", :class=>"btn btn-normal btn-warning", :onclick => "save_without_comment(event, #{index})",  :style=>"margin-right: 20px !important; float: right;" %>
+                    <%= f.button :submit, "Save Comment", :class=>"btn btn-normal btn-warning", :onclick => "save_comment(event, #{index})", :style=>"margin-left: 260px !important; margin-bottom: 5px;" %>
+                <% end %>
+              </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+          </div><!-- /.modal -->
+        <% end %>
+      <% end %>
+  <%# end %>
+  </tbody>
+</table>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        for (var i =0 ; i <= <%=@story.size - 1 %>; i++) {
+            user_rating_comments(i);
+        };
+    });
+    function user_rating_comments(i){
+        $("#my_rating_"+i).on("rating.change", function(event, value, caption) {
+            $("#user_rating_label_"+i).text("Your Rating:"+value)
+            $(".rating_"+i).attr("value", value);
+            $("#UserComments_"+i).modal({
+                show: true
+            })
+        });
+    }
+
+    save_without_comment = function(event, i){
+        $("#get_params_"+i).val(window.location.search.split('filter=')[1]) 
+        $("#rating_user_comment").val("");
+        return true;
+    }
+
+    save_comment = function(event, i){
+        $("#get_params_"+i).val(window.location.search.split('filter=')[1]) 
+        if($(".validate_comment_"+i).val() == ""){
+            event.preventDefault();
+            alert("please add comments")
+        }else return true;
+    }
+
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        for (var i =0 ; i <= <%=@story.size - 1 %>; i++) {
+            edit_user_rating_comment(i);
+            rating_with_comment(i);
+        };
+    });
+
+    function rating_with_comment(i) {
+        $("#total_ratings_"+i).hover(function(event){
+            event.preventDefault();
+            $('[data-toggle="tooltip"]').tooltip({'delay': { hide: 1000 }, html: true});
+        })
+    }
+
+    function edit_user_rating_comment(i){
+        $("#my_rating_"+i).on("rating.change", function(event, value, caption) {
+            $("#user_rating_label_"+i).text("Your New Rating:"+value)
+            $(".rating_"+i).attr("value", value);
+            var storyId = $(this).data('storyid')
+            $("#UserComments_"+i).modal({
+                show: true
+            })
+            $("#user_comments_"+i).click(function(){
+                if($("#comment_field_"+i).val() == ""){
+                    alert('please add comments');
+                }else{
+                    url = '/contests/user_update_rating_comments'
+                    var path =  $(this).data('path')
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: {rating:value, comment:$("#comment_field_"+i).val(), story_id: storyId, current_user_id: <%= @current_user.id %>, contest_id: <%= @contest.id %>},
+                        dataType : 'json',
+                        failure: function(result) {
+                            console.error('Unable to rate and comment a story.');
+                        },
+                        success: function(result) {
+                            window.location.reload();
+                        }
+                    });
+                }
+            });
+            $("#save_without_comment_"+i).click(function(){
+                $("#comment_field_"+i).val("")
+                url = '/contests/user_update_rating_without_comments'
+                var path =  $(this).data('path')
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {rating:value, comment:$("#comment_field_"+i).val(""), story_id: storyId, current_user_id: <%= @current_user.id %>, contest_id: <%= @contest.id %>},
+                    dataType : 'json',
+                    failure: function(result) {
+                        console.error('Unable to rate and comment a story.');
+                    },
+                    success: function(result) {
+                        window.location.reload();
+                    }
+                });
+            });
+        });
+    }
+
+$(document).ready(function() {
+  var table = $('#all_contest_stories').DataTable( {
+    searching: true,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 20,
+    order: [],
+    responsive: {
+        details: false
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5 ]
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5 ]
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5 ]
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5 ]
+                  }
+              }
+          ]
+      
+  });
+  $('#all_contest_stories tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+  });
+
+
+  var new_table = $('#all_contest_stories').dataTable();
+  table.columns().every( function () {
+    var that = this;
+
+    $( 'input', this.footer() ).on( 'keyup change', function () {
+      if ( that.search() !== this.value ) {
+          that
+              .search( this.value )
+              .draw();
+        document.getElementById("all_contest_stories_count").innerHTML = document.getElementById('all_contest_stories').children[1].childElementCount;
+      }else{
+        document.getElementById("all_contest_stories_count").innerHTML = table.rows( '.contest_count' ).count(); 
+      }
+    });
+  });
+  $( 'input').on( 'keyup change', function () {
+    document.getElementById("all_contest_stories_count").innerHTML = new_table.fnSettings().fnRecordsDisplay();
+  });
+
+  });
+</script>
+<% end %>

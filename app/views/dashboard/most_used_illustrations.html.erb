@@ -1,0 +1,7 @@
+<%= render :partial => "errors" %>
+
+<%= render :partial => "analytics_tabs" %>
+
+<div id="used-illustrations">
+  <%= render :partial => "most_used_illustrations", :locals => {:illustrations => @top_used_illustrations}%>
+</div>

@@ -1,0 +1,13 @@
+<% if @story.errors.count != 0 %>
+  $('#publish_story_form').html("<%= escape_javascript(render(:partial=>"publish"))%>");
+  $(document).ready(function() {
+    $('#publishModal').modal({
+      show: true
+    });
+    var varnam = new VarnamIME($("#story_title")[0], null, {name: '<%= @story.language.name %>'}, '<%= Settings.varnam.url %>')
+    .init();
+  });
+<% else %>
+  $('#publishModal').modal('hide');
+  window.location.replace('/');
+<% end %>

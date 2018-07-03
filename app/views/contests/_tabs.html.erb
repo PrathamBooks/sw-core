@@ -1,0 +1,14 @@
+<div class="row full-content-dash" >
+  <div class="col-md-12">
+    <ul class="nav nav-tabs content-manager adult_contest" role="tablist" id="myTab" style="margin-top: 5px;">
+      <% contest_tabs(@contest).each do |k, v| %>
+        <li role="presentation" class="<%= @current_tab == k ? 'active' : '' %>">
+          <%= link_to v, contest_details_path(@contest.id, :filter => k)%>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+  <hr />
+</div>
+
+

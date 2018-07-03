@@ -1,0 +1,78 @@
+
+    <div class="input-group date" data-provide="datepicker" style="float: right;">
+      <label>From date</label>
+      <input class="datepicker" id="start_date" data-date-format="yy-mm-dd">
+      <label>To date</label>
+      <input class="datepicker" id="end_date" data-date-format="yy-mm-dd">
+      <button id="submit_dates" class="btn btn-app btn-brand-1">Submit</button>
+    </div>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $("#start_date").val("<%= start_date %>")
+        $("#end_date").val("<%= end_date %>")
+        $("#start_date").change(function(){
+          if($("#start_date").val() > $("#end_date").val() && $("#end_date").val() != ''){
+            $("#end_date").val('');
+          }
+        });
+        $("#end_date").change(function(){
+          if($("#start_date").val() == ''){
+            $("#end_date").val('');
+            document.getElementById("start_end_date").innerHTML = "Please select start date."
+            $("#start_end_date").dialog( "open" );
+            //alert('Please select the start date')
+          }else if($("#end_date").val() < $("#start_date").val()){
+            $("#end_date").val('');
+            document.getElementById("start_end_date").innerHTML = "End date should not be greater than start date."
+            $("#start_end_date").dialog( "open" );
+            //alert('End date should not be greate that start')
+          }
+        });
+
+        $('#start_end_date').dialog({
+          width: 400,
+          autoOpen: false,
+          buttons : {
+            "Ok" : function() {
+              $(this).dialog("close");
+            }
+          },
+          dialogClass: 'change_orientation_dialog'
+        });
+        $('.datepicker').datepicker({
+          dateFormat: 'yy-mm-dd'
+        });
+        $("#submit_dates").click(function(){
+          jQuery.ajax({
+            type: "GET",
+            url: "<%= story_downloads_date_sort_path %>",
+            data: {start_date: $("#start_date").val(), end_date: $("#end_date").val()},
+            dataType : "script"
+          });
+        });
+      });
+
+    </script>                       
+<table class="table table-striped">
+  <thead>
+  <tr class="table-heading-row">
+    <th>Date</th>
+    <th>No of stories</th>
+    <th>Format</th>
+    <th>Organization Name</th>
+  </tr>
+  </thead>
+  <tbody class="table-row-details">
+   <% stories.each do |story| %>
+    <tr>
+      <td><%= link_to(story.created_at.localtime.strftime("%Y-%m-%d"), stories_downloaded_list_path(:story_download_id => story.id),:method=>:get,:remote => true) %></td>
+      <td><%= story.stories.count %></td>
+      <td><%= story.download_format %></td>
+      <td><%= link_to story.user.organization.organization_name, organization_user_path(story.user.organization.id), :target => "_blank" %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+<%= paginate stories %>
+<div id="story_download_list" class="modal modal--story-creator fade" tabindex="-1" role="dialog">
+<div id = "start_end_date" title = "Warning" role="dialog"></div>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "StoryWeaver" %>">
+    <title><%= content_for?(:title) ? yield(:title) : "StoryWeaver" %></title>
+    <link rel="shortcut icon" type="image/jpg" href="<%= asset_path("favicon.ico") %>"/>
+    <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Raleway:400,700" rel="stylesheet">
+    <%= stylesheet_link_tag 'application', media: 'all' %>
+    <link href="/assets/css/bookends.2df2039c.css?body=1" media="all" rel="stylesheet" />
+    <!--[if IE]>
+    <%= javascript_include_tag "html5shiv.js" %>
+    <%= javascript_include_tag "respond.min.js" %>
+    <![endif]-->
+    <%= javascript_include_tag 'application' %>
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="<%= asset_path("apple_icons/favicon_144x144.png") %>">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="<%= asset_path("apple_icons/favicon_114x114.png") %>">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="<%= asset_path("apple_icons/favicon_72x72.png") %>">
+    <link rel="apple-touch-icon-precomposed" href="<%= asset_path("apple_icons/favicon_57x57.png") %>">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <%= csrf_meta_tags %>
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', "<%= Settings.analytics.tracking_id %>", 'auto');
+      ga('send', 'pageview');
+    </script>
+
+    <%= render "layouts/bookends_data" %>
+
+  </head>
+  <body>
+    <header id="header"> </header>
+    <%= yield %>
+    <div id="footer"> </div>
+    <div id="auth-modal"></div>
+  </body>
+<script src="/assets/js/vendor.e63396d6.js"></script>
+<script src="/assets/js/bookends.b6a66b9b.js"></script>
+</html>

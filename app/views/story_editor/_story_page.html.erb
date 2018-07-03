@@ -1,0 +1,7 @@
+  <div class='<%= @page.story.language.script %> <%= @page.page_template.name + ' content' %>'>
+  	<% if (@page.story.is_display_inline) %>
+  	  <div class="newStories" dir="<%= @story.language.is_right_to_left? ? 'rtl' : 'auto'%>" id="txtEditor" ><%= raw(@page.content) %></div>
+  	<% else %>
+  	  <div class="text-font-normal" dir="<%= @story.language.is_right_to_left? ? 'rtl' : 'auto'%>" id="txtEditor" ><%= raw(@page.content) %></div>
+  	<%end%>
+  </div>

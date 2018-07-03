@@ -1,0 +1,6 @@
+$("#translateStoryModal").hide();
+$(document.body).removeClass('modal-open');
+if($("#txtEditor").length != 0) {
+  $('#keyboard-options').empty();
+  var varnam = new VarnamIME($("#txtEditor"), "#keyboard-options",{name: '<%= @tr_story.language.name %>'}, '<%= Settings.varnam.url %>').initForWsyiEditor();
+}

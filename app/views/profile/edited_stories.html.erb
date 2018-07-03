@@ -1,0 +1,25 @@
+<%= render :partial => "errors" %>
+<%= render :partial => "tabs" %>
+
+<div id="storyReader"></div>
+
+  <div class="col-md-12">
+    <table class="table table-striped">
+      <thead>
+        <tr class="table-heading-row">           
+          <th><%= t "dashboard.story_title"%></th>
+          <th><%= t "dashboard.language"%></th>
+          <th><%= t "dashboard.english_title"%></th>
+        </tr>
+      </thead>
+      <tbody class="table-row-details">    
+        <% @stories.each do |story| %>
+          <tr>
+            <td><%= link_to story.title, story_page_path(story, story.pages.first), :remote => true %></td>
+            <td><%= story.language.name %></td>
+            <td><%= story.english_title %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>

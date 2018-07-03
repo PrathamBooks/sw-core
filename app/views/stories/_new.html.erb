@@ -1,0 +1,139 @@
+
+<div class="modal modal-image-drawer fade modal--story-creator" id="storyModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <%= simple_form_for @story, url: update_dummy_draft_path(:id=>@story), remote: true, html: { class: 'newStory',  multipart: true } do |f| %>
+      <div class="modal-content">
+        <div class="modal-body modal-body-app">
+          <div class="form-group">
+            <div class="spacing-half-v"></div>
+            <div class="heading-title"><%= t 'editor.create_new_story_form.header'%></div>
+            <div class="spacing-half-v"></div>
+          </div>
+          <div class="form-group form-group-lg-pad">
+            <label class="heading-section label-required"><%= t 'dashboard.language'%></label>
+            <% if @contest.present? %>
+              <%= f.input :contest_id,  as: :hidden , :input_html => { :value => @contest.id } %>
+                <%= f.association :language, collection: @contest.languages, label: false, prompt: "Choose Language", :input_html => {:class => "select-sm text-bold", :onChange=>"select_language();"} %>
+            <% else %>
+              <%= f.association :language, label: false, prompt: "Choose Language", :input_html => {:class => "select-sm text-bold", :onChange=>"select_language();"} %>
+            <% end %>
+          </div>
+          <div class="form-disabled">
+            <div class="form-group form-group-lg-pad">
+              <label class="heading-section"><%= t 'editor.create_new_story_form.book_title'%></label>
+              <div class="help-block help-block-brand">(<%= t 'editor.create_new_story_form.book_title_notification'%>)</div>
+              <%= f.input :title ,label: false, required: true, input_html: { autocomplete: 'off', value: @story.user_title? ? @story.title.strip : '',  placeholder: "#{t 'editor.create_new_story_form.story_title_placeholder'}", class: "input-brand input-brand--lg english"} %>
+            </div>
+
+            <div class="form-group">
+              <label class="heading-section label-required"><%= t 'dashboard.reading_level'%></label>
+              <div class="radio radio-no-margin">
+                <% if @contest.present? && @contest.name == "RetellRemixRejoice2018" %>
+                  <%= f.input :reading_level, label: false, as: :radio_buttons, collection: Story::CONTEST_READING_LEVELS.collect {|key,value| ["<strong>Level #{key}:</strong> #{Story::READING_LEVEL_INFO[key]}".html_safe,key] }.compact%>
+                <% else %>
+                  <%= f.input :reading_level, label: false, as: :radio_buttons, collection: Story::READING_LEVELS.collect {|key,value| ["<strong>Level #{key}:</strong> #{Story::READING_LEVEL_INFO[key]}".html_safe,key] }.compact%>
+                <% end %>
+              </div> <!-- /radio -->
+            </div>
+            <div class="form-group">
+              <label class="heading-section label-required"><%= t 'editor.create_new_story_form.book_orientation'%></label>
+              <div class="radio radio-no-margin">
+                <%= f.input :orientation, label: false, as: :radio_buttons, collection: [['<strong>Horizontal</strong>'.html_safe, 'landscape'],['<strong>Vertical</strong>'.html_safe, 'portrait']], :selected => 0 %>
+              </div> <!-- /radio -->
+              <div class="help-block help-block-brand">
+                <%= t 'editor.create_new_story_form.end_notification'%>
+              </div>
+            </div>
+          </div>
+
+          <div class="row row-gutter">
+            <div class="col-sm-4">
+              <div class="btn btn-link btn-link-underline" onclick="discard_draft(event);">
+              <%= t 'dashboard.cancel'%></div>
+            </div>
+            <div class="form-disabled">
+              <div class="col-sm-8 text-right create_edit_img">
+                <% unless @story.story_pages[0].illustration %>
+                  <span class="gutter-sm-x vertical-i-top spacing-half-v">
+                    <%= f.button :submit, "#{t 'editor.create_new_story_form.start_with_images'}" , data: {disable_with: "Creating..."}, :class => "btn-app btn-brand-1" %>
+                  </span>
+                  <span class="gutter-sm-x vertical-i-top spacing-half-v">
+                    <%= f.button :submit, "#{t 'editor.create_new_story_form.start_with_words'}" , data: {disable_with: "Creating..."}, :class => "btn-app btn-brand-1" %>
+                  </span>
+                <% else %>
+                  <span class="gutter-sm-x vertical-i-top spacing-half-v">
+                    <%= f.button :submit, "#{t 'editor.create_new_story_form.start'}" , data: {disable_with: "Creating..."}, :class => "btn-app btn-brand-1" %>
+                  </span>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div> <!-- /modal-body -->
+      </div> <!-- /modal-content -->
+    <% end %>
+  </div> <!-- /modal-dialog -->
+</div> <!-- /modal -->
+
+<script type="application/javascript">
+  // Enabling varnam when the form already has langauge selected.
+  // (Ex: When page reloads after validation error)
+  $(document).ready( function(){
+    var languageId = document.getElementById("story_language_id").value;
+    if (languageId != ""){
+      select_language();
+    }
+  });
+
+  $("#new_story").submit(function(){$.blockUI();});
+  if (document.getElementById("story_language_id").value == "") {
+    $(".form-disabled").addClass("disabled");
+    $(".form-disabled").css('pointer-events', 'none');
+    $(".form-disabled").find("input").attr("tabindex", "-1");
+  }
+  function select_language(){
+    var language_id = document.getElementById("story_language_id").value;
+    var language_name = $("#story_language_id option:selected").text();
+    var story_field_classes = document.getElementById("story_title").className
+    var story_class = 'string required form-control input-brand input-brand--lg english';
+    if(story_field_classes != story_class){
+       $("#story_title").removeClass(story_field_classes)
+       $("#story_title").addClass(story_class)
+    }
+    add_language_script(language_id)
+    $("#story_title").off("keyup");
+    $("#story_title").off("keydown");
+    if (language_id != "") {
+      $(".form-disabled").removeClass("disabled");
+      $(".form-disabled").css('pointer-events', 'auto');
+      $(".form-disabled").find("input").removeAttr("tabindex");
+      var varnam = new VarnamIME($("#story_title")[0], null, {name: language_name}, '<%= Settings.varnam.url %>').init();
+    }else{
+      $(".form-disabled").addClass("disabled");
+      $(".form-disabled").css('pointer-events', 'none');
+      $(".form-disabled").find("input").attr("tabindex", "-1");
+    }
+  }
+
+  function add_language_script(language_id){
+    $.ajax({
+      url : '/v0/editor/language_script',
+      type: "GET",
+      data : {lang_id: language_id},
+      contentType: false,
+      dataType : 'json',
+      success: function(data){
+        $("#story_title").addClass(data['language_script'])
+      }
+    });
+  }
+  function discard_draft(e){
+    e.preventDefault();
+    window.onbeforeunload = false;
+    $.ajax({
+            type: "delete",
+            url: "<%= delete_draft_story_path(@story) %>",
+            dataType: "script"
+           });
+  }
+
+</script>

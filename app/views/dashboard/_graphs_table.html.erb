@@ -1,0 +1,518 @@
+
+<div id="graph_table">
+  <% if @users %>
+     <% @data = @users %>
+  <% elsif @original_stories %>
+    <% @data = @original_stories_table %>
+  <% elsif @derivative_stories %>
+    <% @data = @derivative_stories_table %>
+  <% elsif @stories %>
+    <% @data = @stories_table %>
+  <% end %>
+  <div id="organization_count" class="hidden">
+    <%= @organizations.count %>
+  </div>
+  <% if @users %>
+    <% if params[:group]=="day" || params[:group]== nil %>
+      <table class="table table-striped " id="daywise_user">
+        <thead>
+          <tr class="table-heading-row">
+            <th>Day</th>
+            <th>Count</th>
+          </tr>
+        </thead>
+        <tbody class="table-row-details">
+          <% @data.each do |key,value| %>
+            <tr>
+              <td><%= key.strftime('%d-%b-%Y') %></td>
+              <td><%= value %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% elsif params[:group]=="week" %>
+      <table class="table table-striped " id="weekwise_user">
+        <thead>
+          <tr class="table-heading-row">
+            <th>Week</th>
+            <th>Count</th>
+          </tr>
+        </thead>
+        <tbody class="table-row-details">
+          <% @data.each do |key,value| %>
+            <tr>
+              <td><%= key.strftime('%d-%b-%Y') %>
+                 - 
+                <%= (key + 6.days).strftime('%d-%b-%Y') %>
+              </td>
+              <td><%= value %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% elsif params[:group]=="month" %>
+      <table class="table table-striped " id="monthwise_user">
+        <thead>
+          <tr class="table-heading-row">
+            <th>Month</th>
+            <th>Count</th>
+          </tr>
+        </thead>
+        <tbody class="table-row-details">
+          <% @data.each do |key,value| %>
+            <tr>
+              <td><%= key.strftime('%b-%Y') %></td>
+              <td><%= value %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% elsif params[:group]=="year" %>
+      <table class="table table-striped " id="yearwise_user">
+        <thead>
+          <tr class="table-heading-row">
+            <th>Year</th>
+            <th>Count</th>
+          </tr>
+        </thead>
+        <tbody class="table-row-details">
+          <% @data.each do |key,value| %>
+            <tr>
+              <td><%= key.strftime('%Y') %></td>
+              <td><%= value %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% end %>
+  <% else %>
+    <% if params[:group]=="day" || params[:group]== nil %>
+      <table class="table table-striped " id="daywise_stories">
+        <thead>
+          <tr class="table-heading-row">
+            <th>Day, Organization Name</th>
+              <% @organizations.each do |organization| %>
+                <th><%= organization %></th>
+              <% end %>
+          </tr>
+        </thead>
+        <tbody class="table-row-details">
+          <% @data.each do |key, value| %>
+            <tr>
+              <td><%= key.strftime('%d-%b-%Y') %></td>
+              <% @organizations.each do |organization| %>
+                <td><%= value[organization]||"0" %></td>
+              <% end %>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% elsif params[:group]=="week" %>
+      <table class="table table-striped " id="weekwise_stories">
+        <thead>
+          <tr class="table-heading-row">
+            <th>Week, Organization Name</th>
+              <% @organizations.each do |organization| %>
+                <th><%= organization %></th>
+              <% end %>
+          </tr>
+        </thead>
+        <tbody class="table-row-details">
+          <% @data.each do |key, value| %>
+            <tr>
+              <td><%= key.strftime('%d-%b-%Y')%>
+                 - 
+                <%= (key + 6.days).strftime('%d-%b-%Y')%>
+              </td>
+              <% @organizations.each do |organization| %>
+                <td><%= value[organization]||"0" %></td>
+              <% end %>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% elsif params[:group]=="month" %>
+      <table class="table table-striped " id="monthwise_stories">
+        <thead>
+          <tr class="table-heading-row">
+            <th>Month, Organization Name</th>
+              <% @organizations.each do |organization| %>
+                <th><%= organization %></th>
+              <% end %>
+          </tr>
+        </thead>
+        <tbody class="table-row-details">
+          <% @data.each do |key, value| %>
+            <tr>
+              <td><%= key.strftime('%b-%Y') %></td>
+              <% @organizations.each do |organization| %>
+                <td><%= value[organization]||"0" %></td>
+              <% end %>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% elsif params[:group]=="year" %>
+      <table class="table table-striped " id="yearwise_stories">
+        <thead>
+          <tr class="table-heading-row">
+            <th>Year, Organization Name</th>
+              <% @organizations.each do |organization| %>
+                <th><%= organization %></th>
+              <% end %>
+          </tr>
+        </thead>
+        <tbody class="table-row-details">
+          <% @data.each do |key, value| %>
+            <tr>
+              <td><%= key.strftime('%Y') %></td>
+              <% @organizations.each do |organization| %>
+                <td><%= value[organization]||"0" %></td>
+              <% end %>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% end %>
+  <% end %>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  var organization_count = parseInt($('#organization_count').text());
+  var organization_list = [];
+  for (var i = 0; i <= organization_count; i++) {
+      organization_list.push(i);
+  }
+  
+  var table = $('#daywise_user').DataTable( {
+    searching: false,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 10,
+    order: [],
+    responsive: {
+        details: false
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  title: formatDatatableTitle('graphs'),
+                  exportOptions: {
+                      columns: [ 0, 1]
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  title: formatDatatableTitle('graphs'),
+                  exportOptions: {
+                      columns: [ 0, 1]
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  title: formatDatatableTitle('graphs'),
+                  exportOptions: {
+                      columns: [ 0, 1]
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  title: formatDatatableTitle('graphs'),
+                  exportOptions: {
+                      columns: [ 0, 1]
+                  }
+              }
+          ]
+      
+  });
+
+  var new_table = $('#daywise_user').dataTable();
+  var table = $('#weekwise_user').DataTable( {
+    searching: false,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 10,
+    order: [],
+    responsive: {
+        details: false
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  exportOptions: {
+                      columns: [ 0, 1]
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  exportOptions: {
+                      columns: [ 0, 1]
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  exportOptions: {
+                      columns: [ 0, 1]
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  exportOptions: {
+                      columns: [ 0, 1]
+                  }
+              }
+          ]
+      
+  });
+
+  var new_table = $('#weekwise_user').dataTable();
+
+  var table = $('#monthwise_user').DataTable( {
+    searching: false,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 10,
+    order: [],
+    responsive: {
+        details: false
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  exportOptions: {
+                      columns: [ 0, 1]
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  exportOptions: {
+                      columns: [ 0, 1]
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  exportOptions: {
+                      columns: [ 0, 1]
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  exportOptions: {
+                      columns: [ 0, 1]
+                  }
+              }
+          ]
+      
+  });
+
+  var new_table = $('#monthwise_user').dataTable();
+
+  var table = $('#yearwise_user').DataTable( {
+    searching: false,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 10,
+    order: [],
+    responsive: {
+        details: false
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  exportOptions: {
+                      columns: [ 0, 1]
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  exportOptions: {
+                      columns: [ 0, 1]
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  exportOptions: {
+                      columns: [ 0, 1]
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  exportOptions: {
+                      columns: [ 0, 1]
+                  }
+              }
+          ]
+      
+  });
+
+  var new_table = $('#yearwise_user').dataTable();
+
+  var table = $('#daywise_stories').DataTable( {
+    searching: false,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 10,
+    order: [],
+    responsive: {
+        details: false
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  exportOptions: {
+                      columns: organization_list
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  exportOptions: {
+                      columns: organization_list
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  exportOptions: {
+                      columns: organization_list
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  exportOptions: {
+                      columns: organization_list
+                  }
+              }
+          ]
+      
+  });
+  var new_table = $('#daywise_stories').dataTable();
+  var table = $('#weekwise_stories').DataTable( {
+    searching: false,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 10,
+    order: [],
+    responsive: {
+        details: false
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  exportOptions: {
+                      columns: organization_list
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  exportOptions: {
+                      columns: organization_list
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  exportOptions: {
+                      columns: organization_list
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  exportOptions: {
+                      columns: organization_list
+                  }
+              }
+          ]
+      
+  });
+
+  var new_table = $('#weekwise_stories').dataTable();
+
+  var table = $('#monthwise_stories').DataTable( {
+    searching: false,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 10,
+    order: [],
+    responsive: {
+        details: false
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  exportOptions: {
+                      columns: organization_list
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  exportOptions: {
+                      columns: organization_list
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  exportOptions: {
+                      columns: organization_list
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  exportOptions: {
+                      columns: organization_list
+                  }
+              }
+          ]
+      
+  });
+
+  var new_table = $('#monthwise_stories').dataTable();
+
+  var table = $('#yearwise_stories').DataTable( {
+    searching: false,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 10,
+    order: [],
+    responsive: {
+        details: false
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  exportOptions: {
+                      columns: organization_list
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  exportOptions: {
+                      columns: organization_list
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  exportOptions: {
+                      columns: organization_list
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  exportOptions: {
+                      columns: organization_list
+                  }
+              }
+          ]
+      
+  });
+
+  var new_table = $('#yearwise_stories').dataTable();
+
+  });
+</script>

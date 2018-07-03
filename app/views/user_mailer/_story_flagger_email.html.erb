@@ -1,0 +1,20 @@
+<tr>
+	<td align="center">
+	  <table width="432px" cellspacing="0" cellpadding="0" border="0" align="center">
+	   
+	    <tr style="margin-bottom: 20px; float: left;">
+	      	<td><strong>Dear <%= @flaggers.first_name.titleize %></strong>, </td>
+	    </tr>
+
+	    <tr style="margin-bottom: 20px; float: left;">
+	      	<td><br>Thanks for drawing our attention to inappropriate content on StoryWeaver. The (<%= link_to( @story.title, react_stories_show_url(@story)) %>) you had reported earlier has been taken down. We're really glad you're watching out for us and hope you will continue to do so!</td>
+	    </tr>
+
+			<tr style="margin-bottom: 20px; float: left;">
+		  		<td>
+						<p>Team StoryWeaver</p>
+					</td>
+			</tr>
+		</table>
+	</td>
+</tr>

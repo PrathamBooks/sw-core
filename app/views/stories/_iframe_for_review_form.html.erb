@@ -1,0 +1,39 @@
+<% if @story.derivation_type != nil%>
+  <% if @story.root.language.name != "English" && (@flag ? @story.get_english_version(@current_user) != nil : nil) %>
+     <div class="row">
+       <%= link_to "Click here for english version", story_review_path(:flag => false), class: "btn btn-normal btn-warning" %>
+     </div>
+  <% end %>
+		<div class="row">
+			 <div class="col-md-6">
+				 <h3 style="margin-left:3%">Click on the image to read '<span class="<%= @story.language.script %>"><%= @flag ? @story.root.title.strip : @english_story.title.strip  %></span>' (Original)</h3>
+				 <% iframe_style = (@flag ?  @story.root.orientation : @english_story.orientation ) == "landscape" ? 'height:380px;width:512px;margin-left:3%;' : 'height:439px;width:322px;margin-left:5%;' %>
+				 <iframe src="<%=host_url%><%= show_story_in_iframe_path(@flag ? @story.root : @english_story, :iframe=>true, :disable_review_link => "disable_review_link")%>"
+			 	   style="<%=iframe_style%>" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe>
+		    </div>
+
+		  <div class="col-md-6">
+			 	<h3  style="margin-left:3%">
+           Click on the image to read
+           <% if @story.derivation_type == "translated" %>
+              '<span class="<%= @story.language.script %>"><%= @story.title.strip %></span>'
+                &nbsp;(Translation)
+           <% else %>
+              '<span class="<%= @story.language.script %>"><%= @story.title.strip %></span>'
+               &nbsp;(Re-levelled)
+           <% end %>
+         </h3>
+				<% iframe_style= @story.orientation=="landscape" ? 'height:380px;width:512px;margin-left:3%;' : 'height:439px;width:322px;margin-left:5%;' %>
+				<iframe src="<%=host_url%><%= show_story_in_iframe_path(@story, :iframe=>true, :disable_review_link => "disable_review_link")%>"
+			 	style="<%=iframe_style%>" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe>
+		 	</div>
+		 </div>
+<% else %>
+		<div class="story_iframe">
+			<h3 style="margin-left:3%">Click on the image to read '<span class="<%= @story.language.script %>"><%= @story.title.strip %></span>'</h3>
+			<% iframe_style= @story.orientation=="landscape" ? 'height:380px;width:512px' : 'height:439px;width:322px;margin-left:5%;' %>
+			<iframe src="<%=host_url%><%= show_story_in_iframe_path(@story, :iframe=>true, :disable_review_link => "disable_review_link")%>"
+			 style="<%=iframe_style%>" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe> 
+		</div>
+<% end%>
+	<h2>Start Rating '<span class="<%= @story.language.script %>"><%= @story.title.strip %></span>'</h2>

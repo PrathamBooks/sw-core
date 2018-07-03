@@ -1,0 +1,79 @@
+<%= render :partial => "dashboard/errors" %>
+
+<div class="row about-row noborder">
+  <section id="search-details-temp" style="margin: 30px 45px;" >
+    
+    <div class="col-md-12 col-sm-12">
+      <label>Who is Ameena?</label> 
+    </div>
+    
+    <div class="col-md-12 col-sm-12">
+      <label>Here’s your chance to illustrate a book for Pratham Books StoryWeaver and get paid for it! </label> 
+    </div>
+    
+    <div class="col-md-12 col-sm-12">
+      <p>Some of us look at the word “tree” and doodle this:</p>
+    </div>
+    
+    <div class="col-md-12 col-sm-12">
+      <%= link_to image_tag("Ameena_sample.jpg", :size => "150x200"), "#" %>
+    </div>
+ 
+    <div class="col-md-12 col-sm-12">  
+      <p>And others conjure up something like this:</p>
+      <span>
+        <%= link_to "https://storyweaver.org.in/illustrations/2958", "https://storyweaver.org.in/illustrations/2958" %>
+        <br> or this: <br>
+        <%= link_to "https://storyweaver.org.in/illustrations/2762", "https://storyweaver.org.in/illustrations/2762" %>
+        <br>If you belong to the second category, then this contest is right up your alley!
+      </span>
+      <br>
+      <br>
+      <label>Who is Ameena?</label>
+      <br>
+      <span>
+        We have got a fabulous story coming up - <label>What is Ameena Up To?</label>, written by Roopa Banerjee. It is a charming story about a girl called Ameena and the antics she gets up to when her family isn't looking. We know Ameena is a mischievous little girl with a big imagination. 
+      </span>
+      <br> 
+      <br> 
+      <span>
+        But what does she look like? What does her family and her home look like? <label>All of that is up to you!</label> This is your chance to illustrate a children’s book for Pratham Books StoryWeaver!
+      </span> 
+      <br>
+      <br>
+      <label>How to enter</label>
+      <br>
+      <span>Here is an extract from the story ‘What is Ameena Upto?’ <%= link_to "here", "https://storyweaver.org.in/search?utf8=%E2%9C%93&search%5Bquery%5D=What+is+Ameena+Upto%3F&button=" %></span>
+    </div>   
+
+    <div class="col-md-12 col-sm-12">  
+      <p>We want you to draw Ameena. Upload your illustration on StoryWeaver and then send us a brief note to storyweaver@prathambook.org telling us your vision and how you would illustrate this story.</p><br>
+      <p>The contest will be judged by award-winning illustrator, art director, writer, editor and overall publishing rockstar, inayakVarma. If we like your Ameena and vision the most, you will be chosen to sign a contract with us. You will get two months to illustrate the whole book, which will be published by Pratham Books on StoryWeaver. And yes, it’s a paid contract. </p>
+    </div>
+   
+    <div class="col-md-12 col-sm-12">  
+      <p>This is a Level 1 story, which is for children who are eager to begin reading. This is how pages of level 1 books look:</p>
+      <label>include level 1 sample pages +++<label>
+    </div>   
+
+    <div class="col-md-12 col-sm-12">  
+		  <label>Contest Guidelines</label>
+				<p>1. The contest will run from August 7, 2017, to August 20, 2017</p>
+				<p><label>2. Include size of file and specs +++</label></p>
+				<p>3. Please send your illustration notes to storyweaver@prathambooks.org.</p>
+				<p>4. Participants must be over the age of 17 to participate.</p>
+				<p>5. By submitting your work to Retell, Remix and Rejoice 2017, you are agreeing to a CC-BY license being applied to it (This license lets others distribute, remix, tweak, and build upon your work, even commercially, as long as they credit you for the original creation). To know more about CC-BY, click <%= link_to "here", "https://creativecommons.org/licenses/by/4.0/" %>.</p>
+    </div>
+
+      <div class="row">
+        <div class="col-lg-12">
+          <%#= link_to "Enter contest now", new_story_path(contest_id: @contest.id) , remote: true, class: "btn btn-warning btn-lg hide-in-mob-create contest_story_create_button"%>
+          <%= link_to "Enter Contest", illustrations_path(contest_id: @contest.id), class: "btn btn-warning btn-lg hide-in-mob-create contest_story_create_button" %>
+          <div id="newStoryForm">
+          </div>
+        </div>
+      </div>
+
+      </section>
+
+<%= render :partial => "stories/desktop_only_action_message" %>

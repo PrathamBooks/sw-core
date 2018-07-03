@@ -1,0 +1,20 @@
+<tr>
+  <td align="center">
+    <table width="432px" cellspacing="0" cellpadding="0" border="0" align="center">
+
+      <tr style="margin-bottom: 20px; float: left;">
+        <td><strong>Dear Content Manager</strong>, </td>
+      </tr>
+
+      <tr style="margin-bottom: 20px; float: left;">
+        <td><br><%= @current_user.name %>(<%= @current_user.email %>) has registered as an organisational user. </td>
+      </tr>
+      <tr style="margin-bottom: 20px; float: left;">
+        <tr>Organization name: <%= @organization.organization_name %></tr>
+        <tr>Country: <%= @organization.country %></tr>
+        <tr>Number of classrooms: <%= @organization.number_of_classrooms %></tr>
+        <tr>Number of children: <%= @organization.children_impacted %></tr>
+      </tr>
+    </table>
+  </td>
+</tr>

@@ -1,0 +1,14 @@
+$('#edit_book_info').html("<%= escape_javascript(render(:partial=>"story_editor/edit_book_info"))%>");
+$(document).ready(function() {
+    $('#storyCategories').multiselect({
+        buttonWidth : '100%'
+    });
+    $('#modal-edit-book').modal({
+        show: true
+    });
+
+    var varnam = new VarnamIME($("#modal-edit-book #story_title")[0], null, {name: '<%= @story.language.name %>'}, '<%= Settings.varnam.url %>')
+            .init();
+    var varnam = new VarnamIME($("#modal-edit-book #story_synopsis")[0], null, {name: '<%= @story.language.name %>'}, '<%= Settings.varnam.url %>')
+            .init();
+});

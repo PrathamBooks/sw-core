@@ -1,0 +1,28 @@
+<tr>
+	<td align="center">
+	  <table width="432px" cellspacing="0" cellpadding="0" border="0" align="center">
+	    <tr>
+	      	<td>	       
+	      		<h1 style="color: #4c4c4c; font-size: 20px;">Please confirm your StoryWeaver account.</h1>
+	      	</td>
+	    </tr>
+	    <tr style="margin-bottom: 20px; float: left;">
+	      	<td><strong>Dear <%= resource.name %></strong>,</td>
+	    </tr>
+	    <tr style="margin-bottom: 20px; float: left;">
+	      	<td>Thank you for signing up with StoryWeaver, India’s largest digital repository of children’s stories.</td>
+	    </tr>
+	    <tr style="margin-bottom: 20px; float: left;">
+		  		<td>On StoryWeaver you can read hundreds of stories for children, in multiple languages, as well as create your own stories. You can also translate and adapt stories as per your need and connect and collaborate with educators, parents, authors and other like-minded people.</td>
+			</tr>
+			<tr style="margin-bottom: 20px; float: left;">
+		  		<td>Confirming your account will give you full access to StoryWeaver and all future notifications will be sent to this email address.To access your account and begin weaving stories, Click here:</td>
+			</tr>
+			<tr>
+					<td style="text-align: center; vertical-align: middle; display: block; margin:0 auto 20px">
+					  <a href="<%= confirmation_url(resource, confirmation_token: @token) %>" style="background: #FECC0D; font-weight: bold; color: #000; padding: 10px 15px; font-size: 18px;border-radius: 18px; text-decoration: none;">Confirm my account</a>
+			    </td>		  			
+			</tr>
+		</table>
+	</td>
+</tr>

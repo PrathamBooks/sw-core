@@ -1,0 +1,8 @@
+<%= render :partial => "errors" %>
+
+<%= render :partial => "analytics_tabs" %>
+<%= render :partial => "organization_tabs" %>
+<%= javascript_include_tag "//www.google.com/jsapi", "chartkick"%>
+<div id="illustrations-list">
+  <%= render :partial => "organization_summery", :locals => {:story_downloads => @story_downloads, :stories_download_count => @stories_download_count}%>
+</div>

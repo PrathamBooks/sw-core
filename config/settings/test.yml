@@ -1,0 +1,70 @@
+upload:
+  base_dir: /tmp
+  file_name: sample.csv
+
+illustration:
+  storage: filesystem
+  path: path 
+
+logo:
+  storage: filesystem
+  path: logo_path
+
+donor_logo:
+  storage: filesystem
+  path: donor_logo_path
+
+
+profile_image:
+  storage: filesystem
+  path: profile_image_path
+
+blog_post_image:
+  storage: filesystem
+  path: blog_post_image_path
+
+banner_image:
+  storage: filesystem
+  path: banner_image_path
+
+category_banner:
+  storage: filesystem
+  path: category_banner_path
+
+category_home_image:
+  storage: filesystem
+  path: category_home_image_path
+
+fog:
+  path: public/spec/test_files/illustrations/:id/:style/:basename.:extension
+  logo_path: spec/test_files/publishers/logos/:id/:style/:basename.:extension
+  donor_logo_path: spec/test_files/donors/logos/:id/:style/:basename.:extension
+  blog_post_image_path: spec/test_files/blog_posts/blog_post_image/:id/:style/:basename.:extension
+  profile_image_path: spec/test_files/users/profile_images/:id/:style/:basename.:extension
+  crop_path: public/spec/test_files/illustration_crops/:id/:style/:basename.:extension
+  banner_image_path: spec/test_files/banners/banner_image/:id/:style/:basename.:extension
+  crop_url_path: spec/test_files/illustration_crops
+  directory: spec/test_files
+  category_banner_path: spec/test_files/categories/banners/:id/:style/:basename.:extension
+  category_home_image_path: spec/test_files/categories/home_images/:id/:style/:basename.:extension
+
+facebook:
+  app_id: "782745738484335"
+  secret_key: "3635eafa7a0191a0cb8912c1fa04edbb"
+
+google:
+  app_id: "916304538455-sog91kfn967vmiu46f4ub1a38q1g3kvp.apps.googleusercontent.com"
+  secret_key: "_WpqoKLPgCE2Qjum8HMblKoW"
+
+analytics:
+  tracking_id: a_tracking_id
+
+varnam:
+  url: https://api.varnamproject.com/
+
+per_page:
+  entity_count: 24
+
+org_info:
+  prefix: "SW"
+  url: "https://storyweaver.org.in"

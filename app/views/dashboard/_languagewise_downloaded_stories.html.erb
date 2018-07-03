@@ -1,0 +1,91 @@
+<%= render :partial => "dashboard_datatables" %>
+<h2>Language wise Total number of downloads</h2>
+<table class="table table-striped " id="language_downloaded_stories">
+  <tfoot style="display: table-header-group;">
+    <tr>
+      <th>Language Name</th>
+      <th>TOTAL number of downloads</th>
+    </tr>
+  </tfoot>
+  <thead>
+    <tr class="table-heading-row">
+      <th>Language Name</th>
+      <th>TOTAL number of downloads</th>
+    </tr>
+  </thead>
+  <tbody class="table-row-details">
+    <% @languagewise_download_count.each do |key,value| %>
+      <tr>
+        <td><%= key %></td>
+        <td><%= value %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  var table = $('#language_downloaded_stories').DataTable( {
+    searching: true,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 10,
+    order: [],
+    responsive: {
+        details: false
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  title: formatDatatableTitle('languagewise-stories'),
+                  exportOptions: {
+                      columns: [ 0, 1 ]
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  title: formatDatatableTitle('languagewise-stories'),
+                  exportOptions: {
+                      columns: [ 0, 1 ]
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  title: formatDatatableTitle('languagewise-stories'),
+                  exportOptions: {
+                      columns: [ 0, 1 ]
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  title: formatDatatableTitle('languagewise-stories'),
+                  exportOptions: {
+                      columns: [ 0, 1 ]
+                  }
+              }
+          ]
+      
+  });
+
+  var new_table = $('#language_downloaded_stories').dataTable();
+
+  $('#language_downloaded_stories tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+  });
+
+  table.columns().every( function () {
+      var that = this;
+
+      $( 'input', this.footer() ).on( 'keyup change', function () {
+          if ( that.search() !== this.value ) {
+              that
+                  .search( this.value )
+                  .draw();
+          }
+      });
+  });
+
+  });
+</script>

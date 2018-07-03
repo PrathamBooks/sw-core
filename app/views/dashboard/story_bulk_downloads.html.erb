@@ -1,0 +1,7 @@
+<%= render :partial => "errors" %>
+
+<%= render :partial => "analytics_tabs" %>
+<%= render :partial => "organization_tabs" %>
+<div id="illustrations-list">
+  <%= render :partial => "bulk_downloads", :locals => {:stories => @stories, :flag => @flag,:start_date => @start_date, :end_date => @end_date}%>
+</div>

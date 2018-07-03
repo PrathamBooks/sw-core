@@ -1,0 +1,266 @@
+<%= render :partial => "dashboard_datatables" %>
+<%= render :partial => "flagged_content_tabs" %>
+
+  <div class="row">
+    <div class="col-md-12 col-sm-12">
+    	  <label class="allusers"><%= t 'dashboard.flagged_stories_tab.all_flagged_stories'%></label>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 col-sm-12" id="user_details">
+      <table class="table table-striped" id="flaged_stories">
+        <tfoot style="display: table-header-group;">
+          <tr>
+            <th><%= t 'dashboard.flagged_stories_tab.story_title'%></th>
+            <th><%= t 'dashboard.flagged_stories_tab.user_comment'%></th>
+            <th><%= t 'dashboard.flagged_stories_tab.flagged_by'%></th>
+            <th><%= t 'dashboard.flagged_stories_tab.flagged_type'%></th>
+            <th><%= t 'dashboard.flagged_stories_tab.time_of_flagging'%></th>       
+            <th><%= t 'dashboard.flagged_stories_tab.authors_email_id'%></th>
+            <th><%= t 'dashboard.actions'%></th>
+          </tr>
+        </tfoot>  
+        <thead>
+          <tr class="table-heading-row">
+            <th><%= t 'dashboard.flagged_stories_tab.story_title'%></th>
+            <th><%= t 'dashboard.flagged_stories_tab.user_comment'%></th>
+            <th><%= t 'dashboard.flagged_stories_tab.flagged_by'%></th>
+            <th><%= t 'dashboard.flagged_stories_tab.flagged_type'%></th>
+            <th><%= t 'dashboard.flagged_stories_tab.time_of_flagging'%></th>       
+            <th><%= t 'dashboard.flagged_stories_tab.authors_email_id'%></th>
+            <th><%= t 'dashboard.actions'%></th>
+          </tr>
+        </thead>
+        <tbody class="table-row-details">    
+        <% flagged_stories.each_with_index do |story, index|%> 
+          <tr>
+            <td><%= link_to get_title(story.language, story.title).html_safe, react_stories_show_path(story.to_param) %></td>
+            <td><%= story.flaggings.try(:first).try(:reason) %></td>
+            <td>
+              <%= story.flaggings.try(:first).try(:flagger).try(:name) %><br/>
+              (<%= story.flaggings.try(:first).try(:flagger).try(:email) %>)
+            </td>
+            <td>
+              <% if story.flaggings.try(:first).try(:reason) =~ /stories-.*/ %>
+                Reviewer
+              <% else %>
+                User 
+              <% end %>
+            </td>
+            <td><%= story.flaggings.try(:first).try(:created_at).localtime.strftime("%Y-%m-%d %H:%M:%S") %></td>
+            <td><%= story.authors.collect(&:email).join(", ") %></td>
+            <td>
+              <div class="dropdown">
+                <button class=" btn btn-danger dropdown-toggle reason_button" style="padding:5px 10px;" type="button"  style="padding:5px 10px;" data-toggle="dropdown"><%= t 'dashboard.flagged_illustrations_tab.pull_down' %>
+                <span class="caret"></span></button>
+                <ul id="reason_<%= index%>" class="dropdown-menu reason_dropdown" role = "menu">
+                  <li>
+                      <a>
+                      <input type="checkbox" value="This story is not an original creation." name="reason"/>This story is not an original creation.</a>
+                  </li>
+                  <li>
+                    <a>
+                    <input type="checkbox" value="This story is inappropriate for children." name="reason" />This story is inappropriate for children.</a>
+                  </li>
+                  <li>
+                    <a>
+                  <input type="checkbox" value="This story is blank." name="reason" />This story is blank.</a>
+                </li>
+                  <li>
+                    <a>
+                  <input type="checkbox" value="This story contains images that are copyrighted." name="reason" />This story contains images that are copyrighted.</a>
+                </li>
+                  <li>
+                    <a>
+                  <input type="checkbox" value="This looks like spam!" name="reason" />This looks like spam!</a>
+                </li>
+                  <li>
+                    <a>
+                  <input type="checkbox" value="Other comments: Please Specify" name="reason"  class="other_options_<%= index%>"/>Other comments: Please Specify</a>
+                </li>
+                <li><input type="text" class="form-control other_reasons" id="other_reason_<%= index%>" style="display: none;"></li>
+                <a class="btn btn-sm btn-danger pull_down_story" id="reason_save_<%= index%>" style="padding:5px 10px; margin-left: 45px; width: 60px; display: none; margin-top: 5px" data-path = "<%=pull_down_story_path(story) %>" >Save</a>
+                </ul>
+              </div>
+              <a class="btn btn-sm btn-success clear_story_flag reason_button" style="padding:5px 10px;" data-path = "<%= clear_story_flag_path(story) %>" ><%= t 'dashboard.flagged_illustrations_tab.clear_flag' %></a>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="pull_down_story_dialog" title="Confirmation Required">
+    <%= t 'dashboard.flagged_stories_tab.pulled_down_story_alert'%>
+  </div>
+
+  <div id="clear_story_flag_dialog" title="Confirmation Required">
+    <%= t 'dashboard.flagged_stories_tab.clear_flag_story_alert'%>
+  </div>
+
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+  initPulledDownStoryDialog();
+  initClearStoryFlagDialog();
+  for (var i =0 ; i <= <%=flagged_stories.size - 1%>; i++) {
+    if ($("#reason_"+i+" li").find("input:checked").length > 0){
+      if($(".other_options_"+i).is(":checked")){
+        $("#other_reason_"+i).show()
+      }
+      $("#reason_save_"+i).show();
+    }
+  };
+});
+
+function initPulledDownStoryDialog(){
+  var pull_down_story_dialog = $("#pull_down_story_dialog");
+  pull_down_story_dialog.dialog({
+      autoOpen: false,
+      width: 700,
+      modal: true,
+      buttons : {
+        "Confirm" : function() {
+          window.location = pull_down_story_path;
+        },
+        "Cancel" : function() {
+          $(this).dialog("close");
+        }
+      },
+      dialogClass: 'change_orientation_dialog'
+  });
+}
+
+function initClearStoryFlagDialog(){
+  var clear_story_flag_dialog = $("#clear_story_flag_dialog");
+  clear_story_flag_dialog.dialog({
+      autoOpen: false,
+      width: 700,
+      modal: true,
+      buttons : {
+        "Confirm" : function() {
+          window.location = clear_story_flag_path;
+        },
+        "Cancel" : function() {
+          $(this).dialog("close");
+        }
+      },
+      dialogClass: 'change_orientation_dialog'
+  });
+}
+
+$(".clear_story_flag").click(function(){
+   clear_story_flag_path = $(this).data('path');
+   $("#clear_story_flag_dialog").dialog("open");
+});
+for (var i =0 ; i <= <%=flagged_stories.size - 1%>; i++) {
+  story_pulled_down_resons(i)
+};
+function story_pulled_down_resons(i){
+  $("#reason_"+i+" li").click(function () {
+    if ($("#reason_"+i+" li").find("input:checked").length > 0){
+      if($(".other_options_"+i).is(":checked")){
+        $("#other_reason_"+i).show()
+      }else{
+        $("#other_reason_"+i).hide()
+      }
+      $("#reason_save_"+i).show();
+    }else
+    {
+      $("#reason_save_"+i).hide();
+      $("#other_reason_"+i).hide()
+    }   
+  });
+
+  $("#reason_save_"+i).click(function(){
+    var collect_reason = [];
+     $("#reason_"+i+" li").find("input:checked").each(function () {
+        if($(this).val() == "Other comments: Please Specify"){
+          collect_reason.push($("#other_reason_"+i).val().replace(/\./g,' '));
+        }else{
+          collect_reason.push($(this).val().replace(/\./g,' '));
+        }    
+        });
+     pull_down_story_path = $(this).data('path')+'?reasons='+collect_reason;
+      window.location = pull_down_story_path;
+  });
+}
+
+$(document).ready(function() {
+  var table = $('#flaged_stories').DataTable( {
+    searching: true,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 20,
+    order: [],
+    responsive: {
+        details: false
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  title: formatDatatableTitle('flagged-stories'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6 ]
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  title: formatDatatableTitle('flagged-stories'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6 ]
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  title: formatDatatableTitle('flagged-stories'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6 ]
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  title: formatDatatableTitle('flagged-stories'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5 ]
+                  }
+              }
+          ],
+    "aoColumns": [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    { "bSearchable": false }
+                ]
+
+  });
+
+  $('#flaged_stories tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+  });
+
+  table.columns().every( function () {
+      var that = this;
+
+      $( 'input', this.footer() ).on( 'keyup change', function () {
+          if ( that.search() !== this.value ) {
+              that
+                  .search( this.value )
+                  .draw();
+          }
+      });
+  });
+} );
+
+</script>
+
+
+

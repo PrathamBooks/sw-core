@@ -1,0 +1,36 @@
+<div class="modal fade" id="relevelStoryModal" tabindex="-1" role="dialog" aria-labelledby="moreLinksModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Relevel Story</h2>
+        <hr class="form-hr"/>
+        <% if @rl_story && @rl_story.errors.any? %>
+          <%= display_errors(@rl_story) %>
+        <% end %>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <%= simple_form_for  @rl_story,
+                               url: {action: :update, controller: :relevels, id: @story},
+            html: { class: 'form-horizontal relevel_story',  multipart: true },
+            authenticity_token: true do |f| %>
+            <%= f.hidden_field :story_id , :value => @story.id %>
+            <div class="form-group-lg-pad">
+                <%= f.input :reading_level, label: "Reading level: (Please choose a reading level. We allow you to alter the reading level, just before publishing your story!)", collection: Story::READING_LEVELS.collect {|key,value| ["Level #{key}: #{Story::READING_LEVEL_INFO[key]}",key] if key != @story.reading_level }.compact %>
+            </div>
+            <div class="center-align-btn">
+            	<%= f.button :submit, "Relevel Story", class: "btn btn-app btn-brand-1 font-sm"%>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+$(document).ready(function() {
+  var story_details = new StoryDetails(new StoryDetailsPage());
+  story_details.init_relevel_story_form();
+});
+</script>

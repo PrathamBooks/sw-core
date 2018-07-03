@@ -1,0 +1,7 @@
+/*$('#selected_page').html("<%#= escape_javascript(render(:partial=>"page_edit")) %>");*/
+/*$('#toolbar').html("<%= escape_javascript(render(:partial=>"editor_toolbar")) %>");*/
+$('#toolbarHead').html("<%= escape_javascript(render(:partial=>"editor_toolbar")) %>");
+$('#right_side_editor').html("<%= escape_javascript(render(:partial=>"page_editor")) %>");
+
+cropContainerModal.prepareForCrop();
+Statistics.trackIllustrationRead(<%= @illustration.id %>);

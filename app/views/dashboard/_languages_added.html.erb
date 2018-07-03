@@ -1,0 +1,100 @@
+<%= render :partial => "dashboard_datatables" %>
+<h2>Languages Added Monthwise</h2>
+<table class="table table-striped" id="languages_added_by_month">
+  <tfoot style="display: table-header-group;">
+    <tr>
+      <th>Month</th>
+      <th>No. of languages added</th>
+      <th>Present no. of languages</th>
+      <th>Languages added</th>
+    </tr>
+  </tfoot>
+  <thead>
+    <tr class="table-heading-row">
+      <th width='150px'>Month</th>
+      <th>No. of languages added</th>
+      <th>Present no. of languages</th>
+      <th>Language added</th>
+    </tr>
+  </thead>
+  <tbody class="table-row-details">
+    <% total_count = 0 %>
+    <% languages_added.each do |k, v| %>
+      <% total_count = total_count + v.count %>
+      <tr>
+        <td><%= k.strftime("%B-%Y")  %></td>
+        <td><%= v.count  %></td>
+        <td><%= total_count  %></td>
+        <td><%=v.map(&:name).join(', ') %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+  var table = $('#languages_added_by_month').DataTable( {
+    searching: true,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 10,
+    order: [],
+    responsive: {
+        details: false
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  title: formatDatatableTitle('languages'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3 ]
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  title: formatDatatableTitle('languages'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3 ]
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  title: formatDatatableTitle('languages'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3 ]
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  title: formatDatatableTitle('languages'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3 ]
+                  }
+              }
+          ]
+      
+  });
+
+  var new_table = $('#languages_added_by_month').dataTable();
+
+  $('#languages_added_by_month tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+  });
+
+  table.columns().every( function () {
+      var that = this;
+
+      $( 'input', this.footer() ).on( 'keyup change', function () {
+          if ( that.search() !== this.value ) {
+              that
+                  .search( this.value )
+                  .draw();
+          }
+      });
+  });
+
+  });
+</script>

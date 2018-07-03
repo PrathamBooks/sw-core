@@ -1,0 +1,91 @@
+<div class="modal fade modal--story-creator" id="storyModalFromIllustration" tabindex="-1" role="dialog" aria-labelledby="moreLinksModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+
+    <%= simple_form_for @story, url: :create_story_from_illustration, html: { id: 'create_story_from_illustration', class: 'form-horizontal',  multipart: true } do |f| %>
+      <div class="modal-content">
+        <div class="modal-body modal-body-app">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <div class="form-group">
+            <div class="spacing-half-v"></div>
+            <div class="heading-title">Create New Book</div>
+            <div class="spacing-half-v"></div>
+          </div>
+          <%= f.input :illustration_id,  as: :hidden , :input_html => { :value => @illustration.id } %>
+          <div class="form-group form-group-lg-pad">
+            <label class="heading-section label-required">Language</label>
+            <% if @contest.present? %>
+              <%= f.input :contest_id,  as: :hidden , :input_html => { :value => @contest.id } %>
+              <%= f.association :language, collection: @contest.languages, label: false, prompt: "Choose Language", :input_html => {:class => "select-sm text-bold", :onChange=>"select_language();"}  %>
+            <% else %>
+              <%= f.association :language, label: false, prompt: "Choose Language", :input_html => {:class => "select-sm text-bold", :onChange=>"select_language();"} %>
+            <% end %>
+          </div>
+
+          <div class="form-disabled">
+            <div class="form-group form-group-lg-pad">
+              <label class="heading-section">Book Title</label>
+              <div class="help-block help-block-brand">(Don't worry! You can change the Book Title any time.)</div>
+              <%= f.input :title ,label: false, required: true, input_html: { autocomplete: 'off', value: @story.user_title? ? @story.title.strip : '',  placeholder: "Write your story title here", class: "input-brand input-brand--lg"} %>
+            </div>
+            <div class="form-group">
+              <label class="heading-section label-required">Reading Level</label>
+              <div class="radio radio-no-margin">
+                <%= f.input :reading_level, label: false, as: :radio_buttons, collection: Story::READING_LEVELS.collect {|key,value| ["<strong>Level #{key}:</strong> #{Story::READING_LEVEL_INFO[key]}".html_safe,key] }.compact%>
+              </div> <!-- /radio -->
+            </div>
+            <div class="form-group">
+              <label class="heading-section label-required">Book orientation</label>
+              <div class="radio radio-no-margin">
+                <%= f.input :orientation, label: false, as: :radio_buttons, collection: [['<strong>Horizontal</strong>'.html_safe, 'landscape'],['<strong>Vertical</strong>'.html_safe, 'portrait']], :selected => 0 %>
+              </div> <!-- /radio -->
+            </div>
+          </div>
+
+          <div class="row row-gutter">
+            <div class="col-sm-4">
+              <div class="btn btn-link btn-link-underline" data-dismiss="modal">Cancel</div>
+            </div>
+            <div class="form-disabled">
+              <div class="col-sm-8 text-right">
+                <span class="gutter-sm-x vertical-i-top spacing-half-v">
+                  <%= f.button :submit, "start" , data: {disable_with: "Creating..."}, :class => "btn-app btn-brand-1" %>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div> <!-- /modal-body -->
+      </div> <!-- /modal-content -->
+    <% end %>
+  </div> <!-- /modal-dialog -->
+</div> <!-- /modal -->
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    if (document.getElementById("story_language_id").value == "") {
+      $(".form-disabled").addClass("disabled");
+      $(".form-disabled").css('pointer-events', 'none');
+      $(".form-disabled").find("input").attr("tabindex", "-1");
+    }
+    $('#create_story_from_illustration').ajaxForm({
+      dataType:  'script',
+      beforeSubmit: function(){$.blockUI()},
+      success: function(){$.unblockUI()}
+    });
+  });
+  function select_language(){
+    var language_id = document.getElementById("story_language_id").value;
+    var language_name = $("#story_language_id option:selected").text();
+    $("#story_title").off("keyup");
+    $("#story_title").off("keydown");
+    if (language_id != "") {
+      $(".form-disabled").removeClass("disabled");
+      $(".form-disabled").css('pointer-events', 'auto');
+      $(".form-disabled").find("input").removeAttr("tabindex");
+      var varnam = new VarnamIME($("#story_title")[0], null, {name: language_name}, '<%= Settings.varnam.url %>').init();
+    }else{
+      $(".form-disabled").addClass("disabled");
+      $(".form-disabled").css('pointer-events', 'none');
+      $(".form-disabled").find("input").attr("tabindex", "-1");
+    }
+  }
+</script>

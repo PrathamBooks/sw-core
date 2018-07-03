@@ -1,0 +1,45 @@
+<div class="modal fade" id="myModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="vertical-alignment-helper1 story_preview_page">
+   <div class="modal-dialog <%= @page.page_template.orientation %> vertical-align-center1">
+    <div class="modal-content <%= @story.language.script %> ">
+        <span class="screen-mode">
+          <a href="#"  onclick="fullscreen_read()" id="fullScreen"><img src="<%= asset_path("expand_icon_final.png")%>" alt="Go Full Screen" title="Go Full Screen" style="border: none; width: 22px; height: 22px;"/></a>
+          <a href="#"  onclick="exit_full_screen()" id="exitFullScreen"><img src="<%= asset_path("minimise_icon_final.png")%>" alt="Exit Full Screen" title="Exit Full Screen" style="border: none; width: 22px; height: 22px;"/></a>
+        </span>
+      <button id="close-button" class="close close-reader" aria-hidden="true" data-dismiss="modal" type="button"><i class="fa fa-times-circle"></i></button>
+      <div id="modal-body" class="modal-body">
+        <div id="story-metadata" data-story-title="<%= @story.title %>" />
+        <%= render "/pages/navigate_to" %>
+      </div>
+      <% if @disable_review_link == nil %>
+        <%if (@story.status == "published" && @story.organization_id == nil) && ( current_user && current_user.is_language_reviewer(@story.language.name)) && (!@story.authors.include?(current_user)) %>
+          <%if @story.flaggings_count == nil %>
+            <%if @story.reviewer_comment.present?%>
+              <div class="reviewed_story_<%= @story.orientation%>">
+                <label>Story Reviewed</label>
+              <div>
+            <% else %>
+              <div class="review_story_<%= @story.orientation%>">
+                <%= link_to "Click here to start rating the story", story_review_path(@story, :flag => true), :method => :get, target: '_blank'%>
+              </div>
+            <% end %>
+          <% else %>
+              <div class="reviewed_story_<%= @story.orientation%>">
+                <label>Flagged Story</label>
+              <div>
+          <% end %>
+        <% end %>
+      <%end%>
+    </div>
+   </div>
+  </div>
+ </div>
+<script type="text/javascript">
+  $(document).ready(pages_init);
+  $(document).ready(screen_mode);
+  $(document).ready(function(){
+    var user_signed_in = "<%= session[:check_user_signed_in] %>";
+    on_close_exit_full_screen(user_signed_in);
+  });
+  $(document).ready(activate_arrowkeys);
+  </script>

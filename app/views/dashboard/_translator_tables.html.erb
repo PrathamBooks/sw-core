@@ -1,0 +1,34 @@
+<table class="table table-striped">
+  <thead>
+  <tr class="table-heading-row">
+     <th><%= @stories ? "#{@stories[0][:type]}" : "#{@language_stories[0][:type]}" %></th>
+     <th>Stories Available during <%= @stories ? "#{@stories[0][:type]}" : "#{@language_stories[0][:type]}" %></th>
+     <th>Translated stories</th>
+     <th>In progress stories</th>
+     <th>Translators assigned</th>
+     <th>Translators assigned during <%= @stories ? "#{@stories[0][:type]}" : "#{@language_stories[0][:type]}" %></th>
+   </tr>
+  </thead>
+  <tbody class="table-row-details">
+  <% if @stories %>
+    <% @analytics_keys.each do |key| %>
+     <tr>
+       <td><%= key.localtime.strftime("%b %d,%Y") %></td>
+       <td>
+         <%= @stories[0][:data][key].nil? ? 0 : @stories[0][:data][key] %>
+       </td>
+       <td>
+         <%= @stories[1][:data][key].nil? ? 0 : @stories[1][:data][key] %>
+       </td>
+       <td><%= @stories[2][:data][key].nil? ? 0 : @stories[2][:data][key] %></td>
+       <td>
+         <%= @stories[3][:data][key].nil? ? 0 : @stories[3][:data][key] %>
+       </td>
+       <td>
+         <%= @stories[4][:data][key].nil? ? 0 : @stories[4][:data][key] %>
+       </td>
+     </tr>
+    <% end %>
+  <% end  %>
+  </tbody>
+</table>

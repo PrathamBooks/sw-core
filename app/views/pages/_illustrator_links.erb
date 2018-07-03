@@ -1,0 +1,3 @@
+<% illustrators.each_with_index do | illustrator, index | %>
+  <span><%= link_to illustrator, host_url+"/users/#{Person.find(illustrators_id[index]).try(:user).try(:slug)}"  %></span><% unless index == illustrators.length - 1  %>,<% end %>
+<% end %>

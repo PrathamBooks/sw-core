@@ -1,0 +1,2677 @@
+.modal-body {
+    padding-top: 5px;
+}
+.modal-dialog {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1px;
+    margin-bottom: 1px;
+}
+#illustration-view .close-reader,
+#storyReader .close-reader {
+    color: #ffcc47;
+    position: absolute;
+    right: 5px;
+    top: 2px;
+    background: #fff;
+    border-radius: 15px;
+    z-index: 9;
+    opacity: 1;
+    width: 25px;
+    height: 25px;
+    font-size: 25px;
+    i {
+        padding-top: 1px;
+    }
+}
+#storyReader .screen-mode {
+    background-color: #ffcc47;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    border-radius: 15px;
+    z-index: 9;
+    opacity: 1;
+    width: 22px;
+    height: 22px;
+    font-size: 13px;
+    img {
+        background-color: initial;
+    }
+    i {
+        color: #fff;
+        padding-left: 4.5px;
+        padding-top: 3px;
+    }
+}
+.review_story_landscape {
+    background-color: #ffcc47;
+    bottom: -4px;
+    float: right;
+    height: 15px;
+    margin: 0 auto;
+    position: absolute;
+    right: 2%;
+    padding: 0px 10px 22px 10px;
+    border-radius: 8px 8px 0px 0px;
+    a {
+        color: black;
+        font-size: 11px !important;
+        font-family: "Noto Sans", sans-serif !important;
+    }
+}
+.reviewed_story_landscape {
+    background-color: #ffcc47;
+    bottom: 0px;
+    float: right;
+    height: 15px;
+    margin: 0 auto;
+    position: absolute;
+    right: 19px;
+    width: 10%;
+    padding: 0px 7px 22px 8px;
+    border-radius: 8px 8px 0px 0px;
+    label {
+        margin-bottom: -10px;
+        font-size: 9px !important;
+        font-family: "Noto Sans", sans-serif !important;
+    }
+}
+
+#imagepreview {
+    display: none;
+    width: 100%;
+    height: 100%;
+}
+// Best for 1600+
+// .modal-dialog.landscape{
+//   width:1230px;
+// }
+//
+// .page-container-landscape {
+//   width: 1200px;
+//   height: 863px;
+// }
+// Best for 1280px
+// .modal-dialog.landscape{
+//   width:900px;
+// }
+//
+// .page-container-landscape {
+//   width: 862px;
+//   height: 620px;
+// }
+// Best for 1440px * 900px
+// .modal-dialog.landscape{
+//   width:1032px;
+// }
+// .page-container-landscape {
+//   width: 1000px;
+//   height: 719px;
+// }
+// Best for 1366px * 768px
+.modal-dialog.landscape {
+    width: 989px;
+}
+.front-cover-page .cover-text .textual {
+    .urdu > b {
+        line-height: 2.3em;
+    }
+}
+.full-stry-dt .det-bk-tit div.urdu,
+.author-dt.urdu {
+    line-height: 2.3em;
+}
+.urdu {
+    > div#txtEditor .text-font-medium, > div#txtEditor .text-font-small, > div#txtEditor .text-font-smallest, > div#txtEditor .text-font-normal > div#txtEditor .text-font-largest, > div#txtEditor .text-font-large, div#txtEditor {
+        line-height: 2.3em;
+    }
+}
+#full-editor-container {
+    .urdu {
+        .text-font-largest, .text-font-large, .text-font-normal, .text-font-medium, .text-font-small, .text-font-smallest {
+            line-height: 2.3em;
+        }
+    }
+}
+#selected_page .bc_h_c100.content .synopsis {
+    font-size: 0.7em;
+}
+@import 'default_fonts';
+//For Publish popup SW-1371
+#publish_form .publish-cover-block .page-container-portrait {
+    width: 415px;
+    height: 612px;
+}
+//Publisher modal pop book cover adjustment SW-1371
+#publish_form > #review_book_covers > .row > div {
+    padding: 0px 6px;
+}
+.urdu .text-font-normal,
+.kurdish_arabic .text-font-normal,
+.hebrew .text-font-normal,
+.urdu .text-font-large,
+.kurdish_arabic .text-font-large,
+.hebrew .text-font-large,
+.urdu .text-font-largest,
+.kurdish_arabic .text-font-largest,
+.hebrew .text-font-largest,
+.urdu .text-font-medium,
+.kurdish_arabic .text-font-medium,
+.hebrew .text-font-medium,
+.urdu .text-font-small,
+.kurdish_arabic .text-font-small,
+.hebrew .text-font-small,
+.urdu .text-font-smallest,
+.kurdish_arabic .text-font-smallest,
+.hebrew .text-font-smallest {
+    line-height: 2.3em;
+}
+$portrait-readers-width-1365: 415px;
+$portrait-readers-width-900: 415px;
+$portrait-readers-width-767: 415px;
+$portrait-readers-width-490: 428px;
+$portrait-readers-width-479: 308px;
+$portrait-readers-width-359: 268px;
+$landscape-readers-width-1365: 805px;
+$landscape-readers-width-900: 708px;
+$landscape-readers-width-767: 452px;
+$landscape-readers-width-490: 396px;
+$landscape-readers-width-479: 308px;
+$landscape-readers-width-359: 268px;
+@media only screen and (min-width: 1365px) {
+    .urdu .text-font-normal,
+    .kurdish_arabic .text-font-normal,
+    .hebrew .text-font-normal,
+    .urdu .text-font-large,
+    .kurdish_arabic .text-font-large,
+    .hebrew .text-font-large,
+    .urdu .text-font-largest,
+    .kurdish_arabic .text-font-largest,
+    .hebrew .text-font-largest,
+    .urdu .text-font-medium,
+    .kurdish_arabic .text-font-medium,
+    .hebrew .text-font-medium,
+    .urdu .text-font-small,
+    .kurdish_arabic .text-font-small,
+    .hebrew .text-font-small,
+    .urdu .text-font-smallest,
+    .kurdish_arabic .text-font-smallest,
+    .hebrew .text-font-smallest {
+        line-height: 2.3em;
+    }
+}
+
+    @media only screen and (min-width: 960px) {
+        .page-container-landscape {
+            width: 960px;
+            height: 690px;
+        }
+        .page-container-landscape .content .logo-level .pub_story_logo {
+            height: auto !important;
+        }
+        .page-container-landscape .content .logo-level .pub_story_logo img {
+            height: auto !important;
+        }
+        .page-container-landscape .content .book-levels {
+            margin-top: 6% !important;
+        }
+    }
+    //size7
+    @media only screen and (max-width: 959px) {
+        // .sp_h_text_overlay1 > p {
+        //   line-height: 1.7em !important;
+        // }
+        .review_story_landscape {
+            background-color: #ffcc47;
+            bottom: 0px;
+            float: right;
+            height: 15px;
+            margin: 0 auto;
+            position: absolute;
+            right: 19px;
+            padding: 0px 10px 22px 10px;
+            border-radius: 8px 8px 0px 0px;
+            a {
+                color: black;
+                font-size: 11px !important;
+                font-family: "Noto Sans", sans-serif !important;
+            }
+        }
+        .reviewed_story_landscape {
+            background-color: #ffcc47;
+            bottom: 0px;
+            float: right;
+            height: 15px;
+            margin: 0 auto;
+            position: absolute;
+            right: 19px;
+            width: 11%;
+            padding: 0px 7px 22px 8px;
+            border-radius: 8px 8px 0px 0px;
+            label {
+                margin-bottom: -10px;
+                font-size: 9px !important;
+                font-family: "Noto Sans", sans-serif !important;
+            }
+        }
+        .modal-dialog {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .page-container-landscape {
+            .content {
+                .logo-level {
+                    .pub_story_logo img {
+                        height: auto !important;
+                    }
+                }
+            }
+        }
+        .page-container-landscape {
+            .content {
+                .logo-level {
+                    .pub_story_logo {
+                        height: auto !important;
+                    }
+                }
+                .book-levels {
+                    margin-top: 6% !important;
+                }
+            }
+        }
+        .page-container-landscape {
+            width: 959px;
+            height: 690px;
+            overflow: hidden;
+            .front-cover-page .cover-text .textual {
+                .cover_title {
+                    font-size: 2.3em;
+                    line-height: 1.2em;
+                    margin-bottom: 0.2em;
+                }
+                .cover_attribution {
+                    font-size: 1em;
+                    margin-bottom: 5px;
+                }
+            }
+            .ratings-page {
+                text-align: center;
+                line-height: 35px;
+                h1 {
+                    font-size: 2em;
+                    margin: 16px 0px 16px 0px;
+                }
+                p.title {
+                    font-size: 1.5em;
+                    margin-bottom: 0px;
+                }
+                textarea#my_comment {
+                    width: 90%;
+                }
+                label {
+                    font-size: 1.5em;
+                }
+            }
+        }
+        .page-container-landscape .content {
+            padding: 1.3em;
+        }
+        .page-container-landscape .bic_h_c100.content, .page-container-landscape .bc_h_c100.content {
+            padding: 0;
+        }
+        .page-container-landscape .content p {
+            margin: 0;
+            padding: 0;
+        }
+        .page-container-landscape .text-font-largest {
+            font-size: 28px;
+        }
+        .page-container-landscape .text-font-large {
+            font-size: 25px;
+        }
+        .page-container-landscape .text-font-normal {
+            font-size: 20px;
+        }
+        .page-container-landscape .text-font-medium {
+            font-size: 18px;
+        }
+        .page-container-landscape .text-font-small {
+            font-size: 16px;
+        }
+        .page-container-landscape .text-font-smallest {
+            font-size: 14px;
+        }
+        .page-container-landscape.odia{
+            .text-font-largest {
+                line-height: 1.45em;
+            }
+            .text-font-large {
+                line-height: 1.5em;
+            }
+            .text-font-normal {
+                line-height: 1.55em;
+            }
+            .text-font-medium {
+                line-height: 1.55em;
+            }
+            .text-font-small {
+                line-height: 1.62em;
+            }
+            .text-font-smallest {
+                line-height: 1.65em;
+            }
+        }
+        .page-container-landscape.tamil {
+            .text-font-largest{
+                font-size: 29px;
+            }
+
+            .text-font-large{
+                font-size: 26px;
+            }
+
+            .text-font-normal{
+                font-size: 21px;
+            }
+
+            .text-font-medium{
+                font-size: 18.5px;
+            }
+
+            .text-font-small{
+                font-size: 17px;
+            }
+
+            .text-font-smallest{
+                font-size: 14.5px;
+            }
+        }
+        .page-container-landscape.kannada {
+            .text-font-largest{
+                font-size: 30px;
+                line-height:1.4em;
+            }
+
+            .text-font-large{
+                font-size: 26px;
+                line-height:1.4em;
+            }
+
+            .text-font-normal{
+                font-size: 21px;
+                line-height:1.45em;
+            }
+
+            .text-font-medium{
+                font-size: 19px;
+                line-height:1.45em;
+            }
+
+            .text-font-small{
+                font-size: 16.5px;
+                line-height:1.6em;
+            }
+
+            .text-font-smallest{
+                font-size: 14px;
+                line-height:1.6em;
+            }
+        }
+        .page-container-landscape.telugu{
+            .text-font-largest{
+                font-size: 30px;
+                line-height:1.4em;
+            }
+
+            .text-font-large{
+                font-size: 26px;
+                line-height:1.45em;
+            }
+
+            .text-font-normal{
+                font-size: 22px;
+                line-height:1.45em;
+            }
+
+            .text-font-medium{
+                font-size: 19px;
+                line-height:1.45em;
+            }
+
+            .text-font-small{
+                font-size: 17px;
+                line-height:1.5em;
+            }
+
+            .text-font-smallest{
+                font-size: 14.5px;
+                line-height:1.6em;
+            }
+        }
+        .page-container-landscape.devanagri {
+            .text-font-largest{
+                font-size: 30px;
+                line-height:1.4em;
+              }
+
+              .text-font-large{
+                font-size: 26px;
+                line-height:1.4em;
+              }
+
+              .text-font-normal{
+                font-size: 22px;
+                line-height:1.4em;
+              }
+
+              .text-font-medium{
+                font-size: 19px;
+                line-height:1.4em;
+              }
+
+              .text-font-small{
+                font-size: 16.5px;
+                line-height:1.5em;
+              }
+
+              .text-font-smallest{
+                font-size: 15px;
+                line-height:1.5em;
+              }
+        }
+        .page-container-landscape.gujrati {
+            .text-font-largest{
+                font-size: 30px;
+                line-height:1.35em;
+            }
+
+            .text-font-large{
+                font-size: 26px;
+                line-height:1.4em;
+            }
+
+            .text-font-normal{
+                font-size: 22px;
+                line-height:1.4em;
+            }
+
+            .text-font-medium{
+                font-size: 19px;
+                line-height:1.4em;
+            }
+
+            .text-font-small{
+                font-size: 17px;
+                line-height:1.5em;
+            }
+
+            .text-font-smallest{
+                font-size: 15px;
+                line-height:1.5em;
+            }
+        }
+        .page-container-landscape.bengali {
+            .text-font-largest{
+                font-size: 30px;
+                line-height:1.4em;
+            }
+
+            .text-font-large{
+                font-size: 27px;
+                line-height:1.4em;
+            }
+
+            .text-font-normal{
+                font-size: 22px;
+                line-height:1.45em;
+            }
+
+            .text-font-medium{
+                font-size: 20px;
+                line-height:1.45em;
+            }
+
+            .text-font-small{
+                font-size: 17px;
+                line-height:1.45em;
+            }
+
+            .text-font-smallest{
+                font-size: 15.5px;
+                line-height:1.45em;
+            }
+        }
+        .page-container-landscape.urdu {
+            .text-font-largest {
+                font-size: ($landscape-readers-width-1365 / $landscape-container-size-width) * $largest-font-size;
+            }
+            .text-font-large {
+                font-size: ($landscape-readers-width-1365 / $landscape-container-size-width) * $large-font-size;
+            }
+            .text-font-normal {
+                font-size: ($landscape-readers-width-1365 / $landscape-container-size-width) * $normal-font-size;
+            }
+            .text-font-medium {
+                font-size: ($landscape-readers-width-1365 / $landscape-container-size-width) * $medium-font-size;
+            }
+            .text-font-small {
+                font-size: ($landscape-readers-width-1365 / $landscape-container-size-width) * $small-font-size;
+            }
+            .text-font-smallest {
+                font-size: ($landscape-readers-width-1365 / $landscape-container-size-width) * $smallest-font-size;
+            }
+            .text-font-smallest,
+            .text-font-small,
+            .text-font-medium,
+            .text-font-normal,
+            .text-font-large,
+            .text-font-largest {
+                line-height: 2.3em;
+            }
+        }
+        .page-container-landscape .bic_h_c100.content {
+            .self-attribution, .original-story-attribution, .parent-story-attribution, .other-credits, .other-credits, .illustration-attribution, .derived-story-text, .other-credits {
+                font-size: 0.8em;
+                line-height: 1.35em;
+            }
+            .story-attribution-section,
+            .other-credits-section,
+            .illustration-attributions-section {
+                font-size: 0.9em;
+            }
+        }
+    }
+
+    //size6
+    @media only screen and (max-width: 805px) {
+        #selected_page .page-container-landscape .newStories {
+           font-size: 6px;
+        }
+        .review_story_landscape {
+            background-color: #ffcc47;
+            bottom: 0px;
+            float: right;
+            height: 15px;
+            margin: 0 auto;
+            position: absolute;
+            right: 19px;
+            padding: 0px 10px 22px 10px;
+            border-radius: 8px 8px 0px 0px;
+            a {
+                color: black;
+                font-size: 11px !important;
+                font-family: "Noto Sans", sans-serif !important;
+            }
+        }
+        .reviewed_story_landscape {
+            background-color: #ffcc47;
+            bottom: 0px;
+            float: right;
+            height: 15px;
+            margin: 0 auto;
+            position: absolute;
+            right: 19px;
+            width: 11%;
+            padding: 0px 7px 22px 8px;
+            border-radius: 8px 8px 0px 0px;
+            label {
+                margin-bottom: -10px;
+                font-size: 9px !important;
+                font-family: "Noto Sans", sans-serif !important;
+            }
+        }
+        .modal-dialog {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .page-container-landscape {
+            width: 805px;
+            height: 577px;
+            overflow: hidden;
+            .front-cover-page .cover-text .textual {
+                .cover_title {
+                    font-size: 1.8em;
+                }
+                .cover_attribution {
+                    font-size: 0.95em;
+                }
+            }
+            .ratings-page {
+                text-align: center;
+                line-height: 35px;
+                h1 {
+                    font-size: 2em;
+                    margin: 16px 0px 16px 0px;
+                }
+                p.title {
+                    font-size: 1.5em;
+                    margin-bottom: 0px;
+                }
+                textarea#my_comment {
+                    width: 90%;
+                }
+                label {
+                    font-size: 1.5em;
+                }
+            }
+        }
+        .page-container-landscape .content p {
+            margin: 0;
+            padding: 0;
+        }
+        .page-container-landscape .text-font-largest {
+            font-size: 24px;
+        }
+        .page-container-landscape .text-font-large {
+            font-size: 21px;
+        }
+        .page-container-landscape .text-font-normal {
+            font-size: 16.5px;
+        }
+        .page-container-landscape .text-font-medium {
+            font-size: 15.5px;
+        }
+        .page-container-landscape .text-font-small {
+            font-size: 13px;
+        }
+        .page-container-landscape .text-font-smallest {
+            font-size: 11.5px;
+        }
+        .page-container-landscape.odia {
+            .text-font-largest {
+                line-height: 1.45em;
+            }
+            .text-font-large {
+                line-height: 1.5em;
+            }
+            .text-font-normal {
+                line-height: 1.55em;
+            }
+            .text-font-medium {
+                line-height: 1.55em;
+            }
+            .text-font-small {
+                line-height: 1.62em;
+            }
+            .text-font-smallest {
+                line-height: 1.65em;
+            }
+        }
+        .page-container-landscape.tamil {
+            .text-font-largest {
+                font-size: 24px;
+            }
+            .text-font-large {
+                font-size: 21.5px;
+            }
+            .text-font-normal {
+                font-size: 17px;
+            }
+            .text-font-medium {
+                font-size: 15.4px;
+            }
+            .text-font-small {
+                font-size: 13.8px;
+            }
+            .text-font-smallest {
+                font-size: 12px;
+            }
+        }
+        .page-container-landscape.kannada {
+            .text-font-largest {
+                font-size: 25px;
+            }
+            .text-font-large {
+                font-size: 21px;
+                line-height: 1.45em;
+            }
+            .text-font-normal {
+                font-size: 17.5px;
+            }
+            .text-font-medium {
+                font-size: 15.6px;
+                line-height: 1.47em;
+            }
+            .text-font-small {
+                font-size: 13.7px;
+            }
+            .text-font-smallest {
+                font-size: 11.5px;
+                line-height: 1.6em;
+            }
+        }
+        .page-container-landscape.telugu {
+            .text-font-largest {
+                font-size: 26px;
+                line-height: 1.35em;
+            }
+            .text-font-large {
+                font-size: 21px;
+                line-height: 1.5em;
+            }
+            .text-font-normal {
+                font-size: 18px;
+            }
+            .text-font-medium {
+                font-size: 16px;
+            }
+            .text-font-small {
+                font-size: 14.1px;
+            }
+            .text-font-smallest {
+                font-size: 12.05px;
+            }
+        }
+        .page-container-landscape.devanagri {
+            .text-font-largest {
+                font-size: 25px;
+            }
+            .text-font-large {
+                font-size: 21.5px;
+                line-height: 1.38em;
+            }
+            .text-font-normal {
+                font-size: 18px;
+                line-height: 1.42em;
+            }
+            .text-font-medium {
+                font-size: 16px;
+            }
+            .text-font-small {
+                font-size: 13.8px;
+                line-height: 1.5em;
+            }
+            .text-font-smallest {
+                font-size: 12.5px;
+                line-height: 1.5em;
+            }
+        }
+        .page-container-landscape.gujrati {
+            .text-font-largest {
+                font-size: 25px;
+                line-height: 1.35em;
+            }
+            .text-font-large {
+                font-size: 21.5px;
+                line-height: 1.39em;
+            }
+            .text-font-normal {
+                font-size: 18.3px;
+                line-height: 1.38em;
+            }
+            .text-font-medium {
+                font-size: 15.8px;
+                line-height: 1.4em;
+            }
+            .text-font-small {
+                font-size: 14px;
+                line-height: 1.5em;
+            }
+            .text-font-smallest {
+                font-size: 12.5px;
+                line-height: 1.5em;
+            }
+        }
+        .page-container-landscape.bengali {
+            .text-font-largest {
+                font-size: 25px;
+                line-height: 1.4em;
+            }
+            .text-font-large {
+                font-size: 22.3px;
+                line-height: 1.38em;
+            }
+            .text-font-normal {
+                font-size: 18.1px;
+                line-height: 1.45em;
+            }
+            .text-font-medium {
+                font-size: 16.4px;
+                line-height: 1.47em;
+            }
+            .text-font-small {
+                font-size: 14px;
+                line-height: 1.45em;
+            }
+            .text-font-smallest {
+                font-size: 12.8px;
+                line-height: 1.46em;
+            }
+        }
+        .page-container-landscape.urdu {
+            .text-font-largest {
+                font-size: ($landscape-readers-width-1365 / $landscape-container-size-width) * $largest-font-size;
+            }
+            .text-font-large {
+                font-size: ($landscape-readers-width-1365 / $landscape-container-size-width) * $large-font-size;
+            }
+            .text-font-normal {
+                font-size: ($landscape-readers-width-1365 / $landscape-container-size-width) * $normal-font-size;
+            }
+            .text-font-medium {
+                font-size: ($landscape-readers-width-1365 / $landscape-container-size-width) * $medium-font-size;
+            }
+            .text-font-small {
+                font-size: ($landscape-readers-width-1365 / $landscape-container-size-width) * $small-font-size;
+            }
+            .text-font-smallest {
+                font-size: ($landscape-readers-width-1365 / $landscape-container-size-width) * $smallest-font-size;
+            }
+            .text-font-smallest,
+            .text-font-small,
+            .text-font-medium,
+            .text-font-normal,
+            .text-font-large,
+            .text-font-largest {
+                line-height: 2.3em;
+            }
+        }
+        .page-container-landscape .bic_h_c100.content {
+            .original-story-attribution, .parent-story-attribution, .other-credits, .other-credits, .illustration-attribution, .derived-story-text, .other-credits {
+                font-size: 0.6em;
+                line-height: 1.7em;
+            }
+            .other-credits-section,
+            .illustration-attributions-section {
+                font-size: 0.75em;
+            }
+        }
+        .page-container-landscape {
+            .content {
+                .attrb-full {
+                    .attrib-synopsis p{
+                        font-size: 0.8em;
+                    }
+                }
+                .attribution-text {
+                    .attribution-center {
+                        .story-attribution-section {
+                            font-size: 0.75em;
+                        }
+                        .self-attribution {
+                            font-size: 0.35em;
+                            line-height: 1.5em;
+                        }
+                    }
+                }
+                .license_container {
+                    .license_cont-middle {
+                        .discl-txt {
+                            font-size: 0.65em;
+                        }
+                        .cc_footer p {
+                            font-size: 0.5em;
+                        }
+                    }
+                }
+                .back-cover-top {
+                    .title {
+                        font-size: 1.7em;
+                    }
+                    .synopsis {
+                        font-size: 0.8em;
+                    }
+                    .reading_level_help p {
+                        font-size: 0.9em;
+                    }
+                }
+                .back-cover-bottom {
+                    .spp_about_us_footer {
+                        font-size: 0.8em;
+                    }
+                }
+            }
+        }
+    }
+
+    //size5
+    @media only screen and (max-width: 708px) {
+        // .sp_h_text_overlay1 > p {
+        //   line-height: 1.5em !important;
+        // }
+        .review_story_landscape {
+            padding: 0px 10px 22px 10px;
+        }
+        .reviewed_story_landscape {
+            width: 13%;
+            padding: 0px 7px 22px 11px;
+        }
+        .page-container-landscape {
+            width: 708px;
+            height: 509px;
+            overflow: hidden;
+            .front-cover-page .cover-text .textual {
+                .cover_title {
+                    font-size: 1.7em;
+                }
+                .cover_attribution {
+                    font-size: 0.85em;
+                }
+            }
+        }
+        .page-container-landscape .content .logo-level .pub_story_logo {
+            height: 36px;
+        }
+        //.modal-dialog.portrait{
+        //width:543px;
+        //}
+        //
+        //.page-container-portrait {
+        //width: 509px;
+        //height: 751px;
+        //}
+        .page-container-landscape .content p {
+            margin: 0;
+            padding: 0;
+        }
+        .page-container-landscape.odia {
+            .text-font-largest {
+                line-height: 1.45em;
+            }
+            .text-font-large {
+                line-height: 1.5em;
+            }
+            .text-font-normal {
+                line-height: 1.55em;
+            }
+            .text-font-medium {
+                line-height: 1.55em;
+            }
+            .text-font-small {
+                line-height: 1.65em;
+            }
+            .text-font-smallest {
+                line-height: 1.65em;
+            }
+        }
+        .page-container-landscape.tamil {
+            .text-font-largest {
+                font-size: 21px;
+                line-height: 1.45em;
+            }
+            .text-font-large {
+                font-size: 18.5px;
+                line-height: 1.45em;
+            }
+            .text-font-normal {
+                font-size: 15px;
+                line-height: 1.45em;
+            }
+            .text-font-medium {
+                font-size: 13px;
+                line-height: 1.5em;
+            }
+            .text-font-small {
+                font-size: 12.1px;
+                line-height: 1.45em;
+            }
+            .text-font-smallest {
+                font-size: 10.4px;
+                line-height: 1.5em;
+            }
+        }
+        .page-container-landscape.kannada {
+            .text-font-largest {
+                font-size: 21.5px;
+                line-height: 1.35em;
+            }
+            .text-font-large {
+                font-size: 18px;
+                line-height: 1.4em;
+            }
+            .text-font-normal {
+                font-size: 15.2px;
+                line-height: 1.4em;
+            }
+            .text-font-medium {
+                font-size: 13.3px;
+                line-height: 1.5em;
+            }
+            .text-font-small {
+                font-size: 11.8px;
+                line-height: 1.55em;
+            }
+            .text-font-smallest {
+                font-size: 10px;
+                line-height: 1.55em;
+            }
+        }
+        .page-container-landscape.telugu {
+            .text-font-largest {
+                font-size: 23px;
+                line-height: 1.26em;
+            }
+            .text-font-large {
+                font-size: 17px;
+                line-height: 1.5em;
+            }
+            .text-font-normal {
+                font-size: 15.1px;
+                line-height: 1.45em;
+            }
+            .text-font-medium {
+                font-size: 13px;
+                line-height: 1.5em;
+            }
+            .text-font-small {
+                font-size: 12.1px;
+            }
+            .text-font-smallest {
+                font-size: 10.35px;
+            }
+        }
+        .page-container-landscape.devanagri {
+            .text-font-largest {
+                font-size: 21.5px;
+            }
+            .text-font-large {
+                font-size: 18.5px;
+                line-height: 1.35em;
+            }
+            .text-font-normal {
+                font-size: 15.6px;
+                line-height: 1.42em;
+            }
+            .text-font-medium {
+                font-size: 13.5px;
+            }
+            .text-font-small {
+                font-size: 11.8px;
+                line-height: 1.46em;
+            }
+            .text-font-smallest {
+                font-size: 10.75px;
+                line-height: 1.5em;
+            }
+        }
+        .page-container-landscape.gujrati {
+            .text-font-largest {
+                font-size: 21.5px;
+                line-height: 1.34em;
+            }
+            .text-font-large {
+                font-size: 18.5px;
+                line-height: 1.35em;
+            }
+            .text-font-normal {
+                font-size: 15.7px;
+                line-height: 1.35em;
+            }
+            .text-font-medium {
+                font-size: 13.5px;
+                line-height: 1.4em;
+            }
+            .text-font-small {
+                font-size: 12.1px;
+                line-height: 1.5em;
+            }
+            .text-font-smallest {
+                font-size: 10.75px;
+                line-height: 1.5em;
+            }
+        }
+        .page-container-landscape.bengali {
+            .text-font-largest {
+                font-size: 21.5px;
+                line-height: 1.38em;
+            }
+            .text-font-large {
+                font-size: 19.2px;
+                line-height: 1.35em;
+            }
+            .text-font-normal {
+                font-size: 16px;
+                line-height: 1.38em;
+            }
+            .text-font-medium {
+                font-size: 13.91px;
+                line-height: 1.5em;
+            }
+            .text-font-small {
+                font-size: 12px;
+                line-height: 1.43em;
+            }
+            .text-font-smallest {
+                font-size: 11px;
+                line-height: 1.42em;
+            }
+        }
+        .page-container-landscape.urdu {
+            .text-font-largest {
+                font-size: ($landscape-readers-width-900 / $landscape-container-size-width) * $largest-font-size;
+            }
+            .text-font-large {
+                font-size: ($landscape-readers-width-900 / $landscape-container-size-width) * $large-font-size;
+            }
+            .text-font-normal {
+                font-size: ($landscape-readers-width-900 / $landscape-container-size-width) * $normal-font-size;
+            }
+            .text-font-medium {
+                font-size: ($landscape-readers-width-900 / $landscape-container-size-width) * $medium-font-size;
+            }
+            .text-font-small {
+                font-size: ($landscape-readers-width-900 / $landscape-container-size-width) * $small-font-size;
+            }
+            .text-font-smallest {
+                font-size: ($landscape-readers-width-900 / $landscape-container-size-width) * $smallest-font-size;
+            }
+            .text-font-smallest,
+            .text-font-small,
+            .text-font-medium,
+            .text-font-normal,
+            .text-font-large,
+            .text-font-largest {
+                line-height: 2.3em;
+            }
+        }
+        .page-container-landscape .text-font-largest {
+            font-size: 21px;
+        }
+        .page-container-landscape .text-font-large {
+            font-size: 18px;
+        }
+        .page-container-landscape .text-font-normal {
+            font-size: 14.3px;
+        }
+        .page-container-landscape .text-font-medium {
+            font-size: 12.5px;
+        }
+        .page-container-landscape .text-font-small {
+            font-size: 10.6px;
+        }
+        .page-container-landscape .text-font-smallest {
+            font-size: 7.5px;
+        }
+        .page-container-landscape .front-cover-page {
+            .cover-text {
+                .textual {
+                    .cover_title {
+                        font-size: 2.1em;
+                        line-height: 1.3em;
+                    }
+                    .cover_attribution {
+                        font-size: 0.8em;
+                        line-height: 1.2em;
+                    }
+                }
+            }
+        }
+        .page-container-landscape .cover_attribution {
+            font-size: 1.2em;
+        }
+        .page-container-landscape .bic_h_c100.content {
+            .self-attribution, .original-story-attribution, .parent-story-attribution, .other-credits, .other-credits, .illustration-attribution, .derived-story-text, .other-credits {
+                font-size: 0.55em;
+                line-height: 12px;
+            }
+            .story-attribution-section,
+            .other-credits-section,
+            .illustration-attributions-section {
+                font-size: 0.6em;
+            }
+        }
+        .page-container-landscape {
+            .content {
+                .spp_about_us_footer {
+                    font-size: 0.4em;
+                    line-height: 1.2em;
+                }
+                .attrb-full {
+                    .attrib-synopsis p {
+                        font-size: 0.4em;
+                    }
+                }
+                .license_container {
+                    .license_cont-middle {
+                        .cc_footer p{
+                            font-size: 0.18em;
+                        }
+                        .discl-txt {
+                            font-size: 0.3em;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //size4
+    @media only screen and (max-width: 452px) {
+        .page-container-landscape .text-font-normal.content p {
+            line-height: 1.2em;
+        }
+        .page-container-landscape .sp_h_text_overlay1.text-font-normal.content p {
+            line-height: 1.4em;
+        }
+        .review_story_landscape {
+            padding: 0px 10px 22px 10px;
+            a {
+                color: black;
+                font-size: 10px !important;
+                font-family: "Noto Sans", sans-serif !important;
+            }
+        }
+        .page-container-landscape .content .logo-level .pub_story_logo {
+            height: 40px;
+            margin-top: -5px;
+        }
+        .page-container-landscape #selected_page .fc_h_iT50_cB50.content .book-levels {
+            margin-top: 0% !important;
+        }
+        .page-container-landscape #selected_stories_list .close {
+            top: -16px;
+        }
+        .reviewed_story_landscape {
+            width: 20%;
+        }
+        .page-container-landscape {
+            width: 452px;
+            height: 325px;
+            overflow: hidden;
+            .front-cover-page .cover-text .textual {
+                .cover_title {
+                    font-size: 1.1em;
+                    line-height: 1.3em;
+                }
+                .cover_attribution {
+                    font-size: 0.6em;
+                    line-height: 1.2em;
+                }
+            }
+        }
+        .page-container-landscape .page-container-landscape .newStories {
+            padding: 7.9px;
+        }
+        .page-container-landscape .content p {
+            margin: 0;
+            padding: 0;
+            // line-height: 0.6em;
+        }
+        .page-container-landscape .content > p[class*="wysiwyg-text-align-"] {
+            line-height: 1.1em;
+        }
+        .page-container-landscape .sp_h_text_overlay1.content > p[class*="wysiwyg-text-align-"] {
+            line-height: 1.4em;
+        }
+        .page-container-landscape .text-font-largest {
+            font-size: 13.2px;
+        }
+        .page-container-landscape .text-font-large {
+            font-size: 11.8px;
+        }
+        ul.landscape_recommended_story_ui li {
+            width: 250px !important;
+        }
+        .landscape_recommended_story_container .bx-wrapper {
+            max-width: 536px !important;
+            margin-left: 1% !important;
+            margin-top: 5% !important;
+        }
+        .page-container-landscape .text-font-normal {
+            font-size: 9.4px;
+        }
+        .page-container-landscape .text-font-medium {
+            font-size: 8.5px;
+        }
+        .page-container-landscape .text-font-small {
+            font-size: 7.55px;
+        }
+        .page-container-landscape .text-font-smallest {
+            font-size: 6.6px;
+        }
+        .page-container-landscape.urdu .text-font-normal.content p,
+        .urdu .content > p[class*="wysiwyg-text-align-"],
+        .urdu .content > p {
+            line-height: 2.3em;
+        }
+        .page-container-landscape.odia {
+            .text-font-largest {
+                line-height: 1.45em;
+            }
+            .text-font-large {
+                line-height: 1.45em;
+            }
+            .text-font-normal {
+                line-height: 1.5em;
+            }
+            .text-font-medium {
+                line-height: 1.5em;
+            }
+            .text-font-small {
+                line-height: 1.6em;
+            }
+            .text-font-smallest {
+                line-height: 1.6em;
+            }
+        }
+        .page-container-landscape.tamil {
+            .text-font-largest {
+                font-size: 14px;
+                line-height: 1.6em;
+            }
+            .text-font-large {
+                font-size: 12px;
+                line-height: 1.55em;
+            }
+            .text-font-normal {
+                font-size: 9.9px;
+                line-height: 1.55em;
+            }
+            .text-font-medium {
+                font-size: 8.8px;
+                line-height: 1.52em;
+            }
+            .text-font-small {
+                font-size: 8px;
+                line-height: 1.55em;
+            }
+            .text-font-smallest {
+                font-size: 6.85px;
+                line-height: 1.55em;
+            }
+        }
+        .page-container-landscape.kannada {
+            .text-font-largest {
+                font-size: 14px;
+                line-height: 1.55em;
+            }
+            .text-font-large {
+                font-size: 12px;
+                line-height: 1.43em;
+            }
+            .text-font-normal {
+                font-size: 10px;
+                line-height: 1.55em;
+            }
+            .text-font-medium {
+                font-size: 9px;
+                line-height: 1.45em;
+            }
+            .text-font-small {
+                font-size: 7.8px;
+                line-height: 1.75em;
+            }
+            .text-font-smallest {
+                font-size: 6.5px;
+                line-height: 1.75em;
+            }
+        }
+        .page-container-landscape.telugu {
+            .text-font-largest {
+                font-size: 15px;
+                line-height: 1.45em;
+            }
+            .text-font-large {
+                font-size: 12px;
+                line-height: 1.51em;
+            }
+            .text-font-normal {
+                font-size: 10.1px;
+                line-height: 1.5em;
+            }
+            .text-font-medium {
+                font-size: 9px;
+                line-height: 1.5em;
+            }
+            .text-font-small {
+                font-size: 8px;
+                line-height: 1.65em;
+            }
+            .text-font-smallest {
+                font-size: 6.85px;
+                line-height: 1.6em;
+            }
+        }
+        .page-container-landscape.devanagri {
+            .text-font-largest {
+                font-size: 14px;
+                line-height: 1.55em;
+            }
+            .text-font-large {
+                font-size: 12.3px;
+                line-height: 1.4em;
+            }
+            .text-font-normal {
+                font-size: 10.5px;
+                line-height: 1.42em;
+            }
+            .text-font-medium {
+                font-size: 9px;
+                line-height: 1.55em;
+            }
+            .text-font-small {
+                font-size: 7.76px;
+                line-height: 1.65em;
+            }
+            .text-font-smallest {
+                font-size: 7.1px;
+                line-height: 1.6em;
+            }
+        }
+        .page-container-landscape.gujrati {
+            .text-font-largest {
+                font-size: 14.3px;
+                line-height: 1.45em;
+            }
+            .text-font-large {
+                font-size: 12.2px;
+                line-height: 1.43em;
+            }
+            .text-font-normal {
+                font-size: 10.4px;
+                line-height: 1.42em;
+            }
+            .text-font-medium {
+                font-size: 9px;
+                line-height: 1.42em;
+            }
+            .text-font-small {
+                font-size: 8px;
+                line-height: 1.65em;
+            }
+            .text-font-smallest {
+                font-size: 7.1px;
+                line-height: 1.6em;
+            }
+        }
+        .page-container-landscape.bengali {
+            .text-font-largest {
+                font-size: 14.2px;
+                line-height: 1.5em;
+            }
+            .text-font-large {
+                font-size: 12.7px;
+                line-height: 1.4em;
+            }
+            .text-font-normal {
+                font-size: 10.5px;
+                line-height: 1.46em;
+            }
+            .text-font-medium {
+                font-size: 9.4px;
+                line-height: 1.47em;
+            }
+            .text-font-small {
+                font-size: 8px;
+                line-height: 1.58em;
+            }
+            .text-font-smallest {
+                font-size: 7.3px;
+                line-height: 1.45em;
+            }
+        }
+        .page-container-landscape.urdu {
+            .text-font-largest {
+                font-size: ($landscape-readers-width-767 / $landscape-container-size-width) * $largest-font-size;
+            }
+            .text-font-large {
+                font-size: ($landscape-readers-width-767 / $landscape-container-size-width) * $large-font-size;
+            }
+            .text-font-normal {
+                font-size: ($landscape-readers-width-767 / $landscape-container-size-width) * $normal-font-size;
+            }
+            .text-font-medium {
+                font-size: ($landscape-readers-width-767 / $landscape-container-size-width) * $medium-font-size;
+            }
+            .text-font-small {
+                font-size: ($landscape-readers-width-767 / $landscape-container-size-width) * $small-font-size;
+            }
+            .text-font-smallest {
+                font-size: ($landscape-readers-width-767 / $landscape-container-size-width) * $smallest-font-size;
+            }
+            .text-font-smallest,
+            .text-font-small,
+            .text-font-medium,
+            .text-font-normal,
+            .text-font-large,
+            .text-font-largest {
+                line-height: 2.3em;
+            }
+        }
+        .page-container-landscape {
+            .content {
+                .attrb-full {
+                    .attrib-synopsis p {
+                        font-size: 0.43em;
+                    }
+                }
+                .attribution-text {
+                    font-size: 0.8em;
+                    .attribution-center {
+                        .story-attribution-section, .illustration-attributions-section, .other-credits-section {
+                            font-size: 0.4em;
+                        }
+                        .self-attribution {
+                            font-size: 0.35em;
+                            line-height: 1.2em;
+                        }
+                    }
+                }
+                .license_container {
+                    .license_cont-middle {
+                        .discl-txt {
+                            font-size: 0.4em;
+                        }
+                        .cc_footer p {
+                            font-size: 0.35em;
+                        }
+                    }
+                }
+                .back-cover-top {
+                    .title {
+                        font-size: 0.9em;
+                    }
+                    .synopsis {
+                        font-size: 0.45em;
+                    }
+                    .reading_level_help p {
+                        font-size: 0.5em;
+                    }
+                }
+                .back-cover-bottom {
+                    .spp_about_us_footer {
+                        font-size: 0.45em;
+                    }
+                }
+            }
+        }
+        .page-container-landscape .close-reader-button,
+        .modal-title {
+            font-size: 0.9em;
+        }
+        .page-container-landscape .modal-title {
+            padding: 1% 0 0 3%;
+        }
+        .page-container-landscape .modal-header {
+            padding: 1% 3% 0 0;
+            border-bottom: none;
+        }
+        .page-container-landscape .cover_attribution {
+            font-size: 1.3em;
+        }
+        .page-container-landscape .bic_h_c100.content {
+            .self-attribution, .original-story-attribution, .parent-story-attribution, .other-credits, .other-credits, .illustration-attribution, .derived-story-text, .other-credits {
+                font-size: 0.35em;
+                line-height: 0.9em !important;
+            }
+        }
+    }
+
+    //size3
+    @media only screen and (max-width: 396px) {
+        .review_story_landscape {
+            padding: 0px 10px 25px 10px;
+            a {
+                color: black;
+                font-size: 7px !important;
+                font-family: "Noto Sans", sans-serif !important;
+            }
+        }
+        .reviewed_story_landscape {
+            width: 23%;
+            rigth: 22px !important;
+        }
+        .page-container-landscape {
+            width: 396px;
+            height: 285px;
+            overflow: hidden;
+            .front-cover-page .cover-text .textual {
+                .cover_title {
+                    font-size: 0.9em;
+                }
+                .cover_attribution {
+                    font-size: 0.48em;
+                    margin-bottom: 2px;
+                }
+            }
+        }
+ 
+        ul.landscape_recommended_story_ui li {
+            width: 150px !important;
+        }
+        .page-container-landscape .content p {
+            margin: 0;
+            padding: 0;
+            line-height: 0.5em;
+        }
+        .page-container-landscape .content > p[class*="wysiwyg-text-align-"] {
+            line-height: 1.1em;
+        }
+        .page-container-landscape .text-font-largest {
+            font-size: 11.6px;
+        }
+        .page-container-landscape .text-font-large {
+            font-size: 10.4px;
+        }
+        .page-container-landscape .text-font-normal {
+            font-size: 8.2px;
+        }
+        .page-container-landscape .text-font-medium {
+            font-size: 7.4px;
+        }
+        .page-container-landscape .text-font-small {
+            font-size: 6.6px;
+        }
+        .page-container-landscape .text-font-smallest {
+            font-size: 5.8px;
+        }
+        .page-container-landscape.odia {
+            .text-font-largest {
+                line-height: 1.45em;
+            }
+            .text-font-large {
+                line-height: 1.5em;
+            }
+            .text-font-normal {
+                line-height: 1.55em;
+            }
+            .text-font-medium {
+                line-height: 1.55em;
+            }
+            .text-font-small {
+                line-height: 1.65em;
+            }
+            .text-font-smallest {
+                line-height: 1.65em;
+            }
+        }
+        .page-container-landscape.tamil {
+            .text-font-largest {
+                font-size: 12px;
+                line-height: 1.65em;
+            }
+            .text-font-large {
+                font-size: 10.5px;
+                line-height: 1.55em;
+            }
+            .text-font-normal {
+                font-size: 8.6px;
+                line-height: 1.55em;
+            }
+            .text-font-medium {
+                font-size: 7.7px;
+                line-height: 1.55em;
+            }
+            .text-font-small {
+                font-size: 7px;
+                line-height: 1.6em;
+            }
+            .text-font-smallest {
+                font-size: 6px;
+                line-height: 1.6em;
+            }
+        }
+        .page-container-landscape.kannada {
+            .text-font-largest {
+                font-size: 12.4px;
+                line-height: 1.58em;
+            }
+            .text-font-large {
+                font-size: 10.5px;
+                line-height: 1.45em;
+            }
+            .text-font-normal {
+                font-size: 8.6px;
+                line-height: 1.65em;
+            }
+            .text-font-medium {
+                font-size: 7.85px;
+                line-height: 1.48em;
+            }
+            .text-font-small {
+                font-size: 6.9px;
+                line-height: 1.75em;
+            }
+            .text-font-smallest {
+                font-size: 5.7px;
+                line-height: 1.75em;
+            }
+        }
+        .page-container-landscape.telugu {
+            .text-font-largest {
+                font-size: 12px;
+                line-height: 1.63em;
+            }
+            .text-font-large {
+                font-size: 11px;
+                line-height: 1.45em;
+            }
+            .text-font-normal {
+                font-size: 9.1px;
+                line-height: 1.45em;
+            }
+            .text-font-medium {
+                font-size: 8px;
+                line-height: 1.5em;
+            }
+            .text-font-small {
+                font-size: 7px;
+                line-height: 1.68em;
+            }
+            .text-font-smallest {
+                font-size: 6px;
+                line-height: 1.63em;
+            }
+        }
+        .page-container-landscape.devanagri {
+            .text-font-largest {
+                font-size: 12px;
+                line-height: 1.65em;
+            }
+            .text-font-large {
+                font-size: 10.75px;
+                line-height: 1.4em;
+            }
+            .text-font-normal {
+                font-size: 9.2px;
+                line-height: 1.42em;
+            }
+            .text-font-medium {
+                font-size: 7.8px;
+                line-height: 1.55em;
+            }
+            .text-font-small {
+                font-size: 6.85px;
+                line-height: 1.7em;
+            }
+            .text-font-smallest {
+                font-size: 6.2px;
+                line-height: 1.65em;
+            }
+        }
+        .page-container-landscape.gujrati {
+            .text-font-largest {
+                font-size: 12.5px;
+                line-height: 1.49em;
+            }
+            .text-font-large {
+                font-size: 10.7px;
+                line-height: 1.43em;
+            }
+            .text-font-normal {
+                font-size: 9.1px;
+                line-height: 1.4em;
+            }
+            .text-font-medium {
+                font-size: 7.9px;
+                line-height: 1.42em;
+            }
+            .text-font-small {
+                font-size: 7px;
+                line-height: 1.65em;
+            }
+            .text-font-smallest {
+                font-size: 6.2px;
+                line-height: 1.65em;
+            }
+        }
+        .page-container-landscape.bengali {
+            .text-font-largest {
+                font-size: 12.4px;
+                line-height: 1.52em;
+            }
+            .text-font-large {
+                font-size: 11.2px;
+                line-height: 1.4em;
+            }
+            .text-font-normal {
+                font-size: 9px;
+                line-height: 1.5em;
+            }
+            .text-font-medium {
+                font-size: 8.2px;
+                line-height: 1.5em;
+            }
+            .text-font-small {
+                font-size: 7px;
+                line-height: 1.6em;
+            }
+            .text-font-smallest {
+                font-size: 6.4px;
+                line-height: 1.45em;
+            }
+        }
+        .page-container-landscape.urdu {
+            .text-font-largest {
+                font-size: ($landscape-readers-width-490 / $landscape-container-size-width) * $largest-font-size;
+            }
+            .text-font-large {
+                font-size: ($landscape-readers-width-490 / $landscape-container-size-width) * $large-font-size;
+            }
+            .text-font-normal {
+                font-size: ($landscape-readers-width-490 / $landscape-container-size-width) * $normal-font-size;
+            }
+            .text-font-medium {
+                font-size: ($landscape-readers-width-490 / $landscape-container-size-width) * $medium-font-size;
+            }
+            .text-font-small {
+                font-size: ($landscape-readers-width-490 / $landscape-container-size-width) * $small-font-size;
+            }
+            .text-font-smallest {
+                font-size: ($landscape-readers-width-490 / $landscape-container-size-width) * $smallest-font-size;
+            }
+            .text-font-smallest,
+            .text-font-small,
+            .text-font-medium,
+            .text-font-normal,
+            .text-font-large,
+            .text-font-largest {
+                line-height: 2.3em;
+            }
+        }
+        .page-container-landscape .cover_attribution {
+            font-size: 1em;
+        }
+        .page-container-landscape {
+            .content {
+                .cover-text {
+                    .textual {
+                        .cover_title {
+                            font-size: 1em;
+                            line-height: 1.3em;
+                        }
+                        .cover_attribution {
+                            font-size: 0.5em;
+                            line-height: 1.2em;
+                        }
+                    }
+                }
+            }
+        }
+        .page-container-landscape .page_number {
+            border-radius: 1em;
+            bottom: 0.2em;
+            font-size: 0.5em;
+            line-height: 1em;
+            padding: 0.5em;
+            right: 0.2em;
+        }
+        .page-container-landscape .next-page {
+            right: 5%;
+        }
+        .page-container-landscape .previous-page {
+            left: 5%;
+        }
+        .page-container-landscape .cover_title {
+            font-size: 1.7em;
+        }
+        .page-container-landscape .cc-logo-container p {
+            float: left;
+            width: 80%;
+        }
+        .page-container-landscape { 
+            .content {
+                .attrb-full {
+                    .attrib-synopsis p {
+                        font-size: 0.4em;
+                    }
+                }
+                .attribution-text {
+                    font-size: 0.8em;
+                    .attribution-center {
+                        p {
+                            font-size: 0.5em;
+                            line-height: 1em;
+                            margin-top: 4px;
+                        }
+                        .self-attribution {
+                            font-size: 0.25em;
+                        }
+                    }
+                }
+                .license_container {
+                    .license_cont-middle{
+                        .discl-txt {
+                            font-size: 0.4em;
+                        }
+                        .cc_footer p {
+                            font-size: 0.22em;
+                        }
+                    }
+                    .donor-container {
+                        .donor-text {
+                            font-size: 0.3em;
+                        }
+                    }
+                }
+            }
+        }
+        .page-container-landscape .bic_h_c100.content {
+            .self-attribution,
+            .original-story-attribution,
+            .parent-story-attribution,
+            .other-credits,
+            .other-credits,
+            .illustration-attribution,
+            .derived-story-text,
+            .other-credits {
+                font-size: 0.25em;
+                line-height: 1em;
+            }
+            .story-attribution-section,
+            .other-credits-section,
+            .illustration-attributions-section {
+                font-size: 0.35em;
+            }
+        }
+        .page-container-landscape .dd_h_c100.content {
+            .attribution-text {
+                .helped-authors {
+                    font-size: 0.9em;
+                    margin-left: -0.2em;
+                }
+                .more-info {
+                    line-height: 1.2;
+                    font-size: 0.7em;
+                }
+            }
+        }
+    }
+
+    //size2
+    @media only screen and (max-width: 308px) {
+        .review_story_landscape {
+            right: 5%;
+            padding: 0px 5px 26px 5px;
+        }
+        .reviewed_story_landscape {
+            width: 28%;
+            right: 24px;
+        }
+        .page-container-landscape {
+            width: 308px;
+            height: 221px;
+            overflow: hidden;
+            .front-cover-page .cover-text .textual {
+                .cover_title {
+                    font-size: 0.7em;
+                }
+                .cover_attribution {
+                    font-size: 0.36em;
+                    line-height: 0.7em;
+                }
+            }
+        }
+        .landscape_recommended_story_container .bx-viewport {
+            height: 135px !important;
+        }
+        .landscape_recommended_image {
+            height: 70px !important;
+        }
+        .landscape_recommended_carousal {
+            width: 93% !important;
+        }
+        .page-container-landscape .content p {
+            margin: 0;
+            padding: 0;
+            line-height: 0.3em;
+        }
+        .page-container-landscape .content > p[class*="wysiwyg-text-align-"] {
+            line-height: 1.1em;
+        }
+        .page-container-landscape.text-font-largest {
+            font-size: 8.95px;
+        }
+        .page-container-landscape .text-font-large {
+            font-size: 8px;
+        }
+        .page-container-landscape .text-font-normal {
+            font-size: 6.35px;
+        }
+        .page-container-landscape .text-font-medium {
+            font-size: 5.7px;
+        }
+        .page-container-landscape .text-font-small {
+            font-size: 5.1px;
+        }
+        .page-container-landscape .text-font-smallest {
+            font-size: 4.45px;
+        }
+        .page-container-landscape.odia {
+            .text-font-largest {
+                line-height: 1.5em;
+            }
+            .text-font-large {
+                line-height: 1.55em;
+            }
+            .text-font-normal {
+                line-height: 1.6em;
+            }
+            .text-font-medium {
+                line-height: 1.6em;
+            }
+            .text-font-small {
+                line-height: 1.7em;
+            }
+            .text-font-smallest {
+                line-height: 1.7em;
+            }
+        }
+        .page-container-landscape.tamil{
+            .text-font-largest {
+                font-size: 9px;
+                line-height: 1.75em;
+            }
+            .text-font-large {
+                font-size: 8.3px;
+                line-height: 1.5em;
+            }
+            .text-font-normal {
+                font-size: 6.6px;
+                line-height: 1.55em;
+            }
+            .text-font-medium {
+                font-size: 5.9px;
+                line-height: 1.55em;
+            }
+            .text-font-small {
+                font-size: 5.4px;
+                line-height: 1.6em;
+            }
+            .text-font-smallest {
+                font-size: 4.65px;
+                line-height: 1.55em;
+            }
+        }
+        .page-container-landscape.kannada {
+            .text-font-largest {
+                font-size: 9.4px;
+                line-height: 1.7em;
+            }
+            .text-font-large {
+                font-size: 8.1px;
+                line-height: 1.5em;
+            }
+            .text-font-normal {
+                font-size: 6.65px;
+                line-height: 1.72em;
+            }
+            .text-font-medium {
+                font-size: 6.05px;
+                line-height: 1.5em;
+            }
+            .text-font-small {
+                font-size: 5.3px;
+                line-height: 1.85em;
+            }
+            .text-font-smallest {
+                font-size: 4.5px;
+                line-height: 1.65em;
+            }
+        }
+        .page-container-landscape.telugu {
+            .text-font-largest {
+                font-size: 10px;
+                line-height: 1.62em;
+            }
+            .text-font-large {
+                font-size: 8px;
+                line-height: 1.55em;
+            }
+            .text-font-normal {
+                font-size: 7px;
+                line-height: 1.45em;
+            }
+            .text-font-medium {
+                font-size: 6.2px;
+                line-height: 1.52em;
+            }
+            .text-font-small {
+                font-size: 5.4px;
+                line-height: 1.75em;
+            }
+            .text-font-smallest {
+                font-size: 4.6px;
+                line-height: 1.65em;
+            }
+        }
+        .page-container-landscape.devanagri {
+            .text-font-largest {
+                font-size: 9.5px;
+                line-height: 1.75em;
+            }
+            .text-font-large {
+                font-size: 8.25px;
+                line-height: 1.4em;
+            }
+            .text-font-normal {
+                font-size: 7.1px;
+                line-height: 1.45em;
+            }
+            .text-font-medium {
+                font-size: 6.1px;
+                line-height: 1.65em;
+            }
+            .text-font-small {
+                font-size: 5.25px;
+                line-height: 1.75em;
+            }
+            .text-font-smallest {
+                font-size: 4.8px;
+                line-height: 1.7em;
+            }
+        }
+        .page-container-landscape.gujrati {
+            .text-font-largest {
+                font-size: 9.6px;
+                line-height: 1.6em;
+            }
+            .text-font-large {
+                font-size: 8.3px;
+                line-height: 1.4em;
+            }
+            .text-font-normal {
+                font-size: 7px;
+                line-height: 1.6em;
+            }
+            .text-font-medium {
+                font-size: 6.1px;
+                line-height: 1.45em;
+            }
+            .text-font-small {
+                font-size: 5.38px;
+                line-height: 1.6em;
+            }
+            .text-font-smallest {
+                font-size: 4.8px;
+                line-height: 1.65em;
+            }
+        }
+        .page-container-landscape.bengali {
+            .text-font-largest {
+                font-size: 9.6px;
+                line-height: 1.58em;
+            }
+            .text-font-large {
+                font-size: 8.6px;
+                line-height: 1.45em;
+            }
+            .text-font-normal {
+                font-size: 7px;
+                line-height: 1.6em;
+            }
+            .text-font-medium {
+                font-size: 6.3px;
+                line-height: 1.52em;
+            }
+            .text-font-small {
+                font-size: 5.4px;
+                line-height: 1.65em;
+            }
+            .text-font-smallest {
+                font-size: 4.95px;
+                line-height: 1.45em;
+            }
+        }
+        .page-container-landscape.urdu {
+            .text-font-largest {
+                font-size: ($landscape-readers-width-479 / $landscape-container-size-width) * $largest-font-size;
+            }
+            .text-font-large {
+                font-size: ($landscape-readers-width-479 / $landscape-container-size-width) * $large-font-size;
+            }
+            .text-font-normal {
+                font-size: ($landscape-readers-width-479 / $landscape-container-size-width) * $normal-font-size;
+            }
+            .text-font-medium {
+                font-size: ($landscape-readers-width-479 / $landscape-container-size-width) * $medium-font-size;
+            }
+            .text-font-small {
+                font-size: ($landscape-readers-width-479 / $landscape-container-size-width) * $small-font-size;
+            }
+            .text-font-smallest {
+                font-size: ($landscape-readers-width-479 / $landscape-container-size-width) * $smallest-font-size;
+            }
+            .text-font-smallest,
+            .text-font-small,
+            .text-font-medium,
+            .text-font-normal,
+            .text-font-large,
+            .text-font-largest {
+                line-height: 2.3em;
+            }
+        }
+        .page-container-landscape .page_number {
+            border-radius: 1em;
+            bottom: 0.2em;
+            font-size: 0.5em;
+            line-height: 1em;
+            padding: 0.5em;
+            right: 0.2em;
+        }
+        .page-container-landscape .close-reader-button,
+        .modal-title {
+            font-size: 0.75em;
+        }
+        .page-container-landscape .modal-title {
+            padding: 1% 0 0 4%;
+        }
+        .page-container-landscape .modal-header {
+            padding: 1% 4% 0 0;
+            border-bottom: none;
+        }
+        .page-container-landscape .cover_attribution {
+            font-size: 0.75em;
+        }
+        .page-container-landscape {
+            .content {
+                .attrb-full {
+                    .attrib-synopsis p {
+                        font-size: 0.3em;
+                    }
+                }
+                .license_container {
+                    .license_cont-middle {
+                        .discl-txt {
+                            font-size: 0.25em;
+                        }
+                        .cc_footer p {
+                            font-size: 0.2em;
+                        }
+                    }
+                    .donor-container {
+                        .donor-text {
+                            font-size: 0.2em;
+                        }
+                    }
+                }
+                .back-cover-top {
+                    .title {
+                        font-size: 0.7em;
+                    }
+                    .synopsis {
+                        font-size: 0.35em;
+                    }
+                    .reading_level_help p {
+                        font-size: 0.4em;
+                    }
+                }
+                .back-cover-bottom {
+                    .spp_about_us_footer {
+                        font-size: 0.3em;
+                    }
+                }
+            }
+        }
+        .page-container-landscape .story_preview_page .bic_h_c100.content {
+            .attribution-text .attribution-center p {
+                line-height: 0.5em;
+                margin-top: 4px;
+                margin-bottom: 0px;
+            }
+            .story_preview_page .self-attribution,
+            .original-story-attribution,
+            .parent-story-attribution,
+            .other-credits,
+            .other-credits,
+            .illustration-attribution,
+            .derived-story-text,
+            .other-credits {
+                font-size: 0.25em;
+                line-height: 0.5em;
+            }
+            .story_preview_page .story-attribution-section,
+            .other-credits-section,
+            .illustration-attributions-section {
+                font-size: 0.4em;
+            }
+        }
+    }
+
+    //size1
+    @media only screen and (max-width: 268px) {
+        .review_story_landscape {
+            padding: 0px 5px 26px 5px;
+        }
+        .reviewed_story_landscape {
+            width: 32%;
+            right: 23px;
+        }
+        .page-conatiner-landscape .reviewed_story_portrait {
+            width: 31%;
+            right: 23px;
+        }
+        .page-conatiner-landscape .content {
+            .attribution-text .attribution-center p {
+                margin-top: 4px;
+            }
+        }
+        .page-container-landscape {
+            width: 268px;
+            height: 193px;
+            overflow: hidden;
+            .front-cover-page .cover-text .textual {
+                .cover_title {
+                    font-size: 0.6em;
+                }
+                .cover_attribution {
+                    font-size: 0.32em;
+                }
+            }
+            .ratings-page {
+                h1 {
+                    text-align: center;
+                    font-size: 1em;
+                    margin: 0px;
+                }
+                p.title {
+                    font-size: 0.8em;
+                    margin-bottom: 0px;
+                }
+                textarea#my_comment {
+                    height: 60px;
+                    width: 60%;
+                }
+                label {
+                    font-size: 0.8em;
+                }
+                .star-rating {
+                    float: right;
+                    margin-right: 30px;
+                }
+                #ratings_comment {
+                    float: right;
+                    margin-top: -5px;
+                }
+            }
+        }
+        .page-conatiner-landscape .content p {
+            margin: 0;
+            padding: 0;
+            line-height: 0.3em;
+        }
+        .page-container-landscape.content > p[class*="wysiwyg-text-align-"] {
+            line-height: 1.1em;
+        }
+        .page-container-landscape .text-font-largest {
+            font-size: 7.8px;
+        }
+        .page-container-landscape .text-font-large {
+            font-size: 7px;
+        }
+        .page-container-landscape .text-font-normal {
+            font-size: 5.55px;
+        }
+        .page-container-landscape .text-font-medium {
+            font-size: 5px;
+        }
+        .page-container-landscape .text-font-small {
+            font-size: 4.45px;
+        }
+        .page-container-landscape .text-font-smallest {
+            font-size: 3.925px;
+        }
+        .page-container-landscape.odia {
+            .text-font-largest {
+                line-height: 1.6em;
+            }
+            .text-font-large {
+                line-height: 1.65em;
+            }
+            .text-font-normal {
+                line-height: 1.7em;
+            }
+            .text-font-medium {
+                line-height: 1.7em;
+            }
+            .text-font-small {
+                line-height: 1.8em;
+            }
+            .text-font-smallest {
+                line-height: 1.8em;
+            }
+        }
+        .page-container-landscape.tamil {
+            .text-font-largest {
+                font-size: 8px;
+                line-height: 1.75em;
+            }
+            .text-font-large {
+                font-size: 7.2px;
+                line-height: 1.55em;
+            }
+            .text-font-normal {
+                font-size: 5.8px;
+                line-height: 1.55em;
+            }
+            .text-font-medium {
+                font-size: 5.15px;
+                line-height: 1.58em;
+            }
+            .text-font-small {
+                font-size: 4.7px;
+                line-height: 1.6em;
+            }
+            .text-font-smallest {
+                font-size: 4.05px;
+                line-height: 1.55em;
+            }
+        }
+        .page-container-landscape.kannada {
+            .text-font-largest {
+                font-size: 8.4px;
+                line-height: 1.75em;
+            }
+            .text-font-large {
+                font-size: 7.1px;
+                line-height: 1.48em;
+            }
+            .text-font-normal {
+                font-size: 5.9px;
+                line-height: 1.75em;
+            }
+            .text-font-medium {
+                font-size: 5.25px;
+                line-height: 1.55em;
+            }
+            .text-font-small {
+                font-size: 4.6px;
+                line-height: 1.9em;
+            }
+            .text-font-smallest {
+                font-size: 3.9px;
+                line-height: 1.85em;
+            }
+        }
+        .page-container-landscape.telugu {
+            .text-font-largest {
+                font-size: 8.5px;
+                line-height: 1.7em;
+            }
+            .text-font-large {
+                font-size: 7px;
+                line-height: 1.58em;
+            }
+            .text-font-normal {
+                font-size: 6px;
+                line-height: 1.48em;
+            }
+            .text-font-medium {
+                font-size: 5.4px;
+                line-height: 1.55em;
+            }
+            .text-font-small {
+                font-size: 4.75px;
+                line-height: 1.8em;
+            }
+            .text-font-smallest {
+                font-size: 4px;
+                line-height: 1.7em;
+            }
+        }
+        .page-container-landscape.devanagri {
+            .text-font-largest {
+                font-size: 8.1px;
+                line-height: 1.8em;
+            }
+            .text-font-large {
+                font-size: 7.2px;
+                line-height: 1.48em;
+            }
+            .text-font-normal {
+                font-size: 6.1px;
+                line-height: 1.45em;
+            }
+            .text-font-medium {
+                font-size: 5.3px;
+                line-height: 1.7em;
+            }
+            .text-font-small {
+                font-size: 4.6px;
+                line-height: 1.75em;
+            }
+            .text-font-smallest {
+                font-size: 4.2px;
+                line-height: 1.7em;
+            }
+        }
+        .page-container-landscape.gujrati {
+            .text-font-largest {
+                font-size: 8.4px;
+                line-height: 1.58em;
+            }
+            .text-font-large {
+                font-size: 7.2px;
+                line-height: 1.4em;
+            }
+            .text-font-normal {
+                font-size: 6.1px;
+                line-height: 1.65em;
+            }
+            .text-font-medium {
+                font-size: 5.3px;
+                line-height: 1.47em;
+            }
+            .text-font-small {
+                font-size: 4.7px;
+                line-height: 1.8em;
+            }
+            .text-font-smallest {
+                font-size: 4.2px;
+                line-height: 1.75em;
+            }
+        }
+        .page-container-landscape.bengali {
+            .text-font-largest {
+                font-size: 8.4px;
+                line-height: 1.58em;
+            }
+            .text-font-large {
+                font-size: 7.6px;
+                line-height: 1.4em;
+            }
+            .text-font-normal {
+                font-size: 6.1px;
+                line-height: 1.5em;
+            }
+            .text-font-medium {
+                font-size: 5.5px;
+                line-height: 1.54em;
+            }
+            .text-font-small {
+                font-size: 4.7px;
+                line-height: 1.65em;
+            }
+            .text-font-smallest {
+                font-size: 4.3px;
+                line-height: 1.45em;
+            }
+        }
+        .page-container-landscape.urdu {
+            .text-font-largest {
+                font-size: ($landscape-readers-width-359 / $landscape-container-size-width) * $largest-font-size;
+            }
+            .text-font-large {
+                font-size: ($landscape-readers-width-359 / $landscape-container-size-width) * $large-font-size;
+            }
+            .text-font-normal {
+                font-size: ($landscape-readers-width-359 / $landscape-container-size-width) * $normal-font-size;
+            }
+            .text-font-medium {
+                font-size: ($landscape-readers-width-359 / $landscape-container-size-width) * $medium-font-size;
+            }
+            .text-font-small {
+                font-size: ($landscape-readers-width-359 / $landscape-container-size-width) * $small-font-size;
+            }
+            .text-font-smallest {
+                font-size: ($landscape-readers-width-359 / $landscape-container-size-width) * $smallest-font-size;
+            }
+            .text-font-smallest,
+            .text-font-small,
+            .text-font-medium,
+            .text-font-normal,
+            .text-font-large,
+            .text-font-largest {
+                line-height: 2.3em;
+            }
+        }
+        .page-container-landscape .page_number {
+            border-radius: 1em;
+            bottom: 0.2em;
+            font-size: 0.4em;
+            line-height: 1em;
+            padding: 0.5em;
+            right: 0.2em;
+        }
+        .page-container-landscape .bic_h_c100.content {
+            .self-attribution, .original-story-attribution, .parent-story-attribution, .other-credits, .other-credits, .illustration-attribution, .derived-story-text, .other-credits {
+                font-size: 0.18em;
+                line-height: 0.5em;
+            }
+        }
+        @supports (overflow: -webkit-marquee) and (justify-content: inherit) {
+            .bic_h_c100.content {
+                .self-attribution, .original-story-attribution, .parent-story-attribution, .other-credits, .other-credits, .illustration-attribution, .derived-story-text, .other-credits {
+                    line-height: 1.6em !important;
+                }
+            }
+        }
+        .page-container-landscape {
+            .content {
+                .attribution-text {
+                    .attribution-center {
+                        .story-attribution-section, .illustration-attributions-section, .other-credits-section {
+                            line-height: 1.2;
+                            font-size: 0.35em;
+                        }
+                        .self-attribution {
+                            font-size: 0.2em;
+                        }
+                    }
+                }
+                .attrb-full {
+                    .attrib-synopsis p {
+                        font-size: 0.25em;
+                    }
+                }
+                .license_container {
+                    .license_cont-middle {
+                        .discl-txt {
+                            font-size: 0.2em;
+                        }
+                        .cc_footer p {
+                            font-size: 0.2em;
+                        }
+                    }
+                }
+                .back-cover-top {
+                    .reading_level_help p {
+                        font-size: 0.3em;
+                    }
+                    .title {
+                        font-size: 0.6em;
+                    }
+                    .synopsis {
+                        font-size: 0.3em;
+                    }
+                }
+                .back-cover-bottom {
+                    .spp_about_us_footer {
+                        font-size: 0.2em;
+                    }
+                }
+            }
+        }
+    }
+     

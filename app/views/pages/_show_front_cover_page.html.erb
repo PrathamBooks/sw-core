@@ -1,0 +1,44 @@
+<div class='<%= page.page_template.name + ' content front-cover-page' %>'>
+	<div class="logo-level">
+    <div class="pub-logo pub_story_logo">
+      <%extension=getPubLogoFormat(page.story)%>
+      <img src="<%= @offline_processing ? 'publisher_logo'+extension : organization_logo(page.story) %>" data-size1-src="<%= @offline_processing ? 'publisher_logo'+extension : organization_logo(page.story) %>" class = "publisher-logo"/>
+    </div>
+		<img src="<%= @offline_processing ? 'level_band.png' : level_band_image(page.story) %>" data-size1-src="<%= @offline_processing ? 'level_band.png' : level_band_image(page.story) %>" class="book-levels" />
+	</div>
+	<div class="cover-text">
+	<div class="textual">
+  <p class="cover_title <%= @story.language.script %>"><b><%= page.story.title %></b></p>
+	<p class="cover_attribution english">
+    <%=who_label(page.story)%>
+      <span class="contributor_attribution authors english">
+        <%= who_did_it(page.story) %>
+      </span>
+  </p>
+  <% if(page.story.has_illustrators?) %>
+	 <p class="cover_attribution english">
+    <%= illustrators_label(page.story) %>
+      <span class="contributor_attribution illustrators english">
+        <%= display_illustrators(page.story,page.page_template.max_limit) %>
+      </span>
+   </p>
+  <% end %>
+  <% if(page.story.has_photographers?) %>
+    <p class="cover_attribution english">
+    <%= photographers_label(page.story) %>
+      <span class="contributor_attribution illustrators english">
+          <%= display_photographers(page.story,page.page_template.max_limit) %>
+      </span>
+    </p>
+ <% end %>
+  <% if(page.story.is_derivation?) %>
+   <p class="cover_attribution english">
+    <%= derivator_label(page.story) %>
+      <span class="contributor_attribution authors derivation_authors english">
+        <%= derivator_names(page.story) %>
+      </span>
+   </p>
+  <% end %>
+	</div>
+</div>
+</div>

@@ -1,0 +1,7 @@
+$('#story_download_list').html("<%= escape_javascript(render :partial => "stories_downloaded_list", :locals => {:stories => @stories, :story_download => @story_download}) %>");
+$('#story_download_list').modal("show");
+$(document).ready(function() {
+  $("#cancel").click(function(){
+    $('#story_download_list').modal('hide');
+  });
+});

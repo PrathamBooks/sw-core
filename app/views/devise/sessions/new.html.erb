@@ -1,0 +1,10 @@
+<div class="row">
+  <div class="col-md-6 col-sm-8 div-center-align">
+  	<div class="div-full-width">
+  		<h2>Log In</h2>
+    	<%= render "devise/sessions/form" , :locals => { :resource => User.new }  %>
+
+    <div class="share-links"><%= render "devise/shared/links" %></div>
+  	</div>
+  </div>
+</div>

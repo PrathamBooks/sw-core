@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Browse through thousands of openly licensed stories for children in over 100 languages of the world. FREE to read, download, print and share!" %>">
+<title><%= content_for?(:title) ? yield(:title) : "Welcome to Pratham Books' StoryWeaver!".html_safe %></title>
+
+<meta property="og:title" content="<%= content_for?(:fb_title) ? yield(:fb_title) : 'StoryWeaver' %>"/>
+<meta property="og:url" content="<%= content_for?(:fb_url) ? yield(:fb_url) : 'https://storyweaver.og.in' %>"/>
+<meta property="og:description" content="<%= content_for?(:fb_description) ? yield(:fb_description) : 'StoryWeaver' %>"/>
+<meta property="og:image" content="<%= content_for?(:fb_image_url) ? yield(:fb_image_url) : 'https://storyweaver.org.in/assets/pb-storyweaver-logo-01-4acd9848be4ca29481825c4b23848b97.svg' %>"/>
+
+
+<link rel="shortcut icon" type="image/jpg" href="<%= asset_path("favicon.ico") %>"/>
+<link href="https://fonts.googleapis.com/css?family=Bree+Serif|Raleway:400,700" rel="stylesheet">
+<%= stylesheet_link_tag 'application', media: 'all' %>
+<link href="/assets/css/bookends.2df2039c.css?body=1" media="all" rel="stylesheet" />
+<!--[if IE]>
+    <%= javascript_include_tag "html5shiv.js" %>
+    <%= javascript_include_tag "respond.min.js" %>
+    <![endif]-->
+<%= javascript_include_tag 'application' %>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="<%= asset_path("apple_icons/favicon_114x114.png") %>">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="<%= asset_path("apple_icons/favicon_144x144.png") %>">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="<%= asset_path("apple_icons/favicon_72x72.png") %>">
+<link rel="apple-touch-icon-precomposed" href="<%= asset_path("apple_icons/favicon_57x57.png") %>">
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<%= csrf_meta_tags %>
+
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', "<%= Settings.analytics.tracking_id %>", 'auto');
+	ga('send', 'pageview');
+	var dimensionValue = "<%= current_user ? current_user.email : "User" %>";
+	ga('set', 'dimension1', dimensionValue);
+</script>
+
+<%= render "layouts/bookends_data" %>
+
+</head>
+<body>
+<div id="header"></div>
+<div id="social_container">
+  <a href="https://www.facebook.com/pbstoryweaver" target="_blank">
+    <label class="facebook"></label>
+  </a>
+  <a href="https://www.twitter.com/pbstoryweaver" target="_blank">
+    <label class="twitter"></label>
+  </a>
+  <a href="https://www.youtube.com/channel/UCH9_ahl5Vu8P9tElauPWahg" target="_blank">
+    <label class="youtube"></label>
+  </a>
+  <a href="https://storyweaver.org.in/blog" target="_blank">
+    <label class="blog"></label>
+  </a>
+  <a href="https://www.instagram.com/pbstoryweaver" target="_blank">
+    <label class="instagram"></label>
+  </a>
+</div>
+<div class="container">
+  <%= render 'layouts/messages' unless generating_cover? %>
+</div>
+<div>
+  <%= yield %>
+</div>
+<div id="footer"></div>
+<div id="auth-modal"></div>
+
+</body>
+<% unless params[:iframe] %>
+  <script src="/assets/js/vendor.e63396d6.js"></script>
+  <script src="/assets/js/bookends.b6a66b9b.js"></script>
+<% end %>
+</html>

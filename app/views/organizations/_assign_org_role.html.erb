@@ -1,0 +1,48 @@
+<div class="modal fade" id="assignRoleModal" tabindex="-1" role="dialog" aria-labelledby="moreLinksModalLabel" aria-hidden="true">
+  <div class="modal-dialog" >
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h2 class="modal-title text-left">Add image to <%= org.organization_name %></h2>
+      </div>
+      <div class="modal-body modal-body-app">
+        <div class="row setroles">
+          <div class="col-md-12 col-sm-12">
+            <% if org.errors.count != 0 %>
+            <div class="alert alert-danger">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+              <div id="flash_error"><%= org.errors.full_messages.join(", ") %></div>
+            </div>
+            <% end %>
+            <%= simple_form_for :org ,:url => add_org_logo_path, html: { multipart: true, id: "logo_form" }, :authenticity_token => true do |f| %>
+            <%= f.file_field :logo, :id=> "logo", as: :file , :class => "user_logo" %>
+            <input  name="organization[id]"  value ="<%= org.id %>" class="hidden"/>
+            <input  name="user[id]"  value ="<%= user.id %>" class="hidden"/>
+            <%= submit_tag "Submit" , :class => "btn btn-success" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <!-- /modal-body -->
+      <div class="modal-footer">
+        <p id="validated_selected"> Please select atleast one story for download.</p>
+        <div class="row row-gutter">
+          <div class="text-right footer-container">
+            <span class="gutter-sm-x vertical-i-top spacing-half-v">
+            <span class="btn btn-app btn-brand-1" class="close" data-dismiss="modal" aria-label="Close">Cancel</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <!-- /modal-footer -->
+    </div>
+    <!-- /modal-content -->
+  </div>
+  <!-- /modal-dialog -->
+</div>
+<script type="text/javascript">
+  $('#logo_form').ajaxForm({
+            dataType:  'script'
+        });
+</script>
+

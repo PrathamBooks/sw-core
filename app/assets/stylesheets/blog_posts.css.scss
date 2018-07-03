@@ -1,0 +1,153 @@
+// Place all the styles related to the BlogPosts controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+.blog-page-cont {
+  border: 1px solid #fed780;
+  border-radius: 5px;
+  margin-right: 2px;
+  margin-left: 10px;
+}
+#sidebar {
+  float: right;
+  height: 100%;
+}
+#sidebar .blog-right-nav, #sidebar .blog-about{
+  border: solid 1px #CECED0;
+  border-radius: 6px;
+  margin: 10px;
+}
+#sidebar .blog-about {
+  border: solid 5px #CECED0 !important;
+}
+#sidebar .blog-about p {
+  margin: 5px;
+  font-size: 14px;
+  font-family: bold;
+
+}
+.submit-comment {
+  margin: 5px 0px 5px 0px !important;
+}
+#blog-search-query {
+  border-width: 2px medium 2px 2px;
+  border-style: solid none solid solid;
+  border-color: #D3D4D6 -moz-use-text-color #D3D4D6 #D3D4D6;
+  -moz-border-top-colors: none;
+  -moz-border-right-colors: none;
+  -moz-border-bottom-colors: none;
+  -moz-border-left-colors: none;
+  border-image: none;
+  height: 45px;
+  background-color: #E6E6E6;
+  font-size: 14px;
+  padding-left: 5px;
+  border-radius: 8px 0px 0px 8px;
+  box-shadow: none;
+}
+.blog-tooltip-icon .btn-warning {
+  width: 35px !important;
+  height: 45px !important;
+}
+#labels, #archives {
+  margin-left: 25px;
+}
+#sidebar .simple_form #search_query1 {
+  border-radius: 4px 0px 0px 4px;
+}
+#sidebar .nav {
+  width: 100%;
+}
+#sidebar li {
+  border:0 #f2f2f2 solid;
+  border-bottom-width:1px;
+}
+.blog_posts h1 a, #sidebar li a, #sidebar li a:focus{
+  color: #979799;
+  font-weight: bold;
+}
+.blog_posts h1 a {
+  color: #000000;
+}
+#archives li a,  #labels li a, #archives li a:focus, #labels li a:focus{
+  color: #979799;
+  font-weight: normal !important;
+}
+.blog_posts .social-share-button {
+ float: right;
+}
+.blog_posts span.posted_at {
+  color: #7d7d7d;
+}
+.blog_posts h1 {
+  margin-bottom: 0px;
+  color: #000000;
+  margin-top: 8px;
+}
+.blog_posts .blog-header {
+  margin-bottom: 15px;
+}
+
+.blog_posts p {
+  word-wrap: break-word;
+}
+
+.blog-pagination {
+  clear: both;
+}
+
+.blog-pagination span, .blog-pagination a, .blog-pagination a:focus{
+  color:#E76020;
+}
+
+.blog_post_image {
+  float: left;
+  margin-bottom: 10px;
+}
+
+.blog_post_image .blog_post_img {
+  margin-left: 0;
+}
+
+.create_blog_post {
+  clear: both;
+}
+
+// CSS for Search in Mobile and Blog pages
+
+.blog_mob_search {
+  display: none;
+}
+
+@media only screen and (max-width: 767px){
+  .blog_mob_search {
+    display: block;
+    float: left;
+    width: 100%;
+  }
+  .sidebar-offcanvas {
+    display: none;
+  }
+  .blog_mob_search .navbar-form {
+    float: right;
+  }
+}
+
+@media only screen and (min-width: 551px) and (max-width: 767px){
+  .blog_mob_search .navbar-form {
+    width: 50%;
+  }
+}
+
+@media only screen and (min-width: 381px) and (max-width: 550px){
+  .blog_mob_search .navbar-form {
+    width: 60%;
+  }
+}
+
+@media only screen and (max-width: 380px){
+  .blog_mob_search .navbar-form {
+    width: 80%;
+  }
+}

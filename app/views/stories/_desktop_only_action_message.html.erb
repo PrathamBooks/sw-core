@@ -1,0 +1,72 @@
+<div id="hide_mobile_translate" class="hide_mobile_dialog" title="Message">
+    Looks like you want to do more on StoryWeaver! To translate a story please log-in using a desktop/laptop.
+</div>
+<div id="hide_mobile_relevel" class="hide_mobile_dialog" title="Message">
+    Looks like you want to do more on StoryWeaver! To re-level a story please log-in using a desktop/laptop.
+</div>
+<div id="hide_mobile_edit" class="hide_mobile_dialog" title="Message">
+    Looks like you want to do more on StoryWeaver! To edit a story please log-in using a desktop/laptop.
+</div>
+<div id="hide_mobile_upload" class="hide_mobile_dialog" title="Message">
+    Looks like you want to do more on StoryWeaver! To upload an image please log-in using a desktop/laptop.
+</div>
+<div id="hide_mobile_create" class="hide_mobile_dialog" title="Message">
+    Looks like you want to do more on StoryWeaver! To create a story you need to log-in using a desktop/laptop.
+</div>
+<div id="hide_mobile_contest_story" class="hide_mobile_dialog" title="Message">
+    Looks like you want to do more on StoryWeaver! To create a story for "RetellRemixRejoice2016 Contest" you need to log-in using a desktop/laptop.
+</div>
+<script>
+$(".hide_mobile_dialog").dialog({
+      autoOpen: false,
+      width: 300,
+      modal: true,
+      buttons : {
+      	"Ok" : function() {
+        $(this).dialog("close");
+      	}
+      },
+      dialogClass: 'change_orientation_dialog'
+    });
+if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+ jQuery(document).ready(function ($) {
+   $(".hide-in-mob, .hide-in-translate a").click(function (evt) {
+   	evt.preventDefault();
+   	var dialogElement = $("#hide_mobile_translate.hide_mobile_dialog");
+        dialogElement.dialog("open");
+      return false;
+   });
+   $(".hide-in-relevel a").click(function (evt) {
+    evt.preventDefault();
+    var dialogElement = $("#hide_mobile_relevel.hide_mobile_dialog");
+        dialogElement.dialog("open");
+      return false;
+   });
+   $(".hide-in-edit a").click(function (evt) {
+    evt.preventDefault();
+    $("#edit_published_story_dialog").dialog("close")
+    var dialogElement = $("#hide_mobile_edit.hide_mobile_dialog");
+        dialogElement.dialog("open");
+      return false;
+   });
+   $(".hide-in-mob-upload").click(function (evt) {
+    evt.preventDefault();
+    var dialogElement = $("#hide_mobile_upload.hide_mobile_dialog");
+        dialogElement.dialog("open");
+      return false;
+   });
+   $(".hide-in-mob-create").click(function (evt) {
+    evt.preventDefault();
+    var dialogElement = $("#hide_mobile_create.hide_mobile_dialog");
+        dialogElement.dialog("open");
+      return false;
+   });
+   $("#spotathon_contest").click(function (evt) {
+      evt.preventDefault();
+      var dialogElement = $("#hide_mobile_contest_story.hide_mobile_dialog");
+          dialogElement.dialog("open");
+        return false;
+     });
+});
+}
+</script>

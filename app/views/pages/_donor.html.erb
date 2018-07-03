@@ -1,0 +1,6 @@
+<div class="donor-logo">
+		<%= image_tag(donor.logo.url(:original) , data: {src: donor.logo.url(:original)})  if donor.logo%>
+</div>
+<div class="donor-text">
+  <%= @story.credit_line %>
+</div>

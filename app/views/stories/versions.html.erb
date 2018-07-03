@@ -1,0 +1,127 @@
+<section id="versions" >
+  <div class="row right-book search-page">
+    <% @versions.each do |version| %>
+      <div class="item">
+        <div class="well">
+          <div class="books-full-container">
+            <div class="book-img">
+              <img src="<%= version.pages.first.illustration_crop.url(:size1) %>">
+              <div class="reader-btns search-for">
+                <div class="hover-back">
+                  <a class="btn-slide animation animated-item-3" data-remote="true" href="<%= story_page_path(version, version.pages.first)%>"><i class='fa fa-eye'></i></a>
+
+                  <a class="btn-slide {{is_disabled}}" id="share-social-card"  data-toggle="modal" data-target="#shareModal-<%= version.id %>"><i class="fa fa-share"></i>           
+                  </a>
+                    <div class="modal fade shareModal" id="shareModal-<%= version.id %>" tabindex="-1" role="dialog" aria-labelledby="moreLinksModalLabel1" aria-hidden="true">
+                      <div class="vertical-alignment-helper" >
+                      <div class="modal-dialog vertical-align-center">                      
+                        <div class="modal-content">
+                        <div class="modal-header">
+                          <button aria-label="Close" data-dismiss="modal" class="close mypopup-close" type="button"><span aria-hidden="true"><i class="fa fa-times"></i> Close</span></button>
+                          <h2 class="modal-title text-left">share</h2>
+                          <hr class="form-hr">
+                        </div>
+                          <div class="modal-body nopadding">
+                            <div id="social-share-btn">
+                                <%= social_share_button_tag(version.title, :url => story_path(version) , :image => version.pages.first.illustration_crop.url, :desc => "Pratham Books: a book in every child's hand",
+                                    :popup => "true") %>
+                            </div>
+                            <div class="modal-footer">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      </div>
+                    </div>
+
+                  <!-- Modal -->
+                  <div class="modal fade downloadModal" id="downloadModal-<%= version.id %>" tabindex="-1" role="dialog" aria-labelledby="moreLinksModalLabel2" aria-hidden="true">
+                    <div class="vertical-alignment-helper" >
+                    <div class="modal-dialog vertical-align-center">
+                      <div class="modal-content">
+                      <div class="modal-header">
+                        <button aria-label="Close" data-dismiss="modal" class="close mypopup-close" type="button"><span aria-hidden="true"><i class="fa fa-times"></i> Close</span></button>
+                        <h2 class="modal-title text-left">download</h2>
+                        <hr class="form-hr">
+                      </div>
+                        <div class="modal-body nopadding">
+                          <div class="download-type-list">
+                            <ul class="nopadding">
+                              <li role="presentation">
+                                <a target="_blank" href="<%= story_page_path(version, version.pages.first, format: :pdf) %>">Low resolution pdf </a>
+                              </li>
+                              <li role="presentation">
+                                <a target="_blank" href="<%= story_page_path(version, version.pages.first, format: :pdf, high_resolution: true) %>">A4 size (Print ready pdf)</a>
+                              </li>
+                              <li role="presentation">
+                                <a target="_blank" href="#">epub</a>
+                              </li>
+                            </ul>
+                          </div>
+                          <div class="modal-footer">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    </div>
+                  </div>
+                  <a class="btn-slide download-modal" data-toggle="modal" data-target="#downloadModal-<%= version.id %>"><i class="fa fa-download"></i></a>
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <% if version.recommended? %>
+                <div class="recommended"><%= image_tag("icons/icons-18.svg",width: 50,height: 50) %></div>
+              <% end %>
+          <div class="sear-books-details">
+            <div class="book-titl <%= version.language.script %>"><%= link_to(version.title, react_stories_show_path(version.to_param)) %></div>
+            <div class="author-sear"><em><%= version.version_derivation_type %> by <span class="auth-nam"><%= version.author_names %></span></em></div>
+            <div class="search-lang"><span>Language  </span><strong class="lang-read"><%= version.language.name %></strong></div>
+            <div class="level-lang">Reading <strong>Level  <span class="level-read"><%= version.reading_level %></span></strong></div>
+            <div class="views"><span><i class='fa fa-eye fa-2x'></i></span>  
+              <span id="story-reads-<%= version.id %>"><%= version.reads %></span>
+            </div> 
+
+            <div class="likes">
+            <% if !current_user.nil? && !current_user.liked?(version) %>
+                <span id="story-like" data-story-id="<%= version.id %>" class="btn story-like likeable">
+                  <i class='fa fa-eye fa-2x'></i>
+                </span>
+              <% elsif !current_user.nil? && current_user.liked?(version) %>
+                <span id="story-like" class="story-like liked">
+                  <i class='fa fa-eye fa-2x'></i>
+                </span>
+              <% else %>
+                <span id="story-like" class="btn story-like disabled">
+                  <i title="Please log in to like the story" class='fa fa-eye fa-2x'></i>
+                </span>
+              <% end %>
+              <span class="number-of-likes" id="story-likes-<%= version.id %>"><%= version.likes %></span>
+            </div>
+
+            <div class="desc-sear"><span class="synop-desc <%= version.language.script %>"><%= version.synopsis %></span></div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <div id="storyReader"></div>
+</section>
+
+
+<script>
+$(document).ready(function(){
+  $('.story-like.likeable').click(function(){
+    story_id = $(this).data().storyId;
+    Statistics.trackStoryLike(story_id);
+    if($(this).attr('class').indexOf('liked')===-1){
+      $(this).removeClass('btn likeable');
+      $(this).addClass('liked');
+      $('#story-likes-'+story_id).text(parseInt($('#story-likes-'+story_id).text())+1);
+    }
+  });
+});
+
+</script>
+

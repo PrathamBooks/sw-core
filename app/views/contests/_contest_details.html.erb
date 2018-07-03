@@ -1,0 +1,24 @@
+<%= render :partial => "dashboard/errors" %>
+<section id="search-details-temp" class="search_google_temp">
+  <div class="row">
+    <div class="col-md-4 col-sm-12">
+      <h2><label><%= @contest.is_campaign? ? "Campaign" : "Contest" %></label></h2>
+      <b>Name:</b> <%= @contest.name %></br>
+      <b>Type:</b> <%= @contest.contest_type %></br>
+      <b>Tag Name:</b> <%= @contest.tag_name.present? ? @contest.tag_name : "nil" %></br>
+      <b>Start date:</b> <%= @contest.start_date.localtime.strftime("%d-%m-%y") %></br>
+      <b>End date:</b> <%= @contest.end_date.localtime.strftime("%d-%m-%y") %></br>
+      <% unless @contest.contest_type == "illustration" %>
+        <b>Languages:</b> <%= @contest.contest_languages %></br>
+        <b>Category:</b> <%= @contest.story_category.name if @contest.story_category.present? %></br>
+      <% end %>
+      <b>Custom Flash Message:</b> <%= @contest.custom_flash_notice %></br>
+      </div>
+      <div class="upload-illustr contest_details_button">
+        <a class="btn btn-primary btn-lg" href = "<%= edit_contest_path(@contest.id) %>"style="margin-right: 10px ! important;">Update Details</a>
+        <%# unless @contest.contest_type == "illustration" #RRR 2016%> 
+          <!-- <a href="<%#= illustrations_path(:contest_id => @contest.id) %>" class="btn btn-primary btn-lg" target="_blank">Add Image</a> -->
+        <%# end %>
+    </div>
+  </div>
+</section>

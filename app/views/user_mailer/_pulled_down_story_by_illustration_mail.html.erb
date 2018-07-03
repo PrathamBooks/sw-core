@@ -1,0 +1,27 @@
+<tr>
+	<td align="center">
+	  <table width="432px" cellspacing="0" cellpadding="0" border="0" align="center">
+	   
+	    <tr style="margin-bottom: 20px; float: left;">
+	      	<td><strong>Dear <%= @author.name.titleize %></strong>,</td>
+	    </tr>
+	    <tr style="margin-bottom: 20px; float: left;">
+	      	<td>We regret to inform you that the image ( <%= link_to(@illustration.name, react_illustrations_show_url(@illustration)) %> ) used in your story ( <%= link_to(@story.title, react_stories_show_url(@story)) %> ) on Page ( <%= @pages %> ) has been pulled down due to a community red flag. After a thorough check, we found the reasons for the red flag to be valid and the said illustration/image has been removed from StoryWeaver.</td>
+	    </tr>
+	    <tr style="margin-bottom: 20px; float: left;">
+		  		<td>We know that you put in a lot of love into the stories that you create. Should you wish to make edits to get your story re-published on StoryWeaver, please do write to us at  <a href="mailto:help@storyweaver.org.in" target="_top">help@storyweaver.org.in</a>
+		  		</td>
+			</tr>
+			<tr style="margin-bottom: 20px; float: left;">
+				<td>
+					We look forward to seeing your story back on StoryWeaver soon!
+				</td>
+			</tr>
+			<tr style="margin-bottom: 20px; float: left;">
+		  		<td>
+						<p>Team StoryWeaver</p>
+					</td>
+			</tr>
+		</table>
+	</td>
+</tr>

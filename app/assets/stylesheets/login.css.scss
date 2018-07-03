@@ -1,0 +1,267 @@
+.sig-slash{
+  float: left;
+  color: #fff;
+  margin-top: 10px;
+  padding: 0px 3px;
+}
+a.sign-inbtn{
+  background: transparent;
+  padding: 0 !important;
+  margin-top: 14px;
+  font-size: 15px;
+  float: left;
+  color: #fff !important;
+}
+.login-top{
+   border-bottom:3px solid #A6AAA8;
+   float: left;
+   width: 100%;
+   padding: 0 10px;
+   margin-bottom: 25px;
+    h3{
+     color:#000;
+     margin-left: 15px;
+     float: left;
+    }
+  .reg-btn, .log-btn{
+    background: #317EAF;
+    color: #fff;
+    padding: 10px 15px;
+    float: right;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 9;
+    }
+    .reg-btn:hover, .log-btn:hover{
+       background: #317EAF;
+    }
+}
+#loginModal, #registerModal{
+  .modal-backdrop{
+    background-color: transparent;
+  }
+  .modal-content{
+    padding:0px;
+    border-radius:0;
+  }
+  .modal-footer{
+    border:none;
+    padding:0;
+  }
+    .modal-body {
+      padding:0;
+       p{
+         text-align:center;
+       }
+       a, a:hover{
+         color:#000;
+         text-decoration:underline;
+       }
+       .forget-link{
+         color:#000;
+         padding-top: 19px;
+         float: left;
+         margin-left: 25px;
+         text-decoration:underline;
+       }
+    }
+     .modal-dialog{
+       float:right;
+       margin-top: 17px;
+       width: 492px;
+       margin-right: 55px;
+     }    
+}
+a.sign-inbtn-mobile{
+  background: #F5D327 !important;
+    border-radius: 0;
+    color: #000 !important;
+    display: none !important;
+    padding: 10px 0 !important;
+    width: 60px;
+    margin:0;
+}
+.login-bottom{
+      width:100%;
+      margin-top: 10px;
+      border: none;
+      float:left;
+      a{
+        color: #fff;
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        text-align: center;
+        display: inline-block;
+        line-height: 57px;
+        padding-top: 2px;
+      }
+      .fa{
+        font-size:35px;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        text-align: center;
+        padding-top: 16px;
+        color:#fff;
+      }
+      p{
+        text-align: center;
+        font-size: 18px;
+        float: left;
+        width: 100%;
+        margin-bottom: 0;
+      }
+      .facebk{
+        border:3px solid #3B5998;
+      }
+      .twitter{
+        border:3px solid #4099ff;
+      }
+      .google-plus{
+        border:3px solid #dd4b39;
+      }
+      .fa-facebook{
+        background:#3B5998;
+      }
+      .fa-twitter{
+        background:#4099ff;
+      }
+      .fa-google-plus{
+        background:#dd4b39;
+      }
+      .log-soc{
+        text-align: center;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        float: left;
+        width: 100%;
+      }
+    }
+.fname{
+  float:left;
+  width:48%;
+  margin-right:10px;
+}
+.lname{
+  float:left;
+  width:48%;
+}
+#loginForm, #registerForm, #new_user{
+  float: left;
+  width: 100%;
+  label{
+    font-weight:normal;
+   }
+   .field input{
+      width: 100%;
+      border-radius: 5px;
+      border: 1px solid #c7cac9;
+      height: 45px;
+      font-size: 20px;
+      padding-left: 5px;
+    }  
+    input[type="checkbox"]{
+      height: auto;
+      float:left;
+    }      
+    .field{
+      float:left;
+      width:100%;
+    }
+}
+
+#registerForm .row-gutter {
+  float: left; }
+
+.log-sig-btn, .reg-sig-btn{
+   text-align: center;
+}  
+.log-sig-btn, .reg-sig-btn {
+   input{
+     background: #FFCC47;
+     border: 1px dotted #FF8000;
+     padding: 12px 0;
+     width: 260px;
+     margin: 0 auto;
+     border-radius: 5px;
+     margin-bottom: 10px;
+     margin-top: 10px;
+  }
+}
+  .div-center-align{
+    margin:0 auto;
+    float:none !important;
+    border-radius:5px;  
+    max-width:490px;
+    .div-full-width{
+      border:1px solid #cdd1d0;
+      box-shadow: 1px 1px 3px #cdcfce;
+      border-radius:5px;
+      float:left;
+      padding:0 15px 10px 15px;
+  }
+}
+.share-links{
+  float:left;
+  max-width: 490px;
+  width: 100%;
+ a{
+   text-align:center;
+   width: 100%;
+   float: left;
+ }
+}
+@media (max-width: 991px) {
+ .modal-body .login-bottom .fa{
+    margin-top:2px;
+  }
+}
+@media (max-width: 767px) {
+a.sign-inbtn{
+ display:none !important;
+}
+.sig-slash{
+  display:none !important;
+}
+a.sign-inbtn-mobile{
+  display:block !important;
+}
+#loginModal .modal-dialog, #registerModal .modal-dialog{
+  margin-right: 15px;
+    margin-top: 56px;
+}
+}
+@media (max-width: 600px) {
+  #loginModal .modal-dialog, #registerModal .modal-dialog{
+    width:80%;
+  }
+}
+@media (max-width: 550px) {
+  #loginModal .modal-dialog, #registerModal .modal-dialog{
+    width:92%;
+  }
+}
+@media (max-width: 360px) {
+.log-sig-btn input, .reg-sig-btn input{
+   width:150px;
+}
+.log-signin-btn input, .reg-signup-btn input{
+   width: 260px;
+}
+.carousel-control.right{
+  right:0 !important;
+}
+.carousel-control.left{
+  left:0 !important;
+}
+.log-btn{
+  font-size:10px !important;
+}
+.fname{
+  width:47%;
+}
+.field em{
+  font-size:11px;
+}
+}

@@ -1,0 +1,558 @@
+// Place all the styles related to the illustrations controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+img.crop { max-width: none !important; }
+
+@import url(https://fonts.googleapis.com/css?family=Noto+Sans:300italic,400italic,600italic,700italic,800italic,400,600,700,300,800);
+/********************************Illustration********************************/
+
+.books-cat-filter input[type="radio"] {
+  float: inherit;
+  position: relative;
+  top: 3px;
+}
+
+.ui-autocomplete {
+    z-index: 999999;
+}
+.search.illust-sear {
+  margin-top: 20px;
+}
+.hover-img-div{ 
+  padding:10px;
+  float:left;
+  text-align:center;
+  .illus-details-sear{
+    float: left;
+  }
+} 
+.illus-details-sear{
+  .comn-cls{
+    float: left;
+    text-align: left;
+    padding-left:20px;
+    width: 100%;
+  }
+}
+.hover-img-div .illus-details-sear img {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  width:100%;
+}
+#uploadModal{
+  z-index: 99999;
+}
+#search-illus .search-input{
+  padding-right:0px;
+}
+.illust-sear .tooltip-icon .btn-warning .glyphicon {
+  right: 15px;
+  top: 4px;
+}
+#illustration-thumb .pagination {
+  float: right;
+  margin-right: 10px;
+  width: 100%;
+  text-align: right;
+}
+.illus-results{
+  padding-left:20px;
+  padding-top:35px;
+}
+#illustration-accordion .panel-body {
+  background:#e5e5e5;
+}
+
+.illu_search {
+    float: right;
+    margin: 10px 0;
+    left: 6px;
+  }
+  
+.illu_search #search_query {
+    height: 50px;
+  }
+  .illu_search .tooltip-icon .btn-warning {
+    height: 50px;
+  }
+
+.upload-illustr {
+  margin-right: 40px;
+}
+
+.upload-illustr a{
+background: #fece62;
+padding: 10px 30px;
+color:#000;
+}
+.upload-illustr a:focus, .upload-illustr a:hover{
+  background:#fece62;
+  color:#000;
+}
+
+.mobile-hide {
+  margin-top: 10px !important;
+}
+
+#query_holder {
+  padding-top: 10px;
+}
+
+#illustration_tag_list{
+  width: 100%;
+border: 1px solid #999;
+border-radius: 0px;
+height: 45px;
+}
+#new_illustration .form-control{
+  width: 100%;
+border: 1px solid #999;
+border-radius: 0px;
+height: 45px;
+}
+#new_illustration .multiselect{
+border: 1px solid #999;
+border-radius: 0px;
+height: 45px;
+}
+#new_illustration .caret{
+  border-top: 14px solid;
+border-right: 8px solid transparent;
+border-left: 8px solid transparent;
+float:right;
+-moz-margin-start:-16px;
+}
+
+#new_illustration textarea.form-control {
+  resize: none;
+}
+
+.illustrator-details{
+  background-color: #ffcc47;
+  padding: 10px;
+  margin-bottom:10px;
+  float:left;
+}
+#newIllustrationForm{
+  color:#000;
+  font-size:16px;
+  .modal-header {
+    padding:0px;
+    border-bottom: 1px solid #A6AAA8;
+    .alert{
+      margin-left: 20px;
+      margin-right: 20px;
+    }
+    .tip{
+      font-size: 0.8em;
+      font-style: italic;
+      line-height: 1.4em;
+      margin-left: 21px;
+      margin-right: 24px;
+      margin-top: 10px;
+      a {
+        color: #000;
+        text-decoration: underline;
+      }
+    }
+    .modal-title{
+      background-color: #ffd163;
+      color: black;
+      padding-bottom: 10px;
+      padding-top: 10px;
+      font-weight: normal;
+    }
+    .upload-full-browse{
+      margin-top: 20px;
+    }
+  }
+  #confirm_form {
+    overflow-y: hidden;
+  }
+  .upload-full-browse1-illustration-contest {
+    .info{
+      margin-left: 3px;
+    }
+  }
+  .modal-body{
+    label{
+      margin-bottom: 5px;
+      font-weight: normal;
+    }
+    .info{
+      margin-left: 3px;
+    }
+    .tnc{
+      margin-top: 15px;
+    }
+    .center-btn {
+      margin-top: 45px;
+      margin-bottom: 20px;
+      #sub_illustration{
+        color:#000;
+        background:#ffcc47;
+      }
+      #sub_illustration:hover{
+        background:#ff8000;
+      }
+    }
+    #illustration_name{
+      margin-bottom: 2px;
+    }
+    .help-inline{
+      color: #a94442;
+    }
+  }
+}
+#newIllustrationForm hr{
+  border-top: 1px solid #A6AAA8;
+}
+#new_illustration #illustration_license_type{
+  border: none;
+  box-shadow: none;
+  height: 43px;
+  line-height: 39px;
+  margin: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: url("arrow-drop-down-128.png") no-repeat;
+  background-position:96% center;
+  background-size:15px 20px;
+  cursor:pointer;
+}
+#illustration_license_type::-ms-expand {
+  display: none;
+}
+.sel-des .controls{
+  border: 1px solid #999;
+  height: 45px;
+}
+.upload-full-browse {
+  width: 95%;
+  border: 1px solid #999;
+  border-radius: 0px;
+  height: 45px;
+  margin: 10px 0px 20px 25px;
+}
+
+.upload-full-browse1-illustration-contest{
+  width: 95%;
+  border: 1px solid #999;
+  border-radius: 0px;
+  height: 45px;
+  margin: 40px 0px 80px 25px;
+}
+
+.upload-full-browse2-illustration-contest {
+  width: 95%;
+  border: 1px solid #999;
+  border-radius: 0px;
+  height: 45px;
+  margin: 0px 0px 100px 25px;
+}
+
+.upload-full-browse #uploadFile {
+  width: 82%;
+  border: none;
+  font-style: italic;
+  padding-left: 5px;
+  padding-top:10px;
+  background: #fff;
+}
+.upload-full-browse1-illustration-contest #uploadFile1{
+  width: 82%;
+  border: none;
+  font-style: italic;
+  padding-left: 5px;
+  padding-top:10px;
+  background: #fff;
+}
+.upload-full-browse2-illustration-contest  #uploadFile2 {
+  width: 82%;
+  border: none;
+  font-style: italic;
+  padding-left: 5px;
+  padding-top:10px;
+  background: #fff;
+}
+
+.upload-full-browse, .upload-full-browse1-illustration-contest, .upload-full-browse2-illustration-contest{ 
+  .fileUpload:hover, .fileUpload:focus{
+    background: #ffcc47;
+    color: #000;
+  }
+  .fileUpload{
+    background: #ffcc47;
+    position: relative;
+    overflow: hidden;
+    margin-top: 3px;
+    border-radius: 0;
+    padding-left: 35px;
+    padding-right: 35px;
+    float: right;
+    margin-right: 3px;
+    color: #000;
+    border-radius: 5px;
+  }
+}
+
+#new_illustration abbr[title] {
+border-bottom: 0;
+color: brown;
+float: right;
+}
+.illustrator-up{
+  background: #337ab7;
+  border: none;
+  color: #fff;
+  padding-top: 10px;
+  width: 250px;
+  padding-bottom: 10px;
+}
+.illustrator-cancel {
+  background: #ffcc47;
+  border: medium none;
+  padding: 12px 20px;
+  border-radius: 5px;
+  position: relative;
+  top: 2px;
+}
+.center-btn{
+  margin-bottom:85px;
+  margin-top: 15px;
+}
+#newIllustrationForm .modal-dialog{
+  width:75%;
+}
+.upload-full-browse #uploadBtn, .upload-full-browse1-illustration-contest #uploadBtn1,.upload-full-browse2-illustration-contest #uploadBtn2{
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
+  height: 36px;
+  font-size: 20px;
+  opacity:0;
+}
+
+.multiselect-container{
+  min-width:100% !important;
+}
+.illus-title{
+  font-weight:bold;
+  margin-top: 10px;
+  font-size: 16px;
+  text-transform: capitalize;
+  a {
+    color: #000;
+  }
+  a:hover {
+    color: #000;
+  }
+}
+#filterModal .panel-heading{
+  cursor:pointer;
+}
+.padding-right{
+  padding-right:0px !important;
+}
+.padding-left{
+  padding-left:0px !important;
+}
+#illus-tags {
+  form {
+    margin: -9% 0% 0 16%;
+    width: 120%;
+  }
+  input{
+    height: 25px;
+  }
+  .btn {
+    height: 26px;
+    text-align: center;
+    padding: 0% 0% 0% 0%;
+    margin: 0% 0% 0% 3%;
+    width: 20%;
+  }
+  .update-tags a{
+    margin: -10.5% -20% 0% 0%;
+    float: right;
+    width: auto !important;
+  }
+}
+
+#newIllustrationForm .modal-body .center-btn {
+  margin-top: 60px !important;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  #my-search-bar {
+    .tooltip-icon .btn-warning{
+      padding: 5px;
+    }
+    .tooltip-icon .btn-warning:before{
+      top:13px;
+      right: 5px;
+    }
+  }
+}
+/*@media queries*/
+@media (max-width: 1200px) {
+  #illustration-thumb img {
+    width:100%;
+    height:auto;
+  }
+}
+
+@media (max-width: 991px) {
+  #illustration-thumb{
+    .col-md-3 {
+      margin-bottom: 10px;
+    }
+    .row {
+      margin-bottom: 0px;
+    }
+    #category-accordion .panel-body{
+      padding-right:0;
+    }
+    .my-accord-cat h3 a {
+      font-size: 13px;
+    }
+    .books-cat-filter .left-sidebar {
+      margin-left: 10px;
+    }
+  } 
+	#show-results1 .show-results{
+	 width: 40%;
+	}
+	.illus-results {
+    float: left;
+    width: 100%;
+  }
+  .upload-illustr a {
+    margin-left: 10px;
+    font-size: 14px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .illu_search {
+    width: 41%;
+  }
+}
+
+@media (max-width: 767px) {
+  .illus-results {
+    padding: 0px;
+  }
+  .show-bt-illus {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  #filterModal{
+    z-index:99999;
+  }
+  #illustration-thumb {
+    .col-md-9 {
+      padding: 0;
+      width:98%;
+    }
+  }
+  #illust-results{
+    background: #555;
+    width: 275px;
+    padding: 12px 0px 12px 0px;
+    margin-left: 10px;
+  }
+  .illus-results{
+   color:#fff;
+    text-align:center;
+  }
+  #search-illus .col-md-3{
+    padding-right:0;
+  }
+  #search-illus #my-search-bar.illust-sear input.fa-search {
+    float:right;
+  }
+  #my-search-bar .search_query {
+    float: left;
+    width: 85%;
+    position: relative;
+    z-index:9;
+  }
+  .search.illust-sear .tooltip-icon .btn-warning{
+    margin-top:-1px;
+  }
+  #illustration-thumb img {
+    width: 100%;
+  }
+}
+@media (max-width: 760px) {
+  .illu_search {
+    left: -14px;
+  }
+}
+@media (max-width: 670px) {
+  .illu_search {
+    left: -12px;
+  }
+}
+@media (max-width: 568px) {
+  #illustration-thumb{
+    .pagination{
+      margin-left:10px;
+      float: left;
+       span{
+        margin-bottom: 5px;
+        float: left;
+      }
+    }
+  }
+  .illu_search {
+    left: -10px;
+  }
+}
+@media (max-width: 480px) {
+  #illustration-thumb .col-md-3.col-sm-6{
+    width:100%;
+  }
+  #my-search-bar .search_query{
+    width:75%;
+  }
+  #search-illus #my-search-bar.illust-sear input {
+    font-size: 10px;
+  }
+  .illu_search {
+    left: -20px;
+  }
+}
+@media (max-width: 460px){
+  .illu_search {
+    left: -16px;
+  }
+}
+@media (max-width: 400px){
+  .illu_search {
+    left: -4px;
+  }
+}
+@media (max-width: 360px) {
+  .show-results.illus {
+    font-size: 12px;
+  }
+  .story-cat-button .btn-primary.btn-lg{
+    margin-top:0;
+  }
+  #search-illus #my-search-bar.illust-sear input {
+    font-size: 8px;
+  }
+  .show-bt-illus .cat-btn-show{
+    padding: 10px 30px;
+  }
+  .illus-results{
+    font-size: 12px;
+  }
+  .illu_search {
+    left: -4px;
+  }
+}
