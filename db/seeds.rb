@@ -8,30 +8,9 @@ unless Rails.env == 'test' || IllustrationCategory.count > 0
   }
 
   lf = LanguageFont.create!(font: "Noto Sans", script: "english")
-  Language.create!(name: 'English', can_transliterate: false, script: 'english', language_font: lf, translated_name: 'English')
+  Language.create!(name: 'English', can_transliterate: false, script: 'english', language_font: lf, translated_name: 'English', locale: 'en')
 
-  lf = LanguageFont.create!(font: "Noto Sans", script: "english")
-  Language.create!(name: 'German', can_transliterate: false, script: 'english', language_font: lf, translated_name: 'German')
-
-  locale_mapping = {
-    'Assamese'  =>  'as',
-    'Bengali'   =>  'bn',
-    'Gujarati'  =>  'gu',
-    'Hindi'     =>  'hi',
-    'Kannada'   =>  'kn',
-    'English'   =>  'en',
-    'Malayalam' =>  'ml',
-    'Marathi'   =>  'mr',
-    'Nepali'    =>  'en',
-    'Odia'     =>  'or',
-    'Punjabi'   =>  'pa',
-    'Sanskrit'  =>  'en',
-    'Tamil'     =>  'ta',
-    'Telugu'    =>  'te'
-  }
-  locale_mapping.each do |name,locale|
-    Language.where(name: name).update_all(locale: locale)
-  end
+  Language.create!(name: 'German', can_transliterate: false, script: 'english', language_font: lf, translated_name: 'German', locale: 'en')
 
   ['Fiction', 'Non-fiction', 'Folktales & Myths', 'Fantasy', 'Adventure & Mystery', 'Animal Stories', 'Family & Friends', 'Funny', 'Scary', 'Poems', 'Plays', 'Biographies', 'Science & Nature', 'Math', 'History', 'Place & Culture', 'Series', 'Award-winning', 'Read-Aloud Stories', 'Lifeskills', 'Activity Books', 'Audio Books'].each { |sc|
     StoryCategory.create!(name: sc, translated_name: sc)
