@@ -1271,7 +1271,7 @@ class Story < ActiveRecord::Base
 
   def create_new_derivation_without_pages(story_params,authors, current_user,derivation_type)
     authors = [authors] unless authors.is_a?Array
-    new_story_attributes = self.dup.attributes.slice!('ancestry', 'organization_id', 'title', 'reads', 'cached_votes_total', 'downloads', 'high_resolution_downloads', 'epub_downloads', 'is_display_inline', 'publisher_id', 'dummy_draft').merge!(story_params)
+    new_story_attributes = self.dup.attributes.slice!('ancestry', 'organization_id', 'title', 'reads', 'cached_votes_total', 'uuid', 'origin_url', 'downloads', 'high_resolution_downloads', 'epub_downloads', 'is_display_inline', 'publisher_id', 'dummy_draft').merge!(story_params)
     if current_user.organization?
       new_story_attributes[:organization_id] = current_user.organization_id
     end
