@@ -105,6 +105,9 @@ def createCompleteStory(api_response, token, origin)
     uuid:                 api_response[:uuid]
   )
 
+  puts "Will set recommended flag of the story if it is a publisher one.."
+  story.recommended_status = :recommended if !org_obj.nil?
+
   begin
     story.save!
   rescue => exception
@@ -310,10 +313,11 @@ def getUser(uuid, token, origin)
     puts "fetching user with uuid => #{uuid}"                
     api_response = fetchUser(uuid, token, origin)
     obj = User.new(
-      :name     => api_response[:name],
-      :email    => "#{SecureRandom.hex}@gmail.com",
-      :password => "#{SecureRandom.hex}",      
-      :uuid     => api_response[:uuid]      
+      :first_name   => api_response[:first_name],
+      :last_name    => api_response[:last_name],
+      :email        => "#{SecureRandom.hex}@gmail.com",
+      :password     => "#{SecureRandom.hex}",
+      :uuid         => api_response[:uuid]
     )
     user_obj = obj.tap(&:save)
   end
