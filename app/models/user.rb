@@ -68,7 +68,6 @@ class User < ActiveRecord::Base
              searchable: [:name, :first_name, :last_name],
              merge_mappings: true
   make_flagger :flag_once => true
-  after_create :add_uuid_and_origin_url
   acts_as_voter
   has_attached_file :logo,
   default_url: "/assets/:style/missing.png",

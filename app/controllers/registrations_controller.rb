@@ -27,7 +27,8 @@ class RegistrationsController < Devise::RegistrationsController
         content_managers = User.content_manager.collect(&:email).join(",")
         UserMailer.delay(:queue=>"mailer").organization_user_signup(content_managers,@user.organization,current_user)
       end
-       flash[:notice] = "A message with a confirmation link has been sent to your email address. Please follow the link to activate your account."
+      @user.add_uuid_and_origin_url
+      flash[:notice] = "A message with a confirmation link has been sent to your email address. Please follow the link to activate your account."
       redirect_to root_path
     else
       @org= params[:user][:organization_attributes]
