@@ -77,7 +77,7 @@ require 'json'
 def createCompleteStory(api_response, token, origin)
   lang_obj = getLanguage(api_response[:language_name], token, origin)
   story_category_objs = []
-  api_response[:story_category_uuids].each {|uuid| story_category_objs << getStoryCategory(uuid, token, origin) }
+  api_response[:story_categories].each {|data| story_category_objs << getStoryCategory(data, token, origin) }
 
   author_objs = []
   api_response[:author_uuids].each do |uuid|
@@ -277,30 +277,24 @@ def getOrganization(uuid, token, origin)
   return org_obj
 end
 
-def getIllustrationStyle(uuid, token, origin)
-  i_style_obj = IllustrationStyle.find_by_uuid(uuid)
+def getIllustrationStyle(data, token, origin)
+  i_style_obj = IllustrationStyle.find_by_name(data[:name])
   if i_style_obj.nil?
-    puts "fetching illustration style with uuid => #{uuid}"                
-    api_response = fetchIllustrationStyle(uuid, token, origin)
     obj = IllustrationStyle.new(
-      name:             api_response[:name],
-      translated_name:  api_response[:translated_name],
-      uuid:             api_response[:uuid]
+      name:             data[:name],
+      translated_name:  data[:translated_name]
     )
     i_style_obj = obj.tap(&:save)
   end
   return i_style_obj
 end
 
-def getIllustrationCategory(uuid, token, origin)
-  i_category_obj = IllustrationCategory.find_by_uuid(uuid)
+def getIllustrationCategory(data, token, origin)
+  i_category_obj = IllustrationCategory.find_by_name(data[:name])
   if i_category_obj.nil?
-    puts "fetching illustration category with uuid => #{uuid}"                
-    api_response = fetchIllustrationCategory(uuid, token, origin)
     obj = IllustrationCategory.new(
-      name:             api_response[:name],
-      translated_name:  api_response[:translated_name],
-      uuid:             api_response[:uuid]
+      name:             data[:name],
+      translated_name:  data[:translated_name]
     )
     i_category_obj = obj.tap(&:save)
   end
@@ -349,10 +343,10 @@ def getIllustration(uuid, token, origin)
     api_response = fetchIllustration(uuid, token, origin)
 
     i_style_objs = []
-    api_response[:style_uuids].each {|uuid| i_style_objs << getIllustrationStyle(uuid, token, origin)}
+    api_response[:styles].each {|data| i_style_objs << getIllustrationStyle(data, token, origin)}
 
     i_category_objs = []
-    api_response[:category_uuids].each {|uuid| i_category_objs << getIllustrationCategory(uuid, token, origin)}
+    api_response[:categories].each {|data| i_category_objs << getIllustrationCategory(data, token, origin)}
 
     i_illustrator_objs = []
     api_response[:illustrator_uuids].each {|uuid| i_illustrator_objs << getIllustrator(uuid, token, origin)}
@@ -445,32 +439,13 @@ def getLanguage(name, token, origin)
   return lang_obj
 end
 
-def getStoryCategory(uuid, token, origin)
-  story_category_obj = StoryCategory.find_by_uuid(uuid)
+def getStoryCategory(data, token, origin)
+  story_category_obj = StoryCategory.find_by_name(data[:name])
   if story_category_obj.nil?
-    puts "fetching story category with uuid => #{uuid}"                
-    api_response = fetchStoryCategory(uuid, token, origin)
     obj = StoryCategory.new(
-      :name           => api_response[:name],
-      :translated_name=> api_response[:translated_name],
-      :private        => api_response[:private],
-      :active_on_home => api_response[:active_on_home],
-      :uuid           => api_response[:uuid]
+      :name           => data[:name],
+      :translated_name=> data[:translated_name]
     )
-    if api_response[:banner_path] != nil
-      file_data = fetchStoryCategoryBanner(uuid, token, origin)
-      puts file_data.class      
-      File.open('tmp.jpg', 'wb') {|f| f.write(file_data)}
-      obj.category_banner = File.open('tmp.jpg')
-    end
-
-    if api_response[:home_image_path] != nil
-      file_data = fetchStoryCategoryHomeImage(uuid, token, origin)
-      puts file_data.class      
-      File.open('tmp.jpg', 'wb') {|f| f.write(file_data)}
-      obj.category_home_image = File.open('tmp.jpg')
-    end
-
     story_category_obj = obj.tap(&:save)
   end
   return story_category_obj
