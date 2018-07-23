@@ -373,7 +373,7 @@ def getIllustration(uuid, token, origin)
       :is_pulled_down           => api_response[:is_pulled_down],         
       :copy_right_holder_id     => api_response[:copy_right_holder_id],
       :image_mode               => api_response[:image_mode],         
-      :storage_location         => nil,
+      :storage_location         => api_response[:storage_location],
       :is_bulk_upload           => api_response[:is_bulk_upload],         
       :smart_crop_details       => api_response[:smart_crop_details],
       :organization_id          => api_response[:organization_id],
@@ -408,7 +408,7 @@ def getIllustrationCrop(uuid, page, token, origin)
       illustration_id:    illustration_obj.id,
       crop_details:       api_response[:crop_details],
       image_meta:         api_response[:image_meta],
-      storage_location:   nil,
+      storage_location:   api_response[:storage_location],
       smart_crop_details: api_response[:smart_crop_details],
       uuid:               api_response[:uuid]      
     )
