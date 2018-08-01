@@ -5,6 +5,7 @@ options_hash = {}
 OptionParser.new do |opts|
   opts.on("-g [GUIDE]", "--guide [GUIDE]") {|val| options_hash[:guide] = ''}
   opts.on("-t", "--token TOKEN") {|val| options_hash[:token] = val}
+  opts.on("-t", "--partnerPrefix IMPORTPARTNER") {|val| options_hash[:partnerPrefix] = val}
   opts.on("-o", "--origin ORIGIN") {|val| options_hash[:origin] = val}
   opts.on("-f", "--feedUrl OPDSURL") {|val| options_hash[:feedUrl] = val}  
   opts.on("-l", "--languageName LANGUAGE") {|val| options_hash[:languageName] = val}
@@ -31,6 +32,7 @@ if options_hash.has_key?(:guide)
   puts "token    => access token needed to fetch a story"
   puts "feedUrl  => url of opds feed"
   puts "origin   => domain or IP of the server where the API is located"
+  puts "partnerPrefix => prefix of import partner"
   puts "to fetch the story, you can either:"
   puts "1. provide storyUuids flag with argument as:"
   puts "  a. [*] to fetch all stories in the feed" 
@@ -45,8 +47,8 @@ if options_hash.has_key?(:guide)
   exit
 end
 
-if !options_hash.has_key?(:token) || !options_hash.has_key?(:feedUrl) || !options_hash.has_key?(:origin)
-  puts "mandatory flags missing (token/feedUrl/origin)"
+if !options_hash.has_key?(:token) || !options_hash.has_key?(:feedUrl) || !options_hash.has_key?(:origin) || !options_hash.has_key?(:partnerPrefix)
+  puts "mandatory flags missing (token/feedUrl/origin/partnerPrefix)"
   exit
 end
 
@@ -84,7 +86,11 @@ def createCompleteStory(api_response, token, origin)
     author_objs << getUser(uuid, token, origin)
   end
 
-  org_obj = getOrganization(api_response[:organization_uuid], token, origin)
+  import_partner = ImportPartner.find_by_prefix(user_input_hash[:partnerPrefix])
+  if import_partner.nil?
+    puts "import partner not found.. cannot save the story"
+    return nil
+  end
   
   story = Story.new(
     title:                api_response[:title], 
@@ -101,7 +107,8 @@ def createCompleteStory(api_response, token, origin)
     more_info:            api_response[:more_info],
     published_at:         Time.now.strftime("%Y-%m-%d %H:%M:%S"),
     tag_list:             api_response[:tag_list],
-    organization:         org_obj,
+    import_partner:       import_partner,       
+    organization:         import_partner.organization,
     uuid:                 api_response[:uuid]
   )
 
