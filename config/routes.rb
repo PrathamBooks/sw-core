@@ -179,6 +179,13 @@ Rails.application.routes.draw do
     get '/dashboard/most-downloaded-illustrations', to: 'dashboard#most_downloaded_illustrations', as: :most_downloaded_illustrations
     get '/dashboard/flagged_illustrations', to: 'dashboard#flagged_illustrations', as: :flagged_illustrations
     get 'dashboard/all_stories', to: 'dashboard#all_stories', as: :all_stories
+    ### import partner routes ###
+    get 'dashboard/all_import_partners', to: 'dashboard#all_import_partners'
+    get 'dashboard/import_partner/new', to: 'dashboard#new_import_partner'
+    get 'dashboard/import_partner/edit/:id', to: 'dashboard#edit_import_partner'
+    post 'dashboard/import_partner/new', to: 'dashboard#create_import_partner', as: :new_dashboard_import_partner
+    patch 'dashboard/import_partner/edit/:id', to: 'dashboard#update_import_partner', as: :edit_dashboard_import_partner
+    #############################
     get 'dashboard/lists', to: 'dashboard#lists', as: :lists
     get 'dashboard/update_lists', to: 'dashboard#update_lists', as: :update_lists
     get 'dashboard/all_illustrations', to: 'dashboard#all_illustrations', as: :all_illustrations
@@ -378,14 +385,12 @@ Rails.application.routes.draw do
   namespace :api, defaults: {format: 'json'} do
     namespace :v0 do
       # DATA EXCHANGE APIs
-      get '/page_template/:uuid', to: 'data_exchange#fetch_page_template'      
       get '/illustration/:uuid', to: 'data_exchange#fetch_illustration'      
       get '/illustration_crop/:uuid', to: 'data_exchange#fetch_illustration_crop'
       get '/illustration_style/:uuid', to: 'data_exchange#fetch_illustration_style'
       get '/illustration_category/:uuid', to: 'data_exchange#fetch_illustration_category'
       get '/illustration_image/:uuid', to: 'data_exchange#fetch_illustration_img'      
       get '/illustrator/:uuid', to: 'data_exchange#fetch_illustrator'
-      get '/language/:uuid', to: 'data_exchange#fetch_language'
       get '/story_category/:uuid', to: 'data_exchange#fetch_story_category'
       get '/user/:uuid', to: 'data_exchange#fetch_user'
       get '/story/:uuid', to: 'data_exchange#fetch_story'
@@ -393,8 +398,9 @@ Rails.application.routes.draw do
       get '/story/epub/:uuid', to: 'data_exchange#fetch_story_epub'      
       get '/story_category_banner/:uuid', to: 'data_exchange#fetch_story_category_banner'
       get '/story_category_home_image/:uuid', to: 'data_exchange#fetch_story_category_home_image'
+      get '/organization_logo/:uuid', to: 'data_exchange#fetch_organization_logo'
       get '/illustration_crop_image/:uuid', to: 'data_exchange#fetch_illustration_crop_img'            
-      get '/language_font/:uuid', to: 'data_exchange#fetch_language_font'
+      get '/organization/:uuid', to: 'data_exchange#fetch_organization'
       get '/story_uuid/:id', to: 'data_exchange#get_story_uuid'
 
       # DATA ANALYTICS APIs
@@ -403,8 +409,8 @@ Rails.application.routes.draw do
       get '/analytics/illustration_view_count', to: 'analytics_data#get_illustration_view_count'
       get '/analytics/illustration_download_count', to: 'analytics_data#get_illustration_download_count'
       get '/analytics/illustration_reuse_count', to: 'analytics_data#get_illustration_reuse_count'
-      get '/analytics/sw_translated_stories', to: 'analytics_data#get_sw_translated_stories'
-      get '/analytics/sw_relevelled_stories', to: 'analytics_data#get_sw_relevelled_stories'      
+      get '/analytics/translated_stories', to: 'analytics_data#get_translated_stories'
+      get '/analytics/relevelled_stories', to: 'analytics_data#get_relevelled_stories'      
       put '/analytics/track_event/:entity/:uuid', to: 'analytics_data#track_event'
     end
     namespace :v1 do

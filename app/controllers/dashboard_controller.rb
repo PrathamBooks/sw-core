@@ -3,6 +3,7 @@ class DashboardController < ApplicationController
   autocomplete :user, :email, :display_value => :user_details, :extra_data => [:email, :bio, :first_name, :last_name, :role]
   EVERYTHING = "*"
   PER_PAGE = 10
+  IMPORT_PARTNER_TAB = "import_partners"
   before_action :authenticate_user!
   before_action :authorize_action, :except   => [:analytics, :most_read_stories, :most_viewed_illustrations, :most_used_illustrations, :most_downloaded_stories, :most_downloaded_illustrations, :organization_downloads, :story_bulk_downloads , :organization_users,:organization_user, :stories_downloaded_list, :story_downloads_date_sort]
   before_action :analytics_access, :only   => [:analytics, :most_read_stories, :most_viewed_illustrations, :most_used_illustrations, :most_downloaded_stories, :most_downloaded_illustrations, :organization_downloads, :story_bulk_downloads , :organization_users, :organization_user, :stories_downloaded_list, :story_downloads_date_sort]
@@ -58,6 +59,37 @@ class DashboardController < ApplicationController
         @stories = Story.where("created_at >= ? ", 1.month.ago).where(:status => Story.statuses[:published])
       end
     end
+  end
+
+  def all_import_partners
+    @current_tab = IMPORT_PARTNER_TAB
+    @import_partners = ImportPartner.all
+  end
+
+  def new_import_partner
+    @current_tab = IMPORT_PARTNER_TAB
+    @import_partner = ImportPartner.new
+    @organizations = Organization.all
+  end
+
+  def edit_import_partner
+    @current_tab = IMPORT_PARTNER_TAB
+    @import_partner = ImportPartner.find(params[:id])
+    @organizations = Organization.all
+  end
+
+  #TODO: Error handling
+  def create_import_partner
+    import_partner = ImportPartner.new(import_partner_params)
+    import_partner.save!
+    redirect_to dashboard_all_import_partners_path
+  end
+
+  #TODO: Error handling
+  def update_import_partner
+    import_partner = ImportPartner.find(params["id"])
+    import_partner.update!(import_partner_params)
+    redirect_to dashboard_all_import_partners_path
   end
 
   def lists
@@ -887,5 +919,9 @@ class DashboardController < ApplicationController
 
   def sort_direction
     %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+  end
+
+  def import_partner_params
+    params.require(:import_partner).permit(:attribution_name, :url, :prefix, :organization_id)
   end
 end

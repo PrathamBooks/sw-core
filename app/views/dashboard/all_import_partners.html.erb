@@ -1,0 +1,35 @@
+<%= render :partial => "tabs" %>
+
+<h3>Following is the list of Import Partners:</h3>
+<br/>
+
+<table class="table table-striped" id="all_lists">
+  <thead>
+    <tr class="table-heading-row">
+      <th><%= t 'dashboard.import_partners_tab.id'%></th>
+      <th><%= t 'dashboard.import_partners_tab.attribution_name'%></th>
+      <th><%= t 'dashboard.import_partners_tab.url'%></th>
+      <th><%= t 'dashboard.import_partners_tab.prefix'%></th>
+      <th><%= t 'dashboard.import_partners_tab.organization_name'%></th>
+      <th><%= t 'import_partner.user_action'%></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @import_partners.each do |import_partner| %>
+      <tr>
+        <td><%= import_partner.id %></td>
+        <td><%= import_partner.attribution_name %></td>
+        <td><%= import_partner.url %></td>
+        <td><%= import_partner.prefix %></td>
+        <% unless import_partner.organization.nil? %>
+          <td><%= import_partner.organization.organization_name %></td>
+        <% else %>
+          <td><%= "" %></td>
+        <% end %>
+        <td><%= link_to '<button type="button">Edit</button>'.html_safe, edit_dashboard_import_partner_path(import_partner.id) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to '<button type="button">New</button>'.html_safe, dashboard_import_partner_new_path  %>

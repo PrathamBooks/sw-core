@@ -37,6 +37,9 @@
       <li role="presentation" class="<%= @current_tab == 'lists' ? 'active' : '' %>">
         <%= link_to "<span>Lists</span>".html_safe , lists_path %>
       </li>
+      <li role="presentation" class="<%= @current_tab == 'import_partners' ? 'active' : '' %>">
+        <%= link_to "<span>Import Partners</span>".html_safe , dashboard_all_import_partners_path %>
+      </li>
     </ul>
   </div>
   <hr />

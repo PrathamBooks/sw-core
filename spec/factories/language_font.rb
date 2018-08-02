@@ -13,4 +13,9 @@ FactoryGirl.define do
     sequence(:font) { |n| "font #{n}" }
     sequence(:script) { |n| "script #{n}" }
   end
+
+  factory :noto_sans, class: LanguageFont do
+    font "Noto Sans"
+    script "english"
+  end
 end

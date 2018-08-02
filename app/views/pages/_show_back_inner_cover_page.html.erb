@@ -70,16 +70,34 @@
       <% end %>
     </div>
   </div>
-  <div class="license_container">
-    <div class="license_cont-middle">
-      <span class="discl-txt">Disclaimer:<a href="<%= host_url %>/terms_and_conditions" target="_blank">https://www.storyweaver.org.in/terms_and_conditions</a> </span>
-      <%= render :partial => "pages/license", locals: {license: @story.license_type } %>
-      <% @additional_illustration_license_types.each do |license|  %>
-        <%= render :partial => "pages/license", locals: {license: license} %>
-      <% end %>
+  <% unless @story.import_partner.nil? %>
+    <div class="license_container license_digital_container">
+      <div class="license_cont-middle">
+        <span class="discl-txt">Disclaimer:<a href="<%= host_url %>/terms_and_conditions" target="_blank">https://www.storyweaver.org.in/terms_and_conditions</a> </span>
+        <%= render :partial => "pages/license", locals: {license: @story.license_type } %>
+        <% @additional_illustration_license_types.each do |license|  %>
+          <%= render :partial => "pages/license", locals: {license: license} %>
+        <% end %>
+      </div>
+      <div class="digital_publish">
+        <p>This book was first digitally published on <a href="<%= @story.import_partner.url %>" target="_blank"><%= @story.import_partner.url %></a> in by <%= @story.import_partner.attribution_name %></p>
+      </div>
+  	  <div class="donor-container">
+  			  <%= render :partial => "pages/donor", locals: {donor: @story.donor} if @story.donor%>
+  	  </div>
     </div>
-		  <div class="donor-container">
-				  <%= render :partial => "pages/donor", locals: {donor: @story.donor} if @story.donor%>
-		  </div>
-  </div>
+  <% else %>
+    <div class="license_container">
+      <div class="license_cont-middle">
+        <span class="discl-txt">Disclaimer:<a href="<%= host_url %>/terms_and_conditions" target="_blank">https://www.storyweaver.org.in/terms_and_conditions</a> </span>
+        <%= render :partial => "pages/license", locals: {license: @story.license_type } %>
+        <% @additional_illustration_license_types.each do |license|  %>
+          <%= render :partial => "pages/license", locals: {license: license} %>
+        <% end %>
+      </div>
+      <div class="donor-container">
+          <%= render :partial => "pages/donor", locals: {donor: @story.donor} if @story.donor%>
+      </div>
+    </div>
+  <%end %>
 </div>

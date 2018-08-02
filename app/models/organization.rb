@@ -56,6 +56,7 @@ class Organization < ActiveRecord::Base
   has_many :lists
   has_many :illustrations
   has_many :media_mentions
+  has_one :import_partner
   scope :original_story_publishers, -> { where(organization_type: "Publisher").joins(:stories).where('stories.status' => 1, 'stories.derivation_type' => nil).uniq.order(:organization_name) }
   scope :story_publishers, -> { where(organization_type: "Publisher").joins(:stories).where('stories.status' => 1).uniq.order(:organization_name) }
 

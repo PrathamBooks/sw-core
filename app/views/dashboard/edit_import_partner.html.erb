@@ -1,0 +1,14 @@
+<%= render :partial => "tabs" %>
+
+<div class="row">
+  <div class="col-md-5">
+    <%= simple_form_for @import_partner, url: edit_dashboard_import_partner_path(@import_partner.id), html: {class: 'form-horizontal'} do |f| %>
+      <%= f.input :attribution_name %>
+      <%= f.input :url %>
+      <%= f.input :prefix %>
+      <%= f.association :organization, label_method: :organization_name, value_method: :id %>
+      <br/>
+      <%= f.button :submit %>
+    <% end %>
+  </div>
+</div>

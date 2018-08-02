@@ -134,6 +134,7 @@ class Story < ActiveRecord::Base
   belongs_to :donor
   belongs_to :contest
   belongs_to :organization
+  belongs_to :import_partner
   belongs_to :editor, -> { order('first_name') },class_name: 'User'
   has_many :ratings, :as => :rateable
   belongs_to :copy_right_holder, class_name: 'User'

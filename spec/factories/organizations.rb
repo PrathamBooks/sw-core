@@ -51,5 +51,17 @@ FactoryGirl.define do
     status 'Approved'
     website 'www.storyweaver.org'
   end
+
+  factory :org_publisher_with_logo, class: Organization do
+    sequence(:organization_name) { |n| "org_publisher_name #{n}" }
+    sequence(:country) {|n| "country #{n}"}
+    sequence(:city) { |n| "city #{n}" }
+    logo Rack::Test::UploadedFile.new('spec/photos/logo.png', 'image/png')
+    number_of_classrooms 10
+    children_impacted 10
+    organization_type 'Publisher'
+    status 'Approved'
+    website 'www.storyweaver.org'
+  end
 end
 

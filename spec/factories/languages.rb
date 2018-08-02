@@ -13,6 +13,8 @@
 #  bilingual         :boolean          default(FALSE)
 #  language_font_id  :integer
 #  level_band        :string(255)
+#  origin_url        :string(255)
+#  uuid              :string(255)
 #
 # Indexes
 #
@@ -31,6 +33,16 @@ FactoryGirl.define do
   factory :english, class: Language do
     name "English"
     script "english"
+    locale "en"
+    is_right_to_left false
+    can_transliterate false
+    translated_name "English translation"
+  end
+
+  factory :english_in_noto_sans_font, class: Language do
+    name "English"
+    script "english"
+    language_font {FactoryGirl.create(:noto_sans)}
     locale "en"
     is_right_to_left false
     can_transliterate false

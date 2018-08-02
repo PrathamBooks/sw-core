@@ -11,38 +11,45 @@ class Api::V0::AnalyticsDataController < Api::V0::ApplicationController
   swagger_controller :analytics_data, 'Analytics Data'
 
   swagger_api :get_story_read_count do
-    summary "Get read count for all SW stories"
+    summary "Get read count for all stories of queried organization"
     param :query, :token, :string, :required, "Access Token"
+    param :query, :org_prefix, :string, :required, "Organization Prefix"
   end
 
   swagger_api :get_story_download_count do
-    summary "Get download count for each type (high res PDF, low res PDF, ePUB) for all SW stories"
-    param :query, :token, :string, :required, "Access Token" 
+    summary "Get download count for each type (high res PDF, low res PDF, ePUB) for all stories of queried organization"
+    param :query, :token, :string, :required, "Access Token"
+    param :query, :org_prefix, :string, :required, "Organization Prefix" 
   end 
 
   swagger_api :get_illustration_view_count do
-    summary "Get read count for all SW illustrations"
+    summary "Get read count for all illustrations of queried organization"
     param :query, :token, :string, :required, "Access Token"
+    param :query, :org_prefix, :string, :required, "Organization Prefix"
   end
 
   swagger_api :get_illustration_download_count do
-    summary "Get download count for all SW illustrations"
+    summary "Get download count for all illustrations of queried organization"
     param :query, :token, :string, :required, "Access Token"
+    param :query, :org_prefix, :string, :required, "Organization Prefix"
   end
 
   swagger_api :get_illustration_reuse_count do
-    summary "Get count of SW illustrations that are being used in stories created by client"
+    summary "Get count of illustrations of queried organization that are being used in stories created by client"
     param :query, :token, :string, :required, "Access Token"
+    param :query, :org_prefix, :string, :required, "Organization Prefix"
   end
 
-  swagger_api :get_sw_translated_stories do
-    summary "Get all non-SW translated stories that are derived from SW story"
+  swagger_api :get_translated_stories do
+    summary "Get all translated stories that dont belong to queried organization but are derived from story belonging to queried organization"
     param :query, :token, :string, :required, "Access Token"
+    param :query, :org_prefix, :string, :required, "Organization Prefix"
   end
 
-  swagger_api :get_sw_relevelled_stories do
-    summary "Get all non-SW relevelled stories that are derived from SW story"
+  swagger_api :get_relevelled_stories do
+    summary "Get all relevelled stories that dont belong to queried organization but are derived from story belonging to queried organization"
     param :query, :token, :string, :required, "Access Token"
+    param :query, :org_prefix, :string, :required, "Organization Prefix"
   end
 
   def authenticate_tracker_request
@@ -65,7 +72,12 @@ class Api::V0::AnalyticsDataController < Api::V0::ApplicationController
   end
 
   def get_story_read_count
-    stories = Story.where("uuid LIKE :prefix", prefix: "#{SW_PREFIX}%")
+    if params["org_prefix"].nil? || params["org_prefix"].empty?
+      render json: {error: 'Organization prefix not present'}, status: :unauthorized
+      return
+    end
+
+    stories = Story.where("uuid LIKE :prefix", prefix: "#{params["org_prefix"]}%")
 
     story_read_map = {}
 
@@ -75,7 +87,12 @@ class Api::V0::AnalyticsDataController < Api::V0::ApplicationController
   end
 
   def get_story_download_count
-    stories = Story.where("uuid LIKE :prefix", prefix: "#{SW_PREFIX}%")
+    if params["org_prefix"].nil? || params["org_prefix"].empty?
+      render json: {error: 'Organization prefix not present'}, status: :unauthorized
+      return
+    end
+
+    stories = Story.where("uuid LIKE :prefix", prefix: "#{params["org_prefix"]}%")
 
     story_download_map = {}
 
@@ -89,7 +106,12 @@ class Api::V0::AnalyticsDataController < Api::V0::ApplicationController
   end
 
   def get_illustration_view_count
-    illustrations = Illustration.where("uuid LIKE :prefix", prefix: "#{SW_PREFIX}%")
+    if params["org_prefix"].nil? || params["org_prefix"].empty?
+      render json: {error: 'Organization prefix not present'}, status: :unauthorized
+      return
+    end
+
+    illustrations = Illustration.where("uuid LIKE :prefix", prefix: "#{params["org_prefix"]}%")
 
     illustration_read_map = {}
 
@@ -99,7 +121,12 @@ class Api::V0::AnalyticsDataController < Api::V0::ApplicationController
   end
 
   def get_illustration_download_count
-    illustrations = Illustration.where("uuid LIKE :prefix", prefix: "#{SW_PREFIX}%")
+    if params["org_prefix"].nil? || params["org_prefix"].empty?
+      render json: {error: 'Organization prefix not present'}, status: :unauthorized
+      return
+    end
+
+    illustrations = Illustration.where("uuid LIKE :prefix", prefix: "#{params["org_prefix"]}%")
 
     illustration_download_map = {}
     id_uuid_map = {}
@@ -122,20 +149,18 @@ class Api::V0::AnalyticsDataController < Api::V0::ApplicationController
   end
 
   def get_illustration_reuse_count
-    if params["org_id"].nil?
-      render json: {error: 'please provide client organisation ID'}, status: 406
+    if params["org_prefix"].nil? || params["org_prefix"].empty?
+      render json: {error: 'Organization prefix not present'}, status: :unauthorized
       return
     end
 
-    org_prefix = "#{params["org_id"]}-"
-
-    stories = Story.where("uuid LIKE :prefix", prefix: "#{org_prefix}%")
+    stories = Story.where("uuid LIKE :prefix", prefix: "#{Settings.org_info.prefix}-%")
 
     filtered_uuids = []
     stories.each do |s|
       story_illustration_uuids = s.illustrations.map(&:uuid)
       story_illustration_uuids.each do |uuid|
-        filtered_uuids << uuid if uuid.start_with? SW_PREFIX
+        filtered_uuids << uuid if uuid.start_with? params["org_prefix"]
       end
     end
 
@@ -144,14 +169,19 @@ class Api::V0::AnalyticsDataController < Api::V0::ApplicationController
     render json: {count: illustration_reuse_count}, status: 200
   end
 
-  def get_sw_translated_stories
-    stories = Story.where(:status => 1).where(:derivation_type => "translated").where.not("uuid LIKE :prefix", prefix: "#{SW_PREFIX}%")
+  def get_translated_stories
+    if params["org_prefix"].nil? || params["org_prefix"].empty?
+      render json: {error: 'Organization prefix not present'}, status: :unauthorized
+      return
+    end
+
+    stories = Story.where(:status => 1).where(:derivation_type => "translated").where.not("uuid LIKE :prefix", prefix: "#{params["org_prefix"]}%")
 
     translated_stories_data = {}
 
     stories.each do |story|
       original_uuid = story.root.uuid
-      if original_uuid.start_with? SW_PREFIX # checking if the original/root story was a SW story
+      if original_uuid.start_with? params["org_prefix"]
         translated_stories_data[story.uuid] = {
           "language"  => story.language.name,
           "ancestry"  => {
@@ -165,14 +195,14 @@ class Api::V0::AnalyticsDataController < Api::V0::ApplicationController
     render json: translated_stories_data, status: 200    
   end
 
-  def get_sw_relevelled_stories
-    stories = Story.where(:status => 1).where(:derivation_type => "relevelled").where.not("uuid LIKE :prefix", prefix: "#{SW_PREFIX}%")
+  def get_relevelled_stories
+    stories = Story.where(:status => 1).where(:derivation_type => "relevelled").where.not("uuid LIKE :prefix", prefix: "#{params["org_prefix"]}%")
 
     relevelled_stories_data = {}
 
     stories.each do |story|
       original_uuid = story.root.uuid
-      if original_uuid.start_with? SW_PREFIX # checking if the original/root story was a SW story
+      if original_uuid.start_with? params["org_prefix"]
         relevelled_stories_data[story.uuid] = {
           "language"  => story.language.name,
           "ancestry"  => {
@@ -188,6 +218,7 @@ class Api::V0::AnalyticsDataController < Api::V0::ApplicationController
 
   
   ###################### TRACKER PUSH API ##########################
+  # TODO: DB structure is changed now. So we need to change the code.
   def track_event
     if params["operation"].nil? || params["entity"].nil? || params["org_id"].nil? || params["uuid"].nil?
       render json: {error: 'All required parameters not present'}, status: 406

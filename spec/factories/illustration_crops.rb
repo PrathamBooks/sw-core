@@ -26,4 +26,9 @@ FactoryGirl.define do
     illustration { create(:illustration) }
   end
 
+  factory :illustration_crop_with_image, class: IllustrationCrop do
+    illustration { create(:illustration) }
+    pages {[FrontCoverPage.find(1)]}
+    image Rack::Test::UploadedFile.new('spec/photos/forest.jpg', 'image/jpg')
+  end
 end

@@ -40,7 +40,7 @@ Rails.application.configure do
   config.active_support.deprecation = :stderr
 
   Paperclip::Attachment.default_options[:path] = "#{Rails.root}/public/spec/test_files/:class/:id/:style/:basename.:extension"
-  Paperclip::Attachment.default_options[:url] = "/spec/test_files/:class/:id/:style/:basename.:extension"
+  Paperclip::Attachment.default_options[:url] = "/public/spec/test_files/:class/:id/:style/:basename.:extension"
 
 
   # Raises error for missing translations

@@ -29,4 +29,10 @@ FactoryGirl.define do
     active_on_home true
   end
 
+  factory :story_category_with_banner_and_home_image, class: StoryCategory do
+    name "Wildlife"
+    active_on_home true
+    category_banner Rack::Test::UploadedFile.new('spec/photos/forest.jpg', 'image/jpg')
+    category_home_image Rack::Test::UploadedFile.new('spec/photos/logo.png', 'image/png')
+  end
 end

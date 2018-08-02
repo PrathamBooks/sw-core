@@ -16,7 +16,8 @@ File.open("public/assets/media/catalog.atom", 'w') do |f|
   f.write("<link rel=\"self\" href=\"https://storyweaver.org.in\" type=\"application/atom+xml;profile=opds-catalog;kind=acquisition\"/>\n")
   f.write("<link rel=\"start\" href=\"https://storyweaver.org.in\" type=\"application/atom+xml;profile=opds-catalog;kind=acquisition\"/>\n")
   f.write("\n")
-  stories = Story.published
+  pb = Organization.where(organization_name: "Pratham Books")
+  stories = Story.where(organization: pb, status: Story.statuses[:published])
   stories.each do |s|
     f.write("<entry>\n")
     f.write("<title>#{sanitize(s.title)}</title>\n")

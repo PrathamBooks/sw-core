@@ -75,7 +75,22 @@ FactoryGirl.define do
     categories {[FactoryGirl.create(:story_category)]}
     sequence(:organization_id) {|n| "organization_id #{n}"}
     published_at '2015-07-28 10:25:54'
-  end  
+  end
+  
+  factory :english_story, class: Story do
+    sequence(:title) { |n| "Title#{n}" }
+    sequence(:english_title) { |n| "English Title#{n}" }
+    language {FactoryGirl.create(:english_in_noto_sans_font)}
+    authors {[FactoryGirl.create(:user)]}
+    reading_level '1'
+    status 'published'
+    orientation 'landscape'
+    attribution_text "This book has been published on StoryWeaver by rspec"
+    sequence(:synopsis) { |n| "Synopsis #{n}" }
+    copy_right_year Time.now.year
+    categories {[FactoryGirl.create(:story_category)]}
+    published_at '2015-07-28 10:25:54'
+  end
 
   factory :story_with_publisher, class: Story do
     sequence(:title) { |n| "Title#{n}" }

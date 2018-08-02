@@ -27,6 +27,7 @@ class Api::V1::RegistrationsController < Devise::RegistrationsController
         content_managers = User.content_manager.collect(&:email).join(",")
         UserMailer.delay(:queue=>"mailer").organization_user_signup(content_managers,@user.organization,current_user)
       end
+      @user.add_uuid_and_origin_url
       message = "A message with a confirmation link has been sent to your email address. Please follow the link to activate your account."
       render json: {"ok"=>true, :message => message}, status: 201
     else
