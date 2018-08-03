@@ -76,7 +76,7 @@ require 'json'
 # Error handling
 
 # Assumption: Language, Author, Copy Right Holder, StoryCategory, Illustration already exist with passed IDs
-def createCompleteStory(api_response, token, origin)
+def createCompleteStory(api_response, token, origin, partner_prefix)
   lang_obj = getLanguage(api_response[:language_name], token, origin)
   story_category_objs = []
   api_response[:story_categories].each {|data| story_category_objs << getStoryCategory(data, token, origin) }
@@ -86,7 +86,7 @@ def createCompleteStory(api_response, token, origin)
     author_objs << getUser(uuid, token, origin)
   end
 
-  import_partner = ImportPartner.find_by_prefix(user_input_hash[:partnerPrefix])
+  import_partner = ImportPartner.find_by_prefix(partner_prefix)
   if import_partner.nil?
     puts "import partner not found.. cannot save the story"
     return nil
@@ -113,7 +113,7 @@ def createCompleteStory(api_response, token, origin)
   )
 
   puts "Will set recommended flag of the story if it is a publisher one.."
-  story.recommended_status = :recommended if !org_obj.nil?
+  story.recommended_status = :recommended if !import_partner.organization.nil?
 
   begin
     story.save!
@@ -520,10 +520,12 @@ origin = user_input_hash[:origin]
 
 token = user_input_hash[:token]
 
+partner_prefix = user_input_hash[:partnerPrefix]
+
 story_uuids.each do |story_uuid|
   if Story.find_by_uuid(story_uuid) == nil
     story_data = fetchStory(story_uuid, token, origin)
-    story_obj = createCompleteStory(story_data, token, origin)
+    story_obj = createCompleteStory(story_data, token, origin, partner_prefix)
     if story_obj == nil
       puts "\n\nunable to save story with uuid : #{story_uuid}"
       next
@@ -536,7 +538,7 @@ story_uuids.each do |story_uuid|
       root_story_obj = Story.find_by_uuid(root_story_uuid)
       if root_story_obj == nil
         root_story_data = fetchStory(root_story_uuid, token, origin)
-        root_story_obj = createCompleteStory(root_story_data, token, origin)
+        root_story_obj = createCompleteStory(root_story_data, token, origin, partner_prefix)
         if root_story_obj == nil
           puts "\n\nunable to save root story with uuid : #{root_story_obj}"
           next
