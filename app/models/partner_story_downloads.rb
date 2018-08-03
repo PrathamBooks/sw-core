@@ -14,4 +14,5 @@
 #
 
 class PartnerStoryDownloads < ActiveRecord::Base
+  belongs_to :organization
 end

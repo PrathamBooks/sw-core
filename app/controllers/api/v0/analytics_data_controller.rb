@@ -6,50 +6,49 @@ class Api::V0::AnalyticsDataController < Api::V0::ApplicationController
   DOWNLOAD_EVENT = "download"
   STORY_ENTITY = "story"
   ILLUSTRATION_ENTITY = "illustration"
-  SW_PREFIX = "SW-"
 
   swagger_controller :analytics_data, 'Analytics Data'
 
   swagger_api :get_story_read_count do
-    summary "Get read count for all stories of queried organization"
+    summary "Get read count for all stories of queried platform"
     param :query, :token, :string, :required, "Access Token"
-    param :query, :org_prefix, :string, :required, "Organization Prefix"
+    param :query, :platform_code, :string, :required, "Platform Code"
   end
 
   swagger_api :get_story_download_count do
-    summary "Get download count for each type (high res PDF, low res PDF, ePUB) for all stories of queried organization"
+    summary "Get download count for each type (high res PDF, low res PDF, ePUB) for all stories of queried platform"
     param :query, :token, :string, :required, "Access Token"
-    param :query, :org_prefix, :string, :required, "Organization Prefix" 
+    param :query, :platform_code, :string, :required, "Platform Code" 
   end 
 
   swagger_api :get_illustration_view_count do
-    summary "Get read count for all illustrations of queried organization"
+    summary "Get read count for all illustrations of queried platform"
     param :query, :token, :string, :required, "Access Token"
-    param :query, :org_prefix, :string, :required, "Organization Prefix"
+    param :query, :platform_code, :string, :required, "Platform Code"
   end
 
   swagger_api :get_illustration_download_count do
-    summary "Get download count for all illustrations of queried organization"
+    summary "Get download count for all illustrations of queried platform"
     param :query, :token, :string, :required, "Access Token"
-    param :query, :org_prefix, :string, :required, "Organization Prefix"
+    param :query, :platform_code, :string, :required, "Platform Code"
   end
 
   swagger_api :get_illustration_reuse_count do
-    summary "Get count of illustrations of queried organization that are being used in stories created by client"
+    summary "Get count of illustrations of queried platform that are being used in stories created by client"
     param :query, :token, :string, :required, "Access Token"
-    param :query, :org_prefix, :string, :required, "Organization Prefix"
+    param :query, :platform_code, :string, :required, "Platform Code"
   end
 
   swagger_api :get_translated_stories do
-    summary "Get all translated stories that dont belong to queried organization but are derived from story belonging to queried organization"
+    summary "Get all translated stories that dont belong to queried platform but are derived from story belonging to queried platform"
     param :query, :token, :string, :required, "Access Token"
-    param :query, :org_prefix, :string, :required, "Organization Prefix"
+    param :query, :platform_code, :string, :required, "Platform Code"
   end
 
   swagger_api :get_relevelled_stories do
-    summary "Get all relevelled stories that dont belong to queried organization but are derived from story belonging to queried organization"
+    summary "Get all relevelled stories that dont belong to queried platform but are derived from story belonging to queried platform"
     param :query, :token, :string, :required, "Access Token"
-    param :query, :org_prefix, :string, :required, "Organization Prefix"
+    param :query, :platform_code, :string, :required, "Platform Code"
   end
 
   def authenticate_tracker_request
@@ -72,12 +71,12 @@ class Api::V0::AnalyticsDataController < Api::V0::ApplicationController
   end
 
   def get_story_read_count
-    if params["org_prefix"].nil? || params["org_prefix"].empty?
-      render json: {error: 'Organization prefix not present'}, status: :unauthorized
+    if params["platform_code"].nil? || params["platform_code"].empty?
+      render json: {error: 'Platform code not present'}, status: :unauthorized
       return
     end
 
-    stories = Story.where("uuid LIKE :prefix", prefix: "#{params["org_prefix"]}%")
+    stories = Story.where("uuid LIKE :prefix", prefix: "#{params["platform_code"]}%")
 
     story_read_map = {}
 
@@ -87,12 +86,12 @@ class Api::V0::AnalyticsDataController < Api::V0::ApplicationController
   end
 
   def get_story_download_count
-    if params["org_prefix"].nil? || params["org_prefix"].empty?
-      render json: {error: 'Organization prefix not present'}, status: :unauthorized
+    if params["platform_code"].nil? || params["platform_code"].empty?
+      render json: {error: 'Platform code not present'}, status: :unauthorized
       return
     end
 
-    stories = Story.where("uuid LIKE :prefix", prefix: "#{params["org_prefix"]}%")
+    stories = Story.where("uuid LIKE :prefix", prefix: "#{params["platform_code"]}%")
 
     story_download_map = {}
 
@@ -106,12 +105,12 @@ class Api::V0::AnalyticsDataController < Api::V0::ApplicationController
   end
 
   def get_illustration_view_count
-    if params["org_prefix"].nil? || params["org_prefix"].empty?
-      render json: {error: 'Organization prefix not present'}, status: :unauthorized
+    if params["platform_code"].nil? || params["platform_code"].empty?
+      render json: {error: 'Platform code not present'}, status: :unauthorized
       return
     end
 
-    illustrations = Illustration.where("uuid LIKE :prefix", prefix: "#{params["org_prefix"]}%")
+    illustrations = Illustration.where("uuid LIKE :prefix", prefix: "#{params["platform_code"]}%")
 
     illustration_read_map = {}
 
@@ -121,12 +120,12 @@ class Api::V0::AnalyticsDataController < Api::V0::ApplicationController
   end
 
   def get_illustration_download_count
-    if params["org_prefix"].nil? || params["org_prefix"].empty?
-      render json: {error: 'Organization prefix not present'}, status: :unauthorized
+    if params["platform_code"].nil? || params["platform_code"].empty?
+      render json: {error: 'Platform code not present'}, status: :unauthorized
       return
     end
 
-    illustrations = Illustration.where("uuid LIKE :prefix", prefix: "#{params["org_prefix"]}%")
+    illustrations = Illustration.where("uuid LIKE :prefix", prefix: "#{params["platform_code"]}%")
 
     illustration_download_map = {}
     id_uuid_map = {}
@@ -149,8 +148,8 @@ class Api::V0::AnalyticsDataController < Api::V0::ApplicationController
   end
 
   def get_illustration_reuse_count
-    if params["org_prefix"].nil? || params["org_prefix"].empty?
-      render json: {error: 'Organization prefix not present'}, status: :unauthorized
+    if params["platform_code"].nil? || params["platform_code"].empty?
+      render json: {error: 'Platform code not present'}, status: :unauthorized
       return
     end
 
@@ -160,7 +159,7 @@ class Api::V0::AnalyticsDataController < Api::V0::ApplicationController
     stories.each do |s|
       story_illustration_uuids = s.illustrations.map(&:uuid)
       story_illustration_uuids.each do |uuid|
-        filtered_uuids << uuid if uuid.start_with? params["org_prefix"]
+        filtered_uuids << uuid if uuid.start_with? params["platform_code"]
       end
     end
 
@@ -170,18 +169,18 @@ class Api::V0::AnalyticsDataController < Api::V0::ApplicationController
   end
 
   def get_translated_stories
-    if params["org_prefix"].nil? || params["org_prefix"].empty?
-      render json: {error: 'Organization prefix not present'}, status: :unauthorized
+    if params["platform_code"].nil? || params["platform_code"].empty?
+      render json: {error: 'Platform code not present'}, status: :unauthorized
       return
     end
 
-    stories = Story.where(:status => 1).where(:derivation_type => "translated").where.not("uuid LIKE :prefix", prefix: "#{params["org_prefix"]}%")
+    stories = Story.where(:status => 1).where(:derivation_type => "translated").where.not("uuid LIKE :prefix", prefix: "#{params["platform_code"]}%")
 
     translated_stories_data = {}
 
     stories.each do |story|
       original_uuid = story.root.uuid
-      if original_uuid.start_with? params["org_prefix"]
+      if original_uuid.start_with? params["platform_code"]
         translated_stories_data[story.uuid] = {
           "language"  => story.language.name,
           "ancestry"  => {
@@ -196,13 +195,13 @@ class Api::V0::AnalyticsDataController < Api::V0::ApplicationController
   end
 
   def get_relevelled_stories
-    stories = Story.where(:status => 1).where(:derivation_type => "relevelled").where.not("uuid LIKE :prefix", prefix: "#{params["org_prefix"]}%")
+    stories = Story.where(:status => 1).where(:derivation_type => "relevelled").where.not("uuid LIKE :prefix", prefix: "#{params["platform_code"]}%")
 
     relevelled_stories_data = {}
 
     stories.each do |story|
       original_uuid = story.root.uuid
-      if original_uuid.start_with? params["org_prefix"]
+      if original_uuid.start_with? params["platform_code"]
         relevelled_stories_data[story.uuid] = {
           "language"  => story.language.name,
           "ancestry"  => {

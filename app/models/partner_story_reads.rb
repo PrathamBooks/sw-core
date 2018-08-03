@@ -11,4 +11,5 @@
 #
 
 class PartnerStoryReads < ActiveRecord::Base
+  belongs_to :organization
 end

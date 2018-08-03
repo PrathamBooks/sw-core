@@ -10,5 +10,7 @@
 #  updated_at        :datetime
 #
 
+
 class PartnerIllustrationDownloads < ActiveRecord::Base
+  belongs_to :organization
 end
