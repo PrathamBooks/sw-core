@@ -89,7 +89,7 @@
   <% else %>
     <div class="license_container">
       <div class="license_cont-middle">
-        <span class="discl-txt">Disclaimer:<a href="<%= host_url %>/terms_and_conditions" target="_blank">https://www.storyweaver.org.in/terms_and_conditions</a> </span>
+        <span class="discl-txt">Disclaimer:<a href="<%= host_url %>/terms_and_conditions" target="_blank"><%= host_url %>/terms_and_conditions</a> </span>
         <%= render :partial => "pages/license", locals: {license: @story.license_type } %>
         <% @additional_illustration_license_types.each do |license|  %>
           <%= render :partial => "pages/license", locals: {license: license} %>
