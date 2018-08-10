@@ -1,0 +1,18 @@
+<h1>Illustrations</h1>
+<div class="row">
+  <div class="col-md-12">
+    <%= simple_form_for @illustration,html: { class: 'form-horizontal',  multipart: true } do |f| %>
+      <%= f.input :name %>
+      <%= f.input "illustrator_name" %>
+      <% if current_user.has_role?(:publisher) %>
+        <%= f.input "illustrator_email" %>
+        <%= f.input "illustrator_bio", as: :text %>
+      <% end %>
+      <%= f.association :styles, multiple: true %>
+      <%= f.association :categories, multiple: true %>
+      <%= f.file_field :image %>
+      <%= f.input :attribution_text, as: :text %>
+      <%= f.button :submit %>
+    <% end %>
+  </div>
+</div>

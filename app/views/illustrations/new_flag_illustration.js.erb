@@ -1,0 +1,8 @@
+$('#FlagIllustrationForm').html("<%= escape_javascript(render(:partial=>"flag_illustration_form"))%>");
+
+$(document).ready(function() {
+	$('#FlagIllustrationModal').modal({
+		show: true
+	});
+});
+

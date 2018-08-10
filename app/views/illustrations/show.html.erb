@@ -1,0 +1,361 @@
+<section id="illus-details-temp">
+  <div class="row">
+    <div class="full-illus-detail">
+      <div class="illustration-full">
+        <div class="col-md-3 col-sm-12 illus-img"><%= link_to image_tag(@illustration.image.url(:large)), view_illustration_path(@illustration),  :remote => true %></div>
+        <div class="col-md-9 col-sm-12 full-illus-dt padding-left">
+          <div class="full-illus-dt1">
+          	<div class="col-md-9 col-sm-9 nopadding illustration-top">
+            <div class="det-illus-tit">
+              <div class="col-md-12 col-sm-12 illus-dt nopadding">
+                <%= @illustration.name %>
+              </div>
+            </div>
+            <div class="det-illus-illust">
+              <label><em>by </em> </label>
+              <% @illustration.illustrators.each_with_index do | illustrator, index | %>
+                <% if illustrator.user %>
+                  <span><%= link_to illustrator.name, '/users/' + illustrator.user.slug %> </span>
+                <% else %>
+                  <span><%= link_to illustrator.name, illustrations_path(:search => {:illustrators => illustrator.name}) %></span>
+                <% end %>
+                <% unless index == @illustration.illustrators.length - 1  %>,<% end %>
+              <% end %>
+            </div>
+            </div>
+            <div class="story-details-right col-md-3 col-sm-3 nopadding">
+              <div class="col-md-5 col-sm-5 likes">
+                <% if !current_user.nil? && !current_user.liked?(@illustration) %>
+                  <span id="illustration-like" class="btn illustration-like likeable">
+                    <i class='fa fa-eye fa-2x'  onClick="ga('send', 'event', { eventCategory: 'like', eventAction: 'illustration', eventLabel: '<%= @illustration.name %>'});"></i>
+                  </span>
+                <% elsif !current_user.nil? && current_user.liked?(@illustration) %>
+                  <span id="illustration-like" class="illustration-like liked">
+                    <i class='fa fa-eye fa-2x'></i>
+                  </span>
+                <% else %>
+                  <span id="illustration-like" class="btn illustration-like disabled">
+                    <i title="Please log in to like the illustration" class='fa fa-eye fa-2x'></i>
+                  </span>
+                <% end %>
+                <span class="number-of-likes" id="illustration-likes-<%= @illustration.id %>"><%= @illustration.likes %></span>
+              </div>
+              <% if current_user %> 
+                <% if policy(@illustration).flag? %>
+                  <div class="det-flag col-md-6 col-sm-6 nopadding">
+                    <a rel="nofollow" href="<%= new_flag_illustration_path(@illustration) %>"  data-remote="true"><i class="fa fa-flag"></i></a><label>report</label>
+                  </div>
+                <% elsif @illustration.flagged? %>
+                  <div class="det-flag col-md-6 col-sm-6 nopadding" title="flagged illustration">
+                    <a rel="nofollow" href="<%= new_flag_illustration_path(@illustration) %>" data-remote="true" class="disabled"><i class="fa fa-flag active"></i></a>
+                  </div>
+                <% end %>
+              <% else %>
+                   <div class="det-flag col-md-6 col-sm-6 nopadding" title="please log in to flag this illustration">
+                    <a rel="nofollow" href="<%= new_flag_illustration_path(@illustration) %>" class="disabled" data-remote="true"><i class="fa fa-flag "></i></a><label>report</label>
+                  </div>
+              <% end %>
+          	</div>
+          	 <div class="col-md-12 nopadding views-story-full illus-full-like">
+		        <div class="story-views illus-views">
+		          <span><i class='fa fa-eye fa-2x'></i></span>
+		          <span id="illustration-views-<%= @illustration.id %>"><%= @illustration.reads %></span>
+		        </div>       		        		      
+		     </div>
+            <div class="illus-style mob-hide">
+              <label>Publisher</label>
+              <% if @illustration.organization %>
+                <%= link_to @illustration.organization.organization_name, "/publishers/"+@illustration.organization.slug %>
+              <% else %>
+                <%= link_to "StoryWeaver Community",illustrations_path(:search => {:organization => "storyweaver"}) %>
+              <% end %>
+            </div>
+            <% if @illustration.number_of_parent_stories_used_in > 0 %>
+              <div class="det-lang">
+                <label>Used In </label>
+                  <% @illustration.parent_story_links.each_with_index do |story, index| %>
+                    <% unless index >= 5 %>
+                      <span><%= link_to story.title, react_stories_show_path(story.to_param), :target => "_blank" if story %></span>
+                      <span><%= "(#{story.get_children_count})" if story.get_children_count  > 0 %></span><% unless index == @illustration.number_of_parent_stories_used_in - 1  %>,<% end %>
+                    <% else %>
+                      <span><%= link_to "More Stories", react_search_path(:illustration_id => @illustration.id), :target => "_blank" %></span>.
+                      <% break %>
+                    <% end %>
+                <% end %>
+              </div>
+            <% end %>
+            <div class="illus-style mob-hide">
+              <label>Styles </label>
+              <% @illustration.styles.each_with_index do | style, index | %>
+                <span><%= link_to style.name, illustrations_path(:search => {:styles => [style.name]}) %></span><% unless index == @illustration.styles.length - 1  %>|<% end %>
+              <% end %>
+            </div>
+            <div class="illus-det-catagory mob-hide">
+              <label>Categories </label>
+              <% @illustration.categories.each_with_index do | category, index | %>
+                <span><%= link_to category.name, illustrations_path(:search => {:categories => [category.name]}) %></span><% unless index == @illustration.categories.length - 1  %>|<% end %>
+              <% end %>
+            </div>
+            <div id="illus-tags">
+              <%= render :partial => "tags" %>
+            </div>
+            <% unless @illustration.attribution_text.blank? %>
+              <div class="illus-det-tags mob-hide">
+                <label>Attribution Text </label>
+                <span><%= @illustration.attribution_text %><span>
+            </div>
+            <% end %>
+            <!-- <div class="flag-illus"><label>Flag as Inappropriate:</label><img src="images/flag.gray.png"/></div> -->         
+          </div>          
+        </div>
+      </div>
+      <div class="row">
+    	<div class="col-md-12 col-sm-12 icons-div">
+	       <div class="illus-stry-btn full-icons">
+			       <span>
+	         <a  data-remote="true" href="<%= view_illustration_path(@illustration)%>" >
+	           <i class="fa fa-view"></i>View
+	         </a></span>
+	            <span class="create-sty-illu">
+	              <a href="<%= params[:contest].nil? ? create_story_from_illustration_path(:id=>@illustration.id) : create_story_from_illustration_path(:id => @illustration.id,contest_id: params[:contest]) %>" class="hide-in-mob-create" >
+	               <i class='fa fa-pencil-square-o'></i>Create story
+	              </a>
+	            </span>
+	            <span class="share-sty-illu">
+                <a id="share-social-card" class="btn-slide animation animated-item-3" data-toggle="modal" data-target="#shareModal"><i class="fa fa-share"></i>share
+                </a>
+	            </span>
+              <span class="dt-download" id="search-details-dropdown">
+                <div class="dropdown">
+                  <% if user_signed_in? %>
+                  <a class="btn btn-default dropdown-toggle myclickdrop"
+                    type="button"
+                    id="dropdownMenu1"
+                    data-toggle="dropdown"
+                    aria-expanded="true">
+                    <i class="fa fa-download"></i><span>Download</span>
+                  </a>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                    <li role="presentation">
+                      <a href="<%= download_illustrations_path(@illustration,:style => "original") %>" onClick="ga('send', 'event', { eventCategory: 'download', eventAction: 'Illustration high resolution', eventLabel: '<%= @illustration.name %>'});">High resolution</a>
+                    </li>
+                    <li role="presentation">
+                      <a href="<%= download_illustrations_path(@illustration,:style => "large") %>" onClick="ga('send', 'event', { eventCategory: 'download', eventAction: 'Illustration low resolution', eventLabel: '<%= @illustration.name %>'});">Low resolution</a>
+                    </li>
+                  </ul>
+                  <% else %>
+                    <a id="download" class="btn-slide animation animated-item-3" data-toggle="modal" data-target="#downloadModal"><i class="fa fa-download"></i><span>Download</span></a>
+                  <% end %>
+                </div>
+              </span>
+	          </div>
+	       </div>
+	     </div>
+      <div class="modal fade downloadModal" id="downloadModal" tabindex="-1" role="dialog" aria-labelledby="moreLinksModalLabel1" aria-hidden="true">
+        <div class="vertical-alignment-helper" >
+          <div class="modal-dialog vertical-align-center">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button aria-label="Close" data-dismiss="modal" class="close mypopup-close" type="button"><span aria-hidden="true"><i class="fa fa-times"></i> Close</span></button>
+                <h2 class="modal-title text-left">download</h2>
+                <hr class="form-hr">
+              </div>
+              <div class="modal-body nopadding">
+                <div id="download-type-list" style="text-align: center;">You need to be logged in to download an illustration
+                  <br/>
+                  <%= link_to "Login", new_user_session_path, :class=>"btn signin-button"%>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+       <div class="modal fade shareModal" id="shareModal" tabindex="-1" role="dialog" aria-labelledby="moreLinksModalLabel1" aria-hidden="true">
+        <div class="vertical-alignment-helper" >
+          <div class="modal-dialog vertical-align-center">
+            <div class="modal-content">
+            <div class="modal-header">
+              <button aria-label="Close" data-dismiss="modal" class="close mypopup-close" type="button"><span aria-hidden="true"><i class="fa fa-times"></i> Close</span></button>
+              <h2 class="modal-title text-left">share</h2>
+              <hr class="form-hr">
+            </div>
+              <div class="modal-body nopadding">
+                <div id="social-share-btn">
+                    <%= social_share_button_tag(@illustration.name, :url => illustration_url(@illustration) , :image => @illustration.image.url(:large), :desc => "Pratham Books: a book in every child's hand", :popup => "true") %>
+                </div>
+                <div class="modal-footer">
+                </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> 
+    </div>
+  </div>
+   <div id="newStoryFromIllustration">
+
+   </div>
+</section>
+<section id="story-category-mobile" class="illus-cat-mob modal-list">
+  <div>
+    <!-- Modal -->
+    <div class="modal fade" id="illus-categoryModal" tabindex="-1" role="dialog" aria-labelledby="moreLinksModalLabel" aria-hidden="true">
+      <div class="vertical-alignment-helper">
+      <div class="modal-dialog vertical-align-center">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="cate-list">
+              <ul>
+                <% @illustration.categories.each do |c| %>
+                  <li><%= link_to c.name, illustrations_path(:search => {:categories => [c.name]}) %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+     </div>
+    </div>
+    <div class="story-cat-button">
+      <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#illus-categoryModal">CATEGORIES</button>
+    </div>
+  </div>
+</section>
+<section id="story-tags-mobile" class="illus-tags-mob modal-list">
+	<div>
+		<!-- Modal -->
+        <div class="modal fade" id="illus-tagModal" tabindex="-1" role="dialog" aria-labelledby="moreLinksModalLabel" aria-hidden="true">
+          <div class="vertical-alignment-helper">
+          <div class="modal-dialog vertical-align-center">
+            <div class="modal-content">
+              <div class="modal-body">
+		          <div class="tags-list">
+					<ul>				
+						<% @illustration.tag_list.each do |t| %>				
+						<li><%= t %></li>				
+						<% end %>				
+					</ul>		
+					</div>              
+               </div>
+          </div>
+         </div>
+        </div>
+       </div>
+           <div class="story-cat-button">
+      			<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#illus-tagModal">TAGS</button>       
+    	   </div>
+	</div>
+</section>
+<section id="story-style-mobile" class="illus-style-mob modal-list">
+	<div>
+		<!-- Modal -->
+        <div class="modal fade" id="illus-styleModal" tabindex="-1" role="dialog" aria-labelledby="moreLinksModalLabel" aria-hidden="true">
+          <div class="vertical-alignment-helper">
+          <div class="modal-dialog vertical-align-center">
+            <div class="modal-content">
+              <div class="modal-body">
+		          <div class="style-list">
+		          <ul>
+					<% @illustration.style_names.split(',').each do |c| %>			
+					<li><%= c %></li>			
+					<% end %>
+				 </ul>
+		          </div>             
+               </div>
+             </div>
+           </div>
+           </div>
+         </div>
+           <div class="story-cat-button">
+      			<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#illus-styleModal">STYLES</button>       
+    	   </div>
+	</div>
+</section>
+<section class="carousel-thumbnail">
+	<div class="row slider-carousel common-style">
+			<% if @similar_illustrations.any? %>
+			 	<h2>If you liked this, you will also like <i class="fa fa-circle"></i> <i class="fa fa-circle"></i> <i class="fa fa-circle"></i></h2>
+					<ul class="bxslider story-slides">
+						<% @similar_illustrations.each do |illustration| %>
+					  <li>
+					  	<div class="carousel-img">
+					  		<a href="<%= react_illustrations_show_path(illustration.id) %>"><img src="<%= illustration.image_url%>"></a>
+							</div>
+							<div class="carousel-content">  
+						  	<h3><a class="title" href="<%= react_illustrations_show_path(illustration.id) %>"><%= illustration.name %></a></h3>
+						  	<p>Styles: <%= illustration.styles.join(", ") %></p> 
+						  	<p>Categories: <%= illustration.categories.join(", ") %></p>
+							</div>  
+					  </li>
+					  <% end %>
+					</ul>
+			<% end %>
+	</div>
+</section>
+
+<div id="illustration-view"></div>
+<div id="FlagIllustrationForm"></div>
+
+<%= render partial: 'stories/desktop_only_action_message.html.erb'  %>
+
+<% content_for :title do %>
+  <%= @illustration.name.to_s %>
+<% end %>
+
+<% content_for :description do %>
+  Pratham Books: A book in every child's hand
+<% end %>
+
+<script>
+$(document).ready(function(){
+	var state2 = false;
+	$(".cate-story").click(function () {
+	    if (!state2) {
+	        $('.stry-ctg').animate({"right":"0px",width: "toggle"}, 200);
+		   $(".cate-story h2").addClass("new-content");	
+	          state2 = true;
+	        }
+	    else {
+	          $('.stry-ctg').animate({"right":"0px",width: "toggle"}, 200);
+			   $(".cate-story h2").removeClass("new-content");
+	          state2 = false;
+	        }
+	});
+	var state3 = false;
+
+	$(".tags-story").click(function () {
+	var height = $(window).height();
+	var scrollTop = $(window).scrollTop();
+	    if (!state3) {
+	        $('.stry-tgs').animate({"right":"0px",width: "toggle"}, 200);
+		   $(".tags-story h2").addClass("new-content");	
+	          state3 = true;
+	        }
+	    else {
+	          $('.stry-tgs').animate({"right":"0px",width: "toggle"}, 200);
+			   $(".tags-story h2").removeClass("new-content");
+	          state3 = false;
+	        }
+	});
+	 	$('.bxslider').bxSlider({
+	  	pager: false,
+		  minSlides: 1,
+		  maxSlides: 3,
+		  slideWidth: 350,
+		  slideMargin: 10	  
+		});
+  $('.illustration-like.likeable').click(function(){
+    Statistics.trackIllustrationLike(<%= @illustration.id %>);
+    if($(this).attr('class').indexOf('liked')===-1){
+      $(this).removeClass('btn likeable');
+      $(this).addClass('liked');
+      $('#illustration-likes-'+<%= @illustration.id %>).text(parseInt($('#illustration-likes-'+<%= @illustration.id %>).text())+1);
+    }
+  });
+  Statistics.trackIllustrationRead(<%= @illustration.id %>);
+  $('#illustration-views-<%= @illustration.id %>').text(parseInt($('#illustration-views-<%= @illustration.id %>').text())+1);
+});
+</script>
+
+
+
