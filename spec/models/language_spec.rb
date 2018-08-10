@@ -22,6 +22,9 @@
 require 'rails_helper'
 
 describe Language, :type => :model do
+
+  subject {Language.create!(name: 'German', can_transliterate: false, script: 'english', language_font: LanguageFont.create!(font: "Noto Sans", script: "english"), translated_name: 'German', locale: 'en')}
+
   it { should validate_presence_of :name }
   it { should validate_presence_of :script }
   it { should validate_uniqueness_of(:name).case_insensitive}

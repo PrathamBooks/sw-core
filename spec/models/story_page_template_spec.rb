@@ -22,6 +22,9 @@
 require 'rails_helper'
 
 describe StoryPageTemplate, :type => :model do
+
+  subject {StoryPageTemplate.create!(name: 'sp_h_text_overlay1',orientation: 'landscape', image_position: 'background', content_position: 'foreground', image_dimension: 100, content_dimension: 80)}
+
   it{ should validate_presence_of(:name)}
   it{ should validate_uniqueness_of(:name)}
 
