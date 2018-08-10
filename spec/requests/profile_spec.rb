@@ -2,6 +2,10 @@ require 'spec_helper'
 
 RSpec.describe "Api::V1::Profile::Requests", :type => :request do
 
+  before(:all) do
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
   before(:each) do
     @user= FactoryGirl.create(:user)
     @list_category = FactoryGirl.create(:list_category)

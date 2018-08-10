@@ -3,6 +3,8 @@ require "spec_helper"
 describe "Api::V0::DataExchange::Requests", :type => :request do
 
   before(:all) do
+    DatabaseCleaner.clean_with(:truncation)
+
     @valid_token = FactoryGirl.create(:token).access_token
     
     @story = FactoryGirl.create(:english_story)    

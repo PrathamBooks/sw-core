@@ -77,7 +77,7 @@ describe Api::V1::HomeController, :type => :controller do
       expect_json('data.bannerImages.0.imageUrls.aspectRatio', 3.4026666666666667)
       expect(JSON.parse(response.body)['data']['bannerImages'][0]['imageUrls']['sizes'][0].keys).to contain_exactly("width", "url")
       x = JSON.parse(response.body)["data"]["bannerImages"][0]["imageUrls"]["sizes"][0]["url"]
-      expect(x).to start_with('/spec/test_files/banners/')
+      expect(x).to start_with('/public/spec/test_files/banners/')
       expect_status(200)
     end
     it "should show details of editorsPick from home page" do

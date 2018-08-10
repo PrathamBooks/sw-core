@@ -3,6 +3,10 @@ require 'rails_helper'
 
 RSpec.describe "Api::V1::Home::Requests", :type => :request do
 
+  before(:all) do
+    DatabaseCleaner.clean_with(:truncation)
+  end
+  
   before(:each) do
     @user= FactoryGirl.create(:user)
     @list_category = FactoryGirl.create(:list_category)
@@ -33,7 +37,7 @@ RSpec.describe "Api::V1::Home::Requests", :type => :request do
       expect_json('data.bannerImages.0', pointToLink: 'www.google.com')
       expect_json('data.bannerImages.0.imageUrls', aspectRatio: 3.4026666666666667)
       expect_json('data.bannerImages.0.imageUrls.sizes.0', width: '692')
-      expect(JSON.parse(response.body)['data']['bannerImages'][0]['imageUrls']['sizes'][0]['url']).to start_with('/spec/test_files/banners/')
+      expect(JSON.parse(response.body)['data']['bannerImages'][0]['imageUrls']['sizes'][0]['url']).to start_with('/public/spec/test_files/banners/')
 
       expect(JSON.parse(response.body)['data']['statistics'].keys).to contain_exactly("storiesCount","readsCount", "languagesCount")
       expect_json('data.statistics', storiesCount: 1)

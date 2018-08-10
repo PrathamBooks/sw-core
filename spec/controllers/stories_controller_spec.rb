@@ -227,41 +227,4 @@ describe StoriesController, :type => :controller do
     end
   end
 
-  describe "GET flagging a story" do
-    before(:each) do
-      @user = FactoryGirl.create(:user)
-      @story = FactoryGirl.create(:story)
-      sign_in @user
-    end
-
-    it "should force the user to sign in before flagging a story" do
-      sign_out @user
-      attributes = {id: @story.id, reasons: 'reason for flagging'}
-
-      xhr :post, :flag_story, attributes
-
-      expect(response.status).to eql(401)
-    end
-
-    it "should allow the user to flag a story" do
-      attributes = {id: @story.id, reasons: 'reason for flagging'}
-
-      xhr :post, :flag_story, attributes
-
-      @story.reload
-      expect(response).to render_template("flag_story")
-      expect(@user.flagged?(@story, 'reason for flagging')).to be true
-    end
-
-    it "should not do anything when the user flags the same story more than once" do
-      attributes = {id: @story.id, reasons: 'reason for flagging'}
-
-      xhr :post, :flag_story, attributes
-      xhr :post, :flag_story, attributes
-
-      @story.reload
-      expect(response).to render_template("new_flag_story")
-      expect(@user.flagged?(@story, 'reason for flagging')).to be true
-    end
-  end
 end

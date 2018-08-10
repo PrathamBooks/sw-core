@@ -282,7 +282,7 @@ describe StoryEditorController, :type => :controller do
 
       expect(response).to be_success
       expect(response).to render_template("validate_story_pages")
-      expect(assigns(:image_errors)).to match_array([1, 2, 4])
+      expect(assigns(:image_errors)).to match_array([1, 2, 3, 4, 5])
       expect(assigns(:orientation_errors)).to match_array([4, 5])
     end
   end

@@ -431,8 +431,7 @@ describe Story, :type => :model do
       @original_story.publish
 
       @original_story.reload
-      expect(@original_story.pages.select{|page| page.type == BackInnerCoverPage.name}.length).to be 2
-      expect(@original_story.pages[-3].type).to eql(BackInnerCoverPage.name)
+      expect(@original_story.pages.select{|page| page.type == BackInnerCoverPage.name}.length).to be 1
       expect(@original_story.pages[-2].type).to eql(BackInnerCoverPage.name)
       expect(@original_story.pages[-1].type).to eql(BackCoverPage.name)
     end
@@ -447,9 +446,7 @@ describe Story, :type => :model do
       @parent_relevelled_story.publish
 
       @parent_relevelled_story.reload
-      expect(@parent_relevelled_story.pages.select{|page| page.type == BackInnerCoverPage.name}.length).to be 3
-      expect(@parent_relevelled_story.pages[-4].type).to eql(BackInnerCoverPage.name)
-      expect(@parent_relevelled_story.pages[-3].type).to eql(BackInnerCoverPage.name)
+      expect(@parent_relevelled_story.pages.select{|page| page.type == BackInnerCoverPage.name}.length).to be 1
       expect(@parent_relevelled_story.pages[-2].type).to eql(BackInnerCoverPage.name)
       expect(@parent_relevelled_story.pages[-1].type).to eql(BackCoverPage.name)
     end
@@ -470,9 +467,7 @@ describe Story, :type => :model do
       @child_relevelled_story.publish
 
       @child_relevelled_story.reload
-      expect(@child_relevelled_story.pages.select{|page| page.type == BackInnerCoverPage.name}.length).to be 3
-      expect(@child_relevelled_story.pages[-4].type).to eql(BackInnerCoverPage.name)
-      expect(@child_relevelled_story.pages[-3].type).to eql(BackInnerCoverPage.name)
+      expect(@child_relevelled_story.pages.select{|page| page.type == BackInnerCoverPage.name}.length).to be 1
       expect(@child_relevelled_story.pages[-2].type).to eql(BackInnerCoverPage.name)
       expect(@child_relevelled_story.pages[-1].type).to eql(BackCoverPage.name)
     end
@@ -517,6 +512,15 @@ describe Story, :type => :model do
       generate_illustration_crop(@page3, FactoryGirl.create(:illustration, license_type: 'Public Domain'))
       @back_inner_cover_page = FactoryGirl.create(:back_inner_cover_page, story: @story, page_template: @back_inner_cover_page_template)
       @back_cover_page = FactoryGirl.create(:back_cover_page, story: @story, page_template: @back_cover_page_template)
+      ##################################################################
+      # NOTE: we should not be required to explicitly set the properties
+      @story.pages[0].illustration_crop = @front_cover_page.illustration_crop
+      @story.pages[1].illustration_crop = @page1.illustration_crop
+      @story.pages << @page2
+      @story.pages << @page3
+      @story.pages << @back_inner_cover_page
+      @story.pages << @back_cover_page
+      ##################################################################
     end
 
     it "should get unique list of all illustration license types" do

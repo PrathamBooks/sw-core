@@ -3,8 +3,12 @@ require "spec_helper"
 describe "Api::V0::AnalyticsData::Requests", :type => :request do
 
   before(:all) do
+    DatabaseCleaner.clean_with(:truncation)
+
     @valid_token = FactoryGirl.create(:token).access_token
     
+    @platform_code = "SW"
+
     @user = FactoryGirl.create(:user)
     @user.add_uuid_and_origin_url
 
@@ -89,7 +93,7 @@ describe "Api::V0::AnalyticsData::Requests", :type => :request do
     end
 
     it "should return 200 status and correct JSON if token is valid" do
-      get '/api/v0/analytics/story_read_count', token: @valid_token     
+      get '/api/v0/analytics/story_read_count', token: @valid_token, platform_code: @platform_code
       expect_status(200)
       expect(JSON.parse(response.body)).to eq({"SW-2"=>0, "SW-1"=>10})
     end
@@ -118,7 +122,7 @@ describe "Api::V0::AnalyticsData::Requests", :type => :request do
     end
 
     it "should return 200 status and correct JSON if token is valid" do
-      get '/api/v0/analytics/story_download_count', token: @valid_token      
+      get '/api/v0/analytics/story_download_count', token: @valid_token, platform_code: @platform_code      
       expect_status(200)
       expect(JSON.parse(response.body)).to eq({
         "SW-2"=>{"low_res_pdf"=>0, "high_res_pdf"=>0, "epub"=>0}, 
@@ -150,7 +154,7 @@ describe "Api::V0::AnalyticsData::Requests", :type => :request do
     end
 
     it "should return 200 status and correct JSON if token is valid" do
-      get '/api/v0/analytics/illustration_view_count', token: @valid_token      
+      get '/api/v0/analytics/illustration_view_count', token: @valid_token, platform_code: @platform_code      
       expect_status(200)
       expect(JSON.parse(response.body)).to eq({"SW-1"=>20, "SW-3"=>0})
     end
@@ -179,7 +183,7 @@ describe "Api::V0::AnalyticsData::Requests", :type => :request do
     end
 
     it "should return 200 status and correct JSON if token is valid" do
-      get '/api/v0/analytics/illustration_download_count', token: @valid_token      
+      get '/api/v0/analytics/illustration_download_count', token: @valid_token, platform_code: @platform_code      
       expect_status(200)
       expect(JSON.parse(response.body)).to eq({"SW-1"=>2, "SW-3"=>0})
     end
@@ -208,7 +212,7 @@ describe "Api::V0::AnalyticsData::Requests", :type => :request do
     end
 
     it "should return 200 status and correct JSON if token is valid" do
-      get '/api/v0/analytics/illustration_reuse_count', token: @valid_token      
+      get '/api/v0/analytics/illustration_reuse_count', token: @valid_token, platform_code: @platform_code      
       expect_status(200)
       expect(JSON.parse(response.body)).to eq({"count" => 1})
     end
@@ -218,26 +222,26 @@ describe "Api::V0::AnalyticsData::Requests", :type => :request do
   context "GET all published, non-SW, translated stories that have SW stories as their root" do
 
     it "should return 401 status and no token present message if no token passed" do
-      get '/api/v0/analytics/sw_translated_stories'
+      get '/api/v0/analytics/translated_stories'
       expect_status(401)
       expect_json(error: 'No token present')
     end
   
     it "should return 401 status and incorrect token message if token does not match" do
-      get '/api/v0/analytics/sw_translated_stories', token: "random_token"
+      get '/api/v0/analytics/translated_stories', token: "random_token"
       expect_status(401)
       expect_json(error: 'Incorrect token')
     end
 
     it "should return 401 status and invalid token message if token has expired" do
       @expired_token = FactoryGirl.create(:expired_token).access_token
-      get '/api/v0/analytics/sw_translated_stories', token: @expired_token
+      get '/api/v0/analytics/translated_stories', token: @expired_token
       expect_status(401)
       expect_json(error: 'Invalid token')
     end
 
     it "should return 200 status and correct JSON if token is valid" do
-      get '/api/v0/analytics/sw_translated_stories', token: @valid_token      
+      get '/api/v0/analytics/translated_stories', token: @valid_token, platform_code: @platform_code      
       expect_status(200)
       expect(JSON.parse(response.body)).to eq({
         "AWW-10"=>{
@@ -253,26 +257,26 @@ describe "Api::V0::AnalyticsData::Requests", :type => :request do
   context "GET all published, non-SW, relevelled stories that have SW stories as their root" do
 
     it "should return 401 status and no token present message if no token passed" do
-      get '/api/v0/analytics/sw_relevelled_stories'
+      get '/api/v0/analytics/relevelled_stories'
       expect_status(401)
       expect_json(error: 'No token present')
     end
   
     it "should return 401 status and incorrect token message if token does not match" do
-      get '/api/v0/analytics/sw_relevelled_stories', token: "random_token"
+      get '/api/v0/analytics/relevelled_stories', token: "random_token"
       expect_status(401)
       expect_json(error: 'Incorrect token')
     end
 
     it "should return 401 status and invalid token message if token has expired" do
       @expired_token = FactoryGirl.create(:expired_token).access_token
-      get '/api/v0/analytics/sw_relevelled_stories', token: @expired_token
+      get '/api/v0/analytics/relevelled_stories', token: @expired_token
       expect_status(401)
       expect_json(error: 'Invalid token')
     end
 
     it "should return 200 status and correct JSON if token is valid" do
-      get '/api/v0/analytics/sw_relevelled_stories', token: @valid_token      
+      get '/api/v0/analytics/relevelled_stories', token: @valid_token, platform_code: @platform_code      
       expect_status(200)
       expect(JSON.parse(response.body)).to eq({
         "AWW-12"=>{
