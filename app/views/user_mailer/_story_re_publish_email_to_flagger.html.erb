@@ -1,0 +1,24 @@
+<tr>
+	<td align="center">
+	  <table width="432px" cellspacing="0" cellpadding="0" border="0" align="center">
+	   
+	    <tr style="margin-bottom: 20px; float: left;">
+	      	<td><strong>Dear <%= @flaggers.first_name.titleize %></strong>, </td>
+	    </tr>
+
+	    <tr style="margin-bottom: 20px; float: left;">
+	      	<td><br>After you reported the story (<%= link_to( @story.title, react_stories_show_url(@story)) %>), we decided to take it down. But we wanted to give the author another shot just to be fair.
+
+	      	<br>The story (<%= link_to( @story.title, react_stories_show_url(@story)) %>) has just been re-published by the author and we were hoping that you could have a look at it to ensure that it is now fit to be read by StoryWeaver's user community.
+
+	      	<br>If you do find that it's still inappropriate, please feel free to red-flag it again. Thanks for helping out!</td>
+	    </tr>
+
+			<tr style="margin-bottom: 20px; float: left;">
+		  		<td>
+						<p>Team StoryWeaver</p>
+					</td>
+			</tr>
+		</table>
+	</td>
+</tr>

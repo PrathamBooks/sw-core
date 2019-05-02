@@ -1,0 +1,28 @@
+$('#organization_signup_model').html("<%= escape_javascript(render :partial => "show_org_sign_up", :locals => {:organization => @organization}) %>");
+$(document).ready(function () {
+  setTimeout(function () {
+    if ($('.modal-open').length === 0) {
+      $('body').addClass('modal-open')
+    }
+    $('#organization_signup_model').modal({
+      show: true
+    })
+  }, 1000);
+
+  <% if @organization.errors.count > 0 %>
+      $(".country").append('<option>' + "<%= @organization.country.blank? ? 'Select Country' : @organization.country %>" + '</option>');
+  <% end %>
+  
+  function myFunction() {
+    var data = getCountryData();
+    $.each(data, function(index,country) {
+      $(".country").append('<option id='+ country.iso2 + '>' + country.countryname + '</option>');
+    });
+    $('.country').selectpicker({ liveSearch:true });
+  }
+  myFunction();
+  <% if @organization.errors.count > 0 %>
+      $('.country').selectpicker('val', "<%= @organization.present? ? @organization.country : '' %>");
+  <% end %>
+});
+

@@ -1,0 +1,26 @@
+<div class="modal fade" id="logoModal" tabindex="-1" role="dialog" aria-labelledby="moreLinksModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <%= simple_form_for(:user, url: :set_role, remote: true , html: { class: 'form-horizontal',  multipart: true}) do |f| %>
+      <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title">Add Organization Logo</h2>
+            <div id="errors">
+            </div>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <%= %>
+              <div class="col-md-12">
+                  <%= f.input :email, :readonly => true , :input_html => {:value => @user.email} %>
+                  <%= f.input :role , :readonly => true , :input_html => {:value => "publisher"} %>
+                  <%= f.input :logo, as: :file %><br/>
+
+                  <%= f.button :submit , "Save Logo" , :class => "btn btn-success" %>
+                  <button class="btn" value="Cancel Upload" data-dismiss="modal">Cancel</button>
+                <% end %>
+              </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>

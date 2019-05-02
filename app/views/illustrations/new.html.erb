@@ -1,0 +1,33 @@
+<h1>Illustrations</h1>
+<div class="row">
+  <div class="col-md-12">
+    <%= simple_form_for @illustration,html: { class: 'form-horizontal',  multipart: true } do |f| %>
+      <%= f.input :name %>
+      <%= f.input "illustrator_name" %>
+      <% if current_user.has_role?(:publisher) %>
+        <%= f.input :illustrator_email, hint: 'Search for a user account by email address. If no user is found, then provide name and bio to create an account for the illustrator.', input_html: { class: 'form-control' }, :url => autocomplete_user_email_illustrations_path, :as => :autocomplete %>
+        <%= f.input "illustrator_bio", as: :text %>
+      <% end %>
+      <%= f.association :styles, multiple: true %>
+      <%= f.association :categories, multiple: true %>
+      <%= f.file_field :image %>
+      <%= f.input :tag_list,  label: "Tags", url: autocomplete_tag_name_illustrations_path,as: :autocomplete,input_html: {'data-delimiter' => ','}   %>
+      <%= f.input :attribution_text, as: :text %>
+      <%= f.button :submit %>
+    <% end %>
+  </div>
+</div>
+<script type="text/javascript">
+  $('#illustration_illustrator_email').keypress(function(){
+    $('#illustration_illustrator_name').val('').prop('readonly',false);
+    $('#illustration_illustrator_bio').val('').prop('readonly',false);
+  });
+<% if current_user.has_role?(:publisher) %>
+  $('#illustration_illustrator_name').prop('readonly',true);
+  $('#illustration_illustrator_bio').prop('readonly',true);
+<% end %>
+$('#illustration_illustrator_email').bind('railsAutocomplete.select', function(event, data){
+  $('#illustration_illustrator_name').val(data.item.name).prop('readonly',true);
+  $('#illustration_illustrator_bio').val(data.item.bio).prop('readonly',true);
+});
+</script>

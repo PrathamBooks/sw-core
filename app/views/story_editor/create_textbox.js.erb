@@ -1,0 +1,4 @@
+$("#story_page_content_<%= @page.id%>").html("<%= escape_javascript(render(partial: "page_thumbnail_content", locals: {page: @page})) %>");
+$('.story-page').append("<%= escape_javascript(render(partial: "textboxes_template", locals: { textboxes: @textboxes, story: @page.story })) %>");
+
+

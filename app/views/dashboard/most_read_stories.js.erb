@@ -1,0 +1,2 @@
+$("#stories-list").html("<%= escape_javascript(render :partial => "most_read_stories", :locals => {:stories => @stories_by_filter, :reads => true}) %>");
+

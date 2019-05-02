@@ -1,0 +1,62 @@
+<div class="row trans_head">
+  <div class="col-md-12 col-sm-12">
+    <h1 class="create-heading trans_heading">Choose from hundreds of stories</h1>
+    <div class="col-md-12 col-sm-12 nopadding cls-gap head_cont">
+      <p>To help you find a story to translate, we've added some filters to help you navigate through all the stories on the platform. If you'd like to translate for the youngest of readers choose a level 1 or level 2 book. We have wonderful books from publishers around the world, so use that filter to narrow your search down. Happy translating!</p>
+      <div class="trans_lang col-md-12 col-sm-12">
+        <div class="lang_from col-md-6 col-sm-6">
+          <ul id="StorySortOptions" class="myList sort-full" style="display: none;">
+            <li> <input type="radio" value="reads" name="sort" checked="checked">Most Read</li>
+          </ul>
+          <label>From</label>
+          <%= select_tag('s_language', options_from_collection_for_select(Language.all, 'name', 'name'), prompt: "All Languages", :onchange => "Story.translateSubmitForm();")%>
+        </div>
+        <div class="lang_to col-md-6 col-sm-6">
+          <label>To</label>
+          <%= select_tag('t_language', options_from_collection_for_select(Language.all, 'name', 'name'), prompt: "All Languages", :onchange => "Story.translateSubmitForm();")%>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%= render :partial => "translation_filters"%>
+<div class="search-page trans_page">
+  <div id="story-holder">
+    <div id="DIV_STORY_FEED">
+
+    </div>
+    <div id="NO_RESULTS" class="results-searched hide">
+      <div>Oops! We couldn't find anything related to your search.</div>
+      <div class="no-results-found-try">Here is what you can try:</div>
+      <ul>
+        <li>Make sure the spelling is correct.</li>
+        <li>Search with other words that are similar in meaning.</li>
+        <li>Search with fewer filters.</li>
+        <li>Search using any other language that StoryWeaver supports.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div id="storyReader"></div>
+<%= render :partial => "/search/story_card" %>
+<script type="application/javascript">
+  $(document).ready(function(){
+    $('#s_language').selectpicker({
+      liveSearch:true
+    });
+    $('#t_language').selectpicker({
+      liveSearch:true
+    });
+    <% if @search_params && @search_params[:languages] %>
+      $('#s_language').selectpicker('val', "<%=  @search_params[:languages][0] %>");
+    <% else %>
+      $('#s_language').selectpicker('val', "English");
+    <% end %>
+      <% if @search_params && @search_params[:target_languages] %>
+      $('#t_language').selectpicker('val', "<%=  @search_params[:target_languages][0] %>");
+    <% end %>
+
+    url = "<%= translate_search_path %>";
+    Story.initialize(url,9,false)
+  });
+</script>

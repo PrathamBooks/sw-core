@@ -1,0 +1,50 @@
+.insert-component{
+  font-size: 1rem;
+  padding: 0.5rem;
+
+  #create-textbox {
+    cursor: pointer;
+    text-decoration: none;
+    .icon-round-wrap{
+      height: 24px;
+      width: 24px;
+    }
+  }
+  .create-textbox .icon-round-wrap {
+    border: none;
+    border-radius: 0;
+  }
+  .textbox_icon {
+    background-image: url('<%= asset_path("addtextbox_default.svg") %>');
+    width: 100%;
+  }
+
+  .create-textbox.active {
+    .textbox_icon {
+
+      background-color: #4a90e2;
+      background-image: url('<%= asset_path("addtextbox_click.svg") %>');
+      width: 100%;
+    }
+    .sidebar-page-action-text {
+      color: #4a90e2;
+    }
+  }
+  #create-textbox:hover {
+    .icon-round-wrap-brand {
+      border: 1px solid #fff;
+      .icon-round {
+        color: #fff;
+      }
+    }
+  }
+
+  .create-textbox:hover {
+    .textbox_icon { 
+      background-image: url('<%= asset_path("addtextbox_hover.svg") %>');
+    }
+    .sidebar-page-action-text{
+      color: #6e6e6e;
+    }
+  }
+}

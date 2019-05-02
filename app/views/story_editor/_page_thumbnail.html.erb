@@ -1,0 +1,18 @@
+<div id="<%= "story_page_#{page.id}" %>" class="page page_thumb_<%= page.page_template.orientation %> <%= @page == page ? 'active' : '' %>  <%= page.type.to_s %>">
+  <% unless page.type == "BackInnerCoverPage" %>
+    <a id="<%= "story_page_content_#{page.id}" %>"
+      class="page_thumbnail <%= page.type %>"
+      data-story-id= "<%= @story.id %>"
+      data-page-id = "<%= page.id %>"
+      data-language= "<%= @story.language.name.capitalize %>"
+      data-is-derivation="<%= @story.is_derivation? %>">
+      <%= render :partial => "/story_editor/page_thumbnail_content", locals: {page: page} %>
+    </a>
+  <% else %>
+    <div class="illustration_container">
+      <div class="<%= page.page_template.name %> <%= page.illustration_crop.nil? ? '' : 'has_illustration' %> illustration attribution-thumbnail">
+        <%= image_tag("attributions.png") %>
+      </div>
+    </div>
+  <% end %>
+</div>

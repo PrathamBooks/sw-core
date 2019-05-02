@@ -1,0 +1,7 @@
+<%= render :partial => "errors" %>
+
+<%= render :partial => "analytics_tabs" %>
+
+<div id="words-added-list">
+  <%= render :partial => "words_added_daily", :locals => {:words_added_daily => @words_added_daily}%>
+</div>

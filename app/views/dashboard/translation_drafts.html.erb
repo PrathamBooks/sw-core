@@ -1,0 +1,114 @@
+<%= render :partial => "dashboard_datatables" %>
+<%= render :partial => "translator_tabs" %>
+
+<div class="btn-group">
+  <span>Number of Stories Selected :</span>
+  <span class="badge" id="tr_drafts_count"><%= @stories.count %></span>
+</div>
+
+<table class="table table-striped" id="tr_drafts">
+  <tfoot style="display: table-header-group;">
+    <tr>
+      <th>Story Title            </th>
+      <th>Language               </th>
+      <th>Reading Level          </th>
+      <th>Assigned To            </th>
+      <th>Assigned On            </th>
+      <th>Days left for expiry   </th>
+    </tr>
+  </tfoot>
+  <thead>
+    <tr class="table-heading-row">
+      <th>Story Title            </th>
+      <th>Language               </th>
+      <th>Reading Level          </th>
+      <th>Assigned To            </th>
+      <th>Assigned On            </th>
+      <th>Days left for expiry   </th>
+    </tr>
+  </thead>
+  <tbody class="table-row-details">
+    <% @stories.each do |story| %>
+      <tr class="drafts_tr">
+        <td class="underline-class"><a href="<%= react_stories_show_path(story.to_param) %>", target = "_blank"><%= story.title? ? story.title : "Untitled" %></a></td>
+        <td><%= story.language.name %></td>
+        <td><%= story.reading_level %></td>
+        <td><%= story.authors[0].name %> <br> <span type = 'email'><%= story.authors[0].email%></span> </td>
+        <td><%= story.started_translation_at.localtime.strftime("%Y-%m-%d") %></td>
+        <td><%= story.get_grace_time %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+  var table = $('#tr_drafts').DataTable( {
+    searching: true,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 20,
+    order: [],
+    responsive: {
+        details: false
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  title: formatDatatableTitle('drafts'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5 ]
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  title: formatDatatableTitle('drafts'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5 ]
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  title: formatDatatableTitle('drafts'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5 ]
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  title: formatDatatableTitle('drafts'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5 ]
+                  }
+              }
+          ]
+      
+  });
+  $('#tr_drafts tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+  });
+
+  var new_table = $('#tr_drafts').dataTable();
+  table.columns().every( function () {
+    var that = this;
+
+    $( 'input', this.footer() ).on( 'keyup change', function () {
+      if ( that.search() !== this.value ) {
+          that
+              .search( this.value )
+              .draw();
+        document.getElementById("tr_drafts_count").innerHTML = document.getElementById('tr_drafts').children[1].childElementCount;
+      }else{
+        document.getElementById("tr_drafts_count").innerHTML = table.rows( '.drafts_tr' ).count(); 
+      }
+    });
+  });
+  $( 'input').on( 'keyup change', function () {
+    document.getElementById("tr_drafts_count").innerHTML = new_table.fnSettings().fnRecordsDisplay();
+  });
+
+  });
+</script>

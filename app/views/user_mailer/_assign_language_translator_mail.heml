@@ -1,0 +1,75 @@
+<heml>
+  <head>
+    <style>
+      .mail_container {
+        border: 0;
+        background-color: #fff;
+        padding: 0.9375em;
+        text-align: center;
+        max-width: 100%;
+      }
+      .mail_cont_name {
+        display: block;
+        font-weight: bold;
+        text-align: center;
+      }
+      .mail_cont_head {
+        display: block; 
+        margin-bottom: 0.625em;
+      }
+      .mail_cont_head h1 {
+        font-size: 1.6em; 
+        font-family: 'Raleway', sans-serif;
+        margin: 0;
+      }
+      .mail_cont_text {
+        display: block; 
+        font-family: 'Raleway', sans-serif;
+        padding-bottom: 0.625em; 
+        text-align: center;
+      }
+      .mail_cont_wishes {
+        display: block; 
+        font-family: 'Raleway', sans-serif;
+        padding-bottom: 0;
+      }
+      .mail_cont_wishes span {
+        display: block;
+      }
+      .mail_stories_button {
+        background-color: #e94f1d; 
+        border: none; 
+        border-radius: 0.25em; 
+        color: #fff; 
+        display: block; 
+        font-size: 0.6875em; 
+        font-weight: bold; 
+        margin: 0 auto; 
+      }
+    </style>
+  </head>
+  <body>
+    <container class="mail_container">
+      
+      <row>
+        <column class='mail_cont_head'>
+          <h1>Translate on StoryWeaver</h1>
+        </column>
+      </row>
+
+      <row>
+        <column class="mail_cont_name">Dear <%= @translator %>, </column>
+      </row>
+
+      <row class="mail_cont_text">
+        <column>We're so happy to have you translate stories in <%= @language.name %> on StoryWeaver. Every time you translate a story, you help it fly higher and farther. Hope you enjoy our machine-aided translation experience. If you have any questions, drop us an email at <a href="mailto:storyweaver@prathambooks.org">storyweaver@prathambooks.org</a></column>
+      </row>
+      
+      <row>
+        <button class="mail_stories_button"><a href="<%= translate_guidelines_url %>">To get started</a></button>
+      </row>
+
+    </container>
+
+  </body>
+</heml>

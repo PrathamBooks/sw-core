@@ -1,0 +1,35 @@
+<h1>Stories</h1>
+<%= link_to "New Story", new_story_path ,remote: true, class: "pull-right hide-in-mob" %>
+<table class="table">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Title</th>
+      <th>English Title</th>
+      <th>Language</th>
+      <th>Level</th>
+      <th>Authors</th>
+      <th>Categories</th>
+      <th>Parent Story</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%- @stories.each do |story| %>
+    <tr>
+    <td><%= story.id %> </td>
+      <td class="<%= story.language.script %> "><%= link_to(story.title, react_stories_show_path(story.to_param)) %></td>
+      <td><%= story.english_title %></td>
+      <td><%= story.language.name %></td>
+      <td><%= story.reading_level %></td>
+      <td><%= story.author_names %></td>
+      <td><%= story.category_names %></td>
+      <td><%= story.parent.blank? ? '' : story.parent.title %></td>
+    </tr>
+    <%- end %>
+  </tbody>
+</table>
+
+<div id="newStoryForm">
+
+</div>
+<%= render 'desktop_only_action_message' %>

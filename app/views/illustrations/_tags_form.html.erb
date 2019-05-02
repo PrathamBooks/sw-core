@@ -1,0 +1,7 @@
+<div class="illus-det-tags mob-hide">
+  <label>Tags </label>
+  <%= simple_form_for @illustration, url: :update_illustration_tags, remote: true do |f| %>
+    <%= f.input :tag_list, label: false, autofocus: true%>
+    <%= f.button :submit, "Save", class: "btn btn-default" %>
+  <% end %>
+</div>

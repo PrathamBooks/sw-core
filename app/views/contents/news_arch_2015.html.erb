@@ -1,0 +1,102 @@
+<div class="row about-row noborder">	
+  <div class="home-full-border about-border">
+    <div class="home-page-cont about-cnt col-md-12 col-sm-12 nopadding">
+      <div class="col-md-2 col-sm-2 nopadding left-menu">
+        <%= render "left_menu" %> 
+      </div>
+      <div class="col-md-10 col-sm-10 nopadding right-content-abt">
+      <div class="arch_year">
+        <div class="btn-group"><label>Select Year</label></div>
+        <div class="btn-group sel_year">
+          <a class="btn dropdown-toggle btn-select" data-toggle="dropdown" href="#">2015<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="in_the_news">2018</a></li>
+            <li><a href="archive">2017</a></li>
+            <li><a href="news_arch_2016">2016</a></li>
+            <li><a href="news_arch_2015">2015</a></li>
+          </ul>
+        </div>
+      </div>
+        <div class="col-md-12 col-sm-12">
+          <div class="odd-abt">
+            <div class="about-content news_read_cont">
+              <h3 class="pressLink_color">Indian Express</h3>
+              <strong>September 20, 2015</strong>
+              <p><a href="http://indianexpress.com/article/lifestyle/life-style/a-book-in-every-hand-pratham-books-wants-to-make-reading-fun-and-accessible-for-children/" target="_blank">A book in every hand: Pratham Books wants to make reading fun and accessible for children</a></p>
+            </div>
+          </div>        
+        </div>
+        <div class="col-md-12 col-sm-12">
+          <div class="odd-abt">
+            <div class="about-content news_read_cont">
+              <h3 class="pressLink_color">The Hindu</h3>
+              <strong>September 08, 2015</strong>
+              <p><a href="http://www.thehindu.com/news/cities/bangalore/anyone-can-translate-edit-and-publish/article7627018.ece" target="_blank">Anyone can translate, edit and publish</a></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 col-sm-12">
+          <div class="odd-abt">
+            <div class="about-content news_read_cont">
+              <h3 class="pressLink_color">Deccan Herald</h3>
+              <strong>September 08, 2015</strong>
+              <p><a href="http://www.deccanherald.com/content/499726/download-print-read-800-childrens.html" target="_blank">Download, print, read 800 children's stories for free</a></p>
+            </div>
+          </div>        
+        </div>
+        <div class="col-md-12 col-sm-12">
+          <div class="odd-abt">
+            <div class="about-content news_read_cont">
+              <h3 class="pressLink_color">Mid-day</h3>
+              <strong>September 08, 2015</strong>
+              <p><a href="http://www.mid-day.com/articles/international-literacy-day-a-digital-open-source-for-books-and-images/16519153" target="_blank">International Literacy Day: A digital open source for books and images</a></p>
+            </div>
+          </div>        
+        </div>
+        <div class="col-md-12 col-sm-12">
+          <div class="odd-abt">
+            <div class="about-content news_read_cont">
+              <h3 class="pressLink_color">Livemint</h3>
+              <strong>September 08, 2015</strong>
+              <p><a href="http://www.livemint.com/Consumer/JtF6UF9wynJyptfH71tnVL/Pratham-aims-to-spread-literacy-via-open-source-digital-plat.html" target="_blank">Pratham aims to spread literacy via open source digital platform</a></p>
+            </div>
+          </div>        
+        </div>
+        <div class="col-md-12 col-sm-12">
+          <div class="odd-abt">
+            <div class="about-content news_read_cont">
+              <h3 class="pressLink_color">Livemint</h3>
+              <strong>October 25, 2015</strong>
+              <p><a href="http://www.livemint.com/Leisure/jw44PiCqjAM2ceP01iuPGJ/The-story-forward.html" target="_blank">The story forward</a></p>
+            </div>
+          </div>        
+        </div>
+        <div class="col-md-12 col-sm-12">
+          <div class="odd-abt">
+            <div class="about-content news_read_cont">
+              <h3 class="pressLink_color">The Times of India</h3>
+              <strong>September 09, 2015</strong>
+              <p><a href="http://epaperbeta.timesofindia.com/Article.aspx?eid=31806&articlexml=TOP-COPY-Publisher-offers-online-creative-tool-to-09092015006005" target="_blank">TOP COPY - Publisher offers online creative tool to writers, kids</a></p>
+            </div>
+          </div>        
+        </div>
+        <div class="col-md-12 col-sm-12">
+          <div class="odd-abt">
+            <div class="about-content news_read_cont news_cont_border">
+              <h3 class="pressLink_color">The Hindu</h3>
+              <strong>September 03, 2015</strong>
+              <p><a href="http://www.thehindu.com/features/metroplus/weaving-worlds-of-stories/article7837786.ece" target="_blank">Weaving worlds of stories</a></p>
+            </div>
+          </div>        
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(".dropdown-menu li a").click(function(){
+    var selText = $(this).text();
+    $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"></span>');
+  });
+</script>

@@ -1,0 +1,103 @@
+
+<%= render 'carousel' %>
+<section id="my-books-reader">
+	 <div class="row dyn-counts">
+	   <div class="col-md-4 col-sm-4">
+	      <p><%= @number_of_stories %> Stories <i class="fa fa-circle"></i></p>
+	    </div>
+	    <div class="col-md-4 col-sm-4">
+	      <p><%= @number_of_reads %> Reads <i class="fa fa-circle"></i></p>
+	    </div>
+	    <div class="col-md-4 col-sm-4">
+	      <p><%= @number_of_languages %> Languages</p>
+	    </div>
+	 </div>
+	 <div class="row">
+    <div class="home-full-border">
+      <div class="home-page-cont">
+        <div class="col-md-12 edit-head">
+          <nav class="select-menu">
+            <div class="center-div">
+              <ul>
+                <li class="active-tab" id="Recommended">Editor's Picks</li>
+                <li id="NewArrivals">New Arrivals</li>
+                <li id="MostRead">Most Read</li>
+                <li id="MostLiked">Most Liked</li>
+              </ul>
+              <div class="input-group tab-search">
+                <%= simple_form_for :search, url: '/search' , method: :get do |f| %>
+                  <%= f.input :query, label: false, placeholder: "Search stories, people or keywords",input_html: {:class => "form-control", :style=>"width:88%;"} %>
+		                <div class="input-group-btn tooltip-icon"i>
+		                  <%= button_tag(type: 'submit', class: "btn btn-warning") do %>
+		                    <span class='glyphicon glyphicon-search'></span>
+		                    <span class="arrow-left"></span>
+		                  <% end %>
+		                </div>
+                <% end %>
+              </div>
+	           </div>
+          </nav>
+          <select id="SortList" class="select-tab-mobile">
+            <option value="recommended">Editor's Picks</option>
+            <option value="published_at">New Arrivals</option>
+            <option value="reads">Most Read</option>
+            <option value="likes">Most Liked</option>
+          </select>
+        </div>
+        <div class="row">
+          <div class="col-md-12 col-sm-12 ">
+            <div class="search-page">
+              <div id="story-holder">
+                <div id="DIV_STORY_FEED">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="story-book-msg">
+          <span id="NavigateToSearchPage" class="hide">Oops. Looks like you did not find what you were looking for! <a href="<%= search_path %>">click here</a> to browse, filter from over thousand stories.</span>
+        </div>
+      </div>
+    </div>
+   </div>
+  <div id="storyReader"></div>
+ </section>
+ <%= render :partial => "/search/story_card" %>
+ <div id="organization_signup_model" class="modal fade"  tabindex="-1" role="dialog">
+  </div>
+ <script>
+  $(".go-btn .mobile-search").click(function(){
+    $(".serch-home").animate({width: 'toggle', right: '105px'}).focus();
+    $(".go-txt-btn").show();
+    $(".go-btn .mobile-search").hide();
+    $(".close-search").show();
+    return false;
+    });
+  $(".close-search").click(function(){
+    $(".serch-home").stop().animate({width: 'toggle'}).focus();
+    $(".serch-home").hide();
+    $(".go-txt-btn").hide();
+    $(".go-btn .mobile-search").show();
+    $(".close-search").hide();
+    return false;
+    });
+  $(document).ready(function(){
+    url = "<%= search_path %>";
+    Story.initialize(url,12,true,true);
+
+    if("<%=@create_new_story%>" === "true"){
+      contestId = "<%=@contest_id%>"
+      var paramsData;
+      if(contestId !== ""){
+        paramsData = {contest_id: contestId}
+      }
+      $.ajax({
+          url: '/stories/new',
+          type: "GET",
+          data: paramsData,
+          contentType: false,
+          dataType: 'script'
+    });    
+    } 
+  });
+</script>

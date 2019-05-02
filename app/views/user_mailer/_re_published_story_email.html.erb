@@ -1,0 +1,19 @@
+<tr>
+  <td align="center">
+    <table width="432px" cellspacing="0" cellpadding="0" border="0" align="center">
+
+      <tr style="margin-bottom: 20px; float: left;">
+        <td><strong>Dear Content Manager</strong>, </td>
+      </tr>
+
+      <tr style="margin-bottom: 20px; float: left;">
+        <td><br>A story you recently pulled down has been re-published by the user (<%= @user.titleize %>). You can review the story here (<%= link_to( @story.title, react_stories_show_url(@story)) %>) to make sure that it is appropriate to be read by the StoryWeaver community.</td>
+      </tr>
+      <tr style="margin-bottom: 20px; float: left;">
+          <td>
+            <p>Team StoryWeaver</p>
+          </td>
+      </tr>
+    </table>
+  </td>
+</tr>

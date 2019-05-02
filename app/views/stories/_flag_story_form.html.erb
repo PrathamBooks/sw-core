@@ -1,0 +1,70 @@
+<div class="modal fade" id="FlagStoryModal" tabindex="-1" role="dialog" aria-labelledby="moreLinksModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+
+    <%= simple_form_for :flag, remote: true, html: { id: 'create_story_from_illustration', class: 'form-horizontal',  multipart: true } do |f| %>
+      <div class="modal-content">
+        <div class="modal-header">
+        	<button type="button" class="close mypopup-close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times"></i> Close</span></button>
+          <h2 class="modal-title">Report this Story</h2>
+          <hr class="form-hr" />
+          <% if @errors %>  
+            <div class="alert alert-danger">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+              <div id="flash_error">
+                <% @errors.each do |error| %>
+                  <%= error %>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div><b>Why would you like to red flag this story? Tell us a little more.</b></div>
+              <ui class="reasons" role = "menu">
+                    <%= f.input :story_id, as: :hidden , :input_html => { :value => @story.id } %>
+                     <div><input type="checkbox" value="This story is not an original creation." name="reason"/>This story is not an original creation.</div>
+                    <div><input type="checkbox" value="This story is inappropriate for children." name="reason" />This story is inappropriate for children. </div>
+                    <div><input type="checkbox" value="This story is blank." name="reason" />This story is blank.</div>
+                    <div><input type="checkbox" value="This story contains copyrighted images. (Note: Please mention the page numbers on which the copyright images appear and who it belongs to - if you're aware - in the 'Other Comments' section below.)" name="reason" />This story contains copyrighted images. (Note: Please mention the page numbers on which the copyright images appear and who it belongs to - if you're aware - in the 'Other Comments' section below.)</div>
+                    <div><input type="checkbox" value="This looks like spam!" name="reason" />This looks like spam!</div>
+                    <div><input type="checkbox" value="Other comments: Please Specify" name="reason"  class="other_options"/>Other comments: Please Specify</div>
+                    <div><input type="text"  id="flag_other_reason"  icon = "fa fa-info-circle info" class = "flag_other_reasons_text_area" style="display: none;"></div>
+                    <div class="center-align-btn">
+                    <a class="btn btn-normal btn-warning save_reason" style="margin-top:10px;" data-path = "<%=flag_story_path %>" >REPORT</a></div>
+              </ui>
+          </div>
+        </div>
+    </div>
+  <% end %>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('[data-toggle="tooltip"]').tooltip({placement: "right"});
+  });
+  $(".save_reason").click(function(){
+    var collect_reason = [];
+   $(".reasons").find("input:checked").each(function () {
+        if($(this).val() == "Other comments: Please Specify"){
+          collect_reason.push($("#flag_other_reason").val().replace(/\./g,''));
+        }else{
+          collect_reason.push($(this).val().replace(/\./g,''));
+        }  
+        });
+   flag_story_path = $(this).data('path')+'?reasons='+collect_reason;
+      jQuery.ajax({
+      type: "POST",
+      url: flag_story_path,
+      dataType : "script"
+    });
+  });
+  $(".reasons").click(function(){
+    if($(".other_options").is(":checked")){
+        $("#flag_other_reason").show();
+      }else{
+        $("#flag_other_reason").hide();
+      }
+  });
+</script>

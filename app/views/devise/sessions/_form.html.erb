@@ -1,0 +1,31 @@
+<div id="loginForm">
+	
+<%= form_for(:user,:url => session_path(:user)) do |f| %>
+    <div class="field">
+      <%= f.label :email %><br />
+      <%= f.email_field :email, autofocus: true %>
+    </div>
+
+    <div class="field">
+      <%= f.label :password %><br />
+      <%= f.password_field :password, autocomplete: "off" %>
+    </div>
+
+      <div class="field">
+        <%= f.check_box :remember_me , :style => "float:left;width:auto;"%>
+        <%= f.label :remember_me , :style => "float:left; margin-left:5px;"%>
+      </div>
+
+    <div class="actions log-sig-btn">
+      <%= f.submit "Log in" %>
+    </div>
+<% end %>
+<div class="login-bottom">
+              	<p>or</p>
+            	<p>Log in with:</p>
+	            <div class="log-soc">
+	            <a href="<%= user_omniauth_authorize_path(:facebook) %>" target="_blank" class="facebk"><i class="fa fa-facebook"></i></a>
+              <a href="<%= user_omniauth_authorize_path(:google_oauth2) %>" target="_blank" class="google-plus"><i class="fa fa fa-google-plus"></i></a>
+	            </div>
+           </div>
+</div>

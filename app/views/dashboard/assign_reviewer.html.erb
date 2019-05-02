@@ -1,0 +1,44 @@
+<%= render :partial => "reviewer_tabs" %>
+<div class="row">
+ <div class="col-md-12 col-sm-12">
+    <%= simple_form_for(:language, :url => 'assign_language_reviewer', html: { class: 'assign_reviewer',  multipart: true}) do |f| %>
+      <%= f.input :script , as: :select , :label => false ,:collection =>Language.all , prompt: "Select Language", :input_html => {:class => "new-cat-add" , :style=>"width:25%;float:left;"} %>
+      <%= f.text_field :email, label: false, class: "usermailid", placeholder: 'Enter email',  id: 'user_email' %>
+      <%= f.submit "Add Rating Resource" , :class => "btn btn-app btn-brand-1"  , :style => "margin-left: 25px;padding: 9px;" %>
+    <% end %>
+  </div>
+</div>
+
+<div id="reviewer_details">
+  <%= render :partial => "languages_reviewers", :locals => {:sort_value => @sort_value, :language_reviewers => @language_reviewers} %>
+</div>
+
+<script>
+    $('#language_script').selectpicker({
+        liveSearch:true
+    });
+$( "#user_email" ).autocomplete({
+    source: function( request, response ) {
+      $.ajax({
+        url: "<%= users_autocomplete_path%>",
+        dataType: "json",
+        data: {
+         query: request.term
+        },
+        success: function( data ) {
+          response(data);
+        }
+      });
+    }
+  });
+  
+$("#sort").on('change', function() {
+    $.ajax({
+        url: "<%= assign_reviewer_path %>",
+        dataType: "script",
+        data: {
+         query: $('[name=options]').val()
+        }
+      });
+})
+</script>

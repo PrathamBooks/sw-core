@@ -1,0 +1,137 @@
+<heml>
+  <head>
+    <style>
+      .mail_container {
+        border: 0;
+        background-color: #fff;
+        padding: 0.9375em;
+        text-align: center;
+        max-width: 100%;
+      }
+      .mail_cont_name {
+        display: block;
+        font-weight: bold;
+        text-align: center;
+      }
+      .mail_cont_head {
+        display: block; 
+        margin-bottom: 0.625em;
+      }
+      .mail_cont_head h1 {
+        font-size: 1.375em; 
+        font-family: 'Raleway', sans-serif;
+        margin: 0;
+      }
+      .mail_cont_text {
+        display: block; 
+        font-family: 'Raleway', sans-serif;
+        padding-bottom: 0.625em; 
+        text-align: center;
+      }
+      .mail_cont_wishes {
+        display: block; 
+        font-family: 'Raleway', sans-serif;
+        padding-bottom: 0;
+      }
+      .mail_cont_wishes span {
+        display: block;
+      }
+      .mail_story {
+        border: 1px solid #cdcdcd;
+        box-shadow: 1px 1px 0 #cdcdcd;
+        display: block;
+        margin: 0 auto;
+        width: 16%;
+      }
+      .mail_story_card {
+        padding-bottom: 2.5em;
+      }
+      .mail_story_img {
+        width: 100%;
+      }
+      .mail_story_level {
+        background-color: #ed1c24;
+        color: #fff;
+        font-size: .7072135785em;
+        font-weight: 700;
+        letter-spacing: .05625em;
+        margin: 0;
+        padding: 0 0 0 0.25em;
+        text-align: left;
+        text-decoration: none;
+        text-transform: uppercase;
+      }
+      .mail_story_txt {
+        margin: 0;
+      }
+      .mail_story_txt h3 {
+        display: block;
+        font-size: .7072135785em;
+        font-weight: 700;
+        margin: 0;
+        padding-left: 0.5em;
+        text-align: left;
+      }
+      .mail_story_txt p {
+        display: block;
+        font-size: .7072135785em;
+        font-weight: 400;
+        margin: 0;
+        padding-left: 0.5em;
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body>
+    <container class="mail_container">
+      
+      <row>
+        <column class='mail_cont_head'>
+          <h1>Image taken down</h1>
+        </column>
+      </row>
+
+      <row class="mail_story">
+        <column class="mail_story_card">
+          <span class="mail_story_img">
+            <img src="<%= @illustration.image.url%>" />
+          </span>
+        </column>
+      </row>
+
+      <row>
+        <column class="mail_cont_name">Dear <%= @illustrator.name.titleize %></column>
+      </row>
+
+      <row>
+        <column class='mail_cont_head'>
+          We're sorry to let you know that your image (<%= link_to(@illustration.name, react_illustrations_show_url(@illustration)) %>) has been taken down from StoryWeaver and will no longer be visible to other users.
+        </column>
+      </row>
+
+      <row>
+        <column class='mail_cont_head'>
+          Your image has gone through our editorial process and is being taken down because
+        </column>
+      </row>
+
+      <row>
+        <column class='mail_cont_head'>
+          <% @reasons.each do |reason| %>
+          <row>
+            <column>
+              <%= reason %>
+            </column>
+          </row>
+          <% end %>
+        </column>
+      </row>
+
+      <row class="mail_cont_text">
+        <column>If you do have any queries, you can send us an email to <a href="mailto:help@storyweaver.org.in" target="_blank">help@storyweaver.org.in</a> and we'll get back to you as soon as we can.</column>
+      </row>
+
+    </container>
+
+  </body>
+</heml>

@@ -1,0 +1,231 @@
+<heml>
+  <head>
+    <style>
+      .mail_container {
+        border: 0;
+        background-color: #fff;
+        padding: 0.9375em;
+        text-align: center;
+        max-width: 90%;
+      }
+      .mail_cont_name {
+        display: block;
+        font-weight: bold;
+        text-align: center;
+      }
+      .mail_cont_head {
+        display: block; 
+        margin-bottom: 0.625em;
+      }
+      .mail_cont_head h1 {
+        font-size: 1.375em; 
+        font-family: 'Raleway', sans-serif;
+        margin: 0;
+      }
+      .mail_cont_text {
+        display: block; 
+        font-family: 'Raleway', sans-serif;
+        padding-bottom: 0.625em; 
+        text-align: center;
+      }
+      .mail_cont_wishes {
+        display: block; 
+        font-family: 'Raleway', sans-serif;
+        padding-bottom: 0;
+      }
+      .mail_cont_wishes span {
+        display: block;
+      }
+      .mail_updates_head {
+        border-bottom: 1px solid #cdcdcd; 
+        line-height: 0.2em; 
+        margin: 0;
+        max-width: 100%;
+        text-align: center;
+      }
+      .mail_updates_head span {
+        background:#fff; 
+        color: #737373; 
+        font-size: 0.625em; 
+        letter-spacing: 0.125em; 
+        padding:0 0.625em;
+        text-transform: uppercase;
+      }
+      .mail_stories_head {
+        max-width: 100%;
+      }
+      .mail_stories_head column {
+        max-width: 33.33%;
+      }
+      .mail_stories_head img {
+        display: block;
+        height: auto;
+        margin: 0 auto;
+        max-width: 8%;
+      }      
+      .mail_stories_publish {
+        color: #666; 
+        font-family: 'Raleway', sans-serif; 
+        font-size: 0.6875em; 
+        font-weight: bold; 
+        letter-spacing: 0.0625em; 
+        margin-bottom: 0; 
+        margin-top: 0.625em; 
+        text-transform: uppercase; 
+        text-align: center;
+      }
+      .mail_stories_publish_count {
+        color: #757575; 
+        font-family: 'Raleway', sans-serif; 
+        font-size: 1.25em; 
+        font-weight: bold; 
+        letter-spacing: 0.0625em; 
+        margin-bottom: 0.625em; 
+        text-align: center;
+      }
+      .mail_stories_publisher {
+        color: #4e4e4e; 
+        font-family: 'Raleway', sans-serif; 
+        font-size: 0.75em; 
+        margin-bottom: 0; 
+        text-align: center;
+      }
+      .mail_stories_ucg {
+        color: #4e4e4e; 
+        font-family: 'Raleway', sans-serif; 
+        font-size: 0.75em;
+        margin-bottom: 0.625em; 
+        text-align: center;
+      }
+      .mail_stories_button {
+        background-color: #ff5b0a; 
+        border: none; 
+        border-radius: 0.25em; 
+        color: #fff; 
+        display: block; 
+        font-size: 0.6875em; 
+        font-weight: bold; 
+        margin: 0 auto; 
+      }
+    </style>
+  </head>
+  <body>
+    <container class="mail_container">      
+      <row>
+        <column class='mail_cont_head'>
+          <h1>Here's your daily update</h1>
+        </column>
+      </row>
+
+      <row>
+        <column class="mail_cont_name">Dear Content Manager,</column>
+      </row>
+
+      <row class="mail_cont_text">
+        <column>Here’s something you might want to look into before you start the day</column>
+      </row>
+
+      <row class="mail_cont_text">
+        <column>
+          <h2 class="mail_updates_head">
+            <span>Published Today</span>
+          </h2>
+        </column>
+      </row>
+
+      <row class="mail_cont_text">
+        <column>
+          <container class="mail_stories_head">
+            <row>
+              <column>
+                <img src="https://storage.googleapis.com/story_weaver_email_images/publish_book.png">
+                <p class="mail_stories_publish">Stories</p>
+                <p class="mail_stories_publish_count"><%= "#{@daily_email_info["org_stories"]}".to_i+"#{@daily_email_info["ugc_stories"]}".to_i %></p>
+                <p class="mail_stories_publisher">Publisher: <%= @daily_email_info["org_stories"] %></p>
+                <p class="mail_stories_ucg">UCG: <%= @daily_email_info["ugc_stories"] %></p>
+                <button class="mail_stories_button"><a href="<%= react_stories_url %>">View Details</a></button>
+              </column>
+              <column>
+                <img src="https://storage.googleapis.com/story_weaver_email_images/pub_img.png"/>
+                <p class="mail_stories_publish">Images</p>
+                <p class="mail_stories_publish_count"><%= "#{@daily_email_info["org_images"]}".to_i+"#{@daily_email_info["ugc_images"]}".to_i %></p>
+                <p class="mail_stories_publisher">Publisher: <%= @daily_email_info["org_images"] %></p>
+                <p class="mail_stories_ucg">UCG: <%= @daily_email_info["ugc_images"] %></p>
+                <button class="mail_stories_button"><a href="<%= react_illustrations_url %>">View Details</a></button>
+              </column>
+            </row>
+          </container>
+          </h2>
+        </column>
+      </row>
+
+      <row class="mail_cont_text">
+        <column>
+          <h2 class="mail_updates_head">
+            <span>Flagged Today</span>
+          </h2>
+        </column>
+      </row>
+
+      <row class="mail_cont_text">
+        <column>
+          <container class="mail_stories_head">
+            <row>
+              <column>
+                <img src="https://storage.googleapis.com/story_weaver_email_images/flag_book.png">
+                <p class="mail_stories_publish">Images</p>
+                <p class="mail_stories_publish_count"><%= "#{@daily_email_info["org_flagged_stories"]}".to_i+"#{@daily_email_info["ugc_flagged_stories"]}".to_i %></p>
+                <p class="mail_stories_publisher">Publisher: <%= @daily_email_info["org_flagged_stories"] %></p>
+                <p class="mail_stories_ucg">UCG: <%= @daily_email_info["ugc_flagged_stories"] %></p>
+                <button class="mail_stories_button"><a href="<%=flagged_stories_url %>">View Details</a></button>
+              </column>
+              <column>
+                <img src="https://storage.googleapis.com/story_weaver_email_images/flag_img.png">
+                <p class="mail_stories_publish">Stories</p>
+                <p class="mail_stories_publish_count"><%= "#{@daily_email_info["org_flagged_images"]}".to_i+"#{@daily_email_info["ugc_flagged_images"]}".to_i %></p>
+                <p class="mail_stories_publisher">Publisher: <%= @daily_email_info["org_flagged_images"] %></p>
+                <p class="mail_stories_ucg">UCG: <%= @daily_email_info["ugc_flagged_images"] %></p>
+                <button class="mail_stories_button"><a href="<%= flagged_illustrations_url %>">View Details</a></button>
+              </column>
+            </row>
+          </container>
+          </h2>
+        </column>
+      </row>
+
+      <row class="mail_cont_text">
+        <column>
+          <h2 class="mail_updates_head">
+            <span>Pulled Down Today</span>
+          </h2>
+        </column>
+      </row>
+
+      <row class="mail_cont_text">
+        <column>
+          <container class="mail_stories_head">
+            <row>
+              <column>
+                <img src="https://storage.googleapis.com/story_weaver_email_images/pull_book.png">
+                <p class="mail_stories_publish">Stories</p>
+                <p class="mail_stories_publish_count"><%= "#{@daily_email_info["org_pulled_down_stories"]}".to_i+"#{@daily_email_info["ugc_pulled_down_stories"]}".to_i %></p>
+                <p class="mail_stories_publisher">Publisher: <%= @daily_email_info["org_pulled_down_stories"] %></p>
+                <p class="mail_stories_ucg">UCG: <%= @daily_email_info["ugc_pulled_down_stories"] %></p>
+                <button class="mail_stories_button"><a href="<%= pulled_down_stories_url %>">View Details</a></button>
+              </column>
+              <column>
+                <img src="https://storage.googleapis.com/story_weaver_email_images/pull_img.png">
+                <p class="mail_stories_publish">Image Published</p>
+                <p class="mail_stories_publish_count"><%= "#{@daily_email_info["org_pulled_down_images"]}".to_i+"#{@daily_email_info["ugc_pulled_down_images"]}".to_i %></p>
+                <p class="mail_stories_publisher">Publisher: <%= @daily_email_info["org_pulled_down_images"] %></p>
+                <p class="mail_stories_ucg">UCG: <%= @daily_email_info["ugc_pulled_down_images"] %></p>
+                <button class="mail_stories_button"><a href="<%= pulled_down_illustrations_url %>">View Details</a></button>
+              </column>
+            </row>
+          </container>
+          </h2>
+        </column>
+      </row>
+    </container>
+  </body>
+</heml>

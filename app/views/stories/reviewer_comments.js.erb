@@ -1,0 +1,35 @@
+<% if @reviewer_comment.errors.count != 0 %>
+  <% if @story.derivation_type != nil %>
+    $('#review_form').html("<%= escape_javascript(render(:partial=>"translated_story_review_form")) %>");
+    $(".star_reset").rating('reset');
+  <% else %>
+    $('#review_form').html("<%= escape_javascript(render(:partial=>"original_story_review_form")) %>");
+    $(".star_reset").rating('reset');
+  <% end %>
+<% else %>
+$('#review_form_conform').html("Our community of readers will be able to find the very best stories on StoryWeaver, thanks to you. <%= @stories.present?  ?  'Would you like to rate one more story?' :  'Currently, there are no more stories left to review. Do swing by a little later and we are sure to have some piping hot stories to review for you. See you back soon!' %>")
+$('#review_form_conform').dialog({
+    autoOpen: true,
+    width: 400,
+    modal: true,
+    buttons : {
+      <% if @stories.present? %>
+        "Yes" : function() {
+          window.location = "<%= reviewer_un_reviewed_stories_path %>"
+          },
+          "Not now!" : function(){
+            window.location = "<%= root_path %>"
+          }
+       <% else %>
+            "Ok" : function(){
+            window.location = "<%= root_path %>"
+          }  
+
+        <% end %>
+    },
+    dialogClass: 'change_orientation_dialog'
+}); 
+$("#review_form_conform").dialog({ closeOnEscape: false });
+<% end %>
+
+

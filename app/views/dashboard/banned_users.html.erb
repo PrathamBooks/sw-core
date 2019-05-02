@@ -1,0 +1,41 @@
+<%= render :partial => "errors" %>
+<%= render :partial => "tabs" %>
+
+<div class="tab-content">
+  <div role="tabpanel" class="tab-pane active common-class" id="LegacyUpload">
+    <div class="row setroles">
+      <div class="col-md-12 col-sm-12">
+        <%= simple_form_for(:user, :url => ban_user_path, method: :put, html: { novalidate: false }) do |f| %>
+          <label class="ban_user" ><%= t 'dashboard.ban_user_tab.ban_user'%></label>
+          <%= f.input :email, label: false , :placeholder => "enter email", input_html: {:class => "new-cat-add banned_email", :required => "required" } %>
+          <%= f.submit "#{t 'dashboard.ban_user_tab.ban'}" , :class => "btn btn-success ban_submit" %>
+        <% end %>
+      </div>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr class="table-heading-row">
+          <th><%= t 'dashboard.ban_user_tab.user_email'%></th>
+          <th><%= t 'dashboard.ban_user_tab.actions'%></th>
+        </tr>
+      </thead>
+      <tbody class="table-row-details">
+      <% @users.each do |user|%>
+        <tr>
+          <td><label><%= user.email %></label>
+          <td style="float: left;">
+            <%= link_to "#{t 'dashboard.ban_user_tab.unban'}", unban_user_path(user_id: user.id),  method: :put, class: "btn btn-info disable-donor",  data:{ toggle: "tooltip", title: "Are you sure to unban user"} %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+    
+  </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>

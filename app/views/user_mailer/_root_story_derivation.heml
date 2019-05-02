@@ -1,0 +1,77 @@
+<heml>
+  <head>
+    <style>
+      .mail_container {
+        border: 0;
+        background-color: #fff;
+        padding: 0.9375em;
+        text-align: center;
+        max-width: 100%;
+      }
+      .mail_cont_name {
+        display: block;
+        font-weight: bold;
+        text-align: center;
+      }
+      .mail_cont_head {
+        display: block; 
+        margin-bottom: 0.625em;
+      }
+      .mail_cont_head h1 {
+        font-size: 1.6em; 
+        font-family: 'Raleway', sans-serif;
+        margin: 0;
+      }
+      .mail_cont_text {
+        display: block; 
+        font-family: 'Raleway', sans-serif;
+        padding-bottom: 0.625em; 
+        text-align: center;
+      }
+      .mail_cont_wishes {
+        display: block; 
+        font-family: 'Raleway', sans-serif;
+        padding-bottom: 0;
+      }
+      .mail_cont_wishes span {
+        display: block;
+      }
+      .mail_stories_button {
+        background-color: #e94f1d; 
+        border: none; 
+        border-radius: 0.25em; 
+        color: #fff; 
+        display: block; 
+        font-size: 0.6875em; 
+        font-weight: bold; 
+        margin: 0 auto; 
+      }
+    </style>
+  </head>
+  <body>
+    <container class="mail_container">
+
+      <row>
+        <column class='mail_cont_head'>
+          <h1>See how far your story has travelled</h1>
+        </column>
+      </row>
+
+      <row>
+        <column class="mail_cont_name">Dear <%= @flaggers.first_name.titleize %></column>
+      </row>
+
+      <row class="mail_cont_text">
+        <column>Greetings from StoryWeaver! We are pleased to tell you that (<%= link_to( @root_story.title, react_stories_show_url(@root_story)) %>), a story you helped create is now reaching more children in a brand new avatar. Read the new version of your story here (<%= link_to( @story.title, react_stories_show_url(@story)) %>).</column>
+      </row>
+
+      <% if @root_story.other_languages_available_in.count > 2 && @root_story.reads > 50 %>
+        <row class="mail_cont_text">
+          <column>You'll be pleased to know that (<%= link_to( @root_story.title, react_stories_show_url(@root_story)) %>) has been translated into <%= @root_story.other_languages_available_in.count %> languages and read <%= @root_story.reads %> number of times. Spread the joy of reading to more children by sharing your story on Social Media.</column>
+        </row>
+      <% end %>
+
+    </container>
+
+  </body>
+</heml>

@@ -1,0 +1,28 @@
+<%= render :partial => "tabs" %>
+
+<div class="col-md-12">
+  <ul id="tabs" class="nav nav-tabs">
+    <li id="import_partners" class="tab-heading <%= @sub_tab == DashboardController::IMPORT_PARTNER_SUB_TAB ? 'active' : '' %>"><a href="#import-partners" data-toggle="tab">Import Partners</a>
+    </li>
+    <li id="content_exchange_tokens" class="tab-heading <%= @sub_tab == DashboardController::CONTENT_EXCHANGE_TOKEN_SUB_TAB ? 'active' : '' %>"><a href="#content-exchange-tokens" data-toggle="tab">Content Exchange Tokens</a>
+    </li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane <%= @sub_tab == DashboardController::IMPORT_PARTNER_SUB_TAB ? 'active' : '' %>" id="import-partners">
+      <%= render :partial => "all_import_partners" %>
+    </div>
+    <div class="tab-pane <%= @sub_tab == DashboardController::CONTENT_EXCHANGE_TOKEN_SUB_TAB ? 'active' : '' %>" id="content-exchange-tokens">
+      <%= render :partial => "content_exchange_tokens" %>
+    </div>
+  </div>  
+</div>
+
+<script>
+  $(".tab-heading ").click(function() {
+    if (history) { 
+      /* update the query params in url without page load */
+      history.pushState(null, '', window.location.pathname + '?sub_tab=' + $(this).prop("id"));
+    }
+  });
+</script>
+

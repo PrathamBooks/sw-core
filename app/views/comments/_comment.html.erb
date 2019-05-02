@@ -1,0 +1,11 @@
+<%= div_for comment do %>
+  <p>
+    <div class="comment-head">
+      <strong><%= comment.user.name %></strong>
+      <span class="commented-at"><%= time_ago_in_words(comment.created_at) %> ago</span>
+    </div>
+    <br/>
+    <%= comment.body %>
+  </p>
+  <hr/>
+<% end %>

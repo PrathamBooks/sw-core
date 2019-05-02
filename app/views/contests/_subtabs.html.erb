@@ -1,0 +1,13 @@
+<div class="tab-content">
+  <% unless params[:filter].present? && params[:filter] == "over_view" %>
+      <div role="tabpanel" class="tab-pane active common-class">
+        <ul class="nav nav-tabs content-manager" role="tablist" id="myTab" style="padding-bottom: 2px;">
+          <% contest_subtabs(@contest).each do |k, v| %>
+              <li role="presentation" class="<%= @current_subtab == k ? 'active' : '' %>">
+                <%= link_to v, contest_details_path(@contest.id, :filter => params[:filter], :reviewed => k)%>
+              </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+</div>

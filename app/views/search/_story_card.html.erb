@@ -1,0 +1,261 @@
+<script id="story_card" type="text/x-handlebars-template">
+<div id="STORY_DIV_{{id}}" class="item {{is_disabled}}">
+          {{#if organization_status }}
+            {{#if story_downloads}}
+              <div class="card-disabled" id="story_{{id}}">
+              <input class="check_story story_downloaded" id="story_tile_check_{{id}}" data-story-id="{{id}}" type="checkbox" name="select_to_download">
+            {{else}}
+              <div class="well" id="story_{{id}}">
+              <input class="check_story" id="story_tile_check_{{id}}" data-story-id="{{id}}" type="checkbox" name="select_to_download">
+             {{/if}}
+          {{else}}
+           <div class="well" id="story_{{id}}">
+          {{/if}}
+                <div class="books-full-container">
+                <div class="book-img">
+                  <% if @contest.present? %>
+                    <a href="{{#list links}}{{self.uri}}{{/list}}?contest_id=<%= @contest.id %>" target="_blank">
+                  <% else %>
+                    <a href="{{#list links}}{{self.uri}}{{/list}}" target="_blank">
+                  <% end %>
+		                    {{#if created_by_child}}
+                        <%= image_tag "created-by-child.png", :class=>"created-by-child"%>
+		                    {{/if}}
+                        {{#if is_winner}}
+                         {{#if contest_name}}
+		                      {{#if created_by_child}}
+                            <%= image_tag("winner_badge.png", :class=>"winner_badge", :title => "Winning Children's Entry: {{contest_name}}", :rel => 'tooltip') %>
+                          {{else}}
+                            <%= image_tag("winner_badge.png", :class=>"winner_badge", :title => "Winning Entry: {{contest_name}}", :rel => 'tooltip') %>
+		                      {{/if}}
+                          {{else}}
+                            <%= image_tag("digital_award_winner.png", :class=>"winner_badge", :title => "Winner of Publishing Next's Digital Book of the Year 2016", :rel => 'tooltip') %>
+                          {{/if}}
+                        {{/if}}
+                      <img src="{{image_url}}">
+                    </a>
+                    
+                    <div class="reader-btns search-for">
+                       <div class="hover-back">
+                        <a class="btn-slide animation animated-item-3 {{is_disabled}}" href="{{#list links}}{{read.story_uri}}{{/list}}" data-remote="true" ><i class='fa fa-eye js-read-btn'></i></a>
+                        <a class="btn-slide {{is_disabled}}" id="share-social-card"  data-toggle="modal" data-target="#shareModal-{{id}}"><i class="fa fa-share"></i>         	
+                        </a>
+                  <div class="modal fade shareModal" id="shareModal-{{id}}" tabindex="-1" role="dialog" aria-labelledby="moreLinksModalLabel1" aria-hidden="true">
+                    <div class="vertical-alignment-helper" >
+                    <div class="modal-dialog vertical-align-center">
+                      <div class="modal-content">
+                      <div class="modal-header">
+                        <button aria-label="Close" data-dismiss="modal" class="close mypopup-close" type="button"><span aria-hidden="true"><i class="fa-times"></i> Close</span></button>
+                        <h2 class="modal-title text-left">share</h2>
+                        <hr class="form-hr">
+                      </div>
+                        <div class="modal-body nopadding">
+                          <div id="social-share-btn">
+                              <%= social_share_button_tag("{{story_title}}", :url => "#{request.base_url}{{story_url}}" , :image => "{{image_url}}", :desc => "Pratham Books: a book in every child's hand", :via => "pbstoryweaver") %>
+                          </div>
+                          <div class="modal-footer">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    </div>
+                  </div>
+                  <div class="modal fade downloadModal" id="downloadModal-{{id}}" tabindex="-1" role="dialog" aria-labelledby="moreLinksModalLabel2" aria-hidden="true">
+                    <div class="vertical-alignment-helper" >
+                    <div class="modal-dialog vertical-align-center">
+                      <div class="modal-content">
+                      <div class="modal-header">
+                        <button aria-label="Close" data-dismiss="modal" class="close mypopup-close" type="button"><span aria-hidden="true"><i class="fa-times"></i> Close</span></button>
+                        <h2 class="modal-title text-left">download</h2>
+                        <hr class="form-hr">
+                      </div>
+                        <div class="modal-body nopadding">
+                          <div class="download-type-list">
+                            <% if user_signed_in? %>
+                              <ul class="nopadding">
+                                {{#if published }}
+                                  <li role="presentation">
+                                    <a class="download-link" href="{{#list links}}{{download.low_res_pdf}}{{/list}}"  onClick="ga('send', 'event', { eventCategory: 'download', eventAction: 'low resolution', eventLabel: '<%= "{{title}}" %>'});">Low resolution pdf </a>
+                                  </li>
+                                  <li role="presentation">
+                                    <a class="download-link" href="{{#list links}}{{download.high_res_pdf}}{{/list}}" onClick="ga('send', 'event', { eventCategory: 'download', eventAction: 'high resolution', eventLabel: '<%= "{{title}}" %>'});">A4 size (Print ready pdf)</a>
+                                  </li>
+                                  <li role="presentation">
+                                    <a class="download-link" href="{{#list links}}{{download.epub}}{{/list}}"  onClick="ga('send', 'event', { eventCategory: 'download', eventAction: 'epub', eventLabel: '<%= "{{title}}" %>'});">epub</a>
+                                  </li>                                  
+                                {{else}}
+                                  <li role="presentation">
+                                    <a class="download-link" href="{{#list links}}{{draft_download.low_res_pdf}}{{/list}}">Low resolution pdf </a>
+                                  </li>
+                                  <li role="presentation">
+                                    <a class="download-link" href="{{#list links}}{{draft_download.high_res_pdf}}{{/list}}">A4 size (Print ready pdf)</a>
+                                  </li>
+                                  <li role="presentation">
+                                    <a class="download-link" href="{{#list links}}{{draft_download.epub}}{{/list}}">epub</a>
+                                  </li>                                  
+                                {{/if}}
+                                <% if !current_user.organization.present? && !@bulk_download_page %> 
+                                  {{#if story_download_count}}
+                                    <li role="presentation" class="bulk-download-option">
+                                      <a href="<%= organization_sign_up_model_path %>" data-dismiss="modal" data-remote="true" class="open_sign_up_model">Download frequently? Sign up as an Organisational User to download multiple books in multiple formats in one click.</a>
+                                    </li>
+                                  {{/if}}
+                                <% end %>
+                              </ul>
+                            <% else %>
+                              You need to be logged in to download a story
+                              <br/>
+                              <%= link_to "Login", new_user_session_path, :class=>"btn signin-button"%>
+                            <% end %>
+                          </div>
+                          <div class="modal-footer">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    </div>
+                  </div>
+                         <div class="modal fade downloadModal" id="downloadStartModal" tabindex="-1" role="dialog" aria-labelledby="moreLinksModalLabel1" aria-hidden="true">
+                           <div class="vertical-alignment-helper" >
+                             <div class="modal-dialog vertical-align-center">
+                               <div class="modal-content">
+                                 <div class="modal-header">
+                                   <h5 class="modal-title text-left">Your download should start soon, you can continue working.</h5>
+                                 </div>
+                               </div>
+                             </div>
+                           </div>
+                         </div>
+                         {{#if uploading}}
+                           <a class="btn-slide download-modal" data-toggle="tooltip" data-title="Your story will be ready for download very soon."><i class="fa fa-download"></i></a>
+                         {{else}}
+                           <a class="btn-slide download-modal {{is_disabled}}" data-toggle="modal" data-target="#downloadModal-{{id}}"><i class="fa fa-download"></i></a>
+                         {{/if}}
+                           <% if params[:contest_id].present? %>
+                             <a class="btn-slide download-modal {{is_disabled}}" href="{{#list links}}{{translate.story_uri}}{{/list}}?contest_id=<%= params[:contest_id]%>"><i class="fa fa-sort-alpha-asc"></i></a>
+                           <% else %>
+                             <a class="btn-slide download-modal {{is_disabled}}" href="{{#list links}}{{translate.story_uri}}{{/list}}"><i class="fa fa-sort-alpha-asc"></i></a>
+                           <% end %>
+                      </div>
+                    </div>                   
+                  </div>
+                </div>
+                {{#if recommended_tag}}
+                      <div class="recommended"><%= image_tag("icons/icons-18.svg",width: 50,height: 50) %></div>
+                {{/if}}
+                <div class="sear-books-details">
+                      <div class="book-titl">
+                        <% if @contest.present? %>
+                          <a href="{{#list links}}{{self.uri}}{{/list}}?contest_id=<%= @contest.id %>" target="_blank" class="{{script}}">{{title}}</a>
+                        <% else %>
+                          <a href="{{#list links}}{{self.uri}}{{/list}}" target="_blank" class="{{script}}">{{title}}</a>
+												<% end %>
+                      </div>
+                      <div class="author-sear" >{{derivation_type}} by 
+                      <span class="auth-nam">
+                      {{#comma_separated_url_list authors author_slugs}}{{/comma_separated_url_list}}
+                      </span>
+                      </div>
+                      <div class="search-lang"><span>Language  </span><strong class="lang-read">
+                      {{#language_list language}}{{/language_list}}</strong>
+                      </div>
+                      <div class="level-lang">Reading <strong><span class="level-read">
+                      {{#reading_level_list reading_level}}{{/reading_level_list}}</span></strong>
+                      </div>
+                      <div class="publisher-lang">
+                        <span>Publisher</span>
+                        {{#if organization }}
+                          <strong>{{#publisher_list organization publisher_slug}}{{/publisher_list}}</strong>
+                        {{else}}
+                          <strong><a href="/search?search[organization]=storyweaver">StoryWeaver Community</a></strong>
+                        {{/if}}
+                      </div>                  
+                      <div class="views">
+                        <span>
+                          <i class='fa fa-eye fa-2x'></i>
+                        </span>
+                        <span id="story-reads-{{id}}">{{reads}}</span>
+                      </div> 
+                      <div class="likes">
+                        {{#if can_user_like_story}}
+                          <span class="btn story-like likeable" id="story-like-{{id}}" data-story-id="{{id}}"  onClick="ga('send', 'event', { eventCategory: 'like', eventAction: 'story', eventLabel: '<%= "{{title}}" %>'});">
+                            <i class='fa fa-eye fa-2x'></i>
+                          </span>
+                        {{else if user_likes_story}}
+                           <span class="story-like liked" id="story-like-{{id}}" data-story-id="{{id}}">
+                            <i class='fa fa-eye fa-2x'></i>
+                           </span>
+                        {{else}}
+                           <span class="btn story-like disabled hide-in-mob-like-{{id}}" id="story-like-{{id}}" data-story-id="{{id}}">
+                            <i title="Please log in to like the story" class='fa fa-eye fa-2x'></i>
+                           </span>
+                        {{/if}}
+                        <span class="number-of-likes" id="story-likes-{{id}}">{{likes}}</span>
+                      </div>
+                      <div class="desc-sear {{script}}">
+                        <span class="synop-desc" data-url="{{#list links}}{{self.uri}}{{/list}}">
+                        {{synopsis}} 
+                        </span>
+                        {{#if show_more}}
+                          <a href="{{#list links}}{{self.uri}}{{/list}}" target="_blank">show more</a>
+                        {{/if}}
+                      </div>
+                      {{#if content_manager}}
+                        <div >
+                          {{#if published}}
+                            <span><strong>Published</strong></span>
+                          {{else}}
+                            <span><strong>Unpublished</strong></span>
+                          {{/if}}
+                          {{#if published}}
+                            {{#if editor_recommended}}
+                              <span class="btn story-type home_Unrecommend" id="story-Unrecommend-{{id}}" data-story-id="{{id}}"><i class="glyphicon glyphicon-minus home_recommended_red" ></i><strong><span id='change_text-{{id}}'>from Editor&#39;s picks</span></strong></span>
+                            {{else}}
+                              <span class="btn story-type home_recommend" id="story-recommend-{{id}}" data-story-id="{{id}}"><i class="glyphicon glyphicon-plus home_recommended_green" ></i><strong><span id='change_text-{{id}}'>to Editor&#39;s picks</span></strong></span>
+                            {{/if}}
+                          {{/if}}
+                        </div>
+                        {{#if published}}
+                        <div><strong>Published on </strong>{{published_at}}</div>
+                        {{/if}}
+                        {{#if reviewer_comment}}
+                        <span>
+                            <input class ="rating" id="story-rating-{{id}}" data-id="{{id}}" data-size = 'xs' value="{{rating_value}}" readonly="true" >
+                            </span>
+                        {{/if}}
+                      {{/if}}
+                </div>
+            </div>
+          </div>
+</script>
+
+<div id="newTranslateStoryForm"></div>
+
+<script id="load_more" type="text/x-handlebars-template">
+<div id="LoadMore">
+    <div align="center" style="padding:3px;">
+      Load More
+    </div>
+  </div>
+</script>
+
+<script id="keyword_query" type="text/x-handlebars-template">
+<span class="results-searched">
+      <span>{{count}}</span>
+      stories found 
+      <% if @illustration.present? %>
+        <span>for <span class='keyword'><%= @illustration.name %></span>
+      <% end %>
+      {{#if query}}
+      <span>for 
+        <span class='keyword'>{{query}}</span>
+      </span>
+      {{/if}}
+  </span><br>
+  <span>
+     <span id="tiles_selected_text"></span>
+  </span>
+</script>
+<script>
+$(".tooltip").tooltip()
+ </script>

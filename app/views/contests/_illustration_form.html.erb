@@ -1,0 +1,227 @@
+<script>
+  $(document).ready(function(){
+    var main_image_name_exist = false;
+    var key_image_name_exist = false;
+  })
+</script>
+<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="moreLinksModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <%= simple_nested_form_for @illustration, :url => create_illustration_path, html: { :onsubmit=> "return validateForm()", class: 'form-horizontal',  multipart: true, novalidate: false, method: :post }, :authenticity_token => true do |f| %>
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close mypopup-close upload-close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true"><i class="fa fa-times"></i> Close</span>
+          </button>
+          <h2 class="modal-title">Uploading images for Spotathon</h2>
+          <div class="tip">
+            <h5>Hi, uploading an image for the first time?</h5>
+            Thank you for uploading your image on StoryWeaver. Please upload your ORIGINAL work here and have a look at the  <a href="/uploading_an_illustration#faq2" target="_blank">good practices</a> to follow. Please ensure that your image is at least 150 dpi. By accepting our <a href="/terms_and_conditions" target="_blank">Terms &amp; Conditions </a> you are agreeing to your work being licensed under CC-BY 4.0 license and used by other users.
+          </div>
+          <% if @illustration.errors.count != 0 %>
+            <div class="alert alert-danger">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+               <div id="flash_error"><%= @illustration.errors.full_messages.join(", ") %></div>
+            </div>
+          <% end %>
+          <% if @illustration1.errors.count != 0 %>
+            <div class="alert alert-danger">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+              <div id="flash_error"><%= @illustration1.errors.full_messages.join(", ") %></div>
+            </div>
+          <% end %>
+          <div class="row">
+            <div class="col-md-4 padding-left" style="margin-left: 25px; margin-top: 10px"><label>Main image</label></div>
+            <div class="upload-full-browse1-illustration-contest">
+              <input id="uploadFile1" placeholder="Upload only jpeg or png images" disabled="disabled" required/>
+              <div class="fileUpload btn btn-primary">
+                <span>Browse</span>
+                <input id="uploadBtn1" type="file" class="upload" name="illustration[image]" value="" required />
+              </div>
+              <div style= "margin-top: 10px">
+                <%= f.input :name,label: "Image name", title: 'Name your image in a way that makes it easy for a user to find it', icon: "fa fa-info-circle info", input_html: { required: true, class: "spotathon_form", :onchange => "check_image_name_exist($(this).val(), 'main_image');"},:error => false, label_html: {:style => "padding-bottom: 7px;"} %>
+              </div>
+            </div>
+
+            <div style="margin-left: 25px; padding-top: 7px;"><label>Answer key</label></div>
+            <div class="upload-full-browse2-illustration-contest">
+              <input id="uploadFile2" placeholder="Upload only jpeg or png images" disabled="disabled" />
+              <div class="fileUpload btn btn-primary">
+                <span>Browse</span>
+                <input id="uploadBtn2" type="file" class="upload" name="image" required/>
+              </div>
+              <div style="margin-top: 10px">
+                <div class="control-group string required illustration_name">
+                  <label class="string required control-label" for="illustration_name" style="padding-bottom: 7px;">
+                    <abbr title="required">*</abbr> Image name
+                  </label>
+                  <i class="fa fa-info-circle info" data-toggle="tooltip" title="" data-original-title="Use the image name used for 'Main image' and add 'answer key' to it. Example: Forest answer key, Kitchen answer key, etc."></i>
+                  <div class="controls">
+                    <input type="text" class="string required form-control spotathon_form" id="answer_key" name="answer_key_name" value="<%= @illustration1.name %>"  required , onchange = "check_image_name_exist($(this).val(), 'key_image');" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="col-md-4 padding-left"  style= "width: 50%">
+                  <%= f.association :categories, multiple: true,label: "Image category",title: 'Choosing a relevant category will help users find the image easily. You can select more than one category for the image', icon: "fa fa-info-circle info", input_html: {required: true}%>
+                </div>
+                <div class="col-md-4 padding-right"  style= "width: 50%">
+                  <%= f.association :styles, multiple: true,label: "Image style",title: 'Tagging the image with a style will help users find relevant images. You can tag the image with more than one image style', icon: "fa fa-info-circle info", input_html: {required: true} %>
+                </div>
+                <div class="col-md-12 nopadding">
+                  <%= f.input :tag_list, title: 'Tags are how you organize images so its easy for other users to find your image and weave a story around it.', icon: "fa fa-info-circle info", class: "spotathon_form", label: "Image tags", url: autocomplete_tag_name_illustrations_path, as: :autocomplete %>
+                </div>
+                <div class="col-md-4 padding-left btn-group" style= "width: 50%">
+                  <%= select_tag :language, options_for_select(Language.all.collect {|p| [ p.name, p.id ] }, @story.language.present? ? Language.find(@story.language_id).id : ""),prompt: "Select language",class: "form-control spotathon_form", required: true %>
+                </div>
+                <div class="col-md-4 padding-right" style= "width: 50%">
+                  <%= select_tag :reading_level, options_for_select([['Easy', '1'],['Medium', '2']], @story.reading_level),prompt: "Level of difficulty",class: "form-control spotathon_form", required: true %>
+                </div>
+                <div><input type="hidden" name="contest_id" value ="<%= @contest.id %>"></div>
+                <div class="col-md-12 nopadding tnc">
+                  <input type="checkbox" name="accepts_tnc" id="tnc_checkbox"> I accept the <a href="https://storyweaver.org.in/terms_and_conditions">Terms of Use.</a></input>
+                </div>
+                <div class="center-btn text-center">
+                  <%= f.submit "Upload & start weaving!", class: "btn btn-lg disabled illustrator-up" , id: "sub_illustration",	 :onclick => "javascript:window.onbeforeunload = null;"%>
+                  <button class="illustrator-cancel" value="Cancel Upload" data-dismiss="modal">Cancel upload</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <div class="modal fade" id="confirm_form">
+      <div class="modal-dialog"> <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Confirmation Required</h4>
+          </div>
+          <div class="modal-body">
+            <p>Is this an ORIGINAL image created by you? Upload this image only if your answer is yes!</p>
+            <p>On StoryWeaver, we only allow upload of original images. By accepting our Terms & Conditions, you are agreeing to your work being licensed under a CC-BY 4.0 license. This is a liberal license that allows users to distribute, remix, tweak, and build upon your work, even commercially, as long as they credit you for the original creation. You can read more about this license <a href="http://creativecommons.org/licenses/by/4.0/" target="_blank">here.</a></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="illustrator-cancel" id="confirm" class="btn btn-default">Confirm</button>
+            <button type="button" class="illustrator-cancel" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $('[data-toggle="tooltip"]').tooltip();
+
+        $('#illustration_style_ids').multiselect({
+          buttonWidth : '100%',
+          selectedList: 1,
+          buttonClass: 'spotathon_form'
+        });
+        $('#illustration_category_ids').multiselect({
+          buttonWidth : '100%',
+          selectedList: 1,
+          buttonClass: 'spotathon_form'
+        });
+
+        $('#new_illustration').ajaxForm({
+          dataType:  'script',
+          beforeSubmit: function(){$.blockUI()},
+          success: function(){$.unblockUI()},
+          error: function (xhr,status,error) {delay()}
+        });
+        document.getElementById("uploadBtn1").onchange = function() {
+            if (this.files[0].size/(1024*1024) > 5){
+              document.getElementById("uploadFile1").value = '';
+              alert("File size must be less than 5MB");
+            }else{document.getElementById("uploadFile1").value = this.value;}
+        };
+        document.getElementById("uploadBtn2").onchange = function() {
+            if (this.files[0].size/(1024*1024) > 5){
+              document.getElementById("uploadFile2").value = '';
+              alert("File size must be less than 5MB");
+            }else{document.getElementById("uploadFile2").value = this.value;}
+        };
+      });
+      function delay(){
+        var t  = setTimeout(liftBlock, 10000);
+        $('#myDiv').load(myUrl, function() {
+          clearTimeout(t);
+        });
+      };
+      function liftBlock() {
+        $('.blockMsg').append('<button type="button" class="close mypopup-close upload-close" id="closeBlock" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times"></i> Close</span></button>');
+        $('#closeBlock').bind('click', $.unblockUI);
+      };
+
+      $("#illustration_tag_list").on('autocompleteresponse', function(event, ui) {
+        var content;
+        if (((content = ui.content) != null ? content[0].id.length : void 0) === 0) {
+          $(this).autocomplete('close');
+        }
+      });
+
+      function validateForm(){
+        var main_image_name = $("#illustration_name").val().trim()
+        var key_image_name = $("#answer_key").val().trim()
+        if( main_image_name != '' && key_image_name != '') {
+          if (main_image_name == key_image_name) {
+            alert("'Main image' and 'Answer key' names should be different");
+            return false;
+          }
+          if (main_image_name_exist && key_image_name_exist){
+            alert("Main and Key illustration names are already taken. Please use an alternate names.")
+            return false
+          }else if (main_image_name_exist){
+            alert("Main illustration name is already taken. Please use an alternate name.");
+            return false
+          }else if(key_image_name_exist){
+            alert("Key illustration name is already taken. Please use an alternate name.");
+            return false
+          }
+        }
+
+        if($("#tnc_checkbox").prop("checked")){
+          return true;
+        }
+        else
+        {
+          alert("Please accept Terms and Conditions");
+          return false;
+        }
+      }
+
+      $('#tnc_checkbox').click(function() {
+        if (!$(this).is(':checked')) {
+          $('#sub_illustration').addClass("disabled");
+        }
+        else{
+          $('#sub_illustration').removeClass("disabled");
+        }
+      });
+
+      $("#confirm").click(function(){
+        $('#confirm_form').css("display", "none");
+      });
+
+      function check_image_name_exist(name, type){
+        $.ajax({
+          url: "/contests/validate_illustration_name",
+          type: 'POST',
+          data: {image_name:name},
+          dataType : "json",
+          success : function(data) {
+            if (type == "main_image"){
+              main_image_name_exist = data["status"];
+            }else if (type == "key_image"){
+              key_image_name_exist = data["status"];
+            }
+          }
+        });
+      }
+    </script>
+  </div>
+</div>

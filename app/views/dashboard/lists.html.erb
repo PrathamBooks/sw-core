@@ -1,0 +1,111 @@
+<%= render :partial => "dashboard/dashboard_datatables" %>
+<%= render :partial => "tabs" %>
+
+<div class="btn-group">
+  <span><%=t 'dashboard.lists_tab.number_of_lists_selected'%> :</span>
+  <span class="badge" id="all_lists_count"><%= @lists.count %></span>
+</div>
+
+<table class="table table-striped" id="all_lists">
+  <tfoot style="display: table-header-group;">
+    <tr>
+      <th><%=t 'dashboard.lists_tab.id'%></th>
+      <th><%=t 'dashboard.lists_tab.name'%></th>
+      <th><%=t 'dashboard.organization'%></th>
+      <th><%=t 'dashboard.lists_tab.creator'%></th>
+      <th><%=t 'dashboard.lists_tab.status'%></th>
+    </tr>
+  </tfoot>
+  <thead>
+    <tr class="table-heading-row">
+      <th><%=t 'dashboard.lists_tab.id'%></th>
+      <th><%=t 'dashboard.lists_tab.name'%></th>
+      <th><%=t 'dashboard.organization'%></th>
+      <th><%=t 'dashboard.lists_tab.creator'%></th>
+      <th><%=t 'dashboard.lists_tab.status'%></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @lists.each do |f|%>
+      <tr class="lists_count">
+        <td><%= f.id %></td>
+        <td><%= f.title %></td>
+        <td><%= f.user.organization.organization_name %></td>
+        <td><%= f.user.name %></td>
+        <td><%= link_to (f.status=="published") ? "Unpublish" : "Publish", update_lists_path(:id => f.id), class: f.organization_id.present? ? "btn btn-danger" : "btn btn-success" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+  var table = $('#all_lists').DataTable( {
+    searching: true,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 20,
+    order: [],
+    responsive: {
+        details: false
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  title: formatDatatableTitle('lists'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4 ]
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  title: formatDatatableTitle('lists'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4 ]
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  title: formatDatatableTitle('lists'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4 ]
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  title: formatDatatableTitle('lists'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4 ]
+                  }
+              }
+          ]
+      
+  });
+  $('#all_lists tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+  });
+
+  var new_table = $('#all_lists').dataTable();
+  table.columns().every( function () {
+    var that = this;
+
+    $( 'input', this.footer() ).on( 'keyup change', function () {
+      if ( that.search() !== this.value ) {
+          that
+              .search( this.value )
+              .draw();
+        document.getElementById("all_lists_count").innerHTML = document.getElementById('all_lists').children[1].childElementCount;
+      }else{
+        document.getElementById("all_lists_count").innerHTML = table.rows( '.lists_count' ).count(); 
+      }
+    });
+  });
+  $( 'input').on( 'keyup change', function () {
+    document.getElementById("all_lists_count").innerHTML = new_table.fnSettings().fnRecordsDisplay();
+  });
+
+  });
+</script>

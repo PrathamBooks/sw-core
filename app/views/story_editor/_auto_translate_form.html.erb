@@ -1,0 +1,21 @@
+<div id="storycard_form"></div>
+
+<div class="auto-translate-wrapper">
+<%= render :layout => "storycard_modal" do %>
+ <div class="auto-translate-form">
+  <h2><b>How useful was the platform-generated text?</b></h2>
+  <%= simple_form_for :translation_feedback, url: submit_translation_feedback_path(:id => "#{story_id}"), method: :post, remote: true, html: {class: 'form-horizontal'}  do |f| %>
+   <%= f.input :feedback, label: false, as: :radio_buttons, collection: Story::TRANSLATION_FEEDBACKS.keys %>
+   <%= f.button :submit, "Submit", :class=>"form-btn form_submit" %>
+  <% end %>
+ </div>
+<% end %>
+</div>
+
+<script type="text/javascript">
+$(".form_submit").click(function(){
+  if (!$("input[name='translation_feedback[feedback]']").is(":checked")){
+    alert("Must select some option!");
+  }
+})
+</script>

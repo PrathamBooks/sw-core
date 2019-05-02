@@ -1,0 +1,49 @@
+<div class="btn-group">
+  <i class="dropdown-arrow dropdown-arrow-inverse"></i>
+  <button class="btn btn-primary limit dropdown-toggle filter-btn" data-toggle="dropdown" >Top <%= params[:limit] ? params[:limit] : 10 %></button>
+  <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"> <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu dropdown-limit">
+    <% [10, 20, 30, 40, 50, 100].each do |limit| %>
+     <li><%= link_to "Top #{limit}", most_used_illustrations_path(:limit => limit, :organization=>params[:organization]? params[:organization] : ''), :remote => true%></li>
+    <% end %>
+  </ul>
+</div>
+<div class="btn-group">
+  <i class="dropdown-arrow dropdown-arrow-inverse"></i>
+  <button class="btn btn-primary levels dropdown-toggle filter-btn" data-toggle="dropdown" ><%= params[:organization] && params[:organization] != ''? params[:organization] : "All organizations" %></button>
+  <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"> <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu dropdown-levels">
+    <li><%= link_to "All Organizations", most_used_illustrations_path(:organization => "", :limit => params[:limit]? params[:limit] : 10), :remote => true%></li>
+    <% @organizations.each do |organization| %>
+     <li><%= link_to organization.organization_name, most_used_illustrations_path(:organization => organization.organization_name, :limit => params[:limit]? params[:limit] : 10), :remote => true%></li>
+    <% end %>
+    <li><%= link_to "Community", most_used_illustrations_path(:organization => "community", :limit => params[:limit]? params[:limit] : 10), :remote => true%></li>
+  </ul>
+</div>
+<table class="table table-striped">
+  <thead>
+  <tr class="table-heading-row">
+    <th>Illustration Title</th>
+    <th>Organization</th>
+    <th>No of places</th>
+    <th></th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody class="table-row-details">
+  <% if illustrations %>
+   <% illustrations.each do |illustration| %>
+    <tr>
+      <td><%= link_to illustration.name, illustration_path(illustration) %></td>
+      <td><%= illustration.organization.present? ? illustration.organization.organization_name : 'Storyweaver Community' %></td>
+      <td><%= illustration.story_count%></td>
+      <td>
+      </td>
+      <td></td>
+    </tr>
+   <% end %>
+  <% end %>
+  </tbody>
+</table>

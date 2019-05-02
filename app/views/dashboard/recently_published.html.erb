@@ -1,0 +1,10 @@
+<%= render :partial => "errors" %>
+
+<%= render :partial => "tabs" %>
+
+<div class="tab-content">
+  <div role="tabpanel" class="tab-pane active common-class" id="LegacyUpload">
+    <%= render :partial => "recently_published_stories" ,:locals => {:stories => @stories}%>
+  </div>
+</div>
+

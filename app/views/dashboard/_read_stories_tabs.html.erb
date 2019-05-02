@@ -1,0 +1,10 @@
+<div class="col-md-12">
+    <ul id="myTab" role="tablist" class="nav nav-tabs profile">
+       <li role="presentation" class="<%= @read_stories_current_tab == 'most_read_stories' ? 'active' : '' %>">
+        <%= link_to "<span>Most read stories</span>".html_safe , most_read_stories_path %>
+      </li>
+      <li role="presentation" class="<%= @read_stories_current_tab == 'languagewise_read_stories' ? 'active' : '' %>">
+        <%= link_to "<span>Languagewise Total Reads</span>".html_safe , languagewise_read_stories_path %>
+      </li>
+    </ul>
+  </div>

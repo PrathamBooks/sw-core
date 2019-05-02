@@ -1,0 +1,28 @@
+<%= render :partial => "errors" %>
+
+<%= render :partial => "analytics_tabs" %>
+<%= render :partial => "dashboard_datatables" %>
+
+<div class="col-md-12">
+  <ul id="tabs" class="nav nav-tabs stories">
+    <li class="active"><a href="#languagewise-stories-list" data-toggle="tab">Languagewise Downloaded Stories</a>
+    </li>
+    <li ><a href="#levelwise-stories-list" data-toggle="tab">Levelwise Downloaded Stories</a>
+    </li>
+    <li ><a href="#stories-list" data-toggle="tab">Most Downloaded Stories</a>
+    </li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane  active" id="languagewise-stories-list">
+      <%= render :partial => "languagewise_downloaded_stories", :locals => {:stories => @languagewise_download_count, :reads => false}%>
+    </div>
+    <div class="tab-pane " id="levelwise-stories-list">
+      <%= render :partial => "levelwise_downloaded_stories", :locals => {:stories => @levelwise_download_count, :reads => false}%>
+    </div>
+    <div class="tab-pane " id="stories-list">
+      <%= render :partial => "most_downloaded_stories", :locals => {:stories => @downloads_by_filter, :reads => false}%>
+    </div>
+  </div>
+</div>
+
+

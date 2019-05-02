@@ -1,0 +1,59 @@
+<%= render :partial => "tabs" %>
+<div class="tab-content">
+  <label><%= t 'blog_posts.banners_tab.add_banner'%></label>
+  <%= simple_form_for Banner.new, url: create_banner_path do |f| %>
+    <%= render 'banner_form', f:f %>
+  <% end %>
+  <div role="tabpanel" class="tab-pane active common-class" id="LegacyUpload">    
+    <table class="table table-striped">
+      <thead>
+      <tr class="table-heading-row">
+        <th><%= t 'blog_posts.banners_tab.banner_name'%></th>
+        <th><%= t 'blog_posts.banners_tab.thumbnail'%></th>
+        <th class="banner_link_tab"><%= t 'blog_posts.banners_tab.link_path'%></th>
+        <th><%= t 'blog_posts.banners_tab.position'%></th>
+        <th><%= t 'blog_posts.banners_tab.status'%></th>
+        <th><%= t 'blog_posts.banners_tab.actions'%></th>
+      </tr>
+      </thead>
+      <tbody class="table-row-details">
+      <% @banners.each do |banner|%>
+       <tr>
+         <td><label><%= banner.name %></label>
+         <td><%= image_tag(banner.banner_image.url(:original), height: 100, width: 100) if banner.banner_image.present? %></td>
+         </td>
+         <td class="banner_link_path"><label><%= banner.link_path %></label>
+         <td><label><%= banner.position %></label>
+         <td><label><%= banner.is_active %></label>
+        <td style="float: left;">
+        <%= link_to "Delete", delete_banner_path(banner), :method => "delete", data:{:confirm => "#{t 'blog_posts.banners_tab.delete_alert'} '#{banner.name}'?"}, "data-confirm-title" => "StoryWeaver", "data-confirm-cancel" => "#{t 'blog_posts.cancel'}", "data-confirm-cancel-class" => "btn btn-info btn-grey", "data-confirm-proceed" => "#{t 'blog_posts.ok'}", "data-confirm-proceed-class" => "btn-info edit-btn", :class=>"btn btn-info edit-btn" %>
+        <%= link_to "edit", '#', data: {url:edit_banner_path(banner)}, :class=>"btn btn-info edit-btn edit_banner" %>
+        </td>
+       </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <%= paginate @banners %>
+  </div>
+</div>
+
+<script>
+$(document).ready(function(){
+  $('.edit_banner').click(function(event){
+    event.preventDefault()
+    var url = $(this).data('url');
+    var bannerContainer = $(this).parents('tr');
+    
+    $.get( url, function(response) {
+      bannerContainer.find('td').hide();
+      bannerContainer.append('<td colspan="6" class="edit-banner-form-container"></td>');
+      bannerContainer.find('.edit-banner-form-container').html(response);
+    });
+  });
+  $(".table-row-details").on("click", ".edit-banner-form-container .cancel", function(){
+    var bannerContainer = $(this).parents('tr');
+    bannerContainer.find('.edit-banner-form-container').remove();
+    bannerContainer.find('td').show();
+  });
+})
+</script>

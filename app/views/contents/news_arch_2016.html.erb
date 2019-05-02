@@ -1,0 +1,84 @@
+<div class="row about-row noborder">	
+  <div class="home-full-border about-border">
+    <div class="home-page-cont about-cnt col-md-12 col-sm-12 nopadding">
+      <div class="col-md-2 col-sm-2 nopadding left-menu">
+        <%= render "left_menu" %> 
+      </div>
+      <div class="col-md-10 col-sm-10 nopadding right-content-abt">
+      <div class="arch_year">
+        <div class="btn-group"><label>Select Year</label></div>
+        <div class="btn-group sel_year">
+          <a class="btn dropdown-toggle btn-select" data-toggle="dropdown" href="#">2016<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="in_the_news">2018</a></li>
+            <li><a href="archive">2017</a></li>
+            <li><a href="news_arch_2016">2016</a></li>
+            <li><a href="news_arch_2015">2015</a></li>
+          </ul>
+        </div>
+      </div>
+        <div class="col-md-12 col-sm-12">
+          <div class="odd-abt">
+            <div class="about-content news_read_cont">
+              <h3 class="pressLink_color">Huffington Post</h3>
+              <strong>September 29, 2016</strong>
+              <p><a href="http://www.huffingtonpost.in/2016/09/29/storyweaver-plans-to-publish-thousands-of-childrens-stories-in_a_21483377/" target="_blank">StoryWeaver Plans To Publish Thousands Of Children's Stories In Over 65 Languages Completely Free Of Cost</a></p>
+            </div>
+          </div>        
+        </div>
+        <div class="col-md-12 col-sm-12">
+          <div class="odd-abt">
+            <div class="about-content news_read_cont">
+              <h3 class="pressLink_color">Livemint</h3>
+              <strong>September 09, 2016</strong>
+              <p><a href="http://www.livemint.com/Leisure/wGspJFjao1vdYcPgyt8BfN/Lounge-Loves-Storyweavers-New-Phase.html" target="_blank">Lounge Loves: Storyweaver's New Phase</a></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 col-sm-12">
+          <div class="odd-abt">
+            <div class="about-content news_read_cont">
+              <h3 class="pressLink_color">The New Indian Express</h3>
+              <strong>August 30, 2016</strong>
+              <p><a href="http://www.newindianexpress.com/cities/chennai/2016/aug/30/Narrate-a-story-and-share-it-in-62-languages-1514358.html" target="_blank">Narrate a story and share it in 62 languages!</a></p>
+            </div>
+          </div>        
+        </div>
+        <div class="col-md-12 col-sm-12">
+          <div class="odd-abt">
+            <div class="about-content news_read_cont">
+              <h3 class="pressLink_color">The Hindu</h3>
+              <strong>May 04, 2016</strong>
+              <p><a href="http://www.thehindu.com/news/cities/mumbai/entertainment/dialling-the-right-number/article8554028.ece" target="_blank">Dialling the right number</a></p>
+            </div>
+          </div>        
+        </div>
+        <div class="col-md-12 col-sm-12">
+          <div class="odd-abt">
+            <div class="about-content news_read_cont">
+              <h3 class="pressLink_color">Factor Daily</h3>
+              <strong>June 19, 2016</strong>
+              <p><a href="https://factordaily.com/pratham-indian-language-childrens-books/" target="_blank">How an online platform for children's books is saving rare languages from extinction</a></p>
+            </div>
+          </div>        
+        </div>
+        <div class="col-md-12 col-sm-12">
+          <div class="odd-abt">
+            <div class="about-content news_read_cont news_cont_border">
+              <h3 class="pressLink_color">The Literary Platform </h3>
+              <strong>September 29, 2016</strong>
+              <p><a href="http://theliteraryplatform.com/magazine/2016/09/storyweaver-indias-first-open-source-digital-repository-of-multilingual-childrens-stories/"  target="_blank">StoryWeaver</a></p>
+            </div>
+          </div>        
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(".dropdown-menu li a").click(function(){
+    var selText = $(this).text();
+    $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"></span>');
+  });
+</script>

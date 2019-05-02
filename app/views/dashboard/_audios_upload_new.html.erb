@@ -1,0 +1,37 @@
+<div class="modal modal-image-drawer fade modal--story-creator" id="modal-upload-audios" tabindex="-1" role="dialog">
+ <div class="modal-dialog modal-lg" role="document">
+   <div class="modal-content">
+     <div class="modal-body modal-body-app">
+       <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <%= simple_form_for :upload_audios, url: audios_upload_path do |f| %>
+         <h3><%= @story.title %> (<%= @story.english_title %>) <%= f.hidden_field :story_id, :value => @story.id %></h3>
+         <h5><%= t 'dashboard.audio_stories.upload_cover_audio' %>:</h5><%= f.file_field :preface_mp3, :onchange => "mp3FileValidation(this)" %>
+         <h5><%= t 'dashboard.audio_stories.upload_audio' %>:</h5><%= f.file_field :mp3 , :onchange => "mp3FileValidation(this)" %>
+         <h5><%= t 'dashboard.audio_stories.upload_csv' %>:</h5><%= f.file_field :csv, :onchange => "csvFileValidation(this)" %>
+         <%= f.submit "#{t 'dashboard.audio_stories.save_to_readalong_drafts'}" %>
+         <button type="button" class="audio_btn_close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Cancel</span></button>
+       <% end %>
+     </div> <!-- /modal-body -->
+   </div> <!-- /modal-content -->
+ </div> <!-- /modal-dialog -->
+</div>
+<script>
+  $(document).ready(function(){
+    if (<%= @story.is_audio %> == false)
+      document.getElementById("upload_audios_csv").disabled = true;
+  });
+  function mp3FileValidation(input){
+    var extension = input.value.substr((input.value.lastIndexOf('.') +1));
+    if (!/(mp3)$/ig.test(extension)) {
+      alert("Invalid file type: "+extension+".  Please use mp3.");
+      input.val("");
+    }
+  }
+  function csvFileValidation(input){
+    var extension = input.value.substr((input.value.lastIndexOf('.') +1));
+    if (!/(csv)$/ig.test(extension)) {
+      alert("Invalid file type: "+extension+".  Please use csv.");
+      input.val("");
+    }
+  }
+</script>

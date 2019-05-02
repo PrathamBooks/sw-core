@@ -1,0 +1,18 @@
+<div class="row setroles">
+  <div class="col-md-12 col-sm-12">
+    <%= f.input :name, label: false , placeholder: "banner name", input_html: {:class => "new-cat-add banner_form_name" } %>
+    <%= f.input :link_path, label: false , placeholder: "link path", input_html: {:class => "new-cat-add banner_form_name"} %>
+    <%= f.input :position, label: false, placeholder: "position", input_html: {:class => "new-cat-add banner_form_name", :min => 1} %>
+    <label class="banner_form_is_active"><%= f.check_box :is_active,  {}, "true", "false" %>
+      <%= t 'blog_posts.banners_tab.is_active'%>
+    </label>
+    <%= f.file_field :banner_image, :id=> "banner", as: :file, :class => "new-cat-add banner_form_image", data:{ toggle: "tooltip", title: "The suggested banner dimension is 1349X396 "} %>
+    <%= f.submit "#{t 'blog_posts.banners_tab.submit'}", :class => "btn btn-success", input_html: {:class => "banner_form_submit" } %>
+  </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>

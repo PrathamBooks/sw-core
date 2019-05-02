@@ -1,0 +1,70 @@
+<%= render :partial => "dashboard_datatables" %>
+<h2>Level wise Total number of downloads</h2>
+<table class="table table-striped" id="levelwise_downloaded_stories">
+  <thead>
+    <tr class="table-heading-row">
+      <th>Level</th>
+      <th>TOTAL number of downloads</th>
+    </tr>
+  </thead>
+  <tbody class="table-row-details">
+    <% @levelwise_download_count.each do |key,value| %>
+      <tr>
+        <td><%= key %></td>
+        <td><%= value %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+  var table = $('#levelwise_downloaded_stories').DataTable( {
+    searching: false,
+    paging: false,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 10,
+    order: [],
+    responsive: {
+        details: false
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  title: formatDatatableTitle('levelwise-stories'),
+                  exportOptions: {
+                      columns: [ 0, 1 ]
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  title: formatDatatableTitle('levelwise-stories'),
+                  exportOptions: {
+                      columns: [ 0, 1 ]
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  title: formatDatatableTitle('levelwise-stories'),
+                  exportOptions: {
+                      columns: [ 0, 1 ]
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  title: formatDatatableTitle('levelwise-stories'),
+                  exportOptions: {
+                      columns: [ 0, 1 ]
+                  }
+              }
+          ]
+      
+  });
+
+  var new_table = $('#levelwise_downloaded_stories').dataTable();
+
+  });
+</script>

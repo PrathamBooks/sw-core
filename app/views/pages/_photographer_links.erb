@@ -1,0 +1,3 @@
+<% photographers.each_with_index do | photographer, index | %>
+    <span><%= link_to photographer, host_url+"/users/#{photographers_slug[index]}"  %></span><% unless index == photographers.length - 1  %>,<% end %>
+<% end %>

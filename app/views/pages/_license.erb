@@ -1,0 +1,24 @@
+<%
+  if license == 'CC BY 4.0'
+    image_src = asset_path_as_per_request_format('ccby.png')
+  elsif license == 'CC BY 0'
+    image_src = asset_path_as_per_request_format('cc0.png')
+  else
+    image_src = asset_path_as_per_request_format('publicdomain.svg')
+  end
+%>
+<div class="cc_footer">
+  	<div class="back_inner_page by_logo">
+      <img src="<%= image_src %>"/>
+    </div>
+    <% if license == 'CC BY 4.0' %>
+      <p>
+      <%= t "spp.license.cc_by_4_html" %>
+      </p>
+    <% else %>
+      <p>
+        <%= t "spp.license.pd_html" %>
+      </p>
+    <% end %>
+</div>
+

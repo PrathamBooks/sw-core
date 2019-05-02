@@ -1,0 +1,67 @@
+<table class="bodyTable" role="presentation" width="100%" align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%; margin: 0;">
+  <tr>
+    <td class="body__content" align="left" width="100%" valign="top" style="color: #000000; font-family: Helvetica,Arial,sans-serif; font-size: 16px; line-height: 20px;">
+      <div class="mail_container container" style="margin: 0 0.5rem; background-color: #FFFFFF; border: 0; padding: .5rem; text-align: center;"> <!--[if mso | IE]>
+        <table class="container__table__ie" role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin-right: auto; margin-left: auto;width: 90%" width="90%" align="center">
+          <tr>
+            <td> <![endif]-->
+              <table class="container__table" role="presentation" border="0" align="center" cellpadding="0" cellspacing="0" width="100%">
+                <tr class="container__row">
+                  <td class="container__cell" width="100%" align="left" valign="top" style="background-color: #FFFFFF; border: 0; padding: .9375em;" bgcolor="#FFFFFF">
+                    <div class="row">
+                      <table class="row__table" width="100%" align="center" role="presentation" border="0" cellpadding="0" cellspacing="0" style="table-layout: fixed;">
+                        <tr class="row__row">
+                          <td class="mail_cont_head column col-sm-12" width="100%" style="padding-bottom: .625em; display: block; width: 100%;" align="left" valign="top">
+                            <h1 class="header h1" style="line-height: 40px; color: #ea5427; text-align: center; font-family: 'Raleway',sans-serif; font-size: 1.6em; font-weight: bold; margin: 0;">Reading Level suggestion for your story</h1>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                    <div class="row">
+                      <table class="row__table" width="100%" align="center" role="presentation" border="0" cellpadding="0" cellspacing="0" style="table-layout: fixed;">
+                        <tr class="row__row">
+                          <td class="mail_cont_name column col-sm-12" width="100%" style="font-weight: 700; padding-bottom: .625em; text-align: center; display: block; width: 100%;" align="center" valign="top">Dear <%= @author_name %>,</td>
+                        </tr>
+                      </table>
+                    </div>
+                    <div class="mail_cont_text row" style="padding-bottom: .625em; text-align: center; font-family: 'Raleway',sans-serif; display: block;">
+                      <table class="row__table" width="100%" align="center" role="presentation" border="0" cellpadding="0" cellspacing="0" style="mso-hide: none; table-layout: fixed;">
+                        <tr class="row__row">
+                          <td class="column col-sm-12" width="100%" style="width: 100%;" align="left" valign="top">Greetings from StoryWeaver!</td>
+                        </tr>
+                      </table>
+                    </div>                    
+                    <div class="mail_cont_text row" style="padding-bottom: .625em; text-align: center; font-family: 'Raleway',sans-serif; display: block;">
+                      <table class="row__table" width="100%" align="center" role="presentation" border="0" cellpadding="0" cellspacing="0" style="mso-hide: none; table-layout: fixed;">
+                        <tr class="row__row">
+                          <td class="column col-sm-12" width="100%" style="width: 100%;" align="left" valign="top">Thank you for using StoryWeaver for publishing your stories. We write to you regarding your story, <%= link_to(@story.title, react_stories_show_url(@story)) %>. Would you like to reconsider the reading level of your story? <%= link_to("Click here", reading_levels_url) %> to learn more about reading levels.</td>
+                        </tr>
+                      </table>
+                    </div>
+                    <div class="mail_cont_text row" style="padding-bottom: .625em; text-align: center; font-family: 'Raleway',sans-serif; display: block;">
+                      <table class="row__table" width="100%" align="center" role="presentation" border="0" cellpadding="0" cellspacing="0" style="mso-hide: none; table-layout: fixed;">
+                        <tr class="row__row">
+                          <td class="column col-sm-12" width="100%" style="width: 100%;" align="left" valign="top">Here are the steps to follow if you would like to change the reading level of your story
+                            <ol class="text ol" style="color: #000000; font-family: Helvetica,Arial,sans-serif;  line-height: 1.25em; text-align: left;">
+                              <li class="text li" style="color: #000000; font-family: Helvetica,Arial,sans-serif; line-height: 1.25em; text-align: left;">Go to your 'Dashboard' and look under 'My Published Stories'. Your story will be here.</li>
+                              <li class="text li" style="color: #000000; font-family: Helvetica,Arial,sans-serif; line-height: 1.25em; text-align: left;">Click on the 'Edit' button to make the necessary changes to your story.</li>
+                              <li class="text li" style="color: #000000; font-family: Helvetica,Arial,sans-serif; line-height: 1.25em; text-align: left;">Publish your story again.</li>
+                            </ol></td>
+                        </tr>
+                      </table>
+                    </div>
+                    <div class="row">
+                      <table class="row__table" width="100%" align="center" role="presentation" border="0" cellpadding="0" cellspacing="0" style="table-layout: fixed;">
+                        <tr class="row__row">
+                          <td class="mail_cont_wishes column col-sm-12" width="100%" style="font-family: 'Raleway',sans-serif; display: block; padding-bottom: 0; width: 100%;" align="left" valign="top"><span style="display: block;">Warmly,</span>Team StoryWeaver</td>
+                        </tr>
+                      </table>
+                    </div>
+                  </td>
+                </tr>
+              </table> <!--[if mso | IE]> </td>
+          </tr>
+        </table> <![endif]--> </div>
+    </td>
+  </tr>
+</table>

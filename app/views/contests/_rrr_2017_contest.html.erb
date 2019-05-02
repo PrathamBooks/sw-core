@@ -1,0 +1,46 @@
+<%= render :partial => "dashboard/errors" %>
+<div class="row about-row noborder">
+    <section id="search-details-temp" style="margin: 30px 45px;" >
+
+        <div class="col-md-12 col-sm-12">
+          <p>Retell, Remix and Rejoice is back! Pratham Books’ annual World Storytelling Day contest is now in it’s 6th year and this year we’re giving it  a slight twist. One we hope you’ll find fun and challenging.</h4>
+        </div>
+
+        <div class="col-md-12 col-sm-12">
+          <p>Instead of sharing a set of illustrations from popular Pratham Books titles to remix into a brand new story, this year we’re giving you themes to weave your stories around. Plus, we’re asking you to help us create books in one of two reading levels: Level 1 and Level 2.</p>
+        </div>
+
+        <div class="col-md-12 col-sm-12">  
+           <p>A recent report ‘Mapping Children’s Literature in India’ by the Sir Ratan Tata Trust and Parag revealed a huge shortage of quality stories for our youngest readers (0-6 years), especially in Indian languages. We want your help in creating joyful stories for the next generation of book worms in English, Hindi, Kannada, Marathi and Tamil.</p>
+        </div>
+       <div class="col-md-12 col-sm-12">
+        <h2>The theme</h2> 
+         <p>For our very youngest readers, stories about their immediate surroundings, family and friends and emotions are a wonderful way to introduce them to the joy of reading.  We want you to write funny, silly, magical and heartwarming stories about:</p>
+         <ul style ="clear: both">
+              <li>My body: Parts of the body, sensations, growing up.</li>
+              <li>My friends: Games we play, sharing, fighting, making up, being fair.</li>
+              <li>Animals around us: my pets, domestic and wild animals, birds and insects.</li>
+              <li>Travel: Using modes of transport in stories, visiting new places and culture, etc.</li>
+              <li>People around us: my teachers, shopkeepers, drivers, fruit-sellers, ice-cream wala, the gardener, mechanic, etc.</li>
+            </ul> 
+       </div>
+
+      <div class="col-md-12 col-sm-12">
+        <h2>The prize</h2>
+        <p>The three best manuscripts will receive a hamper of Pratham Books’ latest titles, a printed copy of their own book and detailed feedback from our Senior Editors at Pratham Books. One finalist’s book will be chosen for re-illustration.</p>
+        <p>Click <a href="https://storyweaver.org.in/blog_posts/133-pratham-books-retell-remix-and-rejoice-2017-is-here">here</a> for more information on themes, contest and submission guidelines.</p>
+      </div>
+     
+      <div class="col-md-12 col-sm-12">
+        <p><b>How to take part</b> There are three ways to enter your story for Retell, Remix and Rejoice 2017 (using illustrations from our image bank, by uploading your own illustrations, or as text only)  but whichever format you choose it must be via this contest page, by clicking on the button below:</p>
+      </div>
+
+        <div class="row">
+          <div class="col-lg-12">
+            <%= link_to "Enter contest now", stories_start_path(contest_id: @contest.id), class: "btn btn-warning btn-lg hide-in-mob-create contest_story_create_button"%>
+            <div id="newStoryForm">
+            </div>
+          </div>
+        </div>
+      </section>
+<%= render :partial => "stories/desktop_only_action_message" %>

@@ -1,0 +1,23 @@
+<%= render :partial => "tabs" %>
+<div role="tabpanel" class="tab-pane" id="profile-drafts">
+  <div class="col-md-12">
+    <table class="table table-striped">
+      <thead>
+        <tr class="table-heading-row">           
+          <th><%= t "dashboard.story_title"%></th>
+          <th><%= t "dashboard.language"%></th>
+          <th><%= t "dashboard.actions"%></th>
+        </tr>
+      </thead>
+      <tbody class="table-row-details">    
+        <% @users_recommended_stories.each do |story| %>
+          <tr>
+             <td><%= link_to "<span class='#{story.script}'>#{story.title}</span>".html_safe, react_stories_show_path(story.url_slug) %></td>
+             <td><%= story.language %></td>
+             <td><%= link_to "Add to editor's picks", recommend_story_on_home_path(:story_id => story.id), method: :post, class:"btn btn-info edit-btn" %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

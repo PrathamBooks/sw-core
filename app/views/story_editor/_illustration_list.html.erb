@@ -1,0 +1,11 @@
+<div class="img-row1">
+  <% illustrations.each do |illustration| %>
+    <a data-illustration-id="<%= illustration.id %>" class="img_draw">
+      <%= image_tag(illustration.image_url,:style=>"margin:5px;") %>
+    </a>
+  <% end %>
+</div>
+
+<div class="row">
+  <%= paginate illustrations, :method => :post , :params => {:controller => 'story_editor', :action => 'search_illustration'}, :remote => true  %>
+</div>

@@ -1,0 +1,45 @@
+<%= render :partial => "errors" %>
+<ul class="list-group organization-details">
+<li class="list-group-item">
+<label>Organization name: </label>
+<span><%= @organization.organization_name %></span>
+</li>
+  <li class="list-group-item">
+<label>Country: </label>
+<span><%= @organization.country %></span>
+</li>
+<li class="list-group-item">
+<label>Number of class rooms: </label>
+<span><%= @organization.number_of_classrooms %></span>
+</li>
+<li class="list-group-item">
+<label>Children Impacted: </label>
+<span><%= @organization.children_impacted %></span>
+</li>
+<li class="list-group-item">
+<label>Total Stroies Downloaded: </label>
+<span><%= @story_downloads.map{|d| d.stories.count}.inject(:+) %></span>
+</li>
+</ul>
+<table class="table table-striped">
+  <thead>
+  <tr class="table-heading-row">
+    <th>Date</th>
+    <th>No of stories</th>
+    <th>Format</th>
+    <th>Organization Name</th>
+  </tr>
+  </thead>
+  <tbody class="table-row-details">
+   <% @story_downloads.each do |story_download| %>
+    <tr>
+      <td><%= link_to(story_download.created_at.localtime.strftime("%Y-%m-%d"), stories_downloaded_list_path(:story_download_id => story_download.id),:method=>:get,:remote => true) %></td>
+      <td><%= story_download.stories.count %></td>
+      <td><%= story_download.download_format %></td>
+      <td><%= story_download.user.organization.organization_name %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+<%= paginate @story_downloads %>
+<div id="story_download_list" class="modal modal--story-creator fade" tabindex="-1" role="dialog">

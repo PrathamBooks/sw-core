@@ -1,0 +1,14 @@
+<div id="add_post_form">
+  <%= render partial: 'add_post_form_errors'  %>
+  <%= simple_form_for :discussion, url: create_post_story_path, remote: true, html: {id: 'add_post_form'} do |f|%>
+    <%= f.input_field :raw, placeholder: 'add comment', as: :text %>
+    <%= f.hidden_field :id, value: @story.id %>
+    <%= f.hidden_field :topic_id, value: discussion_topic['id'] %>
+    <span class="discussion-cmt-btn" title="Please log in to add a comment">
+    <%= f.submit "comment", id: 'add_post',
+      class: current_user.nil? ? "btn btn-warning disabled" : "btn btn-warning",
+      data: {disable_with: "Commenting..."},
+      title: current_user.nil? ? 'Please log in to add a comment' : '' %>
+  <%end%>
+  </span>
+</div>

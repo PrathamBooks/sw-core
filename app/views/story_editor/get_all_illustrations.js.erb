@@ -1,0 +1,8 @@
+$("#tab-favourites").html(" ")
+$('#tab-all-images').html("<%= escape_javascript(render(:partial=>"all_illustrations")) %>");
+
+url = "/v0/illustrations";
+editor_fav_images = false;
+favorites_of_story = <%= @story.id %>
+illustration_drawer = new IllustrationDrawerService();
+illustration_drawer.initialize(url, 18, editor_fav_images, favorites_of_story);

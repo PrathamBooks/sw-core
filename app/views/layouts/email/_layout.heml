@@ -1,0 +1,147 @@
+<heml xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Noto+Sans:300italic,400italic,600italic,700italic,800italic,400,600,700,300,800">
+
+<title>StoryWeaver</title>
+
+<style>
+  body {
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 1em;
+    line-height: 1.125em;
+    margin: 0; 
+    padding: 0; 
+  }
+  .logo_cont {
+    background-color: #F5F5F5;
+    border:0; 
+    text-align: center;
+    max-width: 33%; 
+  }
+  .logo_cont column {
+    vertical-align: top;
+  }
+  .logo_cont container {
+    border: 0;
+    text-align: center;
+  }
+  .logo_cont_child {
+    border:0; 
+    text-align: center;
+  }
+  .logo_cont_child column {
+    float: left;
+    padding: 0.9375em 0;
+    vertical-align: top;
+  }
+  .logo_cont_child img {
+    border: none;
+    height: auto;
+    max-width: 50%;
+    margin: 0 auto;
+  }
+  .social_icons {
+    padding-top: 0.625em;
+  }
+  .icons_cont {
+    margin: 0.5em 1.375em 1.375em 1.375em;
+    max-width: 92%;
+  }
+  .icons_cont_head {
+    color:#333; 
+    font-family: 'Raleway', sans-serif; 
+    font-size: 0.95em; 
+    padding-bottom: 0; 
+    text-align: center;
+  }
+  .icons_cont_img {
+    display: block; 
+    margin: 0 auto;
+    padding: 0.625em; 
+    text-align: center;
+    max-width: 44%;
+  }
+  .icons_img_cont {
+  display: block;
+  }
+  .icons_img_social img {
+    border: 1px solid #4a90e0; 
+    border-radius: 100px; 
+    display: inline-block; 
+    line-height: 0;
+    margin: 0 0.25em; 
+    padding: 0.375em;
+  }
+  .icons_img_social img {
+    border: none;
+    height: 100%;
+    width: 20px;
+  }
+  .footer {
+    color:#333; 
+    font-size: 1.1em;
+    font-family: 'Raleway', sans-serif; 
+    padding-bottom: 0.6em;
+    text-align: center;
+  }
+  .footer a {
+    color: #4a90e0; 
+    font-weight: bold; 
+    text-decoration: none;
+  }
+</style>
+
+</head>
+<body>
+  <container class="logo_cont">
+    <row>
+      <column>
+        <container>
+          <row>
+            <column>
+                <container class="logo_cont_child">
+                  <row>
+                 <column>
+                 <img src="https://storage.googleapis.com/story_weaver_email_images/pb-storyweaver-logo-01.png" />
+                 </column>
+                </row> 
+              </container>                        
+            </column>
+          </row>
+        </container>
+      </column>
+    </row>
+    <row class="social_icons">
+      <column>
+        <container class="icons_cont">
+          <row>
+            <column class="icons_cont_head">Connect with us!</column>
+          </row>
+          <row class="icons_cont_img">
+            <column>
+              <a href="https://www.facebook.com/pbstoryweaver" class="pb-link pb-link--default pb-social-links__link icons_img_social" title="facebook" target="_blank"><img src="https://storage.googleapis.com/story_weaver_email_images/facebook_new.png" /></a>
+              <a href="https://storyweaver.org.in/blog" class="pb-link pb-link--default pb-social-links__link icons_img_social" title="rss" target="_blank"><img src="https://storage.googleapis.com/story_weaver_email_images/rss_new.png" /></a>
+              <a href="https://twitter.com/pbstoryweaver" class="pb-link pb-link--default pb-social-links__link icons_img_social" title="twitter" target="_blank"><img src="https://storage.googleapis.com/story_weaver_email_images/twitter_new.png" /></a>
+              <a href="https://www.youtube.com/channel/UCH9_ahl5Vu8P9tElauPWahg" class="pb-link pb-link--default pb-social-links__link icons_img_social" title="youtube" target="_blank"><img src="https://storage.googleapis.com/story_weaver_email_images/youtube_new.png" /></a>
+            </column>
+          </row>
+          <row>
+            <% if unsubscribe %>
+            <column class="footer">
+              You are receiving this email because you signed up to be a part of StoryWeaver's vibrant community.
+            </column>
+            <% else %>
+            <column class="footer">
+              You are receiving this email because you signed up to be a part of StoryWeaver's vibrant community. If you do not want to receive these emails, please write to us at <a href="mailto:contact@storyweaver.org.in">contact@storyweaver.org.in</a>
+            </column>
+          </row>
+        </container> 
+      </column>
+    </row>
+  </container>
+</body>
+</heml>

@@ -1,0 +1,18 @@
+<% if page.textboxes %>
+  <% page.textboxes.each do |textbox| %>
+    <% if textbox.textbox_content_present %>
+      <div class='newStories <%= page.story.language.script %>
+        <%= page.page_template.name + ' content' %> '
+        dir="<%= page.story.language.is_right_to_left? ? 'rtl' : 'auto'%>"
+        style="position: absolute;
+          width: <%= textbox.width %>%; height: <%= textbox.height %>%;
+          top: <%= textbox.position_top %>%; left: <%= textbox.position_left %>%;
+          background-color: <%= textbox.background_color_format %> !important;
+          <%= textbox.boundary ? 'border: solid 1px black;' : '' %>padding:0; overflow: hidden;display: block;margin: 0;"
+      >
+        <% textbox_contents = textbox.content.gsub('<br>', '<br/>') rescue textbox.content %>
+        <%=raw(textbox_contents)%>
+      </div>
+    <% end %>    
+  <% end %>
+<% end %>

@@ -1,0 +1,89 @@
+<div class="row">
+  <div class="col-md-12 col-sm-12" >
+  <h1 class="create-heading">Create</h1>
+  <p>Everybody has a story to tell, and if you have a story to share too, you have landed on the correct page.<br/>
+  The ‘Create’ page puts the power of story creation in your hands. Use our simple ‘Story Creator’ tools to weave a story that captures every imagination. </p>
+  <p>There are two ways in which one can ‘Create’ stories on StoryWeaver.</p>
+    <h2 class="page-header">Create a story by image</h2>
+    <div class="col-md-12 col-sm-12 nopadding cls-gap">
+    <div class="col-md-8 col-sm-8">
+    <p>Everyone needs a little inspiration once in a while, and on StoryWeaver, we have a lot to inspire you from. Browse through thousands of images/illustrations from our ‘Image Bank’ and pick up an illustration that inspires you to write. Select the image and see the words flow. Click here to ‘Start a story from an image’.</p>
+      <ol type="a">
+      <li>Enter the Title, Reading Level and Language of the story you are about to write. (Don’t worry, if you haven’t thought of the Title of the story yet, you can go back to this later too)</li>
+      <li>Browse through the ‘Image Bank’ and select an illustration (or a set of illustrations)</li>
+      <li>Choose a template that you would like to write the story in and place the image there.</li>
+      <li>Start writing.  You can pick up more images/illustrations as you go.</li>
+      <li>Need more images/illustrations to works for your story? You can upload your own illustrations too and use it in the story.</li>
+      </ol>
+      <span class="button-center-align">
+        <%# if @contest.present? && @contest.is_running? %> <!-- RRR 2017 -->
+         <%#= link_to "Create Story from the Image you like", illustrations_path(:contest_id => @contest.id) , class: "btn btn-warning btn-lg hide-in-mob-create"%>
+        <%# else %>
+        <%= link_to "Create story from the image you like", illustrations_path , class: "btn btn-warning btn-lg hide-in-mob-create"%>
+        <%# end %>
+      </span>
+    </div>
+    <div class="col-md-4 col-sm-4 create-img embed">
+      <h2>How to create a story on StoryWeaver</h2>
+         <div class="embed-video">
+            <iframe width="360" height="258" src="https://www.youtube.com/embed/LDPyK_sOiv8" frameborder="0"
+            allowfullscreen></iframe>
+          </div>  
+    </div>
+  </div>
+</div>
+</div>
+  <div class="row">
+    <h2 class="page-header">Create a story with text</h2>
+    <div class="col-md-12 col-sm-12 nopadding cls-gap">    
+    <div class="col-md-8 col-sm-8 pull-right middle-cnt">
+      <p>Already have a story buzzing in your mind? Start writing it down without any delay. Click here to ‘Start a story with text’.</p>
+      <ol type="a">
+      <li>Enter the Title, Reading Level and Language of the story you are about to write. (Don’t worry, if you haven’t thought of the Title of the story yet, you can go back to this later too)</li>
+      <li>Choose a template that you would like to write the story in.</li>
+      <li>Start writing. </li>
+      <li>Once you finish, go to our ‘Image Bank’ and pick up images that go best with your story.</li>
+      <li>Cannot find an image that works for your story? You can upload your own illustrations too and use it in the story.</li>
+      </ol>
+      <span class="button-center-align">
+        <%# if @contest.present? && @contest.is_running? %> <!-- RRR 2017 -->
+         <%#= link_to "That's easy! Take me to Story Creator Now", new_story_path(:contest_id => @contest.id),remote: true , class: "btn btn-warning btn-lg hide-in-mob-create"%>
+        <%# else %> 
+        <%= link_to "That's easy! Take me to story creator now", new_story_path , remote: true, class: "btn btn-warning btn-lg hide-in-mob-create"%> 
+        <%# end %>      
+      </span>
+    </div>
+     <div class="col-md-4 col-sm-4 create-img">
+        <img src="<%= asset_path('static_page_thumbnails/create_with_text.jpg') %>"/>
+    </div>
+    </div>
+    <div id="newStoryForm">
+  </div>
+  </div>
+
+   <div class="row">
+    <h2 class="page-header">Upload your own illustration/image</h2>
+    <div class="col-md-12 col-sm-12 nopadding cls-gap">
+    <div class="col-md-8 col-sm-8">
+    <p>Creation is not limited to stories in written words. Creation also means stories in different forms, in pencil sketches, in colour palettes, in computer graphics. If you have a story drawn in images and want to share it, this is the place for you. Our simple ‘Image Uploader’ will come handy for you to upload your own illustrations to be a part of the ever growing StoryWeaver ‘Image Bank’.   Click here to upload your illustrations now.</p>
+      <ol type="a">
+      <li>Enter the requisite information about the illustration, namely, Title, Illustrator’s details and License type. </li>
+      <li>Upload the illustration and Publish .</li>
+      </ol>
+       <span class="button-center-align">
+        <%# if @contest.present? && @contest.is_running? %> <!-- RRR 2017 -->
+          <%#= link_to "Upload your own Illustration/Image", new_illustration_path(:contest_id => @contest.id) ,remote: true, class: "btn btn-warning btn-lg hide-in-mob-create"%>
+        <%# else %>
+         <%= link_to "Upload your own illustration/image", new_illustration_path, remote: true , class: "btn btn-warning btn-lg hide-in-mob-upload"%>
+        <%# end %>
+      </span>
+    </div>
+    <div class="col-md-4 col-sm-4 create-img">
+        <img src="<%= asset_path('static_page_thumbnails/upload_own_image.jpg') %>"/>
+    </div>
+  </div>
+            <div id="newIllustrationForm">
+    </div>
+
+</div>
+<%= render 'desktop_only_action_message' %>

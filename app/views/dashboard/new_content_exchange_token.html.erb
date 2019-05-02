@@ -1,0 +1,105 @@
+<%= render :partial => "tabs" %>
+
+<div class="col-md-12">
+  <ul id="tabs" class="nav nav-tabs">
+    <li class="active"><a href="#content-exchange-tokens" data-toggle="tab">Content Exchange Tokens</a>
+    </li>
+  </ul>
+  <div class="row">
+    <div class="col-md-5">
+      <%= simple_form_for @token, url: create_content_exchange_token_path, html: {class: 'form-horizontal'} do |f| %>
+        <%= f.input :story_download_limit %>
+        <%= f.input :illustration_download_limit %>
+        <%= f.input :valid_for, label: "Valid For (days)" %>
+        <%= label_tag 'organization_name', 'Organization' %><br>
+        <%= text_field_tag 'organization_name', nil, placeholder: 'Enter organization name...', data: {autocomplete_source: Organization.all.map { |t| { :label =>  "#{t.organization_name} #{t.city} #{t.email}", :value => t.id } } }, class: "organization_autocomplete" %>
+        <%= f.hidden_field :organization_id, id: 'organization_id' %> 
+        <br/><br/>
+        <%= f.submit "Create", :id => "token_create_button", :class => "btn btn-success" %>
+        <%= link_to "Cancel", :back, {:class=>"btn btn-info btn disable-donor"} %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div id="validation_failure_dialog" title="Validation Errors">
+  <span id="validation_failure_span"></span>
+</div>
+
+<script>
+$("#validation_failure_dialog").dialog({
+  autoOpen: false,
+  width: 360,
+  modal: true,
+  buttons : {
+    "Ok" : function() {
+      $(this).dialog("close");
+    }
+  },
+  dialogClass: 'change_orientation_dialog'
+});
+
+$('#organization_name').autocomplete({
+  source: $('#organization_name').data('autocomplete-source'),
+  select: function(event, ui) {
+    event.preventDefault();
+    $(this).val(ui.item.label);
+    $('#organization_id').val(ui.item.value);
+  }, search: function() {
+    if ($('#organization_id').val() != "") {
+      $('#organization_id').val("");
+    }
+  }
+});
+
+$('#token_create_button').click(function(event) {
+  event.preventDefault();
+  var errMsg = "";
+  if ($("#token_story_download_limit").prop("value") === "") {
+    errMsg += "<p>'Story download limit' cannot be blank</p>";
+  } else {
+    var token_story_download_limit = Number($("#token_story_download_limit").prop("value"));
+    if (token_story_download_limit <= 0) {
+      errMsg += "<p>'Story download limit' should be atleast 1</p>";
+    }
+  }
+  if ($("#token_illustration_download_limit").prop("value") === "") {
+    errMsg += "<p>'Illustration download limit' cannot be blank</p>";
+  } else {
+    var token_illustration_download_limit = Number($("#token_illustration_download_limit").prop("value"));
+    if (token_illustration_download_limit <= 0) {
+      errMsg += "<p>'Illustration download limit' should be atleast 1</p>";
+    }
+  }
+  if ($("#token_valid_for").prop("value") === "") {
+    errMsg += "<p>'Valid For (days)' field cannot be blank</p>";
+  } else {
+    if (!($.isNumeric($("#token_valid_for").prop("value")) === true)) {
+      errMsg += "<p>'Valid For (days)' field should be an integer</p>";
+    } else {
+      var valid_for = Number($("#token_valid_for").prop("value"));
+      if (Math.floor(valid_for) != valid_for) {
+        errMsg += "<p>'Valid For (days)' field should be an integer</p>";
+      } else {
+        if (valid_for <= 0) {
+          errMsg += "<p>'Valid For (days)' field should be atleast 1</p>";
+        }
+      }
+    }
+  }
+  if ($("#organization_name").prop("value") === "") {
+    errMsg += "<p>'Organization' field cannot be blank</p>";
+  } else {
+    // user entered some random text
+    if ($("#organization_id").prop("value") === "") {
+      errMsg += "<p>Organization is incorrect. Please choose organization from autocomplete list.</p>";
+    }
+  }
+  if (errMsg === "") {
+    $("#new_token").submit();
+  } else {
+    document.getElementById("validation_failure_span").innerHTML = errMsg;
+    $("#validation_failure_dialog").dialog("open");
+  }
+});
+</script>

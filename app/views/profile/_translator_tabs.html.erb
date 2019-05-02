@@ -1,0 +1,15 @@
+<div class="row full-content-dash prof-act">
+  <div class="col-md-12">
+    <ul id="myTab" role="tablist" class="nav nav-tabs profile">
+        <% if current_user && current_user.is_translator? %>
+          <li class="<%= @current_tab == 'un_translated_stories' ? 'active' : '' %>" role="presentation">
+            <%= link_to "<span>Stories to Translate</span>".html_safe, translator_un_translated_stories_path %>
+          </li>
+        <% end %>
+        <li class="<%= @current_tab == 'translate_guidelines' ? 'active' : '' %>" role="presentation">
+          <%= link_to "<span>Translation Guidelines</span>".html_safe, translate_guidelines_path %>
+        </li>
+    </ul>
+  </div>
+  <hr>
+</div>

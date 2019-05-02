@@ -1,0 +1,31 @@
+<div title="Delete Translator">
+  <label>Want to remove "<%= translator.name %>" as a translator for "<%= language.name %>" language?</label>
+</div>
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#delete_translator_dialog').dialog({
+        autoOpen: true,
+        width: 400,
+        modal: true,
+        buttons : {
+	        "Ok" : function() {
+		              $.ajax({
+		                type: 'DELETE',
+		                dataType: 'script',
+		                url: "<%= delete_language_translator_path %>",
+		                data: {
+		                 language_id: "<%= language.id %>",
+		                 translator_id: "<%= translator.id %>"
+		                }
+		              }); 
+            		},
+	        "Cancel" : function() {
+	          			$(this).dialog("close");
+	        			}
+    	},
+        dialogClass: 'change_orientation_dialog'
+  	});
+ });
+</script>

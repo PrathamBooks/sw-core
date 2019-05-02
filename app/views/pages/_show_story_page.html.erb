@@ -1,0 +1,23 @@
+<% if (page.story.is_display_inline) %>
+  <div class='newStories <%= page.story.language.script %> <%= page.page_template.name + ' content' %> ' dir="<%= @story.language.is_right_to_left? ? 'rtl' : 'auto'%>">
+    <% if page.story.is_audio && page.story.published? && (page.story.audio_status == "audio_published" || (current_user && current_user.content_manager?)) %>
+      <% page_contents = page.audio_content.gsub('<br>', '<br/>') rescue page.audio_content %><%=raw(page_contents)%>
+    <% else %>
+      <% page_contents = page.content.gsub('<br>', '<br/>') rescue page.content %><%=raw(page_contents)%>
+    <% end %>
+  </div>
+<% else%>
+  <div class='text-font-normal <%= page.page_template.name + ' content' %> ' dir="<%= @story.language.is_right_to_left? ? 'rtl' : 'auto'%>">
+    <% if page.story.is_audio && page.story.published? && (page.story.audio_status == "audio_published" || (current_user && current_user.content_manager?)) %>
+      <% page_contents = page.audio_content.gsub('<br>', '<br/>') rescue page.audio_content %><%=raw(page_contents)%>
+    <% else %>
+      <% page_contents = page.content.gsub('<br>', '<br/>') rescue page.content %><%= raw(page_contents) %>
+    <% end %>
+  </div>
+<% end %>
+<div class="page_number english"><%="#{page.position}/#{page.story.story_pages.last.position}"%></div>
+<% if page.story.story_pages.last.position == page.position %>
+  <div id="lastSPage" data-story-title="<%= page.story.to_param %>" data-story-read-id="<%=story_read_id %>"></div>
+<% end %>
+<%= render :partial => "pages/show_textbox.html.erb", :locals => {page: page} %>
+

@@ -1,0 +1,21 @@
+<% if @translated_draft.blank? %>
+  $("#translateStoryModal").hide();
+  $(document.body).removeClass('modal-open');
+  if($("#txtEditor").length != 0) {
+    $('#keyboard-options').empty();
+    var varnam = new VarnamIME($("#txtEditor"), "#keyboard-options",{name: '<%= @tr_story.language.name %>'}, '<%= Settings.varnam.url %>').initForWsyiEditor();
+  }
+<% else %>
+
+  $("#translateStoryModal").hide();
+  $('#autoTranslateStoryForm').html("<%= escape_javascript(render(:partial=>"translations/auto_translate"))%>");
+
+  $(document).ready(function() {
+    $('#autoTranslateStoryModal').modal({
+          backdrop: 'static',
+          keyboard: false,
+          show: true
+    });    
+  });
+  
+<% end %>

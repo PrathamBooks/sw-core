@@ -1,0 +1,19 @@
+<%= select_tag('category', options_from_collection_for_select(StoryCategory.all, 'id', 'name'), prompt: "All Categories", :onchange => "category_filters();")%>
+
+<script>
+  $(document).ready(function(){
+    $('#category').selectpicker({
+      liveSearch:true
+    });
+    <% if params[:category] %>
+      $('#category').selectpicker('val', <%= params[:category] %>);
+    <% end %>
+  });
+
+  function category_filters(){
+    var category = $("#category").val();
+    var data =  {category: category};
+    if(typeof ajax_filter !== "undefined")
+      ajax_filter('GET', '<%= path %>', data);
+  }
+</script>

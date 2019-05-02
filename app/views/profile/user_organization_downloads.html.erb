@@ -1,0 +1,30 @@
+<%= render :partial => "errors" %>
+<%= render :partial => "tabs" %>
+<div class="user_dash_org_download">
+<div role="tabpanel" class="tab-pane user_dashboard" id="profile-drafts">
+  <div class="col-md-12">
+    <table class="table table-striped">
+      <thead>
+      <tr class="table-heading-row">
+        <th><%= t "dashboard.date "%></th>
+        <th><%= t "dashboard.organisational_downloads.no_of_stories"%></th>
+        <th><%= t "dashboard.organisational_downloads.format"%></th>
+        <th><%= t "dashboard.organisational_downloads.organisation_name"%></th>
+      </tr>
+      </thead>
+      <tbody class="table-row-details">
+       <% @story_downloads.each do |story_download| %>
+        <tr class="user_dashboard_row">
+          <td><%= link_to(story_download.created_at.localtime.strftime("%Y-%m-%d"), stories_downloaded_list_path(:story_download_id => story_download.id),:method=>:get,:remote => true) %></td>
+          <td><%= story_download.stories.count %></td>
+          <td><%= story_download.download_format %></td>
+          <td><%= story_download.user.organization.organization_name %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<%= paginate @story_downloads %>
+</div>
+<div id="story_download_list" class="modal modal--story-creator fade" tabindex="-1" role="dialog"></div>

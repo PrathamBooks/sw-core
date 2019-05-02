@@ -1,0 +1,12 @@
+$('#newIllustrationForm').html("<%= escape_javascript(render(:partial=>"illustrations/new",:locals => {:contest => @contest}))%>");
+
+$(document).ready(function() {
+	$('#uploadModal').modal({
+		show: true
+	}).on('shown.bs.modal', function () {
+		$("#confirm_form").modal('show');
+	}).on('hidden.bs.modal', function () {
+    	$("#add-new-temp").css({"z-index":2});
+	});
+});
+$("#add-new-temp").css({"z-index":1});

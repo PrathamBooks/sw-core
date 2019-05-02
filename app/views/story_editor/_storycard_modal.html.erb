@@ -1,0 +1,42 @@
+<style>
+
+  .close-modal{
+    position: absolute;
+    top: 1.25rem;
+    right: 2rem;
+    border: none;
+    background: white;
+    padding: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .close-image{
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .storycard-modal {
+    padding: 0 20px 20px 20px !important; 
+  }
+
+  .close-story-card {
+    z-index: 2;
+  }
+
+</style>
+<div class="modal modal-image-drawer fade modal--story-creator publish-img-modal" id="storycardModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <button type="button" class="close-modal close-story-card" data-dismiss="modal" aria-label="Close">
+	  <span aria-hidden="true"><%= image_tag "storycard/icons/close_modal.svg", class: 'close-image' %></span>
+	</button>
+      <div class="modal-body modal-body-app storycard-modal">
+	<%= yield %>
+
+       </div>
+
+
+    </div>
+  </div>
+</div>

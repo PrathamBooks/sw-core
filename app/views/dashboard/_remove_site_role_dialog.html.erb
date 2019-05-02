@@ -1,0 +1,30 @@
+<div>
+  Want to remove "<%= user.first_name %>" as a <%= role %>?
+</div>
+
+<script> 
+   var url_link = "<%= remove_site_role_path %>"
+  $('#remove_site_role_dialog').dialog({
+    autoOpen: true,
+    title: "Remove role",
+    width: 400,
+    modal: true,
+    buttons : {
+      "Ok" : function() {
+        $.ajax({
+          type: 'GET',
+          dataType: 'script',
+          url: url_link,
+          data: {
+            role: "<%= role %>",
+            user_id: "<%= user.id %>"
+          }
+        });
+      },
+      "Cancel" : function() {
+        $(this).dialog("close");
+      }
+    },
+    dialogClass: 'change_orientation_dialog'
+  })
+</script>

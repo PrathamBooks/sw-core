@@ -1,0 +1,74 @@
+<section id="category-accordion" style="padding: 0;">
+  <div class="row">
+    <div class="panel panel-default my-accord-cat fr-search">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          <a href="#collapseTwo1" data-parent="#accordion1" data-toggle="collapse" class="accordion-toggle collapsed">
+            Filter Search results
+            <i class="fa fa-angle-right pull-right"></i>
+          </a>
+        </h3>
+      </div>
+
+      <div class="panel-collapse collapse" id="collapseTwo1" style="height: 0px;">
+        <div class="panel-body">
+          <div class="books-cat-filter">
+            <div class="col-md-3 col-sm-6">
+              <div class="book-cat">
+                <p>Category</p>
+                <div class="s_category col-md-12 col-sm-9">
+               
+                 
+                <%= f.collection_check_boxes :categories, StoryCategory.all, :name, :name, checked: @search_params[:categories] %>
+              </div>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+              <div class="filter-lang">
+                <p>By Language</p>
+                <%= f.collection_check_boxes :languages, Language.all, :name, :name, checked: @search_params[:languages]%>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+              <div class="filter-reading-level">
+                <p>By Reading Level</p>
+                <%= f.collection_check_boxes :reading_levels, [['1', '1'], ['2', '2'], ['3', '3'], ['4', '4']], :first, :last, checked: @search_params[:reading_levels] %>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="show-bt">
+                <%= f.submit "Show", class: "btn-slide animation animated-item-3 cat-btn-show"   %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<% end %>
+
+
+<script type="text/javascript">
+var state = false;
+
+$("#toggle-slide-button").click(function () {
+jQuery('html,body').animate(200);
+    if (!state) {
+        $('#map-legend').animate({"right":"0px",width: "toggle"}, 200);
+     $("#toggle-slide-button h2").addClass("new-content");
+   /* $("#map-legend-control1").animate({right:'+=36%'}, 200);*/
+
+          state = true;
+        }
+    else {
+          $('#map-legend').animate({"right":"0px",width: "toggle"}, 200);
+       $("#toggle-slide-button h2").removeClass("new-content");
+   /* $("#map-legend-control1").animate({right:'-=36%'}, 200);*/
+          state = false;
+        }
+});
+
+</script>

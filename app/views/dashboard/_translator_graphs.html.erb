@@ -1,0 +1,31 @@
+<% if @language_stories %>
+	<h2>Total Stories available for translation<%= "(#{@un_translated_count}) in #{@language.name}"%></h2>
+	<h2>Total Translated Stories<%= "(#{@translated_count}) in #{@language.name}"%></h2>
+	<h2>Total Stories in progress<%= "(#{@in_draft_count}) in #{@language.name}"%></h2>
+<% else %>
+	<h2>Total Stories available for translation<%= "(#{@un_translated_story_count})"%></h2>
+	<h2>Total Translated Stories<%= "(#{@translated_stories_count})"%></h2>
+	<h2>Total Stories in progress<%= "(#{@in_draft_stories_count})"%></h2>
+<% end %>
+<div class="btn-group" style="float: right;margin-top: -48px; margin-right: 180px !important;">
+  <%= render :partial => "language_filter", :locals => {:path =>translator_analytics_path } %>
+</div>
+<% if @language_stories %>
+	<div class="days">
+		<%= link_to "week", translator_analytics_path(:group=>"week", :language => params[:language]), :remote=>true, :class=>(params[:group]=="week"? "btn active" : "btn")%>
+		<%= link_to "month", translator_analytics_path(:group=>"month",:language => params[:language]), :remote=>true, :class=>(params[:group]=="month"? "btn active" : "btn")%>
+	</div>
+	<div id="stories">
+      <%= line_chart @language_stories[0..2]%>
+    </div>
+<% else %>
+	<div class="days">
+	  <%= link_to "week", translator_analytics_path(:group=>"week"), :remote=>true, :class=>(params[:group]=="week"? "btn active" : "btn")%>
+	  <%= link_to "month", translator_analytics_path(:group=>"month"), :remote=>true, :class=>(params[:group]=="month"? "btn active" : "btn")%>
+	</div>
+    <div id="stories">
+      <%= line_chart @stories[0..2]%>
+    </div>
+<% end %>
+
+<%= render :partial => "translator_tables" %>

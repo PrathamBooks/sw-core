@@ -1,0 +1,6 @@
+<label><%= t 'blog_posts.banners_tab.edit_banner'%></label>
+<%= simple_form_for @banner ,method: :put, url: update_banner_path(@banner) do |f| %>
+  <%= render 'banner_form', f:f %>
+  <%= link_to "cancel", '#' , :class => "btn cancel" %>
+<% end %>
+

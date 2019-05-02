@@ -1,0 +1,69 @@
+<% disable_for_backcover = @page.page_template.class == BackCoverPageTemplate ? "disabled" : "" %>
+<div class="form-group form-group--sc-sidebar font-sm <%= disable_for_backcover %>">
+  <label><%= t 'editor.editor_page.book_orientation'%></label>
+  <div class="radio radio-no-margin font-sm">
+    <label>
+      <input type="radio" name="radio-reading-level" id="home-tab" role="tab" data-target="#home" aria-controls="home" aria-expanded="true"  <%= disable_for_backcover %>> <%= t 'editor.horizontal'%>
+    </label>
+	<span class="gutter">
+	  <label>
+      <input type="radio" name="radio-reading-level" role="tab" id="profile-tab" data-target="#profile" aria-controls="profile" aria-expanded="false"  <%= disable_for_backcover %>> <%= t 'editor.vertical'%>
+    </label>
+	</span>
+  </div> <!-- /radio -->
+</div> <!-- /form-group -->
+<div id="change_orientation_dialog" title="Confirmation Required">
+  <p>Selecting this template means it will change the layout of all other pages of your story. A story can have only one layout &mdash; horizontal or vertical &mdash; for all the pages. Within pages, you can have fun playing around with the many templates that we have made specially for you. Continue with change of layout?</p>
+</div>
+<div id="myTabContent" class="tab-content font-sm" data-story-orientation="<%= @story.orientation %>">
+<label>Page Layout</label>
+  <% unless @page.page_template.class == BackCoverPageTemplate %>
+    <div role="tabpanel" class="tab-pane fade <%= @story.orientation == 'landscape' ? 'active in' : '' %>" id="home" aria-labelledby="home-tab">
+      <div class="row row-gutter-sm-x sc-sidebar-layout-block">
+        <!-- <ul class="templates" role="menu" aria-labelledby="dropdownMenu1"> -->
+        <% @template_options.where("orientation = 'landscape'").each do |template| %>
+          <!-- <li role="presentation"> -->
+          <div class="col-xs-4 gutter-sm-x">
+            <a data-template-orientation="<%= template.orientation %>" rel='nofollow'
+               class="page-template <%= template.name %> <%= @page.page_template == template ? 'selected' : '' %> "
+               data-page-template-id="<%= template.id %>">
+              <img alt='Sp h il50 cr50' src='<%= asset_path("story_page_templates/#{template.name}.svg") %>' class="sc-sidebar-layout-img">
+            </a>
+          </div>
+          <!-- </li> -->
+        <% end %>
+        <!-- </ul> -->
+      </div>
+    </div>
+    <div role="tabpanel" class="tab-pane fade <%= @story.orientation == 'portrait' ? 'active in' : '' %>" id="profile" aria-labelledby="profile-tab">
+      <div class="row row-gutter-sm-x sc-sidebar-layout-block">
+        <!-- <ul class="templates" role="menu" aria-labelledby="dropdownMenu1"> -->
+        <% @template_options.where("orientation = 'portrait'").each do |template| %>
+          <!-- <li role="presentation"> -->
+          <div class="col-xs-4 gutter-sm-x">
+            <a data-template-orientation="<%= template.orientation %>" rel='nofollow'
+               class="page-template <%= template.name %> <%= @page.page_template == template ? 'selected' : '' %>"
+               data-page-template-id="<%= template.id %>">
+              <img alt='Sp h il50 cr50' src='<%= asset_path("story_page_templates/#{template.name}.svg") %>' class="sc-sidebar-layout-img">
+            </a>
+          </div>
+          <!-- </li> -->
+        <% end %>
+        <!-- </ul> -->
+      </div>
+    </div>
+  <% end %>
+</div>
+<script>
+  var story_editor = new StoryEditor(new StoryEditorPage(), new StoryEditorService());
+  story_editor.init_template_drawer();
+
+  if ("<%= @story.orientation == 'landscape' %>" == "true") {
+    $("#home-tab").attr("checked", "true")
+  }else{
+    $("#profile-tab").attr("checked", "true")
+  }
+  $('input[name="radio-reading-level"]').click(function () {
+    $(this).tab('show');
+  });
+</script>

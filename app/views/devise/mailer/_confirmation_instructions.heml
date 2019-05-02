@@ -1,0 +1,73 @@
+<heml>
+  <head>
+    <style>
+      .mail_container {
+        border: 0;
+        background-color: #fff;
+        padding: 0.9375em;
+        text-align: center;
+        max-width: 90%;
+      }
+      .mail_cont_name {
+        display: block;
+        font-weight: bold;
+        text-align: center;
+      }
+      .mail_cont_head {
+        display: block; 
+        margin-bottom: 0.625em;
+      }
+      .mail_cont_head h1 {
+        font-size: 1.375em; 
+        font-family: 'Raleway', sans-serif;
+        margin: 0;
+      }
+      .mail_cont_text {
+        display: block; 
+        font-family: 'Raleway', sans-serif;
+        padding-bottom: 0.625em; 
+        text-align: center;
+      }
+      .mail_cont_wishes {
+        display: block; 
+        font-family: 'Raleway', sans-serif;
+        padding-bottom: 0;
+      }
+      .mail_cont_wishes span {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <container class="mail_container">
+
+      <row>
+        <column class='mail_cont_head'>
+          <h1>Confirm your account</h1>
+        </column>
+      </row>
+
+      <row>
+        <column class="mail_cont_name">Dear <%= resource.name %>,</column>
+      </row>
+
+      <row class="mail_cont_text">
+        <column>Welcome to StoryWeaver, and thank you for signing up!</column>
+      </row>
+
+      <row class="mail_cont_text">
+        <column>Now you can enjoy thousands of children's stories online, in several languages and formats: Read, Download, Translate and Create!</column>
+      </row>
+
+      <row class="mail_cont_text">
+        <column>To confirm your account and gain full access to all StoryWeaver functions</column>
+      </row>
+
+      <row>
+        <button class="mail_stories_button"><a href="<%= confirmation_url(resource, confirmation_token: @token) %>">Click here</a></button>
+      </row>
+
+    </container>
+
+  </body>
+</heml>

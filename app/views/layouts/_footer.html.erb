@@ -1,0 +1,57 @@
+
+<footer id="footer" class="midnight-blue">
+  <div>
+  	<div class="row" id="bottom">
+      
+      <div class="col-md-6 col-sm-6 footer-menu">
+        <div class="widget">
+          <ul>
+            <li><a href="<%= about_path %>">StoryWeaver |</a></li>
+            <li><a href="/blog">Blog |</a></li>
+            <li><a href="<%= tutorials_path %>">FAQs |</a> </li>
+            <li><a href="<%= terms_and_conditions_path %>">T&C  |</a></li>
+            <li><a href="<%= contact_path %>">Contact |</a></li>
+          </ul>
+          <p>
+            <a href="/open_content">open licensed content</a> <span>.</span> 
+            <a href="/privacy_policy">privacy policy</a> <span>.</span> 
+            <a href="/prathambooks">pratham books</a> <span>.</span> 
+            <a href="/our_supporters"> credits</a>
+          </p>
+        </div>    
+      </div>
+      <div class="col-md-6 col-sm-6 footer-social">
+        <div class="widget">
+          <div class="social bott-my">
+          	<h3>follow us on </h3>
+            <ul class="social-share">
+            	<li><a href="https://www.facebook.com/pbstoryweaver" target="_blank"><i class="fa fa-facebook"></i></a></li>
+            	<li><a href="https://twitter.com/PBStoryWeaver" target="_blank"><i class="fa fa-twitter"></i></a></li>
+              <li><a href="https://www.youtube.com/channel/UCH9_ahl5Vu8P9tElauPWahg" target="_blank"><i class="fa fa-youtube-play"></i></a></li>
+            	<li><a href="/blog" target="_blank"><i class="fa fa-rss"></i></a></li>
+            </ul>
+          </div>
+        </div>    
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <p><a href="/privacy_policy">Privacy Policy</a> | <a href="/terms_and_conditions">Terms & Conditions</a> | &copy; 2015 <a class="site-title" target="_blank" href="/prathambooks">Pratham Books.</a> All Rights Reserved.<br />
+         Except where otherwise noted, content on this site is licensed under a Creative Commons Attribution 4.0 License International (CC-BY-4.0) <a href="http://creativecommons.org/licenses/by/4.0/" target="_blank">http://creativecommons.org/licenses/by/4.0/</a></p>
+      </div>
+    </div>
+  </div>
+</footer>
+<%= render :partial => 'layouts/signup_popup' %>
+
+<script>
+	jQuery('body').bind('click', function(e) {
+    if(jQuery(e.target).closest('.navbar').length == 0) {
+        // click happened outside of .navbar, so hide
+        var opened = jQuery('.navbar-collapse').hasClass('collapse in');
+        if ( opened === true ) {
+            jQuery('.navbar-collapse').collapse('hide');
+        }
+    }
+});
+</script>

@@ -1,0 +1,67 @@
+<div class="modal fade" id="FlagIllustrationModal" tabindex="-1" role="dialog" aria-labelledby="moreLinksModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+
+    <%= simple_form_for :flag, remote: true, html: { id: 'create_story_from_illustration', class: 'form-horizontal',  multipart: true } do |f| %>
+      <div class="modal-content">
+        <div class="modal-header">
+        	<button type="button" class="close mypopup-close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times"></i> Close</span></button>
+          <h2 class="modal-title">Report this Image</h2>
+          <hr class="form-hr" />
+          <% if @errors %>  
+            <div class="alert alert-danger">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+              <div id="flash_error">
+                <% @errors.each do |error| %>
+                  <%= error %>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div><b>Why would you like to red flag this image? Tell us a little more.</b></div>
+              <ui class="illustration_flag_reasons" role = "menu">
+                    <%= f.input :illustration_id,  as: :hidden , :input_html => { :value => @illustration.id } %>
+                     <div><input type="checkbox" value="This is a copyrighted image that does not belong the person attributed." name="reason"/>This is a copyrighted image that does not belong the person attributed.</div>
+                    <div><input type="checkbox" value="This is a copyrighted image that belongs to me." name="reason" />This is a copyrighted image that belongs to me.</div>
+                    <div><input type="checkbox" value="This is inappropriate for children." name="reason" />This is inappropriate for children.</div>
+                    <div><input type="checkbox" value="This is a pixillated image." name="reason" />This is a pixillated image.</div>
+                    <div><input type="checkbox" value="Other comments: Please Specify" name="reason"  class="illustration_other_options"/>Other comments: Please Specify</div>
+                    <div><input type="text"  id="illustration_flag_other_reason"  icon = "fa fa-info-circle info" class = "illustration_flag_other_reasons_text_area" style="display: none;"></div>
+                    <div class="center-align-btn">
+                    <a class="btn btn-normal btn-warning illustration_save_reason" style="margin-top:10px;" data-path = "<%=flag_illustration_path %>" >REPORT</a></div>
+              </ui>
+           </div>
+          </div>
+        </div>
+    </div>
+  <% end %>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(".illustration_save_reason").click(function(){
+    var collect_reason = [];
+   $(".illustration_flag_reasons").find("input:checked").each(function () {
+        if($(this).val() == "Other comments: Please Specify"){
+          collect_reason.push($("#illustration_flag_other_reason").val().replace(/\./g,''));
+        }else{
+          collect_reason.push($(this).val().replace(/\./g,''));
+        }  
+        });
+   flag_illustration_path = $(this).data('path')+'?reasons='+collect_reason;
+      jQuery.ajax({
+      type: "POST",
+      url: flag_illustration_path,
+      dataType : "script"
+    });
+  });
+  $(".illustration_flag_reasons").click(function(){
+    if($(".illustration_other_options").is(":checked")){
+        $("#illustration_flag_other_reason").show();
+      }else{
+        $("#illustration_flag_other_reason").hide();
+      }
+  });
+</script>

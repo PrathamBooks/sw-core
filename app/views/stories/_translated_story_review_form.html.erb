@@ -1,0 +1,54 @@
+<%= simple_form_for @reviewer_comment, :url => @reviewer_comment.id == nil ? reviewer_comments_path : save_review_edit_form_path(:reviewer_comment_id => @reviewer_comment.id), :method => :post, :remote => true do |f| %>
+		<div class="story_review_form">
+			<b><label>1. What did you think of the translation? Please refer to the original story before you share your thoughts.</label></b>
+			<div class="review_options"><%=f.input :story_rating,:collection =>  ReviewerComment.story_ratings.collect {|key,value| [key,value] }.compact,:as => :radio_buttons, :label => false, input_html: {required: true }, checked: ReviewerComment.story_ratings[f.object.story_rating] %></div>
+		</div>
+		<div class="story_review_form">
+			<b><label>2. What do you think of the language used in the story?</label></b>
+			<div class="review_options"><%=f.input :language_rating,:collection => ReviewerComment.language_ratings.collect {|key,value| [key,value] }.compact,:as => :radio_buttons,:label => false, input_html: {required: true }, checked: ReviewerComment.language_ratings[f.object.language_rating]%></div>
+		</div>	
+		<div class="story_review_form">
+			<b><label>3. How would you rate this story?</label></b>
+			<div class="review_options"><%= f.input :rating,:label => false,:input_html => { class: "rating star_reset", "data-size" => 'xs'} %></div>
+		</div>
+		<div class="story_review_form">
+			<b><label>4. Do you have something more you want to tell us about the story? Write here. (Optional)</label></b>
+			<div class="review_options"><%= f.input :comments,:label => false,:input_html => { style: "width: 50%"} %></div>
+		</div>
+		<div class="story_review_form">
+			<%= f.submit "Submit", class: "btn btn-normal btn-warning review_options submit_rating" %>
+		</div>
+<% end %>
+<div id="trishold_model" title="Oops!" class="modal">There seems to be a mismatch in your responses. Would you like to have a re-look at your review form?</div>
+<script>
+$(".submit_rating").click(function(e){
+	var story_rating =$('input[name="reviewer_comment[story_rating]"]:checked').val() 
+	var language_rating = $('input[name="reviewer_comment[language_rating]"]:checked').val()
+	var star_rating = $('#reviewer_comment_rating').val()
+	if(((story_rating < 3 && language_rating < 3) && star_rating > 3) || ((story_rating > 3 && language_rating > 3) && star_rating < 3)) {
+		e.preventDefault()
+		$('#trishold_model').dialog({
+		    autoOpen: true,
+		    width: 400,
+		    modal: true,
+		    buttons : {
+		      "Yes" : function() {
+				    	$('#trishold_model').dialog('close');
+		          e.preventDefault();
+		        },
+	        "No" : function(){
+	          $('#trishold_model').dialog('close'); 
+			    	$(".submit_rating").submit()
+	        }
+		    },
+		    dialogClass: 'change_orientation_dialog'
+			});
+	}
+});
+
+$(document).ready(function() {
+	$("#flag_form").on('click', function() {
+		$("body").addClass("modal-open");
+	});	
+});
+</script>

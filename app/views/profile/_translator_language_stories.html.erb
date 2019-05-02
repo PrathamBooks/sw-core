@@ -1,0 +1,70 @@
+<div id="storyReader"></div>
+  <%if @current_tab != "translated_stories" %>
+    <div class="<%= @current_tab == "translated_stories" ? "" : "alert alert-success un_reviewed_prompt"  %>" >
+        <b><%="Click on the TRANSLATE NOW button to start right away" if @current_tab != "translated_stories"%></b>
+    </div>
+  <% end %>
+  <div class="btn-group" style="margin-left: 15px;"><label>Filters:</div>
+    <div class="btn-group">
+      <i class="dropdown-arrow dropdown-arrow-inverse"></i>
+      <button class="btn btn-app dropdown-toggle filter-btn " data-toggle="dropdown" ><%= params[:language] && params[:language] != '' ? params[:language] : "All Languages" %></button>
+      <button class="btn btn-app dropdown-toggle" data-toggle="dropdown"> <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu dropdown">
+        <li><%= link_to "All Languages", get_translator_language_stories_path(:language => '', :level=> params[:level] ? params[:level] : '', :limit => params[:limit]? params[:limit] : 10, :current_tab => @current_tab), :remote => true%></li>
+        <% @languages.each do |language| %>
+          <li><%= link_to language.name, get_translator_language_stories_path(:language => language.name, :level=> params[:level] ? params[:level] : '', :limit => params[:limit]? params[:limit] : 10,:current_tab => @current_tab) , :remote => true%></li>
+        <% end %>
+      </ul>
+    </div>  
+    <div class="btn-group">
+      <i class="dropdown-arrow dropdown-arrow-inverse"></i>
+      <button class="btn btn-app dropdown-toggle filter-btn" data-toggle="dropdown" ><%= params[:level] && params[:level] != ''? "Level #{params[:level].to_i + 1}" : "All Reading Levels" %></button>
+      <button class="btn btn-app dropdown-toggle" data-toggle="dropdown"> <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu dropdown">
+        <li><%= link_to "All Reading Levels", get_translator_language_stories_path(:level => '', :language=>params[:language]? params[:language] : '', :limit => params[:limit]? params[:limit] : 10,:current_tab => @current_tab), :remote => true%></li>
+        <% (0..3).each do |level| %>
+         <li><%= link_to "Level #{level+1}", get_translator_language_stories_path(:level => level, :language=>params[:language]? params[:language] : '', :limit => params[:limit]? params[:limit] : 10,:current_tab => @current_tab), :remote => true%></li>
+        <% end %>
+      </ul>
+    </div>
+
+  <div class="col-md-12" style="margin-top:16px;">
+    <table class="table table-striped">
+      <thead>
+        <tr class="table-heading-row">           
+          <th>Story in English</th>
+          <th style="text-align: center;">Reading Level</th>     
+          <th style="text-align: center;">Number of Pages</th>
+          <th>Language</th>
+          <th>Translation Draft</th>
+          <th style="text-align: center;">Action</th>
+        </tr>
+      </thead>
+      <tbody class="table-row-details">    
+        <% @stories.each do |story| %>
+         <% if story.delete_auto_translate_drafts %>
+            <tr>
+              <td><%= link_to story.parent.title, story_page_path(story.parent, story.parent.pages.first), :remote => true %></td>
+              <td style="text-align: center;"><%= story.reading_level %></td>
+              <td style="text-align: center;"><%= story.pages.count %></td>
+              <td><%= story.language.name %></td>
+              <td><%= link_to story.title, story_page_path(story, story.pages.first), :remote => true %></td>
+              <td style="text-align: center;"><%= link_to "Translate Now", profile_change_translator_path(:story_id => "#{story.id}"), class:"btn btn-info edit-btn" %> </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% if @page == "language_stories"  %>
+  <%= paginate @stories, :remote => true %>
+<% else %>
+  <%= paginate @stories %>
+<% end %>
+<script>
+$(document).ready(function(){
+  
+})
+</script>

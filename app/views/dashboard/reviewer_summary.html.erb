@@ -1,0 +1,20 @@
+<%= render :partial => "reviewer_tabs" %>
+<h2>Total Un Rated Stories<%= "(#{@un_reviewed_count})"%></h2>
+<div class="col-md-12">
+  <table class="table table-striped">
+    <thead>
+      <tr class="table-heading-row">
+        <th>Language Name</th>
+        <th>Un-Rated Stories</th>
+      </tr>
+    </thead>
+    <tbody class="table-row-details">
+      <% @hash.each do |key,value| %>
+        <tr>
+          <td><%= key %></td>
+          <td><%= value %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

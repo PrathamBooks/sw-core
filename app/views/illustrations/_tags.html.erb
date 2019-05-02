@@ -1,0 +1,9 @@
+<% unless @illustration.tag_list.empty? %>
+  <div class="illus-det-tags mob-hide">
+    <label>Tags </label>
+    <% @illustration.tag_list.each_with_index do | tag, index | %>
+      <span><%= link_to tag, illustrations_path(:search => {:query => tag}) %></span><% unless index == @illustration.tag_list.length - 1  %>|<% end %>
+    <% end %>
+    <span style="margin-left: 3%;"><%= link_to "Edit", edit_illustration_tags_path, :remote => true  if current_user && current_user.content_manager?%></span>
+  </div>
+<% end %>

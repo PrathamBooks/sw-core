@@ -1,0 +1,21 @@
+<tr>
+	<td align="center">
+	  <table width="432px" cellspacing="0" cellpadding="0" border="0" align="center">
+	   
+	    <tr style="margin-bottom: 20px; float: left;">
+	      	<td><strong>Dear <%= @user.name%></strong>, </td>
+	    </tr>
+      
+
+	    <tr style="margin-bottom: 20px; float: left;">
+              <td><br>Video processing has started for your story <%= link_to(@story.title, react_stories_show_url(@story)) %> . You will receive status email after video processing finished</td>
+	    </tr>
+
+			<tr style="margin-bottom: 20px; float: left;">
+		  		<td>
+            <p>Warmly,<br>Team StoryWeaver</p>
+          </td>
+			</tr>
+		</table>
+	</td>
+</tr>

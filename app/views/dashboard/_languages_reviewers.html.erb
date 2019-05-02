@@ -1,0 +1,61 @@
+<div class="col-md-9">
+  <div class="btn-group" style = "margin-bottom:12px;">
+    <i class="dropdown-arrow dropdown-arrow-inverse"></i>
+    <button class="btn btn-app dropdown-toggle filter-btn" data-toggle="dropdown" ><%= sort_value.present? && sort_value == "language" ? "Languages" : "Rating Resource" %></button>
+    <button class="btn btn-app dropdown-toggle" data-toggle="dropdown"> <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu dropdown">
+      <li><%= link_to "Rating Resource", assign_reviewer_path(:query => "reviewer"), :remote => true%></li>
+      <li><%= link_to "Languages", assign_reviewer_path(:query => "language"), :remote => true%></li>
+    </ul>
+  </div>
+</div>
+ <div class="row">  
+    <div class="col-md-12">
+      <table class="table table-striped" >
+        <thead>
+          <tr class="table-heading-row">
+            <% if sort_value == "language" %> 
+            <th><%= sortable "Language" %></th>  
+            <th><%= sortable "Rating Resource" %></th>
+            <%else%>
+            <th><%= sortable "Rating Resource" %></th>
+            <th><%= sortable "Language" %></th>  
+            <%end%>
+          </tr>
+        </thead>
+        <tbody class="table-row-details">   
+        <% if sort_value == "language" %> 
+          <% language_reviewers.each do |language|%> 
+            <% if language.reviewers.present? %>
+                <tr>
+                    <td><%= language.name %></td>
+                    <td>
+                      <% language.reviewers.each do|reviewer| %>
+                        <span type="button" class="btn btn-app btn-default grey-gravel"  style="border-radius: 15px;">
+                          <%= reviewer.name + " "%><span class="icon-round-wrap icon-round-wrap-brand"> <%= link_to "", delete_language_reviewer_dialog_path(:language_id => language.id, :reviewer_id => reviewer.id),:remote => true,:class => "icon-round fa fa-times" %></span></span>
+                      <% end %>
+                    </td>
+                </tr>
+            <% end %>
+          <% end %>
+        <% else %>
+          <% language_reviewers.each do |user|%> 
+            <% if user.languages.present? %>
+                <tr>
+                    <td><%= user.name %></td>
+                    <td><% user.languages.each do|language|%>
+                      <span type="button" class="btn btn-app btn-default grey-gravel" style="border-radius: 15px;">
+                        <%= language.name%> <span class="icon-round-wrap icon-round-wrap-brand"> <%= link_to "", delete_language_reviewer_dialog_path(:language_id => language.id, :reviewer_id => user.id),:remote => true, :class => "icon-round fa fa-times" %>
+                      </span></span>
+                      <% end %>
+                    </td>
+                </tr>
+            <% end %>
+          <% end %>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div id="delete_reviewer_dailog"></div>

@@ -1,0 +1,44 @@
+<span class="sc-slider-icon-prev icon-square-wrap icon-square-wrap-brand <%= @page.is_front_cover_page? ? 'disabled' : '' %>" id="previous_page" title="Previous page">
+  <span class="icon-square fa fa-chevron-left"></span>
+</span>
+<span class="sc-slider-icon-next sc-slider-icon icon-square-wrap icon-square-wrap-brand <%= @page.is_back_cover_page? ? 'disabled' : '' %>" id="next_page" title="Next page">
+  <span class="icon-square fa fa-chevron-right"></span>
+</span>
+<% unless @story.is_translated? %>
+  <span id="add_page"  class="sc-slider-icon-add icon-square-wrap icon-square-wrap-brand <%= !@page.is_story_page? || @story.is_derivation? ? 'disabled' : '' %>" title="Add new page">
+    <span class="icon-square fa fa-plus"></span>
+  </span>
+<% else %>
+  <span id="add_page"></span>
+<% end %>
+<% unless @story.is_translated? %>
+  <% if (!crop_data_illustration_id(@illustration,@page).nil?) %>
+    <% if illustration_crop_missing(@page) %>
+      <span id="change_image" class="sc-slider-icon-add icon-square-wrap icon-square-wrap-brand change_image_btn <%= @story.is_derivation? ? 'disabled' : '' %>" data-toggle="modal" data-target="#modal-image-drawer" title="Change image">
+        <span class="icon-square fa fa-picture-o"></span>
+      </span>
+      <span class="sc-slider-icon-add icon-square-wrap icon-square-wrap-brand remove_btn <%= !@page.is_story_page? || @story.is_derivation? ? 'disabled' : '' %>">
+        <%= link_to remove_page_illustration_path(@page), data:{:confirm => "Are you sure you want to delete image?"},
+                                "data-confirm-title" => "StoryWeaver", "data-confirm-cancel" => "Cancel", "data-confirm-cancel-class" => "btn btn-info btn-grey",
+                                "data-confirm-proceed" => "Ok", "data-confirm-proceed-class" => "btn-info edit-btn", "title" => "Remove image", :remote => true do %>
+          <span class='icon-square fa fa-trash-o'></span>
+        <% end %>
+      </span>
+    <% else %>
+      <span id="change_image"  class="sc-slider-icon-add icon-square-wrap icon-square-wrap-brand change_image_btn <%= @story.is_derivation? ? 'disabled' : '' %>" data-toggle="modal" data-target="#modal-image-drawer" title="Change image">
+        <span class="icon-square fa fa-picture-o"></span>
+      </span>
+      <span id="delete_image" class="sc-slider-icon-add icon-square-wrap icon-square-wrap-brand remove_btn <%= @story.is_derivation? ? 'disabled' : '' %>">
+        <%= link_to remove_page_illustration_path(@page), data:{:confirm => "Are you sure you want to delete image?"},
+                                "data-confirm-title" => "StoryWeaver", "data-confirm-cancel" => "Cancel", "data-confirm-cancel-class" => "btn btn-info btn-grey",
+                                "data-confirm-proceed" => "Ok", "data-confirm-proceed-class" => "btn-info edit-btn", "title" => "Remove image", :remote => true do %>
+          <span class='icon-square fa fa-trash-o'></span>
+        <% end %>
+      </span>
+    <% end %>
+  <% end %>
+<% end %>
+<script type="application/javascript">
+  var story_editor = new StoryEditor(new StoryEditorPage(), new StoryEditorService());
+  story_editor.init_page_controls_click();
+</script>

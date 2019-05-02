@@ -1,0 +1,7 @@
+$('#FlagStoryForm').html("<%= escape_javascript(render(:partial=>"flag_story_form"))%>");
+$(document).ready(function() {
+	$('#FlagStoryModal').modal({
+		show: true
+	});
+});
+

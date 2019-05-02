@@ -1,0 +1,22 @@
+
+<% if @illustration.errors.count != 0 %>
+  $('#newIllustrationForm').html("<%= escape_javascript(render(:partial=>"illustrations/new",:locals => {:contest => @contest}))%>");
+  $(document).ready(function() {
+    $('#uploadModal').modal({
+      show: true
+    }).on('hidden.bs.modal', function () {
+      $("#add-new-temp").css({"z-index":2});
+    });
+  });
+<% else %>
+  <% if @upload_from_editor == "true" %>
+    $("#upload-success").modal({show: true, keyboard: false, backdrop: 'static'});
+  <% else %>
+    $('#newIllustrationForm').html("");
+    <% if @contest.present? %>
+      window.location.href = "<%= illustrations_path(:contest_id => @contest.id) %>";
+    <% else %>
+      window.location.href = "<%= illustrations_path %>";
+    <% end %>
+  <% end %>
+<% end %>

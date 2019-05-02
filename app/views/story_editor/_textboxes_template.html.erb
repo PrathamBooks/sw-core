@@ -1,0 +1,57 @@
+<%  textbox_id ||= nil %>
+
+
+<% textboxes.includes(:root_textbox).each do |textbox| %>
+    
+    <% if ( !@page.story.is_derivation? || textbox.textbox_content_present || textbox.root_textbox.try(:textbox_content_present)) %>
+      <div
+          id = "text-box-<%= textbox.id %>"
+          class="text-box"
+          style="width: <%= textbox.width %>%; height: <%= textbox.height %>%;
+          top: <%= textbox.position_top %>%; left: <%= textbox.position_left %>%; "
+          data-textbox-id="<%= textbox.id %>"
+          data-page-id="<%= textbox.page_id %>">
+        <% unless @page.story.is_derivation? %> 
+          <div class="btn textbox-delete">
+            <span class="icon-round fa fa-trash-o "></span>
+          </div>
+        <% end %>
+  
+        <label class="textbox-placeholder">Type here</label>
+        <div class="newStories txtEditor textbox-content " dir="<%= story.language.is_right_to_left? ? 'rtl' : 'auto'%>" id = "<%= textbox_id.to_i == textbox.id ?  'txtEditor' : '' %>" style="background-color:<%= textbox.background_color_format %>;<%= textbox.boundary ? 'border: solid 1px black;' : '' %>text-align: <%= story.language.is_right_to_left? ? 'right' : 'left' %>;" 
+          title="click to write into textbox" data-textbox-opacity="<%= textbox.background_color %>" data-textbox-border="<%= textbox.boundary %>">
+            <%= raw(textbox.content) %>
+        </div>
+        <% [:left, :right, :bottom, :top, :"top border_left", :"top border_right", :"bottom border_left", :"bottom border_right" ].each do |item| %>
+          <div class="square border_<%= item %>" ></div>
+        <% end %>
+      </div>
+    <% end %>
+<% end %>
+
+<script>
+    var story_editor_page = new StoryEditorPage();
+    var story_editor = new StoryEditor(story_editor_page, new StoryEditorService());
+    story_editor.init_page_editor_click();
+    story_editor.init_page_textbox_resize_drag();
+    story_editor.init_page_textbox_trash('<%= escape_javascript(render(:partial=>"story_editor/textbox_empty_warning", locals: {is_destroy_message: true})) %>');
+
+    $('.txtEditor').each(function(index, item) {
+      var textbox_placeholder;
+      if (textbox_placeholder = $(item).siblings('.textbox-placeholder')[0]){
+        if (item.innerText && item.innerText.trim() != "") {
+          textbox_placeholder.remove();
+        }
+      }
+    });
+
+    $('.txtEditor').focus(function(event){
+      $(event.target).siblings('.textbox-placeholder').remove();
+    });
+
+    $('.textbox-placeholder').click(function(){ 
+      $(this).siblings('.txtEditor').focus();
+      $(this).siblings('.txtEditor').click(); 
+    });
+
+</script>

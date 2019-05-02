@@ -1,0 +1,7 @@
+<% if editor %><li><a href="<%= root_path %>" class="<%= @menu == 'home' ? 'active' : '' %>"><span class="common-bird b1"></span>Home</a></li> <% end %>
+<li><a href="<%= search_path %>" class="<%= @menu == 'search' ? 'active' : '' %>"><span class="common-bird b1"></span>Read</a></li>
+<li><%= link_to "<span class='common-bird b2'></span>Create".html_safe, stories_path, method: :post %></li>
+<li><a href="<%= stories_translate_path %>" class="<%= @menu == 'translate' ? 'active' : '' %>"><span class="common-bird b3"></span>Translate</a></li>
+<li><a href="<%= illustrations_path %>" class="<%= @menu == 'illustrations' ? 'active' : '' %>"><span class="common-bird b4"></span>Images</a></li>
+<li><a href="<%= about_path %>" class="<%= @menu == 'about' ? 'active' : '' %>"><span class="common-bird b5"></span>About</a></li>
+<div id="newStoryForm"></div>

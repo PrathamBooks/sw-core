@@ -1,0 +1,25 @@
+<div class='<%= page.page_template.name %> content english'>
+  <div class="attrb-full">
+    <div class="attrib-logo">
+      <img src="<%= asset_path_as_per_request_format('pb-storyweaver-logo-01.png') %>" />
+    </div>
+  </div>
+		<div class="attribution-text">
+    <div class="attribution-center">
+				<p>
+				  <strong>Created by</strong>
+				  <%= @story.youngsters_of(page).map{|c| "#{c.name.capitalize} (#{c.age} years old)"}.join(", ")%>
+						<% if @story.last_dedication_page(page) || (@story.youngsters && @story.youngsters.size == 1 && @story.youngsters.first.name != derivator_names(@story))%>
+						  <span class="helped-authors">, with the help of </span><%= derivator_names(@story) %>.
+				  <% end %>
+				</p>
+      <% if @story.last_dedication_page(page) %>
+				    <span class="more-info"><%= @story.more_info %></span>
+      <%end%>
+    </div>
+		</div>
+  <div class="license_container">
+    <img src="<%= asset_path_as_per_request_format('Bottom-SW-Logo.png') %>" />
+  </div>
+</div>
+

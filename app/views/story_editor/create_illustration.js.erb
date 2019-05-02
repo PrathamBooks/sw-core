@@ -1,0 +1,11 @@
+<% if @illustration.errors.count != 0 %>
+	$('#newIllustrationForm').html("<%= escape_javascript(render(:partial=>"new_illustration"))%>");	
+	$(document).ready(function() {
+		$('#uploadModal').modal({
+			show: true
+		});
+	});
+<% else %>
+	$('#newIllustrationForm').html("");
+	$("#process_illustration").removeClass("hide");
+<% end %>

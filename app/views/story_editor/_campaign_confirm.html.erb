@@ -1,0 +1,19 @@
+<div class="modal modal-image-drawer fade modal--story-creator" id="popup_campaign" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <a href="/">
+          <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel"></h4>
+        </a>
+      </div>
+      <div class="modal-body modal-body-app">
+        Do you want to Create/Translate another Story?
+      </div>
+      <div class="modal-footer">
+        <%= link_to "Cancel", "/", :class=>"btn cancel_button" %> 
+        <%= link_to "Ok", "/contests/#{@contest.id}", :class => "btn ok_button" %>
+    </div>
+  </div>
+</div>
+

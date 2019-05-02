@@ -1,0 +1,33 @@
+<div class="modal fade" id="imagemodal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="vertical-alignment-helper1">
+    <div class="modal-dialog vertical-align-center1" id="model-orientation">
+      <div class="modal-content ">
+        <button class="close close-reader" aria-hidden="true" data-dismiss="modal" type="button"><i class="fa fa-times-circle"></i></button>
+        <div id="modal-body" class="modal-body">
+          <div id="story-metadata" data-story-title="<%= @illustration.name %>" />
+          <img src="<%= @illustration.image.url(:original_for_web) %>" id="imagepreview">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+		$(document).ready(function(){
+			 var img = document.getElementById('imagepreview'),
+				new_img = new Image();
+			 new_img.onload = function() {
+				  var img_width  = this.width,
+					 img_heigth = this.height;
+				  if (img_width > img_heigth){
+					   $("#model-orientation").addClass("landscape").removeClass("portrait");
+				    $("#imagepreview").show();
+				  }
+				  else{
+					   $("#model-orientation").addClass("portrait").removeClass("landscape").css("width", (630/img_heigth)*img_width);
+					   $("#imagepreview").show();
+				  }
+			 };
+			 new_img.src = img.src;
+		});
+</script>

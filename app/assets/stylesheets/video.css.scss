@@ -1,0 +1,195 @@
+@media only screen and (min-width: 1600px){
+
+  #story_epub .page-container-landscape {
+    height: 1080px;
+    width: 1500px;
+
+    .front-cover-page .cover-text{
+      .textual{
+        .cover_title{
+          font-size: 4.505em;
+        }
+        .cover_attribution{
+          font-size: 2.002em;
+        }
+      }
+    }
+
+    .content{
+      padding: 37.54px;
+
+      p {
+        margin-top: 0;
+      }
+    }
+
+    .text-font-largest{
+      font-size: 43.8px;
+      line-height:1.3em;
+      display: inline-block;
+    }
+
+    .text-font-large{
+      font-size: 39.1px;
+      line-height:1.3em;
+      display: inline-block;
+    }
+
+    .text-font-normal{
+      font-size: 31.28px;
+      line-height:1.4em;
+      display: inline-block;
+    }
+
+    .text-font-medium{
+      font-size: 28.15px;
+      line-height:1.4em;
+      display: inline-block;
+    }
+
+    .text-font-small{
+      font-size: 25.02px;
+      line-height:1.5em;
+      display: inline-block;
+    }
+
+    .text-font-smallest{
+      font-size: 21.89px;
+      line-height:1.5em;
+      display: inline-block;
+    }
+
+    .devanagri {
+      .text-font-largest{
+        font-size: 46.92px;
+        line-height:1.4em;
+      }
+
+      .text-font-large{
+        font-size: 40.66px;
+        line-height:1.4em;
+      }
+
+      .text-font-normal{
+        font-size: 34.41px;
+        line-height:1.4em;
+      }
+
+      .text-font-medium{
+        font-size: 29.718px;
+        line-height:1.4em;
+      }
+
+      .text-font-small{
+        font-size: 25.808px;
+        line-height:1.5em;
+      }
+
+      .text-font-smallest{
+        font-size: 23.462px;
+        line-height:1.5em;
+      }
+    }
+    .page_number {
+      font-size: 1.576625em;
+    }
+  }
+
+  #story_epub .page-container-portrait {
+    height: 1200px;
+    width: 796px;
+
+    .front-cover-page{
+      .cover-text{
+        .textual{
+          .cover_title{
+            font-size: 2.514em;
+          }
+          .cover_attribution {
+            font-size: 1.676em;
+          }
+        }
+      }
+    }
+
+    .content{
+      padding: 40.219px;
+
+      p {
+        margin-top: 0;
+      }
+    }
+
+    .text-font-largest{
+      font-size: 46.922px;
+      line-height:1.3em;
+      display: inline-block;
+    }
+
+    .text-font-large{
+      font-size: 41.89px;
+      line-height:1.3em;
+      display: inline-block;
+    }
+
+    .text-font-normal{
+      font-size: 33.515px;
+      line-height:1.4em;
+      display: inline-block;
+    }
+
+    .text-font-medium{
+      font-size: 30.164px;
+      line-height:1.4em;
+      display: inline-block;
+    }
+
+    .text-font-small{
+      font-size: 26.812px;
+      line-height:1.5em;
+      display: inline-block;
+    }
+
+    .text-font-smallest{
+      font-size: 23.46px;
+      line-height:1.5em;
+      display: inline-block;
+    }
+
+    .devanagri {
+      .text-font-largest{
+        font-size: 50.273px;
+        line-height:1.4em;
+      }
+
+      .text-font-large{
+        font-size: 43.57px;
+        line-height:1.4em;
+      }
+
+      .text-font-normal{
+        font-size: 36.86px;
+        line-height:1.4em;
+      }
+
+      .text-font-medium{
+        font-size: 31.84px;
+        line-height:1.4em;
+      }
+
+      .text-font-small{
+        font-size: 27.65px;
+        line-height:1.5em;
+      }
+
+      .text-font-smallest{
+        font-size: 25.136px;
+        line-height:1.5em;
+      }
+    }
+    .page_number {
+      font-size: 1.319625em;
+    }
+  }
+}
+

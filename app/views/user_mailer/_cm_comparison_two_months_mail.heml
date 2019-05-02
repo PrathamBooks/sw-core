@@ -1,0 +1,310 @@
+<heml>
+  <head>
+    <style>
+      .mail_container {
+        border: 0;
+        background-color: #fff;
+        padding: 0.9375em;
+        text-align: center;
+        max-width: 90%;
+      }
+      .mail_cont_name {
+        display: block;
+        font-weight: bold;
+        text-align: center;
+      }
+      .mail_cont_head {
+        display: block; 
+        margin-bottom: 0.625em;
+      }
+      .mail_cont_head h1 {
+        font-size: 1.375em; 
+        font-family: 'Raleway', sans-serif;
+        margin: 0;
+      }
+      .mail_cont_text {
+        display: block; 
+        font-family: 'Raleway', sans-serif;
+        padding-bottom: 0.625em; 
+        text-align: center;
+      }
+      .mail_cont_wishes {
+        display: block; 
+        font-family: 'Raleway', sans-serif;
+        padding-bottom: 0;
+      }
+      .mail_cont_wishes span {
+        display: block;
+      }
+      .mail_updates_head {
+        border-bottom: 1px solid #cdcdcd; 
+        line-height: 0.2em; 
+        margin: 0;
+        max-width: 100%;
+        text-align: center;
+      }
+      .mail_updates_head span {
+        background:#fff; 
+        color: #737373; 
+        font-size: 0.625em; 
+        letter-spacing: 0.125em; 
+        padding:0 0.625em;
+        text-transform: uppercase;
+      }
+      .mail_stories_head {
+        max-width: 100%;
+      }
+      .mail_stories_head column{
+        max-width: 33.33%;
+      }
+      .mail_stories_head img {
+        display: block;
+        height: auto;
+        margin: 0 auto;
+        max-width: 8%;
+      }      
+      .mail_stories_publish {
+        color: #666; 
+        font-family: 'Raleway', sans-serif; 
+        font-size: 0.6875em; 
+        font-weight: bold; 
+        letter-spacing: 0.0625em; 
+        margin-bottom: 0; 
+        margin-top: 0.625em; 
+        text-transform: uppercase; 
+        text-align: center;
+      }
+      .mail_stories_publish_count {
+        color: #757575; 
+        font-family: 'Raleway', sans-serif; 
+        font-size: 1.25em; 
+        font-weight: bold; 
+        letter-spacing: 0.0625em; 
+        margin-bottom: 0.625em; 
+        text-align: center;
+      }
+      .mail_stories_publisher {
+        color: #4e4e4e; 
+        font-family: 'Raleway', sans-serif; 
+        font-size: 0.75em; 
+        margin-bottom: 0; 
+        text-align: center;
+      }
+      .mail_stories_ucg {
+        color: #4e4e4e; 
+        font-family: 'Raleway', sans-serif; 
+        font-size: 0.75em;
+        margin-bottom: 0.625em; 
+        text-align: center;
+      }
+      .mail_stories_button {
+        background-color: #ff5b0a; 
+        border: none; 
+        border-radius: 0.25em; 
+        color: #fff; 
+        display: block; 
+        font-size: 0.6875em; 
+        font-weight: bold; 
+        margin: 0 auto; 
+      }
+    </style>
+  </head>
+  <body>
+    <container class="mail_container">      
+      <row>
+        <columnclass='mail_cont_head'>
+          <h1>Here are some Data Point Comparisons from the Last Month</h1>
+        </column>
+      </row>
+
+      <row>
+        <columnclass="mail_cont_name">Dear Content Manager,</column>
+      </row>
+
+      <row class="mail_cont_text">
+        <column>Here is a comparison of few data point from the last month you might like to see.</column>
+      </row>
+
+      <row class="mail_cont_text">
+        <column>
+          <h2 class="mail_updates_head">
+            <span>Published Books</span>
+          </h2>
+        </column>
+      </row>
+
+      <row class="mail_cont_text">
+        <column>
+          <container class="mail_stories_head">
+            <row>
+              <column>
+                <h4>Publisher Books</h4>
+              </column>
+            </row>
+            <row>
+              <column>
+                <p><%= @name_of_2nd_month %></p>
+              </column>
+              <column>
+                <p><%= @email_info_2nd_month["org_stories"] %></p>
+              </column>
+              <column>
+                <p><%= @name_of_1st_month %></p>
+              </column>
+              <column>
+                <p><%= @email_info_1st_month["org_stories"] %></p>
+              </column>
+            </row>
+          </container>
+        </column>
+      </row>
+
+      <row class="mail_cont_text">
+        <column>
+          <container class="mail_stories_head">
+            <row>
+              <column>
+                <h4>UGC Books</h4>
+              </column>
+            </row>
+            <row>
+              <column>
+                <p><%= @name_of_2nd_month %></p>
+              </column>
+              <column>
+                <p><%= @email_info_2nd_month["ugc_stories"] %></p>
+              </column>
+              <column>
+                <p><%= @name_of_1st_month %></p>
+              </column>
+              <column>
+                <p><%= @email_info_1st_month  ["ugc_stories"] %></p>
+              </column>
+            </row>
+          </container>
+        </column>
+      </row>
+
+      <row class="mail_cont_text">
+        <column>
+          <h2 class="mail_updates_head">
+            <span>Published Images</span>
+          </h2>
+        </column>
+      </row>
+
+      <row class="mail_cont_text">
+        <column>
+          <container class="mail_stories_head">
+            <row>
+              <column>
+                <h4>Publisher Images</h4>
+              </column>
+            </row>
+            <row>
+              <column>
+                <p><%= @name_of_2nd_month %></p>
+              </column>
+              <column>
+                <p><%= @email_info_2nd_month["org_images"] %></p>
+              </column>
+              <column>
+                <p><%= @name_of_1st_month %></p>
+              </column>
+              <column>
+                <p><%= @email_info_1st_month["org_images"] %></p>
+              </column>
+            </row>
+          </container>
+        </column>
+      </row>
+      
+      <row class="mail_cont_text">
+        <column>
+          <container class="mail_stories_head">
+            <row>
+              <column>
+                <h4>UGC Images</h4>
+              </column>
+            </row>
+            <row>
+              <column>
+                <p><%= @name_of_2nd_month %></p>
+              </column>
+              <column>
+                <p><%= @email_info_2nd_month["ugc_images"] %></p>
+              </column>
+              <column>
+                <p><%= @name_of_1st_month %></p>
+              </column>
+              <column>
+                <p><%= @email_info_1st_month["ugc_images"] %></p>
+              </column>
+            </row>
+          </container>
+        </column>
+      </row>
+
+      <row class="mail_cont_text">
+        <column>
+          <h2 class="mail_updates_head">
+            <span>Pulled Down Books</span>
+          </h2>
+        </column>
+      </row>
+
+      <row class="mail_cont_text">
+        <column>
+          <container class="mail_stories_head">
+            <row>
+              <column>
+                <h4>Publisher Books</h4>
+              </column>
+            </row>
+            <row>
+              <column>
+                <p><%= @name_of_2nd_month %></p>
+              </column>
+              <column>
+                <p><%= @email_info_2nd_month["org_pulled_down_stories"] %></p>
+              </column>
+              <column>
+                <p><%= @name_of_1st_month %></p>
+              </column>
+              <column>
+                <p><%= @email_info_1st_month["org_pulled_down_stories"] %></p>
+              </column>
+            </row>
+          </container>
+        </column>
+      </row>
+      
+      <row class="mail_cont_text">
+        <column>
+          <container class="mail_stories_head">
+            <row>
+              <column>
+                <h4>UGC Books</h4>
+              </column>
+            </row>
+            <row>
+              <column>
+                <p><%= @name_of_2nd_month %></p>
+              </column>
+              <column>
+                <p><%= @email_info_2nd_month["ugc_pulled_down_stories"] %></p>
+              </column>
+              <column>
+                <p><%= @name_of_1st_month %></p>
+              </column>
+              <column>
+                <p><%= @email_info_1st_month["ugc_pulled_down_stories"] %></p>
+              </column>
+            </row>
+          </container>
+        </column>
+      </row>
+
+    </container>
+  </body>
+</heml>

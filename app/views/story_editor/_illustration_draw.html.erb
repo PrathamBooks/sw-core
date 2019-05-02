@@ -1,0 +1,100 @@
+<div class="modal modal--story-creator fade modal_img_creator" id="modal-image-drawer" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content modal-content--img-drawer">
+      <div class="modal-body modal-body-app">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <ul class="nav nav-tabs nav-tabs-alt nav-tabs-image-drawer" role="tablist">
+          <li role="presentation" class="active"><a href="#tab-all-images" id="tab-all-images-trigger" aria-controls="home" role="tab" data-toggle="tab"><%= t 'editor.editor_page.open_image_drawer.browse_all_images.tab' %></a></li>
+          <li role="presentation"><a href="#tab-favourites" id="tab-favourites-link" aria-controls="profile" role="tab" data-toggle="tab"><%= t 'editor.editor_page.open_image_drawer.favourites' %></a></li>
+          <li role="presentation"><a href="#tab-upload-image" id="tab-upload-link" aria-controls="messages" role="tab" data-toggle="tab"><%= t 'editor.editor_page.open_image_drawer.upload_image.upload_link' %></a></li>
+        </ul>
+        <div class="row row-gutter-sm">
+          <div class="image-drawer-content">
+            <div class="tab-content tab-content-alt">
+              <div role="tabpanel" class="tab-pane active" id="tab-all-images">
+                <%= render :partial => "all_illustrations", locals: {is_storycard: @is_storycard} %>
+              </div>
+              <div role="tabpanel" class="tab-pane" id="tab-favourites">
+              </div>
+              <div role="tabpanel" class="tab-pane" id="tab-upload-image">
+              </div>
+            </div> <!-- /tab-content -->
+          </div> <!-- /image-drawer-content -->
+        </div> <!-- /row -->
+      </div> <!-- /modal-body -->
+    </div> <!-- /modal-content -->
+  </div> <!-- /modal-dialog -->
+</div> <!-- /modal -->
+<!-- Button trigger modal -->
+<div class="modal fade" id="upload-success">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Successful!</h4>
+      </div>
+      <div class="modal-body">
+        Your illustration has been uploaded successfully. It will appear in 'favourites' shortly.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-app btn-default grey-gravel" data-dismiss="modal" onclick="$('#tab-all-images-trigger').trigger('click');$('body').addClass('modal-open');">Browse all images</button>
+        <button type="button" class="btn btn-app btn-brand-1"  data-dismiss="modal" onclick="$('body').addClass('modal-open');$('#new_illustration')[0].reset(); $('#tab-upload-link').trigger('click');">Upload more images</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="application/javascript">
+  // Init of illustration modal
+  $(document).ready(function(){
+    $('#modal-image-drawer').on('shown.bs.modal', function() {
+      var opened_tab = $('.nav-tabs-image-drawer .active').text();  
+      if( opened_tab == "browse all images" || opened_tab == 'favourites'){
+        url = "/v0/illustrations";
+        editor_fav_images = opened_tab == 'favourites' ? true : false;
+        favorites_of_story = <%= @story.id %>
+        illustration_drawer = new IllustrationDrawerService();
+        illustration_drawer.initialize(url,18, editor_fav_images, favorites_of_story );
+      } 
+      
+
+    });
+
+    $('#modal-image-drawer').on('hide.bs.modal', function(){
+      var illustration_feed = document.getElementById('DIV_ILLUSTRATION_FEED');
+      if (illustration_feed) {
+        illustration_feed.innerHTML = '';
+        illustration_feed.style.height = '0px';
+      }
+    });
+
+    function get_illustrations(url){
+      return $.ajax({
+        url: url,
+        type: 'GET',
+        data: {story_id:<%= @story.id%>},
+        dataType : "script",
+        failure: function(result) {
+          console.error('Unable to load illustrations.');
+        }
+      });
+    }
+
+
+  $(document).on('shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
+    var target = $(e.target).attr("href"); // activated tab
+    if (target == "#tab-all-images"){
+      var url = "/v0/editor/get-all-illustrations";
+      get_illustrations(url);
+    }
+
+    else if (target == "#tab-favourites"){
+      var url = "/v0/editor/get-favourite-illustrations";
+      get_illustrations(url);
+    }
+    else if (target == "#tab-upload-image"){
+      var url = "/v0/editor/upload-illustration";
+      get_illustrations(url);
+    }
+  })
+  });
+
+</script>

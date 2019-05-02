@@ -1,0 +1,96 @@
+<div class="row trans_filters">
+  <div class="col-md-12 col-sm-12 nopadding cls-gap">
+    <label>Filter by:</label>
+    <span class="dropdown1 level_filter">
+      <a href="#" class="btn_from btn btn-primary dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Level <span class="caret"></span></a>
+      <ul id="StoryLevels" class="dropdown-menu">
+        <% Story::READING_LEVELS.keys.each_with_index do |level, index| %>
+            <li>
+              <%= link_to("#") do%>
+                  <input type="checkbox" class="reading_level_check_box" value="<%= level %>" name="search[reading_levels][]" onchange="Story.translateSubmitForm(); selected_filters($(this))" id="StoryLevels_<%= index%>" <%= checked(@search_params[:reading_levels],level) if @search_params%> >
+                  Level <%= level %>
+              <% end %>
+            </li>
+        <% end %>
+      </ul>
+    </span>
+    <span class="dropdown1 publish_filter">
+      <a href="#" class="btn_from btn btn-primary dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Publisher<span class="caret"></span></a>
+      <ul class="dropdown-menu" id="StoryPublishers">
+        <% Organization.original_story_publishers.each_with_index do |organization, index| %>
+            <li>
+              <%= link_to("#") do%>
+                  <input type="checkbox" class="publisher_check_box"  onclick="Story.translateSubmitForm(); selected_filters($(this))" value="<%= organization.organization_name %>" name="search[organizations][]" id="StoryPublishers_<%= index %>" <%= checked(@search_params[:organizations],organization.organization_name) if @search_params%> >
+                  <%= organization.organization_name %>
+              <% end %>
+            </li>
+        <% end %>
+      </ul>
+    </span>
+    <span class="dropdown1 cate_filter">
+      <a href="#" class="btn_from btn btn-primary dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Category <span class="caret"></span></a>
+      <ul id="StoryCategories"  class="dropdown-menu">
+        <% sorted_story_categories.each_with_index do |sc, index| %>
+            <li>
+              <%= link_to("#") do%>
+                  <input type="checkbox" onclick="Story.translateSubmitForm(); selected_filters($(this));" value="<%= sc.name %>" name="search[categories][]"  id="StoryCategories_<%= index %>"  <%= checked(@search_params[:categories],sc.name) if @search_params%> >
+                  <%= sc.name %>
+              <% end %>
+            </li>
+        <% end %>
+      </ul>
+    </span>
+  </div>
+</div>
+<div class="row trans_filter_result">
+  <div class="col-md-12 col-sm-12 nopadding cls-gap">
+    <div class="result_num">
+      <span id="BooksCount"></span>
+    </div>
+    <div class="filter_result_names">
+      <span class="txt">showing only: </span>
+      <ul id="selectedFilters">
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script type="application/javascript">
+  $(document).ready(function(){
+    show_only_filters();
+    $("#StoryLevels").find("li input:checkbox").each(function () {
+      selected_filters($(this))
+    });
+    $("#StoryPublishers").find("li input:checkbox").each(function () {
+      selected_filters($(this))
+    });
+    $("#StoryCategories").find("li input:checkbox").each(function () {
+      selected_filters($(this))
+    });
+  });
+  function selected_filters(obj){
+    var val = obj.val();
+    var id = obj.attr("id");
+    var parent_id = obj.parents("ul").attr("id");
+    if (parent_id=="StoryLevels"){val = "Level "+val}
+      if ($("#"+id).prop("checked") == true){
+        $("#selectedFilters").append('<li ><a href="#">'+val+'<span class="result_name_close"><i class="fa fa-times-circle" aria-hidden="true"  onClick="unselect_filter($(this));" id='+id.replace(/_/g, "-")+' ></i></span></a></li>')
+      }else{
+        $($("#"+id.replace(/_/g, "-")).parents("li")[0]).remove()
+    }
+    show_only_filters();
+  }
+  function unselect_filter(obj){
+    var id = obj.attr("id").replace(/-/g, "_");
+    $("#"+id).prop("checked", false);
+    Story.translateSubmitForm();
+    $(obj.parents("li")[0]).remove();
+    show_only_filters();
+  }
+
+  function show_only_filters(){
+    if ($("ul#selectedFilters li").length != 0){
+      $(".txt").show();
+    }else{$(".txt").hide();}
+  }
+</script>

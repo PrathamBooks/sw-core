@@ -1,0 +1,357 @@
+<%= simple_form_for :search, url: illustrations_path , method: :get, :remote => true , html: { class: 'form-vertical' ,id: "illustration_search_form"} do |f| %>
+
+<section id="upload-illus" style="padding: 0;">
+	<div class="row top-border">
+		<div id="newIllustrationForm">
+
+		</div>
+		<div class="upload-illustr">
+      <% if params[:contest_id].present? %>
+			  <a href=<%= new_illustration_path(:contest_id => params[:contest_id]) %> class="btn btn-primary btn-lg" data-remote="true">Upload Image</a>
+      <% else %>
+			  <a href=<%= new_illustration_path %> class="btn btn-primary btn-lg" data-remote="true">Upload Image</a>
+      <% end %>
+      <div class="input-group tab-search filter_search illu_search">   
+        <div class="control-group string required search_query">    
+          <div class="controls">    
+            <input class="form-control" placeholder="Search by title, illustrator or tags" type="text" id="search_query">   
+          </div>    
+        </div>    
+        <div class="input-group-btn tooltip-icon">    
+          <button type="submit" name="commit" class="btn btn-warning" onclick="Illustration.submitForm();">   
+            <span class='glyphicon glyphicon-search'></span>    
+            <span class="arrow-left"></span>    
+          </button>   
+        </div>    
+      </div>
+		</div>
+	</div>
+</section>
+<section id="illustration-thumb" class="nopadding">
+	<div class="row">
+		<a id="apply-filters" class="btn-slide slide-left-sidebar btn_img_slider" href="#">Apply filters</a>
+		<div class="col-md-3 col-sm-5 books-cat-filter padding-left">
+      <h2 class="mobile-hide">Modify Search</h2>
+      <div class="left-sidebar">
+	   <h3 id="sort-head-id" class="sort-head">Sort By</h3>
+     <a id="ClearSort" href="javascript:void(0);" class="hide">Clear Sort</a>
+           <div class="filters" viewChild="5">
+             <ul id="StorySortOptions" class="myList sort-full">
+               <li><input type="radio" value="updated_at" name="sort">New Arrivals</li>
+               <li> <input type="radio" value="reads" name="sort">Most Viewed</li>
+               <li><input type="radio" value="likes" name="sort">Most Liked</li>
+               <div class="col-md-6 go_button" style="margin-left: 90px;">
+                 <button type="btn" value="Show" name="commit" class="btn-slide animation animated-item-3 cat-home-show" onclick="Illustration.submitForm();">Go</button>
+               </div>
+             </ul>
+          </div>
+          <h3 id="lang-head-id" class="lang-head">Publisher</h3>
+          <div class="filters" viewChild="5">
+            <ul id="IllustrationPublishers" class="myList lang-full">
+              <li>
+                <span>
+                  <input id="all_publishers" type="checkbox" value="all" name="search[organizations][]" <%= "checked" if @search_params[:organizations].nil? || @search_params[:organizations].empty? %>>
+                  <label for="all_publishers" class="collection_check_boxes">All</label>
+                </span>
+              </li>
+              <% sorted_illustrations_organizations.each do |organization| %>
+                <li>
+                  <span>
+                    <input type="checkbox" class="publisher_check_box" value="<%= organization.organization_name %>" name="search[organizations][]" id="search_categories_<%= organization.organization_name.underscore %>" <%= checked(@search_params[:organizations],organization.organization_name) %> >
+                    <label for="search_categories_<%= organization.organization_name.underscore %>" class="collection_check_boxes"><%= organization.organization_name %></label>
+                  </span>
+                </li>
+              <% end %>
+              <li>
+                <span>
+                  <input type="checkbox" class="publisher_check_box" value="true" name="search[child_created]" id="search_categories_child-created" <%= checked(@search_params[:child_created], true) %> >
+                  <label for="search_categories_child_created" class="collection_check_boxes">Created by Children</label>
+                </span>
+              </li>
+              <li>
+                <span>
+                  <input type="checkbox" class="publisher_check_box" value="storyweaver" name="search[organizations][]" id="search_categories_storyweaver" <%= checked(@search_params[:organizations],'storyweaver') %> >
+                  <label for="search_categories_storyweaver" class="collection_check_boxes">StoryWeaver Community</label>
+                </span>
+              </li>
+            </ul>
+            <div class="loadMore">&#9660 Show more</div>
+            <div class="showLess">&#9650 Show less</div>
+            <div class="col-md-6 go_button" >
+              <button type="btn" value="Show" name="commit" class="btn-slide animation animated-item-3 cat-home-show" onclick="Illustration.submitForm();">Go</button>
+            </div>
+           </div>
+          <h3 id="cat-head-id" class="cat-head">Category</h3>
+	  <div class="filters" viewChild="5">
+	  <ul id="IllustrationCategories" class="myList cate-full">
+        <li>
+          <span>
+            <input id="all_categories" type="checkbox" value="all" name="search[categories][]" <%= "checked" if @search_params[:categories].nil? || @search_params[:categories].empty? %>>
+            <label for="all_categories" class="collection_check_boxes">All Categories</label>
+          </span>
+        </li> 
+	  	<% sorted_illustration_categories.each do |ic| %>
+  	  	<li>
+          <span>
+            <input type="checkbox" class="category_check_box" value="<%= ic.name %>" name="search[categories][]" id="search_categories_<%= ic.name.underscore %>" <%= checked(@search_params[:categories],ic.name) %>>
+            <label for="search_categories_<%= ic.name.underscore %>" class="collection_check_boxes"><%= ic.name %></label>
+          </span>
+        </li>
+      <% end %>
+		</ul>
+		<div class="loadMore">&#9660Show more</div>
+		<div class="showLess">&#9650Show less</div>
+        <div class="col-md-6 go_button" >
+          <button type="btn" value="Show" name="commit" class="btn-slide animation animated-item-3 cat-home-show" onclick="Illustration.submitForm();">Go</button>
+        </div>
+		</div>
+	 <h3 id="level-head-id" class="level-head">Style</h3>
+	  <div class="filters" viewChild="5">
+	  <ul id="IllustrationStyles" class="myList level-full">
+         <li>
+            <span>
+              <input id="all_styles" type="checkbox" value="all" name="search[styles][]" <%= "checked" if @search_params[:styles].nil? || @search_params[:styles].empty? %>>
+              <label for="all_styles" class="collection_check_boxes">All Styles</label>
+            </span>
+          </li>
+        <% sorted_illustration_styles.each do |is| %>
+  	  	<li>
+          <span>
+            <input type="checkbox" class="style_check_box" value="<%= is.name %>" name="search[styles][]" id="search_styles_<%= is.name.underscore %>" <%= checked(@search_params[:styles],is.name) %>>
+            <label for="search_styles_<%= is.name.underscore %>" class="collection_check_boxes"><%= is.name %></label>
+          </span>
+        </li>
+      <% end %>
+		</ul>
+		<div class="loadMore">&#9660Show more</div>
+		<div class="showLess">&#9650Show less</div>
+		</div>
+    <div class="hide">
+   <h3 id="lang-head-id" class="lang-head">License</h3>
+    <div class="filters" viewChild="5">
+     <ul id="IllustrationLicenseTypes" class="myList lang-full">
+          <li>
+            <span>
+              <input id="all_license_types"  type="checkbox" value="all" name="search[license_types][]" <%= "checked" if @search_params[:license_types].nil? || @search_params[:license_types].empty? %>>
+              <label for="all_license_types" class="collection_check_boxes">All License Types</label>
+            </span>
+          </li>
+     	   <% ['CC BY 0','CC BY 3.0','CC BY 4.0','Public Domain'].each do |ls| %>
+  	  	<li>
+          <span>
+            <input type="checkbox" class="license_type_check_box" value="<%= ls %>" name="search[license_types][]" id="search_license_types_<%= ls.underscore %>" <%= checked(@search_params[:license_types],ls) %>>
+            <label for="search_license_types_<%= ls %>" class="collection_check_boxes"><%= ls %></label>
+          </span>
+        </li>
+      <% end %>
+    </ul>
+    </div>
+  </div>
+		<div class="ser-home-filters">
+            <div class="col-md-6">
+                <div class="show-bt-home">
+                  <button type="button" value="Show" name="commit" class="btn-slide animation animated-item-3 cat-home-show" onclick="Illustration.submitForm();">Go</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+              <div class="show-bt-home">
+                <button type="btn" value="Show" name="commit" class="btn-slide animation animated-item-3 cat-home-show" onclick="Illustration.resetForm();">Reset</button>
+              </div>
+            </div>
+            <div class="col-md-6">
+            <% unless (!@filters.nil? && @filters[:styles].nil? && @filters[:categories].nil? && @filters[:license_types].nil?) %>
+          		  <div class="reset-ser-bt1"><%= link_to "Reset", illustrations_path(:search => {:query => @search_params[:query]}), class:'btn-slide animation animated-item-3 cat-reset' %>
+      			    </div>
+			       <% end %>
+            </div>
+    </div>
+	</div>
+	</div>
+		<div class="col-md-9 col-sm-7 padding-right search-result">
+			<section id="illust-results">
+				<div class="row">
+					<div id="query_holder" class="illus-results">
+  						
+					</div>
+				</div>
+			</section>
+	     <div class="search-page" style="min-height:700px;margin-top:10px;">
+        <div id="illustration-holder">
+          <div id="DIV_ILLUSTRATION_FEED">
+
+          </div>
+          <div id="NO_RESULTS" class="results-searched hide">
+            <div>Oops! We couldn't find anything related to your illustration search.</div>
+              <div class="no-results-found-try">Here is what you can try:</div>
+              <ul>
+                <li>Make sure the spelling is correct.</li>
+                <li>Search with other words that are similar in meaning.</li>
+                <li>Search with fewer filters.</li>
+              </ul>
+          </div>
+        </div>
+      </div>
+      <div id="newStoryFromIllustration">
+
+      </div>
+		</div>
+    
+</section>
+<% end %>
+
+<div id="illustration-view"></div>
+  <%# if @contest.present? RRR 2017 %>
+    <%#= render :partial => "illustration_card", :locals => {:contest => @contest} %>
+    <%# else %>
+    <%= render :partial => "illustration_card" %>
+    <%# end %>
+
+ <div id="hide_mobile_create" class="hide_mobile_dialog" title="Message">
+    Looks like you want to do more on StoryWeaver! To create a story you need to log-in using a desktop/laptop.
+</div>
+
+ <div id="hide_mobile_like" class="hide_mobile_like_dialog" title="Message">
+     Please log in to like this Image.
+</div>
+
+<script>
+$(document).ready(function () {
+
+    url = "<%= params[:contest_id].present? ? illustrations_path(:contest_id => params[:contest_id]) : illustrations_path %>"
+      
+    Illustration.initialize(url,9);
+
+    $(".filters").each(function (index) {
+        $(this).find('.myList li:lt(' + $(this).attr('viewChild') + ')').show();
+    });
+
+    $('.loadMore').click(function () {
+        var $myWrapper= $(this).closest('.filters');
+        var x= parseInt($myWrapper.attr('viewChild'),10);
+        var liSize=$myWrapper.find('.myList li').size();
+        x = (x + 20 <= liSize) ? x + 20 : liSize;
+        $myWrapper.attr('viewChild',x)
+        $myWrapper.find('.myList li:lt(' + x + ')').show();
+        $myWrapper.find('.showLess').show();
+        if (x == liSize) {
+            $myWrapper.find('.loadMore').hide();
+        }
+    });
+    $('.showLess').click(function () {
+        var $myWrapper= $(this).closest('.filters');
+        var x= $myWrapper.attr('viewChild')
+        x = (x - 17 < 0) ? 5 : x - 17;
+        $myWrapper.attr('viewChild',x)
+        $myWrapper.find('.myList li').not(':lt(' + x + ')').hide();
+        $myWrapper.find('.loadMore').show();
+        $myWrapper.find('.showLess').show();
+        if (x == 5) {
+            $myWrapper.find('.showLess').hide();
+        }
+    });
+
+    $(".hide_mobile_dialog").dialog({
+      autoOpen: false,
+      width: 300,
+      modal: true,
+      buttons : {
+        "Ok" : function() {
+        $(this).dialog("close");
+        }
+      },
+      dialogClass: 'change_orientation_dialog'
+    });
+
+    $(".hide_mobile_like_dialog").dialog({
+      autoOpen: false,
+      width: 300,
+      modal: true,
+      buttons : {
+        "Ok" : function() {
+        $(this).dialog("close");
+        }
+      },
+      dialogClass: 'change_orientation_dialog'
+    });
+
+});
+$(document).ready(function () {
+$(".slide-left-sidebar").click(function(){
+	$(".left-sidebar").animate({width: 'toggle'}).focus();
+	if($('#apply-filters').hasClass('tog-open')){
+		$(".slide-left-sidebar").removeClass('tog-open');
+	} else {
+    	$(".slide-left-sidebar").addClass('tog-open');
+    }
+});
+$(".cat-head").click(function(){
+	$(".cate-full").slideToggle('fast');
+	if($('#cat-head-id').hasClass('tog-open')){
+		$(".cat-head").removeClass('tog-open');
+	} else {
+    	$(".cat-head").addClass('tog-open');
+    }
+});
+$(".lang-head").click(function(){
+	$(".lang-full").slideToggle('fast');
+	if($('#lang-head-id').hasClass('tog-open')){
+		$(".lang-head").removeClass('tog-open');
+	} else {
+    	$(".lang-head").addClass('tog-open');
+    }
+});
+$(".level-head").click(function(){
+	$(".level-full").slideToggle('fast');
+	if($('#level-head-id').hasClass('tog-open')){
+		$(".level-head").removeClass('tog-open');
+	} else {
+    	$(".level-head").addClass('tog-open');
+    }
+});
+$(".sort-head").click(function(){
+	$(".sort-full").slideToggle('fast');
+	if($('#sort-head-id').hasClass('tog-open')){
+		$(".sort-head").removeClass('tog-open');
+	} else {
+    	$(".sort-head").addClass('tog-open');
+    }
+});
+$(".sort-full").find("input").click(function(){
+    if($(".sort-full").find(":checked")){
+      $("#ClearSort").removeClass('hide')
+    }
+  });
+
+  $("#ClearSort").click(function(){
+    $(this).addClass("hide");
+    $(".sort-full").find("input").prop('checked', false);
+  });
+
+var unselectFilters = function(all,other){
+
+  $(all).click(function(){
+      if($(this).is(':checked')){
+      $(other).prop('checked', false);
+      }
+      });
+
+  $(other).click(function(){
+      if($(all).is(':checked')){
+      $(all).prop('checked', false);
+      }
+      });
+}
+
+
+$(function(){
+    unselectFilters('#all_publishers', '.publisher_check_box')
+    unselectFilters('#all_categories','.category_check_box');
+    unselectFilters('#all_styles','.style_check_box');
+    unselectFilters('#all_license_types','.license_type_check_box');
+    });
+});
+
+
+
+</script>
+

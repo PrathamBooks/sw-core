@@ -1,0 +1,101 @@
+<div class="modal-dialog modal-md bulk-download-signup" role="document">
+  <div class="modal-content">
+    <div class="modal-body modal-body-app">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="form-group">
+        <div class="spacing-half-v"></div>
+        <div class="heading-title">Welcome to StoryWeaver!</div>
+        <div class="spacing-half-v"></div>
+      </div>
+      <% if @organization.errors.count != 0 %>
+      <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <div id="flash_error"><%= @organization.errors.full_messages.join(", ") %></div>
+      </div>
+      <% end %>
+      <div class="row row-gutter">
+        <div class="col-sm-12">
+          <label class="big-margin-bottom">Please do take a few minutes to share some additional information about yourself.</label>
+        </div>
+        <%= simple_form_for organization, :url => organization_sign_up_path, :method => :post, :remote => true do |f| %>
+        <div class="form-group form-group-lg-pad">
+          <label class="heading-section label-required">Name of the Organisation</label>
+          <%= f.input :organization_name,:label => false,:error => false,:input_html => { class: "form-control input-brand input-brand--lg"} %>
+        </div>
+        <div id="organization_autofill">
+          <div class="form-group form-group-lg-pad">
+            <label class="heading-section label-required">Country name</label>
+            <%= f.collection_select(:country, { }, :id, :name, { :prompt => 'Select Country' }, {:class => 'country', :style => "width: 100%;"}) %>
+          </div>
+          <div class="form-group form-group-lg-pad">
+            <label class="heading-section label-required">Number of classrooms</label>
+            <%= f.input :number_of_classrooms,:label => false,:error => false,:input_html => { class: "form-control input-brand input-brand--lg", min: '1'} %>
+          </div>
+          <div class="form-group form-group-lg-pad">
+            <label class="heading-section label-required">Number of children impacted (approximately)</label>
+            <%= f.input :children_impacted,:label => false,:error => false,:input_html => { class: "form-control input-brand input-brand--lg", min: '1'} %>
+            <input  name="organization[status]"  value ="New" class="hidden"/>
+          </div>
+        </div>
+        <div class="form-group form-group-lg-pad">
+          <label class="heading-section">Which states/cities are you working in?</label>
+          <input  name="organization[city]" class="form-control input-brand input-brand--lg"/>
+        </div>
+        <div class="col-sm-12 text-right">
+          <span class="gutter-sm-x vertical-i-top spacing-half-v">
+          <%= f.submit "Submit", class: "btn btn-app btn-brand-1" %>
+          </span>
+          <span class="gutter-sm-x vertical-i-top spacing-half-v">
+          <button type="button" class="btn btn-app btn-brand-1" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Cancel</span></button>
+          </span>
+        </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $('#organization_organization_name').autocomplete({
+    source: function( request, response ) {
+      $.ajax({
+        url: "<%= organizations_autocomplete_path%>",
+        dataType: "json",
+        data: {
+          query: request.term
+        },
+        success: function( data ) {
+          response(data);
+        }
+      });
+    }
+  });
+
+  $('.country').on('change', function(){
+    $.ajax({
+      url: "<%= validate_org_name_country_path %>",
+      dataType: "json",
+      data: {
+        org_name: $( "#organization_organization_name" ).val(),
+        country: $(this).find("option:selected").val()
+      },
+      success: function( data ) {
+        if(data.org_present == "true"){
+          $('#organization_number_of_classrooms').val(data.org.number_of_classrooms);
+          $('#organization_children_impacted').val(data.org.children_impacted);
+          $("#organization_autofill *").children().prop('readonly',true);
+        }else{
+          $('#organization_number_of_classrooms').val("")
+          $('#organization_children_impacted').val("")
+        }
+        response(data);
+      }
+    });
+  });
+
+  $('#organization_organization_name').keyup('change', function() {
+    $('#organization_city, #organization_number_of_classrooms, #organization_children_impacted').val("")
+    $('.country').selectpicker('val', "");
+    $("#organization_autofill *").children().prop('readonly',false);
+    $('.country').find('.selectpicker').attr('disabled',false)
+  })
+</script>

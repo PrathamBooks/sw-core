@@ -1,0 +1,26 @@
+<table class="table table-striped">
+  <thead>
+  <tr class="table-heading-row">
+    <th>Illustration Title</th>
+    <th>Organization</th>
+    <th>Count</th>
+    <th></th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody class="table-row-details">
+  <% if illustrations %>
+   <% illustrations.each do |illustration| %>
+    <tr>
+      <td><%= illustration.name %></td>
+
+      <td><%= illustration.organization.present? ? illustration.organization.organization_name : 'Storyweaver Community' %></td>
+      <td><%= illustration.story_count%></td>
+      <td>
+      </td>
+      <td></td>
+    </tr>
+   <% end %>
+  <% end %>
+  </tbody>
+</table>

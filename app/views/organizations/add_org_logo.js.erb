@@ -1,0 +1,8 @@
+$('#check_org_publisher_modal').html("<%= escape_javascript(render :partial => "assign_org_role", :locals => {:user => @user, :org => @org}) %>");
+$('#assignRoleModal').modal("show");
+$(document).ready(function () {
+  $("#cancel").click(function () {
+    $('#assignRoleModal').modal('hide');
+  })
+});
+

@@ -1,0 +1,22 @@
+<input class="user-autocomplete" id="<%= user_id %>" label="false"  placeholder="<%= placeholder %>" type="text" autocomplete="off" value="<%= value %>">
+
+
+<script>
+  $(document).ready(function(){
+    $( "#<%= user_id %>" ).autocomplete({
+      source: function( request, response ) {
+        $.ajax({
+          url: "<%= users_autocomplete_path %>",
+          dataType: "json",
+          data: {
+           query: request.term
+          },
+          success: function( data ) {
+            response(data);
+          }
+        });
+      }
+    });
+  });
+</script>
+

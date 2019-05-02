@@ -1,0 +1,61 @@
+<div role="tabpanel" class="tab-pane user_dashboard" id="profile-drafts">
+  <div class="col-md-12">
+    <table class="table table-striped">
+      <thead>
+        <tr class="table-heading-row">           
+          <th><%= t "dashboard.story_title"%></th>
+          <th><%= t "dashboard.parent_story"%></th>
+          <th><%= t "dashboard.publisher"%></th>
+          <th><%= t "dashboard.last_updated_on"%></th>
+          <th><%= t "dashboard.actions"%></th>
+          <th><%= t "dashboard.contest"%></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody class="table-row-details">    
+        <% @drafts.each do |draft| %>
+          <tr class="user_dashboard_row">
+            <td class="underline-class"><a href="<%= react_stories_show_path(draft.to_param) %>"><%= draft.title? ? get_title(draft.language, draft.title).html_safe : "Untitled" %></a></td>
+            <td>
+              <% if draft.parent.present? %>
+                <a href="<%= react_stories_show_path(draft.parent.to_param) %>"><%= get_title(draft.language, draft.parent.title).html_safe  %></a>
+              <% end %>
+            </td>
+            <td class="drafts_publisher">
+              <%= draft.organization.present? ? draft.organization.organization_name : "StoryWeaver Community" %>
+            </td>
+            <td><%= default_date_format(draft.updated_at) %></td>
+            <td class="hide-in-edit-mob">
+              <%= link_to story_editor_path(draft), class:"user_dash_drafts_edit hide-in-edit-mobile" do %>
+                <img src='<%= asset_path('edit.png') %>'/>
+              <% end %>
+
+              <% if draft.is_childless? %>
+                <%= link_to delete_draft_story_path(draft), class: "hide-in-delete-mobile", method: :delete, data: { confirm: "Are you sure you want to delete #{draft.title}?", "confirm-title" => "StoryWeaver", "confirm-cancel" => "Cancel", "confirm-cancel-class" => "btn btn-info btn-grey", "confirm-proceed" => "Ok", "confirm-proceed-class" => "btn-info edit-btn"} do %>
+                  <img src='<%= asset_path('bin.png') %>'/>
+                <% end %>
+              <% else %>
+                <%= link_to "#", data:{ toggle: "tooltip", title: "Unable to delete this draft because it has derivatives or translations"} do %>
+                  <img src='<%= asset_path('bin.png') %>'/>
+                <% end %>
+              <% end %>
+            </td>
+            <td>
+              <%=  draft.contest_id.nil? ? "" : "Contest Entry" %>
+            </td>
+
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%= paginate @drafts %>
+<%= render '/stories/desktop_only_action_message' %>
+
+<script>
+  $(document).ready(function(){
+      $('[data-toggle="tooltip"]').tooltip();
+  });
+</script>

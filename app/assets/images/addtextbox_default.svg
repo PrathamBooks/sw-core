@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>Icon / Speech Bubble</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="12" height="12"></rect>
+        <mask id="mask-2" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="12" height="12" fill="white">
+            <use xlink:href="#path-1"></use>
+        </mask>
+    </defs>
+    <g id="Page-11" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icon-/-TextBox" transform="translate(1.000000, 1.000000)">
+            <g>
+                <rect id="Rectangle" stroke="#6E6E6E" x="-0.5" y="-0.5" width="23" height="23" rx="3"></rect>
+                <g id="Icon" transform="translate(5.000000, 5.000000)">
+                    <path d="M5.47,3.74 L6.538,3.74 L8.014,8 L6.826,8 L6.568,7.166 L5.434,7.166 L5.182,8 L3.988,8 L5.47,3.74 Z M6.382,6.386 L6.004,5.066 L5.608,6.386 L6.382,6.386 Z" id="A" fill="#6E6E6E"></path>
+                    <use id="Rectangle-96" stroke="#6E6E6E" mask="url(#mask-2)" stroke-width="2" stroke-dasharray="2" xlink:href="#path-1"></use>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

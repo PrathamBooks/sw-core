@@ -1,0 +1,80 @@
+<header id="header">
+  <div class="top-bar">
+    <div>
+      <div class="row">
+        <div class="col-md-12 col-sm-12 menu-nav-but">
+          <nav class="navbar navbar-inverse" role="banner">
+            <div class="col-md-12 col-sm-12">
+              <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+              </div>
+              <div class="top-links editor-top-links">
+                <%= render 'layouts/navigation_links' %>
+              </div>
+              <div class="collapse navbar-collapse menu-nav editor-navbar">
+                <ul id="menu" class="nav navbar-nav">
+                  <%= render :partial => 'layouts/menu', locals: {editor: true} %>
+                </ul>
+              </div>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<script>
+  $('.menu-nav-but').addClass('original').clone().insertAfter('.menu-nav-but').addClass('cloned').css('position','fixed').css('top','0').css('margin-top','0').css('z-index','500000').css('background','#fff').removeClass('original').hide();
+  scrollIntervalID = setInterval(stickIt, 10);
+  function stickIt() {
+    if ($(window).width() > 767) {
+      var orgElementPos = $('.original').offset();
+      orgElementTop = orgElementPos.top;
+      if ($(window).scrollTop() >= (orgElementTop)) {
+        // scrolled past the original position; now only show the cloned, sticky element.
+        // Cloned element should always have same left position and width as original element.
+        orgElement = $('.original');
+        coordsOrgElement = orgElement.offset();
+        leftOrgElement = coordsOrgElement.left;
+        widthOrgElement = orgElement.css('width');
+        $('.cloned').css('left',leftOrgElement+'px').css('top',0).css('width',widthOrgElement).show();
+        $('.original').css('visibility','hidden');
+      } else {
+        // not scrolled past the menu; only show the original menu.
+        $('.cloned').hide();
+        $('.original').css('visibility','visible');
+      }
+    }
+  }
+  $( document ).ready(function() {
+    $(".mobile-icon").click(function(){
+      $(".hide-toggle").show();
+      $(".close-search").show();
+    });
+    $(".close-search").click(function(){
+      $(".hide-toggle").hide();
+      $(".close-search").hide();
+    });
+    $(".mobile-user-icon").click(function(){
+      $(".top-links #navigation_links").slideToggle('slow');
+      $(".top-links #test").slideToggle('slow');
+    });
+    $('#menu a').on('mouseenter focus', function () {
+      $('#menu a').removeClass("menu-hover");
+      $('#menu a').children("span").removeClass("common-bird-hover");
+      $(this).addClass("menu-hover");
+      $(this).children("span").addClass("common-bird-hover");
+    });
+
+    $('#menu a').on('mouseleave blur', function (){
+      $(this).removeClass("menu-hover");
+      $(this).children("span").removeClass("common-bird-hover");
+    });
+  });
+
+</script>

@@ -1,0 +1,30 @@
+<h1>Create a Page</h1>
+
+  <div class="container-fluid">
+    <div class="row">
+      <% @story_page_templates.each do |story_page_template|%>
+        <div class="col-md-1 thumbnail page-template-preview">
+            <%=link_to( image_tag("story_page_templates/" + story_page_template.name + ".png"), 
+                     story_page_template_path(page_template.id), remote: true) %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class="col-md-7">
+      <div id='selected_story_page_template' class='page-container'>
+        <p>Select template</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-5">
+      <%= simple_form_for :story , url: story_page_path(@story), html: { class: 'form-horizontal',  multipart: true } do |f| %>
+        <%= f.association :page_template, label_method: :name, value_method: :id %>
+        <%= f.association :illustration, label_method: :name, value_method: :id %>
+        <%= f.input :content %>
+        <%= f.button :submit %>
+      <% end %>
+    </div>
+  </div>

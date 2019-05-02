@@ -1,0 +1,7 @@
+<%= render :partial => "errors" %>
+
+<%= render :partial => "analytics_tabs" %>
+<%= render :partial => "read_stories_tabs" %>
+<div id="stories-list">
+  <%= render :partial => "most_read_stories", :locals => {:stories => @stories_by_organization, :reads => true}%>
+</div>

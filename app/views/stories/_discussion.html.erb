@@ -1,0 +1,27 @@
+<% discussion_topic = @story.discussion_topic %>
+<% unless discussion_topic.nil? && @errors.blank? %>
+  <section id="discussion">
+    <div class="row">
+        <div class="discuss-story common-style">
+          <h2>discuss this story<i class="fa fa-circle"></i><i class="fa fa-circle"></i><i class="fa fa-circle"></i>
+          </h2>
+          <%= render partial: 'add_post_form', locals: {discussion_topic: discussion_topic} %>
+          <a target="_blank" href="<%= Discussion.topic_url(discussion_topic['id'].to_s) %>" class="title">
+            <strong><%= discussion_topic['title'] %></strong>
+          </a>
+          <% discussion_topic['post_stream']['posts'].last(10).reverse.each do |post| %>
+            <div class="post">
+              <div class="usr-nam">
+                <span class="username"> <%= raw(post['username']) %> </span>
+                <span class="name"> <%= raw(post['name']) unless post['name'].nil? %> </span>
+              </div>
+              <div class="body"><%= raw(post['cooked']) %></div>
+            </div>
+          <% end %>
+          <a target="_blank" href="<%= Discussion.topic_url(discussion_topic['id'].to_s) %>" class="see-complete-discussion">
+            See complete discussion.
+          </a>
+        </div>
+    </div>
+  </section>
+<% end %>

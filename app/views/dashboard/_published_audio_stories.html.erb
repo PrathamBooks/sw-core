@@ -1,0 +1,151 @@
+<%= render :partial => "dashboard_datatables" %>
+
+<div class="row">
+  <div class="col-md-12 col-sm-12">
+    <div id="delete_story_dialog" title="Confirmation Required">
+      <%=t 'dashboard.legacy_upload.delete_story' %>
+    </div>
+    <table class="table table-striped" id="uploaded_stories">
+      <tfoot style="display: table-header-group;">
+        <tr>
+          <th><%=t "dashboard.english_title"%></th>
+          <th><%=t "dashboard.story_title"%></th>
+          <th><%=t "dashboard.language"%></th>
+          <th><%=t "dashboard.actions"%></th>
+          <th><%=t "dashboard.sls_file"%></th>
+        </tr>
+      </tfoot>
+      <thead>
+        <tr class="table-heading-row">
+          <th><%=t "dashboard.english_title"%></th>
+          <th><%=t "dashboard.story_title"%></th>
+          <th class="noborder"><%=t "dashboard.language"%></th>
+          <th><%=t "dashboard.actions"%></th>
+          <th><%=t "dashboard.sls_file"%></th>
+        </tr>
+      </thead>
+      <tbody class="table-row-details">
+        <% @stories.each_with_index do |story, index| %>
+          <tr class="stories_uploaded">
+            <td><%= story.english_title %></td>            
+            <td class="<%=story.script %>"><%= story.original_story_title %></td>
+            <td><%= story.language %></td>
+            <td><a class="btn btn-danger delete_story_link" data-story-id="<%= story.id %>"><%= t "dashboard.delete"%></a>
+              <a class="btn btn-danger delete_story_link" data-story-id="<%= story.id %>"><%= t "dashboard.delete"%></a></td>
+            <td><%= link_to "#{t 'dashboard.legacy_upload.publish'}", publish_story_path(story), method: :patch, class: 'btn btn-info' if current_user.content_manager? %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div id="editor-model" title="<%=t 'dashboard.legacy_upload.assign_editor' %>"></div>
+<div id="delete_editor_model" title="<%=t 'dashboard.legacy_upload.remove_editor' %>"></div> 
+
+<script>
+$(document).ready(function(){
+  $('.delete_story_link').click(function(evt){
+    evt.preventDefault();
+    $('#delete_story_dialog').data('storyId', $(this).data('storyId'));
+    $('#delete_story_dialog').dialog("open");
+  });
+
+  $('#delete_story_dialog').dialog({
+    autoOpen: false,
+    width: 400,
+    modal: true,
+    buttons : {
+      "Confirm" : function() {
+        $.ajax({
+          type: 'DELETE',
+          dataType: 'script',
+          url: '/v0/stories/'+$(this).data('storyId'),
+          beforeSend: $.blockUI,
+          success: function(){ 
+            $.unblockUI;
+            window.location = "<%= dashboard_path %>";
+          },
+          error: function(e){
+            $.unblockUI();
+          }
+        });
+        $(this).dialog("close");
+      },
+      "Cancel" : function() {
+        $(this).dialog("close");
+      }
+    },
+    dialogClass: 'change_orientation_dialog'
+  });
+});
+
+$(document).ready(function() {
+  var table = $('#uploaded_stories').DataTable( {
+    searching: true,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 20,
+    order: [],
+    responsive: {
+        details: false
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  title: formatDatatableTitle('stories'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6, 7 ]
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  title: formatDatatableTitle('stories'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6, 7 ]
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  title: formatDatatableTitle('stories'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6, 7 ]
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  title: formatDatatableTitle('stories'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6, 7 ]
+                  }
+              }
+          ]
+      
+  });
+  $('#uploaded_stories tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+  });
+
+  var new_table = $('#uploaded_stories').dataTable();
+  table.columns().every( function () {
+    var that = this;
+
+    $( 'input', this.footer() ).on( 'keyup change', function () {
+      if ( that.search() !== this.value ) {
+          that
+              .search( this.value )
+              .draw();
+        document.getElementById("uploaded_stories_count").innerHTML = document.getElementById('uploaded_stories').children[1].childElementCount;
+      }else{
+        document.getElementById("uploaded_stories_count").innerHTML = table.rows( '.stories_uploaded' ).count(); 
+      }
+    });
+  });
+  $( 'input').on( 'keyup change', function () {
+    document.getElementById("uploaded_stories_count").innerHTML = new_table.fnSettings().fnRecordsDisplay();
+  });
+
+  });
+
+</script>

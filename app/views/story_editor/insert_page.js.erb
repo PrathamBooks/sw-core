@@ -1,0 +1,5 @@
+$('#pages_ribbon').replaceWith("<%= escape_javascript(render(:partial=>"pages_ribbon")) %>");
+/*$('#selected_page').html("<%#= escape_javascript(render(:partial=>"page_edit")) %>");*/
+$('#toolbarHead').html("<%= escape_javascript(render(:partial=>"editor_toolbar")) %>");
+$('#right_side_editor').html("<%= escape_javascript(render(:partial=>"page_editor")) %>");
+story_editor.hide_illustration_drawer_based_on_orientation();

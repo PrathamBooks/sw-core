@@ -1,0 +1,66 @@
+<div class="btn-group">
+  <i class="dropdown-arrow dropdown-arrow-inverse"></i>
+  <button class="btn btn-primary dropdown-toggle filter-btn" data-toggle="dropdown" ><%= params[:level] && params[:level] != ''? "Level #{params[:level].to_i + 1}" : "All Levels" %></button>
+  <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"> <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu dropdown">
+     <li><%= link_to "All Level", most_read_stories_path(:level => '', :language=>params[:language]? params[:language] : '', :limit => params[:limit]? params[:limit] : 10), :remote => true%></li>
+    <% (0..3).each do |level| %>
+     <li><%= link_to "Level #{level+1}", most_read_stories_path(:level => level, :language=>params[:language]? params[:language] : '', :limit => params[:limit]? params[:limit] : 10), :remote => true%></li>
+    <% end %>
+  </ul>
+</div>
+<div class="btn-group">
+  <i class="dropdown-arrow dropdown-arrow-inverse"></i>
+  <button class="btn btn-primary dropdown-toggle filter-btn" data-toggle="dropdown" >Top <%= params[:limit] ? params[:limit] : 10 %></button>
+  <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"> <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu dropdown">
+    <% [10, 20, 30, 40, 50, 100].each do |limit| %>
+     <li><%= link_to "Top #{limit}", most_read_stories_path(:limit => limit, :level=>params[:level]? params[:level] : '', :language=>params[:language]? params[:language] : ''), :remote => true%></li>
+    <% end %>
+  </ul>
+</div>
+<div class="stories_btn">
+  <%= render :partial => "language_filter", :locals => {:path => most_read_stories_path(:level=> params[:level] ? params[:level] : '', :limit => params[:limit]? params[:limit] : 10)} %>
+</div>
+
+<table class="table table-striped">
+  <thead>
+  <tr class="table-heading-row">
+    <th>Story Title</th>
+    <th>English Title</th>
+    <th>Organization</th>
+    <th>Language</th>
+    <th>Reading level</th>
+    <th>No of Reads</th>
+    <th></th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody class="table-row-details">
+  <% if stories %>
+  <% stories.each do |story| %>
+   <tr>
+     <td><%= link_to story.title, react_stories_show_path(story.to_param) %></td>
+     <td><%= story.english_title %></td>
+     <td><%= story.organization.present? ? story.organization.organization_name : 'Storyweaver Community' %></td>
+     <td><%= story.language.name%></td>
+     <td><%= story.reading_level%></td>
+     <td><%= story.reads %></td>
+     <td>
+     </td>
+     <td></td>
+   </tr>
+  <% end %>
+	  <% end %>
+  </tbody>
+</table>
+
+<script>
+  $(document).ready(function(){
+    $('#language_filter').selectpicker({
+        liveSearch:true
+    });
+  })
+</script>

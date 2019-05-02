@@ -1,0 +1,20 @@
+<% if flash[:errors].try(:any?) %>
+  <div class="alert alert-danger">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+      <% flash[:errors].each do |key,value| %>
+      <div id="flash_error"><%= "#{key.titleize}: #{value.is_a?(Array) ? value.join(",") : value }" %></div>
+      <% end %>
+  </div>
+<% end %>
+
+
+<%= render :partial => "tabs" %>
+
+<div class="tab-content">
+  <div role="tabpanel" class="tab-pane active common-class" id="LegacyUpload">
+      <%= render :partial => "languages" %>
+  </div>
+</div>
+
+
+

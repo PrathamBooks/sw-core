@@ -1,0 +1,22 @@
+<%= select_tag('publisher', options_from_collection_for_select(Organization.where(:organization_type => "Publisher"), 'id', 'organization_name'), prompt: "All Publishers", :onchange => "organization_filters();")%>
+
+<script>
+  $(document).ready(function(){
+    $('#publisher').selectpicker({
+      liveSearch:true
+    });
+    <% if params[:publisher] %>
+      $('#publisher').selectpicker('val', <%= params[:publisher] %>);
+    <% end %>
+  });
+
+  function organization_filters(){
+    var publisher = $("#publisher").val();
+    var data = { publisher: publisher};
+
+    if( typeof ajax_filter !== "undefined" ){
+      ajax_filter('GET', "<%= path %>", data);
+    }
+
+  }
+</script>

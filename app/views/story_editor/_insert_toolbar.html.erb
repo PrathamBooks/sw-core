@@ -1,0 +1,18 @@
+
+<div class="insert-component">
+  <div id="create-textbox" class="create-textbox disabled" >
+    <div class="icon-round-wrap icon-round-wrap-brand icon-left">
+      <div class="textbox_icon"></div></div>
+    <div class="sidebar-page-action-text"><%=t 'editor.editor_page.textbox'%></div>
+  </div>
+</div>
+
+<script type="text/javascript" >
+  $(document).ready(function(){
+    document.getElementById('create-textbox').style.pointerEvents = 'none';
+    $('#create-textbox').on('click', function(){
+      story_editor.create_textbox();
+      $(this).addClass("active");
+    });
+  });
+</script>

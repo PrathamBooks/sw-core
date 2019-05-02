@@ -1,0 +1,44 @@
+<% if @story.derivation_type != nil%>
+  <% if @story.root.language.name != "English" && (@flag ? @story.get_english_version(@current_user) != nil : nil) %>
+     <div class="row">
+       <%= link_to "Click here for english version", story_review_path(:flag => false), class: "btn btn-normal btn-warning" %>
+     </div>
+  <% end %>
+		<div class="row">
+			<div class="col-md-6">
+				<% if (@flag ?  @story.root.orientation : @english_story.orientation )=="landscape" %>
+					<p class="original_story_label landscape_story_title">Original Story (<%= @story.root.language.name %>)</p>
+				<% else %>
+					<p class="original_story_label portrait_story_title">Original Story (<%= @story.root.language.name %>)</p>
+				<% end %>
+				<% iframe_style = (@flag ?  @story.root.orientation : @english_story.orientation ) == "landscape" ? 'height:380px;width:512px;margin-left:3%;' : 'height:439px;width:322px;margin-left:5%;' %>
+				<iframe src="<%=host_url%><%= show_story_in_iframe_path(@flag ? @story.root : @english_story, :iframe=>true, :disable_review_link => "disable_review_link")%>"
+					style="<%=iframe_style%>" allowfullscreen webkitallowfullscreen mozallowfullscreen>
+				</iframe>
+			</div>
+		  <div class="col-md-6">
+				<% if @story.orientation=="landscape" %>
+					<p class="derived_story_label landscape_story_title"><% if @story.is_relevelled? %>Re-levelled story <% else %>Translation story <% end %>(<%= @story.language.name %>)</p>
+				<% else %>
+					<p class="derived_story_label portrait_story_title"><% if @story.is_relevelled? %>Re-levelled story <% else %>Translation story <% end %>(<%= @story.language.name %>)</p>
+				<% end %>
+				<% iframe_style= @story.orientation=="landscape" ? 'height:380px;width:512px;margin-left:3%;' : 'height:439px;width:322px;margin-left:5%;' %>
+				<iframe src="<%=host_url%><%= show_story_in_iframe_path(@story, :iframe=>true, :disable_review_link => "disable_review_link")%>"
+			 		style="<%=iframe_style%>" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe>
+		 	</div>
+		</div>
+<% else %>
+		<% alignment_cls = (@story.orientation == "landscape" ? 'rating_story_iframe_landscape' : 'rating_story_iframe_portrait')%>
+		<div class="story_iframe <%=alignment_cls%>">
+			<% if @story.orientation == "landscape" %>
+				<p class="original_story_label">Original Story (<%= @story.language.name %>)</p>
+			<% else %>
+				<p class="original_story_label portrait_story_title">Original Story (<%= @story.language.name %>)</p>
+			<% end %>
+			<% iframe_style= @story.orientation=="landscape" ? 'height:380px;width:512px' : 'height:439px;width:322px;margin-left:5%;' %>
+			<iframe src="<%=host_url%><%= show_story_in_iframe_path(@story, :iframe=>true, :disable_review_link => "disable_review_link")%>"
+			 style="<%=iframe_style%>" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe> 
+		</div>
+<% end%>
+<br/>
+<p class="rating_label">Your Rating</p>

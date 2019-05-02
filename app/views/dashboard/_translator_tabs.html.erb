@@ -1,0 +1,22 @@
+<div class="row full-content-dash prof-act">
+  <div class="col-md-12">
+    <ul id="myTab" role="tablist" class="nav nav-tabs profile">
+       <li role="presentation" class="<%= @current_tab == 'un_translated_stories' ? 'active' : '' %>">
+        <%= link_to "<span>Stories to Translate</span>".html_safe , un_translated_stories_path %>
+      </li>
+      <li role="presentation" class="<%= @current_tab == 'translated_stories' ? 'active' : '' %>">
+        <%= link_to "<span>Translated Stories</span>".html_safe , translated_stories_path %>
+      </li>
+      <li role="presentation" class="<%= @current_tab == 'translation_drafts' ? 'active' : '' %>">
+        <%= link_to "<span>Translation Drafts</span>".html_safe , translation_drafts_path %>
+      </li>
+      <li role="presentation" class="<%= @current_tab == 'assign_translator' ? 'active' : '' %>">
+        <%= link_to "<span>Translators</span>".html_safe , assign_translator_path %>
+      </li>
+      <li role="presentation" class="<%= @current_tab == 'translator_analytics' ? 'active' : '' %>">
+        <%= link_to "<span>Analytics</span>".html_safe , translator_analytics_path %>
+      </li>
+    </ul>
+  </div>
+  <hr>
+</div>

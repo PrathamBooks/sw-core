@@ -1,0 +1,165 @@
+<%= render :partial => "dashboard_datatables" %>
+
+<%= render :partial => "flagged_content_tabs" %>
+
+<div class="row">
+  <div class="col-md-12 col-sm-12">
+  	<label class="allusers">
+      <span><%= t 'dashboard.dashboard.number_of_illustrations_selected'%></span>
+      <span class="badge" id="pulled_down_illustrations_count"><%= @illustrations.count %></span>
+    </label>
+  </div>
+</div>
+
+  <div class="row">
+    <div class="col-md-12 col-sm-12" id="user_details">
+      <table class="table table-striped" id="all_pulled_down_illustrations">
+        <tfoot style="display: table-header-group;">
+          <tr>
+            <th><%= t 'dashboard.illustration'%></th>
+            <th><%= t 'dashboard.pulled_down_illustrations_tab.user_comments'%></th>
+            <th><%= t 'dashboard.pulled_down_illustrations_tab.flagged_by'%></th>
+            <th><%= t 'dashboard.pulled_down_illustrations_tab.illurtrators_email_id'%></th>
+            <th><%= t 'dashboard.pulled_down_illustrations_tab.used_in_stories'%></th>
+            <th><%= t 'dashboard.actions'%></th>
+          </tr>
+        </tfoot>
+        <thead>
+          <tr class="table-heading-row">
+            <th><%= t 'dashboard.illustration'%></th>
+            <th><%= t 'dashboard.pulled_down_illustrations_tab.user_comments'%></th>
+            <th><%= t 'dashboard.pulled_down_illustrations_tab.flagged_by'%></th>
+            <th><%= t 'dashboard.pulled_down_illustrations_tab.illurtrators_email_id'%></th>
+            <th><%= t 'dashboard.pulled_down_illustrations_tab.used_in_stories'%></th>
+            <th><%= t 'dashboard.actions'%></th>
+          </tr>
+        </thead>
+        <tbody class="table-row-details">    
+        <% @illustrations.each do |illustration|%> 
+          <tr class="pulled_illustrations_count">
+            <td><%= link_to(image_tag(illustration.image.url(:search)), react_illustrations_show_path(illustration)) %></td>
+            <td><%= illustration.flaggings.first.try(:reason) %></td>
+            <td>
+              <%= illustration.flaggings.first.flagger.name %><br/>
+              (<%= illustration.flaggings.first.flagger.email %>)
+            </td>
+            <td><%= illustration.illustrators.collect(&:email).join(", ") %></td>
+            <td>
+              <% illustration.used_in_de_activated_stories.each_with_index do |story,index| %>
+                <%= link_to "#{index+1}, #{story.title}", react_stories_show_path(story.to_param) , :target => "_blank" %><br/>
+              <% end %>
+            </td>
+            <td>
+              <a class="btn btn-sm btn-success activate_illustration" style="padding:5px 10px;" data-path = "<%=activate_illustration_path(illustration) %>" >Clear flag & activate</a>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="activate_illustration_dialog" title="Confirmation Required">
+    Please note: This Illustration and all the Stories which used this illustration will be activated & will be available to all users when you confirm 
+  </div>
+
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+  initActivateIllustrationDialog();
+});
+
+function initActivateIllustrationDialog(){
+  var activate_illustration_dialog = $("#activate_illustration_dialog");
+  activate_illustration_dialog.dialog({
+      autoOpen: false,
+      width: 700,
+      modal: true,
+      buttons : {
+        "Confirm" : function() {
+          window.location = activate_illustration_path;
+        },
+        "Cancel" : function() {
+          $(this).dialog("close");
+        }
+      },
+      dialogClass: 'change_orientation_dialog'
+  });
+}
+
+$(".activate_illustration").click(function(){
+   activate_illustration_path = $(this).data('path');
+   $("#activate_illustration_dialog").dialog("open");
+});
+
+$(document).ready(function() {
+  var table = $('#all_pulled_down_illustrations').DataTable( {
+    searching: true,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 20,
+    order: [],
+    responsive: {
+        details: false
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  title: formatDatatableTitle('pulled-down-illustrations'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5 ]
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  title: formatDatatableTitle('pulled-down-illustrations'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5 ]
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  title: formatDatatableTitle('pulled-down-illustrations'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5 ]
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  title: formatDatatableTitle('pulled-down-illustrations'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5 ]
+                  }
+              }
+          ]
+  });
+
+  $('#all_pulled_down_illustrations tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+  });
+
+  var new_table = $('#all_pulled_down_illustrations').dataTable();
+  table.columns().every( function () {
+    var that = this;
+
+    $( 'input', this.footer() ).on( 'keyup change', function () {
+      if ( that.search() !== this.value ) {
+          that
+              .search( this.value )
+              .draw();
+        document.getElementById("pulled_down_illustrations_count").innerHTML = document.getElementById('all_pulled_down_illustrations').children[1].childElementCount;
+      }else{
+        document.getElementById("pulled_down_illustrations_count").innerHTML = table.rows( '.pulled_illustrations_count' ).count(); 
+      }
+    });
+  });
+  $( 'input').on( 'keyup change', function () {
+    document.getElementById("pulled_down_illustrations_count").innerHTML = new_table.fnSettings().fnRecordsDisplay();
+  });
+
+  });
+
+</script>

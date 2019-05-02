@@ -1,0 +1,45 @@
+<div class="modal fade" id="autoTranslateStoryModal" tabindex="-1" role="dialog" aria-labelledby="moreLinksModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header trans_popup_head">
+      <h2 class="modal-title">Translate Story</h2>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+          <p class="auto_translate_text">Our translate tool has a draft ready for you. Would you like to edit and publish it? <a class="auto_translate_text" href="<%= translate_guidelines_path %>" target="_blank">Click here to know more</a></p>
+      </div>
+    </div>
+    <div class="modal-footer auto_translate_buttons_wrapper">
+      <button class="btn btn-app btn-brand-1 auto_translate_edit_button" id="auto_translate_edit_button" type="submit" >Yes, I'll try</button>
+      <button type="button" class="btn btn-default auto_translate_close_button" id="auto_translate_close_button" data-dismiss="modal">No, I'll translate</button>
+    </div>
+    
+  </div>
+</div>
+</div>
+
+<script>
+$(document).ready(function() {
+  $.unblockUI();
+  $("#auto_translate_edit_button").on("click", function(){
+    ga('send', 'event', { eventCategory: 'AutoTranslate', eventAction: 'Clicked', eventLabel: '<%= @story.title %>', dimension1: '<%= current_user.nil? ? "" : current_user.email %>'});
+    window.onbeforeunload = false;
+    $.ajax({
+      type: 'GET',
+      url: '<%= update_auto_translation_path(@tr_story, auto_translated_draft_id: @translated_draft.id ) %>',
+      beforeSend: $.blockUI,
+      success: $.unblockUI,
+      error: function(e){
+        $.unblockUI();
+      },
+      dataType: 'script'
+    });
+    
+  });
+
+  $("#auto_translate_close_button").on("click", function(){
+    ga('send', 'event', { eventCategory: 'AutoTranslate', eventAction: 'Closed', eventLabel: '<%= @story.title %>', dimension1: '<%= current_user.nil? ? "" : current_user.email %>'});
+  });
+});
+</script>
+

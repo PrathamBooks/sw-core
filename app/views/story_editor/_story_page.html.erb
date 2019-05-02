@@ -1,0 +1,21 @@
+<% textbox_id ||= nil %>
+<div class='<%= @page.story.language.script %> <%= @page.page_template.name + ' content' %>'
+	data-page-id = <%= @page.id %> 
+>
+	<% if (@page.story.is_display_inline) %>
+		<div class="newStories txtEditor"
+			dir="<%= @story.language.is_right_to_left? ? 'rtl' : 'auto'%>"	
+			id = "<%= textbox_id ? '' : 'txtEditor'%>"
+		>
+			<%= raw(@page.content) %>
+		</div>
+	<% else %>
+		<div class="text-font-normal txtEditor"
+			dir="<%= @story.language.is_right_to_left? ? 'rtl' : 'auto'%>"
+			id = "<%= textbox_id ? '' : 'txtEditor'%>"
+		>
+			<%= raw(@page.content) %>
+		</div>
+	<%end%>
+</div>
+<%= render :partial => "textboxes_template", locals: { textboxes: @page.textboxes, story: @story, textbox_id: textbox_id } %>

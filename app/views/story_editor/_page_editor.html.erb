@@ -1,0 +1,18 @@
+<div class="sc-content-slider-block sc-content-slider-block--<%= @page.page_template.orientation %>">
+  <div class="sc-content-slide">
+    <div class="right-side-editor right-side-editor--<%= @page.page_template.orientation %>">
+      <div align="center">
+        <div id="selected_page">
+          <%= render :partial => "/story_editor/page_edit" %>
+        </div>
+      </div>
+    </div>
+    <div class="sc-slider-action-block" id="page_navigations">
+      <%= render :partial => "page_navigations"%>
+    </div> <!-- /sc-slider-action-block -->
+  </div> <!-- /sc-content-slide -->
+
+</div> <!-- /sc-content-slider-block" -->
+
+
+

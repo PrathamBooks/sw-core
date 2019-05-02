@@ -1,0 +1,10 @@
+$('#txtEditor').remove();
+$('.page').removeClass('active');
+$("#story_page_<%= @page.id %>").addClass('active');
+$('#pages_ribbon').replaceWith("<%= escape_javascript(render(:partial=>"pages_ribbon")) %>");
+$('#toolbarHead').html("<%= escape_javascript(render(:partial=>"editor_toolbar")) %>");
+$('#right_side_editor').html("<%= escape_javascript(render(:partial=>"page_editor")) %>");
+/*$('#selected_page').html("<%#= escape_javascript(render(:partial=>"page_edit")) %>");*/
+$('#page_templates').html("<%= escape_javascript(render(:partial=>"page_templates")) %>"); 
+$('#page_navigations').html("<%= escape_javascript(render(:partial=>"page_navigations")) %>");
+story_editor.hide_illustration_drawer_based_on_orientation();

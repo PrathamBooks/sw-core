@@ -1,0 +1,32 @@
+<div class="row about-row google_camp">
+  <div id="search-details-temp noborder">
+    <div class="col-md-12 col-sm-12">  
+      <h2>You have been successfully unsubscribed!</h2>
+      
+      <p>If you have a moment, please let us know why you have chosen to unsubscribe</p>
+    </div>
+
+    <%= simple_form_for @user, method: :post, url: update_unsubscribe_reasons_path(:user_id => @user.id) do |f| %>
+      <div class="col-md-12 col-sm-12">
+        <%= f.input :unsubscribe_reasons, :collection => ["I no longer wish to receive these emails","I don't find the content of the emails relevant", "I never signed up to receive these emails"],label: false, wrapper_html: { class: 'form_text' }, :as => :check_boxes, :input_html => {:name => "unsubscribe_reasons[]", :multiple => true,} %>
+         <input type="checkbox" class="form_text" name="reason" id="other_reasons" />
+         <label class="form_text unsubscribe_formtxt">Other comments: Please Specify</label>
+         <%= f.input :unsubscribe_reasons, label: false, class: "form-control", :input_html => {:name => "unsubscribe_reasons[]"}%>
+         <%= f.button :submit, "Submit" %>
+     </div>
+    <% end %>
+  </div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#user_unsubscribe_reasons").hide()
+ $("#other_reasons").click(function () {
+  if($("#other_reasons").is(":checked")){
+    $("#user_unsubscribe_reasons").show()
+  }else{
+    $("#user_unsubscribe_reasons").hide()
+  }
+ })
+});
+</script>

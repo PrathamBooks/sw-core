@@ -1,0 +1,7 @@
+<% if story.editor_id != nil %>
+	<label><%= story.editor.name %></label>
+	<%= link_to( "",assign_editor_modal_path(:story_id => story.id), :remote => true, :method=> :get,:class => "fa fa-pencil-square-o", :style => "font-size: large;" )%>
+	<%= link_to("", delete_editor_modal_path(:story_id => story.id),:method=>:get,:remote => true, :class => "glyphicon glyphicon-remove-sign", :style => "font-size: large;")%>
+<% else %>
+	<%= button_to "Assign", assign_editor_modal_path(:story_id => story.id),:method=>:get, :remote => true, class: " btn btn-normal btn-warning dropdown-toggle" %>
+<% end %>

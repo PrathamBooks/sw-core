@@ -1,0 +1,13 @@
+<div id="original-text-container" >
+  <div id="original_text" class="original_text ">
+    <div class="drag-icon">
+	    <i class="fa fa-arrows"></i>
+	    <span><%= t 'editor.editor_page.reference_text_1'%> <br/><%= t 'editor.editor_page.reference_text_2'%></span>
+	</div>
+  <div class="origi-text"> 
+	  <span class="text <%= text_language %>" dir="<%= text_read_dir %>">
+	    <%= raw(original_text) %>
+	  </span>
+    </div>
+  </div>
+</div>

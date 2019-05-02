@@ -1,0 +1,10 @@
+<% if flash[:errors].try(:any?) %>
+  $("#errors").html("<%= escape_javascript(render :partial=> "errors") %>");
+<% else %>
+  $("#audios_upload").html("<%= escape_javascript(render :partial=> "audios_upload_new") %>");
+  $(document).ready(function() {
+    $('#modal-upload-audios').modal({
+      show: true
+    });
+  });
+<% end %>

@@ -1,0 +1,76 @@
+<heml>
+  <head>
+    <style>
+      .mail_container {
+        border: 0;
+        background-color: #fff;
+        padding: 0.9375em;
+        text-align: center;
+        max-width: 100%;
+      }
+      .mail_cont_name {
+        display: block;
+        font-weight: bold;
+        text-align: center;
+      }
+      .mail_cont_head {
+        display: block; 
+        margin-bottom: 0.625em;
+      }
+      .mail_cont_head h1 {
+        font-family: 'Raleway', sans-serif;
+        font-size: 1.6em; 
+        font-weight: bold;
+        margin: 0;
+      }
+      .mail_cont_text {
+        display: block; 
+        font-family: 'Raleway', sans-serif;
+        padding-bottom: 0.625em; 
+        text-align: center;
+      }
+      .mail_cont_wishes {
+        display: block; 
+        font-family: 'Raleway', sans-serif;
+        padding-bottom: 0;
+      }
+      .mail_cont_wishes span {
+        display: block;
+      }
+      .mail_stories_button {
+        background-color: #e94f1d; 
+        border: none; 
+        border-radius: 0.25em; 
+        color: #fff; 
+        display: block; 
+        font-size: 0.6875em; 
+        font-weight: bold; 
+        margin: 0 auto; 
+      }
+    </style>
+  </head>
+  <body>
+    <container class="mail_container">
+      
+      <row>
+        <column class='mail_cont_head'>
+          <h1>How to rate a story</h1>
+        </column>
+      </row>
+
+      <row>
+        <column class="mail_cont_name">Dear <%= @reviewer.name %>, </column>
+      </row>
+
+      <row class="mail_cont_text">
+        <column>Hello, and thank you for agreeing to rate <%= @language %> stories on StoryWeaver. We're so glad to have you join us.</column>
+      </row>
+
+      <row>
+        <button class="mail_stories_button"><a href="<%= review_guidelines_url %>">To get started</a></button>
+      </row>
+
+    </container>
+
+  </body>
+</heml>

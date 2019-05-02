@@ -1,0 +1,21 @@
+<script>
+    <% locale = session[:user_locale] ? session[:user_locale] : "en" %>
+  window.INITIAL_STATE = {
+      "user" : {
+  <% if current_user %>
+        <% profile = current_user.profile %>
+        <% profile["locale"] = locale %>
+        <% profile["languagePreferences"] = current_user.language_preferences_list %>
+        <% profile["readingLevels"] = current_user.reading_levels_list %>
+        "isLoggedIn": true,
+        "profile" : <%= raw profile.to_json %>,
+  <% else %>
+        "isLoggedIn": false,
+        "profile" : {
+          "roles" : [],
+          "locale": "<%= locale %>"
+         }
+  <% end %>
+      }
+    }
+</script>

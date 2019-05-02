@@ -1,0 +1,21 @@
+<% if @translated_draft.blank? %>
+	$('#newTranslateStoryForm').html("<%= escape_javascript(render(:partial=>"translations/new"))%>");
+
+	$(document).ready(function() {
+		$('#translateStoryModal').modal({
+			backdrop: 'static',
+			keyboard: false,
+			show: true
+		});	
+	});
+<% else %>
+	$('#autoTranslateStoryForm').html("<%= escape_javascript(render(:partial=>"translations/auto_translate"))%>");
+
+	$(document).ready(function() {
+	$('#autoTranslateStoryModal').modal({
+			backdrop: 'static',
+			keyboard: false,
+			show: true
+	});    
+	});
+<% end %>

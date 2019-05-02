@@ -1,0 +1,290 @@
+<%
+  extra_parameters = [:user_email]
+%>
+<div id="storyReader"></div>
+<div style="margin-bottom: 10px;">
+
+  <div class="btn-group" style="margin-left: 15px;"><label>Translate To:</label></div>
+  <%= render :partial => "translate_language_selector", :locals => {:path => get_tlanguage_stories_new_path, :prompt => "Select Language", :non_filters => ["user_email"], :languages => stories_languages(params[:language]) } %>
+
+  <%= render :partial => "user_autocomplete", :locals => {:user_id => "user_email", :placeholder => "Translator Email Id", :value => params[:user_email] } %>
+  
+  <br/> <br/>
+
+<div class="btn-group" style="margin-left: 15px;">
+  <span>Number of Stories Selected :</span>
+  <span class="badge" id="un_translated_stories"><%= @stories.count %></span>
+</div>
+  <button class="btn btn-app btn-brand-1 assign-stories-btn" id="assign-stories" >Assign</button>
+
+  <br/> <br/>
+  <div class="btn-group" style="margin-left: 15px;"><label>Filters:</label></div>
+  <%= render :partial => "language_filter", :locals => {:path => get_tlanguage_stories_new_path, :selector => "id", :name => "language", :prompt => "Source Language", :languages => stories_languages(params[:translate_language]) } %>
+
+    <%= render :partial => "dashboard/reading_level_filter", :locals => {:path => get_tlanguage_stories_new_path, :current_level => params[:level]} %>
+
+  <%= render :partial => "category_filter", :locals => {:path => get_tlanguage_stories_new_path} %>
+
+  <%= render :partial => "publisher_filter", :locals => {:path => get_tlanguage_stories_new_path} %>
+
+  <!-- <= #render :partial => "translator_filter", :locals => {:path => get_tlanguage_stories_new_path(:level=> params[:level] ? params[:level] : '', :limit => params[:limit]? params[:limit] : 10, :language => params[:language] ? params[:language] : '', :current_tab => @current_tab, :story_type  => params[:story_type] ? params[:story_type] : '', :category => params[:category], :publisher => params[:publisher], :translate_language => params[:translate_language] || @translate_language_id)} %> -->
+  <br/> <br/>
+
+</div>
+
+
+<div class="col-md-9 tr_stories_dashboard">
+  <table class="table table-striped" id="un_tr_stories">
+    <tfoot style="display: table-header-group;">
+      <tr>
+        <th> </th>
+        <th>Source Story             </th>
+        <th>Reading Level            </th>
+        <th>Language                 </th>
+        <th> Target Language         </th>
+        <th> Categories                 </th>
+        <th> Publisher               </th>
+        <th> Assigned To           </th>
+        <th> Translator Organization </th>
+        <th class="hidden"> </th>
+      </tr>
+    </tfoot>
+    <thead>
+      <tr class="table-heading-row">
+        <th> </th>
+        <th>Source Story                  </th>
+        <th>Reading Level                 </th>
+        <th>Language                      </th>
+        <th> Target Language           </th>
+        <th>Categories                      </th>
+        <th> Publisher                    </th>
+        <th> Assigned to                </th>
+        <th> Translator Organization      </th>
+        <th class="hidden"> </th>
+      </tr>
+    </thead>
+    <tbody class="table-row-details">
+      <% @stories.each do |story| %>
+        <% if story.translator_stories.length > 0 && translator_language_present(story.translator_stories, params[:translate_language]) %>
+          <% story.translator_stories.each do |ts| %>
+            <% if translate_language_match(ts, params[:translate_language]) %>
+              <tr class="un_tr_stories_count" >
+                <td class="select-checkbox"> </td>
+                <td><%= link_to story.title, story_page_path(story, story.pages.first), :remote => true %></td>
+                <td style="text-align: center;"><%= story.reading_level %></td>
+                <td><%= story.language.name %></td>
+                <td><%= ts.translate_language.name %></td>
+                <td><%= story.categories.map(&:name).join(",") %> </td>
+                <td><%= story.organization.try(:organization_name) %> </td>
+                <td> <%= ts.try(:translator).try(:name) %> </td>
+                <td> <%= ts.try(:translator_organization).try(:organization_name) %> </td>
+                <td class="hidden"> <%= story.id %> </td>
+              </tr>
+            <% end %>
+
+          <% end %>
+        <% else %>
+          <tr class="un_tr_stories_count" >
+            <td class="select-checkbox"> </td>
+            <td><%= link_to story.title, story_page_path(story, story.pages.first), :remote => true %></td>
+            <td style="text-align: center;"><%= story.reading_level %></td>
+            <td><%= story.language.name %></td>
+            <td></td>
+            <td><%= story.categories.map(&:name).join(",") %> </td>
+            <td><%= story.organization.try(:organization_name) %> </td>
+            <td> </td>
+            <td> </td>
+            <td class="hidden"> <%= story.id %> </td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+  var table = $('#un_tr_stories').DataTable( {
+    searching: true,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 20,
+    columnDefs: [{
+      orderable: false,
+      classname: 'select-checkbox',
+      targets: 1
+    }],
+    select: {
+      'selector': 'td:nth-child(1)',
+      'style': 'multi'
+    },
+    order: [],
+    responsive: {
+        details: false
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  title: formatDatatableTitle('tlanguages'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6, 7 ]
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  title: formatDatatableTitle('tlanguages'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6, 7 ]
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  title: formatDatatableTitle('tlanguages'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6, 7 ]
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  title: formatDatatableTitle('tlanguages'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6, 7 ]
+                  }
+              },
+              {
+                text: "Select All",
+                action: function(){ this.rows({page: 'current' }).select();}
+              },
+              {
+                text: "Select None",
+                action: function(){ this.rows({page: 'current'}).deselect();}
+              }
+          ]
+      
+  });
+  $('#un_tr_stories tfoot th').each( function () {
+      if(this.innerText !== ""){
+        var title = $(this).text();
+        $(this).html( '<input type="text" placeholder="Search '+title+'" class="search-table" />' );
+      }
+  });
+
+  var new_table = $('#un_tr_stories').dataTable();
+  table.columns().every( function () {
+    var that = this;
+
+    $( 'input.search-table', this.footer() ).on( 'keyup change', function () {
+      if ( that.search() !== this.value ) {
+          that
+              .search( this.value )
+              .draw();
+        document.getElementById("un_translated_stories_count").innerHTML = document.getElementById('un_tr_stories').children[1].childElementCount;
+      }else{
+        document.getElementById("un_translated_stories_count").innerHTML = table.rows( '.un_tr_stories_count' ).count(); 
+      }
+    });
+  });
+
+  $( 'input').on( 'keyup change', function () {
+    document.getElementById("un_translated_stories_count").innerHTML = new_table.fnSettings().fnRecordsDisplay();
+  });
+
+  $('#assign-stories').click(function(){
+    var user_email =  $("#user_email").val();
+    var translate_language = $('#translate_language').val();
+
+    if(translate_language === ""){
+      alert("Select translate language");
+      return;
+    }
+
+    if(user_email !== ""){
+      var selected_data = table.rows({selected: true}).data();
+      if(selected_data.length > 0){
+        var story_ids = [];
+        var last;
+        for(var index = 0; index < selected_data.length; index++){
+          var current = parseInt(selected_data[index][9]);
+          if(current != last){
+            story_ids.push(current);
+            last = current;
+          }
+        }
+
+        var data = { 
+          user_email: user_email.split(",")[0],
+          translate_language: translate_language,
+          story_ids: story_ids
+        };
+
+        $.ajax({
+          type: "POST",
+          url: "<%= assign_stories_translator_path %>",
+          data: data,
+          beforeSend: $.blockUI,
+          success: function(){ 
+            location.reload();
+          }, error: function(e) {
+            $.unblockUI();
+            alert("There was an error while processing your action, please retry after some time");
+          }
+        });
+
+      } else {
+        alert("Please Select story to assign to translator");
+      }
+    } else {
+      alert("User email cannot be empty");
+    }
+  });
+
+
+});
+
+  //
+  // All parameters needed for the filter to maintain the state of the other filters are 
+  // present in the current page is maintained in the ajax filter
+  //
+
+  var ajax_filter = function (type, path, parameters) {
+    var data = {
+      level: '<%= params[:level] %>',
+      limit: <%= params[:limit] || 10 %>,
+      language: '<%= params[:language] %>', 
+      current_tab: '<%= @current_tab %>',
+      story_type: '<%= params[:story_type] %>',
+      category:  '<%= params[:category] %>',
+      translator: '<%= params[:translator] %>',
+      translate_language: '<%= params[:translate_language] %>',
+      user_email: '<%= params[:user_email] %>',
+      publisher: '<%= params[:publisher] %>'
+    };
+
+    Object.keys(parameters).forEach(function(item){
+      data[item] = parameters[item];
+    });
+
+    <% extra_parameters.each do |parameter| %>
+      var parameter = "<%= parameter %>";
+      data[parameter] = $("#" + parameter).val();
+    <% end %>
+
+
+    $.ajax({
+      type: type,
+      url: path,
+      data: data,
+      beforeSend: $.blockUI,
+      success: $.unblockUI,
+      error: function(e){
+        $.unblockUI();
+        alert('There was an error while processing your action, please retry after some time');
+      },
+      datatype: 'script'
+    });
+
+  }
+
+</script>

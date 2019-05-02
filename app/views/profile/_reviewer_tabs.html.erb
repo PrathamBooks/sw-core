@@ -1,0 +1,16 @@
+<div class="row full-content-dash prof-act">
+  <div class="col-md-12">
+    <ul id="myTab" role="tablist" class="nav nav-tabs profile">
+        <li class="<%= @current_tab == 'un_reviewed_stories' ? 'active' : '' %>" role="presentation">
+          <%= link_to "<span>Stories to Rate</span>".html_safe , reviewer_un_reviewed_stories_path %>
+        </li>
+        <li class="<%= @current_tab == 'reviewed_stories' ? 'active' : '' %>" role="presentation">
+          <%= link_to "<span>Stories Rated by Me</span>".html_safe , reviewer_reviewed_stories_path %>
+        </li>
+        <li class="<%= @current_tab == 'review_guldelines' ? 'active' : '' %>" role="presentation">
+          <%= link_to "<span>Rating Guidelines</span>".html_safe , review_guidelines_path %>
+        </li>
+    </ul>
+  </div>
+  <hr>
+</div>

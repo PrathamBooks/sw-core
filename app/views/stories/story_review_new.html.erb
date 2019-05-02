@@ -1,0 +1,405 @@
+<link href="https://fonts.googleapis.com/css?family=Bree+Serif|Raleway:400,500,700" rel="stylesheet">
+<a class="rate_story_home" href="/" target="_blank">Home</a>
+<p class="rate_story_label">Rate this Story</b></p>
+<%= render :partial => "iframe_for_review_form" %>
+
+<div class="reviewer_rating">
+  <% 5.times do |index| %>
+    <img class="star_icon" id="star_<%= index+1 %>" src="<%= asset_url("grey-star.svg") %>" alt="Filled Star"></img>
+  <% end %>
+</div>
+
+<!-- ######## GOOD RATING FORM STARTS ####### -->
+<%= simple_form_for(@reviewer_comment, method: :post, url: reviewer_comments_path(:id => @story.id)) do |f| %>
+<input type="hidden" name="reviewer_comment[rating]" id="hidden_rating_1" value="">
+<div id="good_rating_panel" style="display: none;">
+  <div class="good_rating_comment">
+	<p class="primary_comment_label"><b>Is there something you particularly liked? Let us know!</b></p>
+  	<textarea type="text" class="good_rating_textbox" name="reviewer_comment[comments][Others][]" value=""></textarea>
+  </div>
+  <div class="rating_buttons_panel">
+    <%= f.submit 'Submit Rating', :class => 'rating_submit_btn' %>
+    <%= link_to "CANCEL", :back, {:class=>"btn btn-default rating_cancel_btn"} %>
+  </div>
+</div>
+<% end %>
+<!-- ######## GOOD RATING FORM ENDS ####### -->
+
+<!-- ######## POOR RATING FORM STARTS ####### -->
+<%= simple_form_for(@reviewer_comment, method: :post, html: { id: "poor_rating_form"}, url: reviewer_comments_path(:id => @story.id)) do |f| %>
+<input type="hidden" name="reviewer_comment[rating]" id="hidden_rating_2" value="">
+<div id="poor_rating_panel" class="poor_rating_panel" style="display: none;">
+  <h3 class="what_is_wrong_label">Tell us what is wrong with the story</h3>
+  <div class="wrapper center-block">
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingOne">
+          <h4 class="panel-title">
+            <input type="checkbox" class="primary_comment with_sub_comments" id="1" name="reviewer_comment[comments][Story is not appropriate][]" value="">
+            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              <label class="primary_comment_label" for="1">Story is not appropriate</label>
+            </a>
+            <img data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne" class="rating_comments_down_arrow" src="<%= asset_url("comments_rating_down_arrow.svg") %>">
+          </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            <% if @story.derivation_type == nil %>
+              <p>
+            	<input type="checkbox" id="sub_comment_11" class="subcomment_for_comment_1" name="reviewer_comment[comments][Story is not appropriate][]" value="It is not an original story">
+            	<label for="sub_comment_11">It is not an original story</label>
+              </p>
+            <% end %>
+            <p>
+            <input type="checkbox" id="sub_comment_12" class="subcomment_for_comment_1" name="reviewer_comment[comments][Story is not appropriate][]" value="It uses copyrighted ideas or images">
+            <label for="sub_comment_12">It uses copyrighted ideas or images</label>
+            </p>
+            <p>
+            <input type="checkbox" id="sub_comment_13" class="subcomment_for_comment_1" name="reviewer_comment[comments][Story is not appropriate][]" value="It has provocative content (instances of violence, abuse etc)">
+            <label for="sub_comment_13">It has provocative content (instances of violence, abuse etc)</label>
+            </p>            
+			<p>
+            <input type="checkbox" id="sub_comment_14" class="subcomment_for_comment_1" name="reviewer_comment[comments][Story is not appropriate][]" value="It uses abusive language or language that is considered inappropriate for children">
+            <label for="sub_comment_14">It uses abusive language or language that is considered inappropriate for children</label>
+            </p>
+            <p>
+            <input type="checkbox" id="sub_comment_15" class="subcomment_for_comment_1" name="reviewer_comment[comments][Story is not appropriate][]" value="It promotes hate speech, discrimination, or intolerance">
+            <label for="sub_comment_15">It promotes hate speech, discrimination, or intolerance</label>
+            </p>
+            <% if @story.derivation_type == nil %>
+            <p>
+            <input type="checkbox" id="sub_comment_16" class="subcomment_for_comment_1" name="reviewer_comment[comments][Story is not appropriate][]" value="It promotes personal agendas, beliefs, specific moral codes">
+            <label for="sub_comment_16">It promotes personal agendas, beliefs, specific moral codes</label>
+            </p>
+            <% end %>            
+            <p>
+            <input type="checkbox" id="sub_comment_17" class="subcomment_for_comment_1" name="reviewer_comment[comments][Story is not appropriate][]" value="It is factually incorrect">
+            <label for="sub_comment_17">It is factually incorrect</label>                                                                      
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingTwo">
+          <h4 class="panel-title">
+            <% if @story.derivation_type == nil %>
+            <input type="checkbox" class="primary_comment" id="comment_2" name="reviewer_comment[comments][Story is an exact copy of an existing story][]" value="">
+            <label class="primary_comment_label" for="comment_2">Story is an exact copy of an existing story</label><br/>
+            <% else %>
+            <input type="checkbox" class="primary_comment" id="comment_2" name="reviewer_comment[comments][Story is an exact copy of an existing version][]" value="">
+            <label class="primary_comment_label" for="comment_2">Story is an exact copy of an existing version</label><br/>
+            <% end %>
+          </h4>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingThree">
+          <h4 class="panel-title">
+            <input type="checkbox" class="primary_comment" id="comment_3" name="reviewer_comment[comments][Story seems incomplete or blank][]" value="">
+            <label class="primary_comment_label" for="comment_3">Story seems incomplete or blank</label>
+          </h4>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingFour">
+          <h4 class="panel-title">
+            <input type="checkbox" class="primary_comment" id="comment_4" name="reviewer_comment[comments][Story has errors in spelling and grammar][]" value="">
+            <label class="primary_comment_label" for="comment_4">Story has errors in spelling and grammar</label>
+          </h4>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingFive">
+          <h4 class="panel-title">
+            <input type="checkbox" class="primary_comment" id="comment_5" name="reviewer_comment[comments][Story is poorly formatted][]" value="">
+            <label class="primary_comment_label" for="comment_5">Story is poorly formatted</label>
+          </h4>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingSix">
+          <h4 class="panel-title">
+            <% if @story.derivation_type == nil %>
+            <input type="checkbox" class="primary_comment with_sub_comments" id="6" name="reviewer_comment[comments][Story is wrongly categorised][]" value="">
+            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="true" aria-controls="collapseSix">
+              <label class="primary_comment_label" for="6">Story is wrongly categorised</label>
+            </a>
+            <% else %>
+            <input type="checkbox" class="primary_comment with_sub_comments" id="6" name="reviewer_comment[comments][Story language is different from the one mentioned above][]" value="">
+            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="true" aria-controls="collapseSix">
+              <label class="primary_comment_label" for="6">Story language is different from the one mentioned above</label>
+            </a>         
+            <% end %>
+            <img data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="true" aria-controls="collapseSix" class="rating_comments_down_arrow" src="<%= asset_url("comments_rating_down_arrow.svg") %>">
+          </h4>
+        </div>
+        <div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapseSix">
+          <div class="panel-body">
+            <% if @story.derivation_type == nil %>
+			<p>            
+			<input type="checkbox" class="subcomment_for_comment_6" id="sub_comment_61" name="reviewer_comment[comments][Story is wrongly categorised][]" value="The language tag is incorrect">
+            <label for="sub_comment_61" id="sub_comment_61_label">The language tag is incorrect. The correct language is <select id="language_dropdown" class="language_dropdown" name="language"><% @languages.each do |l| %><option value="<%= l %>"><%= l %></option> <% end %></select></label>
+			</p>
+			<p>            
+			<input type="checkbox" class="subcomment_for_comment_6" id="sub_comment_62" name="reviewer_comment[comments][Story is wrongly categorised][]" value="There is a reading level mismatch">
+            <label for="sub_comment_62">There is a reading level mismatch. I think it should be reading level <select id="reading_level_dropdown" class="reading_level_dropdown" name="reading_level"><% @reading_levels.each do |rl| %><option value="<%= rl %>"><%= rl %></option> <% end %></select></label>
+            </p>
+			<% else %>
+			<p>
+            <input type="checkbox" class="subcomment_for_comment_6 single_sub_comment" id="sub_comment_61" name="reviewer_comment[comments][Story language is different from the one mentioned above][]" value="The language tag is incorrect">
+            <label for="sub_comment_61" id="sub_comment_61_label">The language tag is incorrect. The correct language is <select id="language_dropdown" class="language_dropdown" name="language"><% @languages.each do |l| %><option value="<%= l %>"><%= l %></option> <% end %></select></label>
+            </p>
+			<% if @story.is_relevelled? %>
+			<p>
+            <input type="checkbox" class="subcomment_for_comment_6" id="sub_comment_62" name="reviewer_comment[comments][Story language is different from the one mentioned above][]" value="There is a reading level mismatch">
+            <label for="sub_comment_62">There is a reading level mismatch. I think it should be reading level <select id="reading_level_dropdown" class="reading_level_dropdown" name="reading_level"><% @reading_levels.each do |rl| %><option value="<%= rl %>"><%= rl %></option> <% end %></select></label>
+			</p>            
+			<% end %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingSeven">
+          <h4 class="panel-title">
+            <input type="checkbox" class="primary_comment with_sub_comments" id="comment_7" name="reviewer_comment[comments][Others]" value="">
+            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSeven" aria-expanded="true" aria-controls="collapseSeven">
+              <label class="primary_comment_label" for="comment_7">Others</label>
+            </a>
+            <img data-toggle="collapse" data-parent="#accordion" href="#collapseSeven" aria-expanded="true" aria-controls="collapseSeven" class="rating_comments_down_arrow" src="<%= asset_url("comments_rating_down_arrow.svg") %>">
+          </h4>
+        </div>
+        <div id="collapseSeven" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSeven">
+          <div class="panel-body">
+            <p class="rating_others_statement">Help us understand your rating of the story. Share your detailed comments here.</p>
+            <textarea id="other_comment_text" class="other_comment_textbox" name="reviewer_comment[comments][other_comments]" value=""></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="rating_buttons_panel">
+    <%= f.submit 'Submit Rating', :class => 'rating_submit_btn poor_rating_submit' %>
+    <%= link_to "CANCEL", :back, {:class=>"btn btn-default rating_cancel_btn"} %>
+  </div>
+</div>
+<% end %>
+<!-- ######## POOR RATING FORM ENDS ####### -->
+
+<div style="display:none;" id="no_comment_selected_dialog" title="Form is incomplete">
+  <%= "Please click on one of the options before you submit." %>
+</div>
+
+<div style="display:none;" id="no_subcomment_selected_dialog" title="Form is incomplete">
+  <%= "Please click on one of the options in the drop down before you submit." %>
+</div>
+
+<div style="display:none;" id="mandatory_subcomment_text_dialog" title="Form is incomplete">
+  <%= "Please provide us more details in the comment box before you submit." %>
+</div>
+
+<script>
+  $(document).ready(function() {
+    initNoCommentSelectedDialog();
+    mandatorySubCommentTextDialog();
+    noSubCommentSelectedDialog();
+    disableBodyScroll();
+  });
+
+  function okEvent() {
+    $(this).dialog("close");
+    $('body').css('overflow','inherit');
+  }
+
+  function initNoCommentSelectedDialog() {
+    var no_comment_selected = $("#no_comment_selected_dialog");
+    no_comment_selected.dialog({
+      autoOpen: false,
+      width: 460,
+      modal: true,
+      buttons : {
+        "Ok" : okEvent
+      },
+      dialogClass: 'change_orientation_dialog comment_text_dialog'
+    });
+  }
+
+  function noSubCommentSelectedDialog() {
+    var no_subcomment_selected = $("#no_subcomment_selected_dialog");
+    no_subcomment_selected.dialog({
+      autoOpen: false,
+      width: 600,
+      modal: true,
+      buttons : {
+        "Ok" : okEvent
+      },
+      dialogClass: 'change_orientation_dialog comment_text_dialog'
+    });
+  }
+
+  function mandatorySubCommentTextDialog() {
+    var mandatory_subcomment_text = $("#mandatory_subcomment_text_dialog");
+    mandatory_subcomment_text.dialog({
+      autoOpen: false,
+      width: 600,
+      modal: true,
+      buttons : {
+        "Ok" : okEvent
+      },
+      dialogClass: 'change_orientation_dialog comment_text_dialog'
+    });
+  }
+
+  $(".star_icon").click(function () {
+    // reset all the stars
+    for (let id = 1; id <= 5; id++) {
+      $('#star_' + id).attr("src", "<%= asset_url("grey-star.svg") %>");
+    }
+    var star_count = $(this).prop("id").replace('star_', '');
+    // highlight all stars till the one that is clicked
+    for (let id = 1; id <= star_count; id++) {
+      $('#star_' + id).attr("src", "<%= asset_url("filled-star.svg") %>");
+    }
+    $("#hidden_rating_1").prop("value", star_count);
+    $("#hidden_rating_2").prop("value", star_count);
+    if (star_count > 3) {
+      $('#good_rating_panel').show();
+      $('#poor_rating_panel').hide();
+    } else {
+      $('#poor_rating_panel').show();
+      $('#good_rating_panel').hide();
+    }
+  });
+
+  $("#6").click(function() {
+    if ($(this).prop("checked")) {
+      $(".single_sub_comment").each(function() {
+        $(this).prop("checked", true);
+      });
+    }
+  });
+
+  $(".with_sub_comments").click(function() {
+    if ($(this).prop("checked")) {
+      return;
+    }
+    // TODO: see if we can remove hard-coding
+    let comment_id = $(this).prop("id");
+    if (comment_id == 1) {
+      for (let i = 1; i <= 7; i++) {
+        $("#sub_comment_" + comment_id + i).prop("checked", false);
+      }
+    }
+    if (comment_id == 6) {
+      for (let i = 1; i <= 2; i++) {
+        $("#sub_comment_" + comment_id + i).prop("checked", false);
+      }
+    }
+  });
+
+  $("#sub_comment_61").click(function() {
+    if ($(this).prop("checked")) {
+      var selected_language = $("#language_dropdown").val();
+      $(this).prop("value", "The language tag is incorrect. The correct language is " + selected_language);
+    }
+  });
+
+  $("#language_dropdown").change(function() {
+    var selected_language = $(this).val();
+    $("#sub_comment_61").prop("value", "The language tag is incorrect. The correct language is " + selected_language);
+  });
+
+  $("#sub_comment_62").click(function() {
+    if ($(this).prop("checked")) {
+      var selected_reading_level = $("#reading_level_dropdown").val();
+      $(this).prop("value", "There is a reading level mismatch. I think it should be reading level " + selected_reading_level);
+    }
+  });
+
+  $(".subcomment_for_comment_1").click(function() {
+    if ($(this).prop("checked")) {
+      $("#1").prop("checked", true);
+    } 
+  });
+
+  $(".subcomment_for_comment_6").click(function() {
+    if ($(this).prop("checked")) {
+      $("#6").prop("checked", true);
+    } 
+  });
+
+  $("#reading_level_dropdown").change(function() {
+    var selected_reading_level = $(this).val();
+    $("#sub_comment_62").prop("value", "There is a reading level mismatch. I think it should be reading level " + selected_reading_level);
+  });
+
+  $('.panel-collapse').on('show.bs.collapse', function() {
+    $(this).siblings('.panel-heading').find('img').css("transform", "rotate(180deg)");
+  });
+
+  $('.panel-collapse').on('hide.bs.collapse', function() {
+    $(this).siblings('.panel-heading').find('img').css("transform", "rotate(0deg)");
+  });
+
+  $(".with_sub_comments").change(function() {
+    var comment_subcomment_map = {"1" : "collapseOne", "6" : "collapseSix", "comment_7" : "collapseSeven"};
+    var sub_comment_id = comment_subcomment_map[$(this).prop("id")];
+    if ($(this).prop("checked")) {
+      $("#" + sub_comment_id).addClass("in");
+      $("#" + sub_comment_id).css("height", "");
+    } else {
+      $("#" + sub_comment_id).removeClass("in");
+    }
+  });
+
+  $(".poor_rating_submit").click(function(e){
+    e.preventDefault();
+    var atleast_one_tick = false;
+    $(".primary_comment").each(function() {
+      if ($(this).prop("checked")) {
+        atleast_one_tick = true;
+      }
+    });
+    if (atleast_one_tick == false) {
+      $("#no_comment_selected_dialog").dialog("open");
+      return false;
+    }
+    if ($("#comment_7").prop("checked") == true && $("#other_comment_text").prop("value") == "") {
+      $("#mandatory_subcomment_text_dialog").dialog("open");
+      return false;
+    }
+    if ($("#1").prop("checked") == true) {
+      var atleast_one_subcomment_selected = false;
+      $(".subcomment_for_comment_1").each(function() {
+        if ($(this).prop("checked")) {
+          atleast_one_subcomment_selected = true;
+        }
+      });
+      if (atleast_one_subcomment_selected == false) {
+        $("#no_subcomment_selected_dialog").dialog("open");
+        return false;
+      }
+    }
+    if ($("#6").prop("checked") == true) {
+      var atleast_one_subcomment_selected = false;
+      $(".subcomment_for_comment_6").each(function() {
+        if ($(this).prop("checked")) {
+          atleast_one_subcomment_selected = true;
+        }
+      });
+      if (atleast_one_subcomment_selected == false) {
+        $("#no_subcomment_selected_dialog").dialog("open");
+        return false;
+      }
+    }    
+    $("#poor_rating_form").submit();
+
+    
+  });
+  function disableBodyScroll(){
+    $(".rating_submit_btn").on('click', function(){
+      $('body').css('overflow','hidden');
+    });
+  }
+</script>
+

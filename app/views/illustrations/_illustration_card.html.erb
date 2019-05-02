@@ -1,0 +1,137 @@
+<script id="illustration_card" type="text/x-handlebars-template">
+<div class="item" id="ILLUSTRATION_DIV_{{id}}">
+  <div class="hover-img-div well">
+    <div class="illus-details-sear">
+      <a href="{{#list links}}{{self.uri}}{{/list}}" target="_blank">
+      {{#if created_by_child}}
+        <%= image_tag "created-by-child.png", :class=>"created-by-child"%>
+       {{/if}}
+
+        <img src="{{image_url}}" width="260px"/>
+      </a>
+      <div class="reader-btns search-for">
+        <div class="hover-back">
+          <a class="btn-slide animation animated-item-3 hide-in-mob-create_{{id}}" data-remote="true" href="{{#list links}}{{view.uri}}{{/list}}">
+            <i class='fa fa-view'></i>
+          </a>
+          <a class="btn-slide animation animated-item-3 hide-in-mob-create_{{id}}" href="{{#list links}}{{create_story.uri}}{{/list}}"><i class='fa fa-pencil-square-o'></i></a>
+          <a id="share-social-card" class="btn-slide animation animated-item-3" data-toggle="modal" data-target="#shareModal-{{id}}"><i class="fa fa-share"></i></a>
+          <a id="download" class="btn-slide animation animated-item-3" data-toggle="modal" data-target="#downloadModal-{{id}}"><i class="fa fa-download"></i></a>				            
+        </div>
+      </div>	
+      <div class="modal fade shareModal" id="shareModal-{{id}}" tabindex="-1" role="dialog" aria-labelledby="moreLinksModalLabel1" aria-hidden="true">
+        <div class="vertical-alignment-helper" >
+          <div class="modal-dialog vertical-align-center">
+            <div class="modal-content">
+              <div class="modal-header">
+              <button aria-label="Close" data-dismiss="modal" class="close mypopup-close" type="button"><span aria-hidden="true"><i class="fa fa-times"></i> Close</span></button>
+                <h2 class="modal-title text-left">share</h2>
+                <hr class="form-hr">
+              </div>
+              <div class="modal-body nopadding">
+                <div id="social-share-btn">
+                    <%= social_share_button_tag("{{name}}", :url => "#{request.base_url}{{#list links}}{{self.uri}}{{/list}}" , :image => "{{image_url}}", :desc => "Pratham Books: a book in every child's hand", :popup => "true") %>
+                </div>
+                <div class="modal-footer">
+                </div>
+                </div>
+              </div>
+            </div>
+        </div>                
+      </div>
+      <div class="modal fade downloadModal" id="downloadModal-{{id}}" tabindex="-1" role="dialog" aria-labelledby="moreLinksModalLabel1" aria-hidden="true">
+        <div class="vertical-alignment-helper" >
+          <div class="modal-dialog vertical-align-center">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button aria-label="Close" data-dismiss="modal" class="close mypopup-close" type="button"><span aria-hidden="true"><i class="fa fa-times"></i> Close</span></button>
+                  <h2 class="modal-title text-left">download</h2>
+                  <hr class="form-hr">
+              </div>
+              <div class="modal-body nopadding">
+                <div id="download-type-list">
+                  <% if user_signed_in? %>
+                    <ul class="nopadding">
+                      <li role="presentation">
+                        <a target="_blank" download="{{name}}" href="{{#list links}}{{download.high_res_image_url}}{{/list}}" onClick="ga('send', 'event', { eventCategory: 'download', eventAction: 'Illustration high resolution', eventLabel: '<%= "{{name}}" %>'});">High resolution</a>
+                      </li>
+                      <li role="presentation">
+                        <a target="_blank" download="{{name}}" href="{{#list links}}{{download.low_res_image_url}}{{/list}}"  onClick="ga('send', 'event', { eventCategory: 'download', eventAction: 'Illustration low resolution', eventLabel: '<%= "{{name}}" %>'});">Low resolution</a>
+                      </li>
+                    </ul>
+                  <% else %>You need to be logged in to download an illustration
+                    <br/>
+                    <%= link_to "Login", new_user_session_path, :class=>"btn signin-button"%>
+                   <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>                
+      </div>
+      <div class="illus-title comn-cls"><a href="{{#list links}}{{self.uri}}{{/list}}" target="_blank">{{name}}</a></div>
+      <div class="illus-author comn-cls"><em>by <span class="auth-nam">
+                      {{#comma_separated_url_illustrator_list illustrators illustrator_slugs}}{{/comma_separated_url_illustrator_list}}
+                      </span></em></div>
+      <div class="publisher-lang comn-cls">
+        Publisher
+        {{#if organization }}
+           <strong><a href="/publishers/{{publisher_slug}}">{{organization}}</a></strong>
+        {{else}}
+           <strong><a href="/illustrations?search[organization]=storyweaver">StoryWeaver Community</a></strong>
+        {{/if}}
+      </div>
+      <div class="views comn-cls"><span><i class='fa fa-eye fa-2x'></i></span><span id="illustration-views-{{id}}">{{reads}}</span></div>
+      <div class="likes">
+        {{#if can_user_like_illustration}}
+          <span class="btn illustration-like likeable" id="illustration-like-{{id}}" data-illustration-id="{{id}}">
+            <i class='fa fa-eye fa-2x'></i>
+          </span>
+        {{else if user_likes_illustration}}
+          <span class="illustration-like liked" id="illustration-like-{{id}}" data-illustration-id="{{id}}">
+            <i class='fa fa-eye fa-2x'></i>
+          </span>
+        {{else}}
+          <span class="btn illustration-like disabled" id="illustration-like-{{id}}" data-illustration-id="{{id}}">
+            <i title="Please log in to like the Illustration" class='fa fa-eye fa-2x'></i>
+          </span>
+        {{/if}}
+        <span class="number-of-likes" id="illustration-likes-{{id}}">{{likes}}</span>
+      </div>
+    </div>
+    {{#if promotion_manager }}
+      {{#if false }} /*RRR 2016*/
+        {{#if contest_id}}
+            <div>
+              <span class="btn contest-image home_Unrecommend" id="illustration-{{id}}" style="float: left !important;" data-illustration-id="{{id}}" data-contest-id="<%= @contest.id if @contest %>"><i class="glyphicon glyphicon-minus home_recommended_red" ></i><strong><span id='change_text-{{id}}'>From</span> <span id='text-{{id}}'><%= @contest.name if @contest %></span></strong></span>
+            </div>
+          {{else}}
+            <div>
+              <span class="btn contest-image home_recommend" id="illustration-{{id}}" style="float: left !important;" data-illustration-id="{{id}}" data-contest-id="<%= @contest.id if @contest %>"><i class="glyphicon glyphicon-plus home_recommended_green" ></i><strong><span id='change_text-{{id}}'>To</span><span id='text-{{id}}'> <%= @contest.name if @contest %></span></strong></span>
+           </div>
+        {{/if}}
+      {{/if}}
+    {{/if}}
+  </div>
+</div>
+</script>
+
+<script id="load_more" type="text/x-handlebars-template">
+<div id="LoadMore">
+    <div align="center" style="padding:3px;">
+      Load More
+    </div>
+  </div>
+</script>
+
+<script id="keyword_query" type="text/x-handlebars-template">
+<span class="results-searched">
+      <span>{{count}}</span>
+      images found
+      {{#if query}}
+      <span>for 
+        <span class='keyword'>{{query}}</span>
+      </span>
+      {{/if}}
+  </span>
+</script>

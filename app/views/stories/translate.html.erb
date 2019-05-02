@@ -1,0 +1,105 @@
+<div class="row trans_head">
+  <div class="col-md-12 col-sm-12">
+    <h1 class="create-heading trans_heading">Welcome to the StoryWeaver translator!</h1>
+    <div class="col-md-12 col-sm-12 nopadding cls-gap head_cont">
+      <p>Thank you for choosing to translate a story and add to the rich pool of multilingual books on StoryWeaver! Select the language you would like to translate to, and a language you would like to translate from. We'll find some fantastic stories for you to read and choose from!</p>
+      <div class="trans_lang col-md-12 col-sm-12">
+        <div class="lang_from col-md-6 col-sm-6">
+          <ul id="StorySortOptions" class="myList sort-full" style="display: none;">
+            <li> <input type="radio" value="reads" name="sort" checked="checked">Most Read</li>
+          </ul>
+          <label>From</label>
+          <%= select_tag('s_language', options_from_collection_for_select(Language.all, 'name', 'name'), prompt: "All Languages", :onchange => "Story.translateSubmitForm(); Story.removeLoadMore();")%>
+        </div>
+        <div class="lang_to col-md-6 col-sm-6">
+          <label>To</label>
+          <%= select_tag('t_language', options_from_collection_for_select(Language.all, 'name', 'name'), prompt: "All Languages", :onchange => "Story.translateSubmitForm(); Story.removeLoadMore();")%>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%= render :partial => "translation_filters"%>
+<div class="search-page trans_page">
+  <div id="story-holder">
+    <div id="DIV_STORY_FEED">
+
+    </div>
+    <div id="NO_RESULTS" class="results-searched hide">
+      <div>Oops! We couldn't find anything related to your search.</div>
+      <div class="no-results-found-try">Here is what you can try:</div>
+      <ul>
+        <li>Make sure the spelling is correct.</li>
+        <li>Search with other words that are similar in meaning.</li>
+        <li>Search with fewer filters.</li>
+        <li>Search using any other language that StoryWeaver supports.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div id="storyReader"></div>
+<div class="col-md-12 col-sm-12 all_links">
+    <%= link_to(@contest.present? ? stories_translate_suggestions_path(:contest_id => @contest.id) : stories_translate_suggestions_path, :id => "all_translations", :data=>{:contest_id=> @contest.present? ? @contest.id : ""}) do %>
+    View All Translation Suggestions
+    <span>
+      <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+    </span>
+  <% end %>
+</div>
+<hr class="all_links_hr">
+
+<div class="row trans_video">
+  <div class="col-md-12 col-sm-12" >
+    <h1 class="create-heading trans_heading">Translating with StoryWeaver</h1>
+    <div class="nopadding cls-gap trans_video_txt">
+      <div class="col-md-5 col-sm-5 create-img">
+        <div class="embed-video">
+          <iframe width="400" height="250" src="https://www.youtube.com/embed/M6djrUgemp8" frameborder="0" allowfullscreen></iframe>
+        </div>
+      </div>
+      <div class="col-md-7 col-sm-7 create_cont">
+        <p>Thank you for helping us build a rich repository of multilingual books on StoryWeaver. Translation on the platform is easy – first, pick the language you would like to translate from, and then, the language you would like to translate the story to!</p>
+        <p>StoryWeaver has some terrific stories here – you're certain to find one you'd like to translate.
+        We believe that all children deserve the joy of reading stories in their mother tongue languages. When you translate one of our stories to a new language, you are contributing to our repository of openly licensed multilingual stories. Not only will you help children get more stories to read, but you will also be part of a movement of thousands of other passionate translators.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<hr class="all_video_hr">
+<div class="row trans_tips">
+  <div class="col-md-12 col-sm-12" >
+    <h1 class="create-heading trans_heading">Translating Tips</h1>
+    <div class="nopadding cls-gap trans_tips_txt">
+      <div class="tips_txt">
+        <ol>
+          <li><span>Keep your language child-friendly and suitable to the <a href="https://storyweaver.org.in/reading_levels" target="_blank">Reading Level</a> of the story.</span></li>
+          <li><span>Retain the flavour and essence of the original story. Do not attempt to translate puns and idioms from the original story that will not work well in the translated version.</span></li>
+          <li><span>Once you complete the translation, do read the story again independently to see how it reads. Remember, the child reading your translation may not have read the original story.</span></li>
+          <li><span>When you are ready to publish your story, do remember to have, both, the story title as well as the synopsis translated as well.</span></li>
+          <!-- <li><span>Remember, the child who reads your translation may or may not read the original. It is important that the translated story is enjoyable, understandable and logical, in itself.</span></li>
+          <li><span>When you are ready to publish your story, please remember the story title and synopsis must both be in the language you have chosen fro translation.</span></li> -->
+        </ol>
+        <p class="tips_link">For more tips on translation, <span><a href="https://storyweaver.org.in/translation_tools_and_tips" target="_blank">click here</a></span></p>
+      </div>
+    </div>
+  </div>
+</div>
+<%= render :partial => "/search/story_card" %>
+
+<script>
+  $(document).ready(function(){
+    $('#s_language').selectpicker({
+      liveSearch:true
+    });
+    $('#t_language').selectpicker({
+      liveSearch:true
+    });
+    $('#s_language').selectpicker('val', "English");
+
+    url = "<%= translate_search_path %>";
+    Story.initialize(url,9,false);
+  });
+  setInterval(function(){
+    Story.removeLoadMore()
+  },1000); //delay is in milliseconds
+</script>

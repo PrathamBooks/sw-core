@@ -1,0 +1,7 @@
+<div id="add_post_form_errors">
+<% unless @errors.blank? %>
+  <% @errors.each do |error| %>
+    <div class="alert alert-danger"><%= error %></div>
+  <% end %>
+<% end %>
+</div>

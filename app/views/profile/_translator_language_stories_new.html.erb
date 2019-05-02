@@ -1,0 +1,48 @@
+<div id="storyReader"></div>
+  <%if @current_tab != "translated_stories" %>
+    <div class="<%= @current_tab == "translated_stories" ? "" : "alert alert-success un_reviewed_prompt"  %>" >
+        <b><%="Click on the TRANSLATE NOW button to start right away" if @current_tab != "translated_stories"%></b>
+    </div>
+  <% end %>
+  <div class="btn-group" style="margin-left: 15px;"><label>Filters:</div>
+    <div class="btn-group">
+        <%= render :partial =>  "dashboard/language_filter", :locals => { :path => get_translator_language_stories_new_path( :level=> params[:level] ? params[:level] : '', :limit => params[:limit]? params[:limit] : 10, :current_tab => @current_tab), :selector => :id, :languages => current_user.tlanguages }%>
+    </div>  
+
+    <%= render :partial => "dashboard/reading_level_filter", :locals => { :path => get_translator_language_stories_new_path(:level => '', :language=>params[:language]? params[:language] : '', :limit => params[:limit]? params[:limit] : 10,:current_tab => @current_tab, :current_level => params[:level])}%>
+
+  <div class="col-md-12" style="margin-top:16px;">
+    <table class="table table-striped">
+      <thead>
+        <tr class="table-heading-row">           
+          <th>Original Story</th>
+          <th style="text-align: center;">Reading Level</th>     
+          <th style="text-align: center;">Number of Pages</th>
+          <th>Original Language</th>
+          <th>Translate Language</th>
+          <th style="text-align: center;">Action</th>
+        </tr>
+      </thead>
+      <tbody class="table-row-details">    
+        <% @translator_stories.each do |ts| %>
+            <tr>
+              <td><%= link_to ts.story.title, story_page_path(ts.story, ts.story.pages.first), :remote => true %></td>
+              <td style="text-align: center;"><%= ts.story.reading_level %></td>
+              <td style="text-align: center;"><%= ts.story.pages.length %></td>
+              <td><%= ts.story.language.name %></td>
+              <td><%= ts.translate_language.name %></td>
+              <% if ts.translator_story.present? %>
+                <td style="text-align: center;"><%= link_to "Translate Now", story_editor_path(ts.translator_story_id), class:"btn btn-info edit-btn" %> </td>
+              <% else %>
+                <td style="text-align: center;"><%= link_to "Translate Now", translate_story_path(:story_id => "#{ts.story.id}", :to_language => ts.translate_language.name, :translator_story => true), class:"btn btn-info edit-btn" %> </td>
+              <% end %>
+            </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<script>
+$(document).ready(function(){
+  
+})
+</script>

@@ -1,0 +1,245 @@
+<%
+  image_url = @illustration.image(:original)
+  geometry = @illustration.image_geometry(:original)
+
+  image_width = geometry.width
+  image_height = geometry.height
+
+  crop_width = 391
+  crop_height = 391
+
+  container_width = 799
+  container_height = crop_height
+
+  aspect_ratio = image_width / image_height
+  container_aspect_ratio = container_width / container_height
+
+
+  scaled_width = image_width / @crop_details['ratio_x'].to_f
+  scaled_height = image_height / @crop_details['ratio_y'].to_f
+  scaled_x = @crop_details['x'].to_f / @crop_details['ratio_x'].to_f
+  scaled_y = @crop_details['y'].to_f / @crop_details['ratio_y'].to_f
+
+  width =  scaled_width * crop_width / @crop_details['crop_x'] 
+  height = scaled_height * crop_height / @crop_details['crop_y']
+
+  scale = @crop_details['scale'].to_f 
+  if scale.nil? || scale == 0.0
+    scale = 1
+  end
+
+  offset_x = container_width > width ? (container_width - width) / 2 : 0
+
+  left = scaled_x * crop_width / @crop_details['crop_x']
+  if left > 411
+    scroll_left = left - 411
+    left = 411
+  end
+  top = scaled_y * crop_height / @crop_details['crop_y']
+
+
+  cropper_container_width = 3 * container_width - 2 * crop_width  
+  container_left = container_width - crop_width
+
+
+  allowed_scroll = (container_width > width ? width : container_width) - crop_width 
+  border = cropper_container_width - crop_width - allowed_scroll
+
+  right_border = border / 2
+  left_border = border / 2
+  cropper_width = left_border + right_border + crop_width
+
+%>
+
+
+<div id="storycard_form"></div>
+
+<%= render :layout => "storycard_modal"  do   %>
+
+   <h1 id ="edit-story-cover-header" >
+     Edit your Story Card image
+     <i class="fa fa-info-circle" title="This image will appear on your Story Card. The Story Card appears on the details page with the synopsis."></i>
+   </h1>
+   <div id = "storycard-crop-container">
+  
+     <!-- Image Crop editor -->
+     <div id = "storycard-crop-image-container">
+       <div id ="storycard-crop">
+         <div  id="img-container" style="height: <%= container_height %>px;left: <%= offset_x %>px;" >
+	   <img id="storycard-img" src = "<%= image_url %>"
+	     id = "storycard-image" data-scale='<%= scale || 1 %>'  style="height: <%= height %>px; width: <%= width %>px" />
+         </div>
+
+       </div>
+         <div class="storycard-crop-window" style="height: <%= crop_width %>px;">  
+	 <div id="storycard-cropper-container" style="width: <%= cropper_container_width %>px;left: <%= -container_left %>px;">
+           <div id="storycard-cropper" style="
+	     border-right-width: <%= right_border %>px;
+	     border-left-width: <%= left_border %>px;
+	     height: <%= container_height %>px;
+	     width: <%= cropper_width %>px;
+	   " > </div> 
+	 </div>
+	 </div>
+  
+     </div>  
+
+     <div class="storycard__slider--style">
+        <%= image_tag 'storycard/icons/big-size.svg' , class: "storycard__slider-small-image--position" %>
+       <!-- Cursor -->
+       <div id="range-selector" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
+         <span id ="storycard-image-magnify" class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0" ></span>
+       </div>
+  
+       <%= image_tag 'storycard/icons/big-size.svg' , class: "storycard__slider-big-image--position" %>
+     </div>
+  
+     <div id="storycard-crop-suggestion-text"> 
+      Unhappy with the way the image looks? Choose a new one from the image drawer or adjust
+       <br/>
+       the current image. You can adjust the image by shifting the square or using the zoom option.
+     </div>
+  
+   </div>
+  
+   <%= button_tag id: "upload-image", type: 'button' , class: "btn btn-storycard  btn-storycard-fs"  do %>
+     <%= image_tag 'storycard/icons/upload-image.svg', class: 'storycard__upload-icon--space'%>
+     <span class="storycard__upload-text--space">Open Image Drawer</span>
+   <% end %>
+
+   <%= button_tag id: "storycard-img-edit-done", type: 'button' , class: "btn btn-storycard storycard-right-btns btn-storycard-fs" do  %>
+     <%= image_tag 'storycard/icons/correct.svg', class: 'storycard__done-btn-icon--style' %>
+     <span class="storycard__done-btn-text--space"> Done </span>
+   <% end %>
+   <button type="button"  data-dismiss="modal" aria-label="Close" id = "storycard-close-btn"
+     class="btn btn-storycard  storycard-right-btns btn-storycard-fs">
+     <%= image_tag "storycard/icons/close_modal.svg" , class: 'storycard__close-btn-icon--style'%>
+     <span class = 'storycard__close-btn-text--space'>Close</span>
+   </button>
+<% end %>
+
+
+<script>
+  $(document).ready(function(){
+	    $('#storycard-cropper').css('left', '<%= left %>px');
+	    $('#storycard-img').css('width', "<%= width %>px");
+	    $('#storycard-img').css('height', "<%= height %>px");
+
+	    setTimeout(function(){
+	      $('#storycard-crop-image-container').scrollTop(<%= top %>);
+	      $('#storycard-crop-image-container').scrollLeft(<%= scroll_left%>);
+	    }, 200);
+
+	  
+
+
+	  // Cropping tool movement
+	  $('#storycard-cropper').draggable({
+	    'axis': 'x',
+	    'containment': 'parent'
+	  });
+
+
+
+	  // magnifying image, update image on change in slider
+	  // position
+	  $("#range-selector").slider({
+		  step: 0.01,
+		  max: 2,
+		  min: 1,
+		  value: <%= @crop_details['scale'] || 1 %>,
+		  slide: function(event, ui){
+			  $('#storycard-img').attr('data-scale', ui.value); 
+
+      			  var width = parseFloat("<%= width / scale %>");
+      			  var height = parseFloat("<%= height / scale %>");
+
+			  var container_width = parseFloat("<%= container_width %>");
+			  var container_height = parseFloat("<%= container_height %>");
+			  var crop_width = parseFloat(<%= crop_width %>);
+
+
+			  $('#storycard-img').css({ width: width * ui.value + "px", height: height *  ui.value + "px"}); 
+      			  var offset_width = 0;
+      			  var offset_height = 0;
+
+
+			  var offset_x = container_width > width * ui.value ? (container_width - width*ui.value) / 2 : 0;
+      
+      			  $('#img-container').css('left', offset_x);
+
+
+			  var cropper_container_width = <%= cropper_container_width %>;
+			  var allowed_scroll = (container_width > width * ui.value ? width * ui.value : container_width) - crop_width;
+
+			  var border = cropper_container_width - crop_width - allowed_scroll;
+
+			  var left_border = border / 2;
+			  var right_border = border / 2;
+			  var cropper_width = left_border + right_border + crop_width
+			  var cropper_left = parseFloat($('#storycard-cropper').css('left').split('px')[0]);
+
+			  var initial_border = parseFloat($('#storycard-cropper').css('borderLeftWidth').split('px')[0]);
+
+			  var new_cropper_left = initial_border - left_border + cropper_left;
+			  if (new_cropper_left < 0){
+			    new_cropper_left = 0
+			  }
+
+			  var cropped_image = width * ui.value - cropper_left;
+			  if (cropped_image < crop_width){
+			    new_cropper_left = width * ui.value - crop_width
+			  }
+
+			  $('#storycard-cropper').css({
+			    width:  cropper_width + 'px',
+			    'border-right-width': right_border + 'px',
+			    'border-left-width': left_border + 'px',
+			    'left': new_cropper_left 
+			  });
+
+
+
+			  var cropper_left = $('#storycard-cropper').css('left').split('px')[0];
+
+			  if ( cropper_left > left_border){
+			    $('#storycard-cropper').css('left', left_border + 'px');
+			  }
+
+			  $('#storycard-cropper').draggable({
+			    'axis': 'x',
+			    'containment': 'parent'
+			  });
+			  
+		  }
+	  });
+	  // compute the image crop dimensions (position_x, position_y, width, height, scale)
+	  var page = new StoryEditorPage();
+	  var service = new StoryEditorService();
+	  var story_editor = new StoryEditor(page, service);
+	  story_editor.set_story_card_view(<%= @illustration.id %>, <%= @story.story_card_id %>, <%= image_width %>, <%= image_height %>); 
+
+	  $('#upload-image').click(function(){
+		  $('.modal').hide();
+		  $('#storycard_form').html("<%= escape_javascript(render(:partial=>"story_editor/illustration_draw"))%>");
+		  $('#modal-image-drawer').modal({
+			  show: true
+		  });
+
+		  $('#modal-image-drawer').on('hidden.bs.modal', function(){
+		    $('#storycard_form').remove();
+		  });
+
+                  $.ajax({
+                    url: "/v0/editor/get-all-illustrations",
+                    type: 'GET',
+                    data: {story_id:<%= @story.id%>},
+                    dataType : "script",
+                    failure: function(result) {
+                      console.error('Unable to load illustrations.');
+                    }
+                  });
+	  });
+	  
+  });
+</script>

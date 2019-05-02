@@ -1,0 +1,28 @@
+<%= select_tag('translator', options_from_collection_for_select(Organization.where(:organization_type => [nil, "Educator"]), 'id', 'organization_name'), prompt: "All Translators", :onchange => "translator_filters();")%>
+
+<script>
+  $(document).ready(function(){
+    $('#translator').selectpicker({
+      liveSearch:true
+    });
+    <% if params[:translator] %>
+      $('#translator').selectpicker('val', <%= params[:translator] %>);
+    <% end %>
+  });
+
+  function translator_filters(){
+    var translator = $("#translator").val();
+    $.ajax({
+      type: 'GET',
+      url: "<%= path %>",
+      data: {translator: translator},
+      beforeSend: $.blockUI,
+      success: $.unblockUI,
+      error: function(e){
+        $.unblockUI();
+        alert('There was an error while processing your action, please retry after some time.');
+      },
+      dataType: 'script'
+    });
+  }
+</script>

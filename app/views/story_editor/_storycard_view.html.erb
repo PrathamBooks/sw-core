@@ -1,0 +1,95 @@
+<% 
+  parsed_smart_crop_details = JSON.parse(@illustration_crop.crop_details)
+
+  image_url = @illustration.image(:original)
+  geometry = @illustration.image_geometry(:original)
+
+  ratio_x = parsed_smart_crop_details['ratio_x'].to_f;
+  ratio_y = parsed_smart_crop_details['ratio_y'].to_f;
+  x = parsed_smart_crop_details['x'].to_f / ratio_x;
+  y = parsed_smart_crop_details['y'].to_f / ratio_y;
+  
+  width = geometry.width / ratio_x; 
+  height = geometry.height / ratio_y; 
+  
+%>
+
+<%= render :layout => "storycard_modal" do   %>
+  <h1 class="storycard-view__heading--style" >Your Final Story Card</h1>
+  <div class="storycard-view__content--style" >
+    <div class="storycard-view__inner-container--style" >
+      <div id="story-card"  class="storycard-view__template--style pb-book-card__container">
+       <div id="story-card-img">
+         <img src = "<%= image_url  %>" id="storycard-image" />
+       </div>
+       <div class="pb-book-card__meta-wrapper">
+         <div class="pb-book-card--level-<%= @story.reading_level %> pb-book-card__level-strip" >
+	   <span> <%= @story.language.name.capitalize %> - Level <%= @story.reading_level %> </span>
+	 </div>
+
+	 <div class="pb-book-card__meta">
+           <h3 class="pb-book-card__title"> <%= @story.title || 'xxxxxxxx'  %> </h3>
+           <% @story.authors.pluck(:first_name, :last_name).each do |item| %>
+	     <span class ="pb-book-card__names"> <%= item[0] %> <%= item[1] %> </span>
+	   <% end %>
+	 </div>
+       </div>
+      </div>
+      
+      <div class="storycard__about-view">
+        <div class="storycard__about-view-header">
+          That is how your Story Card will look.
+        </div>
+        <h3 class="storycard__about-view-content">
+         This is how your Story Card will appear on the StoryWeaver homepage after it has been published.
+	 <br/>
+	 <br/>
+         Go ahead and click on Publish if you are happy. If not, click the back button and return to the Story Card editor.
+        </h3>
+      </div>
+    </div>
+  </div>
+  
+  <%= button_tag id: "previous", class: "btn box__button upload__back-btn--style" do  %>
+    <%= image_tag "storycard/icons/left.png", :class => "upload__btn-icon--size upload__back-btn--space"%>
+    <span class="upload__btn-text--size" > Back</span>
+  <% end %>
+
+  <%= button_tag type: 'submit' , class: "btn box__button upload__btn upload__done-btn--style ", id: "publish-book" do  %>
+    <span >Publish</span>
+  <% end %>
+<% end %>
+<script>
+  $('document').ready(function(){
+    $('#previous').click(function(){
+      $('.modal').hide();
+      $.ajax({
+        type: 'GET', 
+        url: "<%= editor_storycard_crop_edit_path(@story) %>", 
+        dataType: 'script'
+      });
+    });
+  
+    $('#publish-book').click(function(){
+      $('.modal').hide();
+      var service = new StoryEditorService();
+      service.publish(<%= @story.id %>);
+    });
+    
+
+    var left = "-<%= x %>px";
+    var top = "-<%=  y %>px";
+
+    var width = '<%= width %>px';
+    var height = '<%= height %>px';
+
+    $('#storycard-image').css({
+      left: left,
+      top: top,
+      width: width,
+      height: height
+    });
+
+  });
+</script>
+

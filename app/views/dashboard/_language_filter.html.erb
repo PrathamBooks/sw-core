@@ -1,0 +1,40 @@
+<%
+  selector ||= "name"
+  prompt ||= "All Languages"
+  languages ||= Language.all
+%>
+
+<%= select_tag("language", options_from_collection_for_select(languages, selector, 'name', params[:language]), prompt: prompt, :onchange => "language_filters();")%>
+
+<script>
+  $(document).ready(function(){
+    $('#language').selectpicker({
+      liveSearch:true
+    });
+    <% if params[:language] %>
+      $('#language').selectpicker('val', "<%= params[:language]%>");
+    <% end %>
+  });
+
+  function language_filters(){
+    var language = $("#language").val();
+    var data = { language: language };
+
+    if( typeof ajax_filter !== "undefined"){
+      ajax_filter('GET', "<%= path %>", data);
+    } else {
+      $.ajax({
+        type: 'GET',
+        url: "<%= path %>",
+        data: data,
+        beforeSend: $.blockUI,
+        success: $.unblockUI,
+        error: function(e){
+          $.unblockUI();
+          alert('There was an error while processing your action, please retry after some time.');
+        },
+        dataType: 'script'
+      });
+    }
+  }
+</script>

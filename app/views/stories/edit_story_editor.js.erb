@@ -1,0 +1,16 @@
+$("#assign_change_editor").html("<%=escape_javascript(render(:partial=>"editor_form")) %>");
+
+$("#story_editor_id").autocomplete({
+        source: function( request, response ) {
+        $.ajax({
+          url: "<%= users_autocomplete_path%>",
+          dataType: "json",
+          data: {
+           query: request.term
+          },
+          success: function( data ) {
+            response(data);
+          }
+        });
+      }
+    });

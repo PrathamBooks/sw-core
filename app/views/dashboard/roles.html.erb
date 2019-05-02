@@ -1,0 +1,83 @@
+<%= render :partial => "dashboard/dashboard_datatables" %>
+
+<%= render :partial => "errors" %>
+
+<%= render :partial => "tabs" %>
+
+<div class="tab-content">
+  <div role="tabpanel" class="tab-pane active common-class" id="LegacyUpload">
+      <%= render :partial => "roles" %>
+  </div>
+</div>
+<script type="text/javascript">
+  $(document).ready(function() {
+    var table = $('#org_users').DataTable( {
+      searching: true,
+      lengthChange: false,
+      showNEntries: false,
+      pageLength: 20,
+      order: [],
+      responsive: {
+          details: false
+      },
+      dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+      buttons: [
+                {
+                    extend: 'copyHtml5',
+                    title: formatDatatableTitle('users'),
+                    exportOptions: {
+                        columns: [ 0, 1, 2, 3, 5,6,7,8]
+                    }
+                },
+                {
+                    extend: 'csvHtml5',
+                    title: formatDatatableTitle('users'),
+                    exportOptions: {
+                        columns: [ 0, 1, 2, 3, 5,6,7,8]
+                    }
+                },
+                {
+                    extend: 'excelHtml5',
+                    title: formatDatatableTitle('users'),
+                    exportOptions: {
+                        columns: [ 0, 1, 2, 3, 5,6,7,8]
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    title: formatDatatableTitle('users'),
+                    exportOptions: {
+                        columns: [ 0, 1, 2, 3, 5,6,7,8]
+                    }
+                }
+            ],
+      "aoColumns": [
+                      null,
+                      null,
+                      null,
+                      null,
+                      { "bSearchable": false },
+                      null,
+                      null,
+                      null,
+                      null
+                  ]
+    });
+    $('#org_users tfoot th').each( function () {
+        var title = $(this).text();
+        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    });
+ 
+    table.columns().every( function () {
+        var that = this;
+ 
+        $( 'input', this.footer() ).on( 'keyup change', function () {
+            if ( that.search() !== this.value ) {
+                that
+                    .search( this.value )
+                    .draw();
+            }
+        });
+    });
+});
+</script>

@@ -1,0 +1,38 @@
+<%#= render :partial => "contest_details" %>
+<%#= render :partial => "tabs" %>
+ <div class="row">
+    <div class="col-md-12 col-sm-12">
+      <label class="allusers">Contest Statistics:</label> contest drafts(<%= @stories_draft.count %>), contest submitted(<%= @stories.count %>), <%= link_to "Download csv", contest_draft_stories_path(format: "csv") %>
+    </div>
+  </div>
+<table class="table table-striped">
+	<thead>
+		<tr class="table-heading-row">
+			<th>Story Type</th>
+			<% @languages.each do |language| %>
+				<th><%= language.name %></th>
+			<% end %>
+      <th>Total</th>
+		</tr>
+	</thead>
+  <tbody class="table-row-details">
+  	<tr>
+  		<td><%= @story_types[0] %></td>
+  		<% @all.values.each do |value| %>
+  	  	<td><%= value[@story_types[0]].present? ? value[@story_types[0]] : 0 %></td>
+  		<% end %>	
+  	</tr>
+  	<!-- <tr>
+  		<td><%#= @story_types[1] %></td>
+  		<%# @all.values.each do |value| %>
+  	  	<td><%#= value[@story_types[1]].present? ? value[@story_types[1]] : 0 %></td>
+  		<%# end %>
+  	</tr> RRR 2016-->
+  	<tr>
+  		<td><%= @story_types[1] %> stories</td>
+  		<% @all.values.each do |value| %>
+  	  	<td><%= value[@story_types[1]] %></td>
+  		<% end %>
+  	</tr>
+  </tbody>
+</table>

@@ -1,0 +1,9 @@
+setTimeout($.unblockUI, 1);
+$('#newStoryForm').html("<%= escape_javascript(render(:partial=>"stories/new"))%>");
+$(document).ready(function() {
+  $('#storyModal').modal({
+    backdrop: 'static',
+    keyboard: false,
+    show: true
+  });
+});

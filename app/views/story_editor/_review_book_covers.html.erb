@@ -1,0 +1,43 @@
+<div class="form-group">
+  <div class="spacing-half-v"></div>
+  <div class="child-author-block row row-gutter">
+    <div class="col-sm-7">
+      <div class="heading-title"><span class="text-uppercase">Publish:</span> Review Book Covers</div>
+      <div class="spacing-half-v"></div>
+    </div>
+    <div class="col-sm-4 float-right">
+      <span class="btn btn-app btn-brand-1 float-right"  id="save_and_close_form2">save and publish later</span>
+    </div>
+  </div> <!-- /row -->
+</div>
+
+<div class="row row-gutter">
+  <div class="col-sm-6">
+    <div class="form-group form-group-lg-pad">
+      <div class="publish-cover-block">
+        <%= render :partial => 'pages/page', locals: {:@page => @story.pages.first, page: @story.pages.first, size_to_render: :size7} %>
+        <div class="btn btn-app btn-default black-transparent font-sm" id="edit_front_cover">edit front cover</div>
+      </div> <!-- /publish-cover-block" -->
+    </div> <!-- /form-group -->
+  </div> <!-- /col -->
+  <div class="col-sm-6">
+    <div class="form-group form-group-lg-pad">
+      <div class="publish-cover-block">
+        <%= render :partial => 'pages/page', locals: {:@page => @story.pages.last, page: @story.pages.last, size_to_render: :size7} %>
+        <div class="btn btn-app btn-default black-transparent font-sm" id="edit_back_cover">edit back cover</div>
+      </div> <!-- /publish-cover-block" -->
+    </div> <!-- /form-group -->
+  </div> <!-- /col -->
+</div> <!-- /row -->
+
+<div class="row row-gutter">
+  <div class="col-xs-3">
+    <div class="btn btn-link btn-link-underline" data-dismiss="modal">Cancel</div>
+  </div>
+  <div class="col-xs-9 text-right">
+    <div class="row row-gutter-sm-x">
+      <%= button_tag "previous", id: "book_cover_previous", type: 'button' , class: "btn btn-app btn-brand-1"  %>
+      <%= button_tag @story.contest.present? ? "submit" : "publish" , id: "publish_story", type: 'button' , class: "btn btn-app btn-brand-1"  %>
+    </div> <!-- /row -->
+  </div>
+</div>

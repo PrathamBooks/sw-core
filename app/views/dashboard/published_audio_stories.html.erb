@@ -1,0 +1,134 @@
+
+<%= render :partial => "errors" %>
+
+<%= render :partial => "tabs" %>
+<%= render :partial => "dashboard_datatables" %>
+
+<div class="row">
+  <div class="col-md-12 col-sm-12">
+    <table class="table table-striped" id="uploaded_stories">
+      <tfoot style="display: table-header-group;">
+        <tr>
+          <th><%=t "dashboard.story_title"%></th>
+          <th><%=t "dashboard.english_title"%></th>
+          <th><%=t "dashboard.legacy_upload.root_title"%></th>
+          <th><%=t "dashboard.language"%></th>
+          <th><%=t "dashboard.actions"%></th>
+          <th><%=t "dashboard.sls_file"%></th>
+          <th><%=t "dashboard.csv_file"%></th>
+        </tr>
+      </tfoot>
+      <thead>
+        <tr class="table-heading-row">
+          <th><%=t "dashboard.story_title"%></th>
+          <th><%=t "dashboard.english_title"%></th>
+          <th><%=t "dashboard.legacy_upload.root_title"%></th>
+          <th class="noborder"><%=t "dashboard.language"%></th>
+          <th><%=t "dashboard.actions"%></th>
+          <th><%=t "dashboard.sls_file"%></th>
+          <th><%=t "dashboard.csv_file"%></th>
+        </tr>
+      </thead>
+      <tbody class="table-row-details">
+        <% @stories.each_with_index do |story, index| %>
+          <tr class="stories_uploaded">
+            <td><%= link_to "<span class='#{story.language.script}'>#{story.title}</span>".html_safe, react_stories_show_path(story.to_param), target: "_blank" %></td>
+            <td><%= story.english_title %></td>            
+            <td class="<%=story.language.script %>"><%= story.root.title if story.root%></td>
+            <td><%= story.language.name %></td>
+            <td>
+            <%= link_to "#{t 'dashboard.audio_stories.edit'}", audios_upload_new_path(:upload=>{:story=> story.id}), remote: true, class: 'btn btn-info edit-btn publish_action' if current_user.content_manager? %>
+            <%#= link_to "#{t 'dashboard.audio_stories.delete'}", delete_audio_path(story.id}), class: 'btn btn-info' if current_user.content_manager? %>
+            <%= link_to "Delete", delete_audio_path(:id => story.id), :method => "delete", data:{:confirm => "#{t 'dashboard.audio_stories.delete_alert'} '#{story.title}'?"}, "data-confirm-title" => "StoryWeaver", "data-confirm-cancel" => "#{t 'dashboard.cancel'}", "data-confirm-cancel-class" => "btn btn-normal btn-grey", "data-confirm-proceed" => "#{t 'dashboard.ok'}", "data-confirm-proceed-class" => "btn-info edit-btn", :class=>"btn btn-danger publish_action" %>
+            <% if story.video_published? %>
+              <%= link_to "#{t 'dashboard.audio_stories.make_video'}", make_video_path(:id=>story.id), method: :post, data:{:confirm => "#{t 'dashboard.audio_stories.video_regenerate'} '#{story.title}'?"}, "data-confirm-title" => "StoryWeaver", "data-confirm-cancel" => "#{t 'dashboard.cancel'}", "data-confirm-cancel-class" => "btn btn-normal btn-grey", "data-confirm-proceed" => "#{t 'dashboard.ok'}", "data-confirm-proceed-class" => "btn-info edit-btn", class: "btn btn-success draft_action " if current_user.content_manager? %>
+            <% else %>
+
+              <%= link_to "#{t 'dashboard.audio_stories.make_video'}", make_video_path(:id=>story.id), method: :post, class: "btn btn-success draft_action #{story.video_processing? ? "disabled" : ""}" if current_user.content_manager? %>
+            <% end %>
+            </td>
+            <td><%= link_to "#{t 'dashboard.audio_stories.download'}", get_sls_file_path(:id => story.id, :format => "sls"), method: :get, class: 'btn btn-info disable-donor' if current_user.content_manager? %></td>
+            <td><%= link_to "#{t 'dashboard.audio_stories.download'}", get_sls_file_path(:id => story.id, :format => "csv"), method: :get, class: 'btn btn-info disable-donor' if current_user.content_manager? %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div id="editor-model" title="<%=t 'dashboard.legacy_upload.assign_editor' %>"></div>
+<div id="delete_editor_model" title="<%=t 'dashboard.legacy_upload.remove_editor' %>"></div> 
+
+<div id="audios_upload"></div>
+<script>
+
+$(document).ready(function() {
+  var table = $('#uploaded_stories').DataTable( {
+    "bStateSave": true,
+    searching: true,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 20,
+    order: [],
+    responsive: {
+        details: false
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  title: formatDatatableTitle('stories'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6, 7 ]
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  title: formatDatatableTitle('stories'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6, 7 ]
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  title: formatDatatableTitle('stories'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6, 7 ]
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  title: formatDatatableTitle('stories'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6, 7 ]
+                  }
+              }
+          ]
+      
+  });
+  $('#uploaded_stories tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+  });
+
+  var new_table = $('#uploaded_stories').dataTable();
+  table.columns().every( function () {
+    var that = this;
+
+    $( 'input', this.footer() ).on( 'keyup change', function () {
+      if ( that.search() !== this.value ) {
+          that
+              .search( this.value )
+              .draw();
+        document.getElementById("uploaded_stories_count").innerHTML = document.getElementById('uploaded_stories').children[1].childElementCount;
+      }else{
+        document.getElementById("uploaded_stories_count").innerHTML = table.rows( '.stories_uploaded' ).count(); 
+      }
+    });
+  });
+  $( 'input').on( 'keyup change', function () {
+    document.getElementById("uploaded_stories_count").innerHTML = new_table.fnSettings().fnRecordsDisplay();
+  });
+
+  });
+
+</script>

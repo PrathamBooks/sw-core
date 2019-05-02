@@ -1,0 +1,48 @@
+<%= simple_form_for @blog_post , url: (@blog_post.new_record? ? create_blog_post_path : @blog_post), html: { id: :blog_post_form, method: (@blog_post.new_record? ? :post : :put) } do |f| %>
+
+  <div class="form-inputs blog_post_image">
+    <%= f.input :title %>
+    <%= f.label :body, required: true %>
+    <%= f.cktext_area :body %>
+    <%= f.input :status, collection: BlogPost.statuses.keys, selected: BlogPost.statuses.keys.first, input_html: {:style =>"width: 185px;" } %>
+    <%= f.input :scheduled, as: :string, input_html:  { :class => "form-control" }, input_html: {:style =>"width: 185px;" } %>
+    <%= f.input :tag_list,  label: "Tags", url: autocomplete_tag_name_blog_posts_path,as: :autocomplete,input_html: {'data-delimiter' => ','}   %>
+    <%= f.input :image_caption,  label: "Image caption", input_html: {'data-delimiter' => ','}   %>
+    <%= f.label :blog_post_image, required: true %>
+    <%= f.file_field :blog_post_image, :id=> "logo", as: :file, :class => "user_logo blog_post_img", :onchange => "blogPostImageValidation(this)" %>
+    <%= f.input :add_to_home, as: :boolean, checked_value: true, unchecked_value: false%>
+  </div>
+
+  <div class="form-actions create_blog_post">
+    <%= f.button :submit %>
+  </div>
+<% end %>
+
+<div id="overlay" class="ui-widget-overlay" ></div>
+<div id='blogpost_loader' ><%= image_tag('bx_loader.gif') %></div>
+
+<script>
+  if ($('#blog_post_status').val() == "scheduled"){
+    $(".blog_post_scheduled").show();
+  }else $(".blog_post_scheduled").hide();
+  $('#blog_post_scheduled').datetimepicker({format:'Y-m-d H:i:s'});
+  $("#blog_post_status").on('change', function(){
+    if ($(this).val() == "scheduled"){
+      $(".blog_post_scheduled").show();
+    }else $(".blog_post_scheduled").hide();
+  });
+
+  function blogPostImageValidation(input){
+    var extension = input.value.substr((input.value.lastIndexOf('.') +1));
+    if (!(/(png)$/ig.test(extension) || /(jpeg)$/ig.test(extension) || /(jpg)$/ig.test(extension))) {
+      alert("Invalid file type: "+extension+". Please use png, or jpg format.");
+      input.val("");
+    }
+  }
+
+  $(document).ready(function(){
+    $("#blog_post_form").submit(function(){
+      $("#overlay, #blogpost_loader").show();
+    })
+  });
+</script>

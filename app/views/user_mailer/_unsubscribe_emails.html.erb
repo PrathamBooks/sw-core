@@ -1,0 +1,67 @@
+<table class="bodyTable" role="presentation" width="100%" align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%; margin: 0;">
+  <tr>
+    <td class="body__content" align="left" width="100%" valign="top" style="color: #000000; font-family: Helvetica,Arial,sans-serif; font-size: 16px; line-height: 20px;">
+      <div class="mail_container container" style="margin: 0 0.5rem; background-color: #FFFFFF; border: 0; padding: .5rem; text-align: center;"> <!--[if mso | IE]>
+        <table class="container__table__ie" role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin-right: auto; margin-left: auto;width: 90%" width="90%" align="center">
+          <tr>
+            <td> <![endif]-->
+              <table class="container__table" role="presentation" border="0" align="center" cellpadding="0" cellspacing="0" width="100%">
+                <tr class="container__row">
+                  <td class="container__cell" width="100%" align="left" valign="top" style="background-color: #FFFFFF; border: 0; padding: .9375em;" bgcolor="#FFFFFF">
+                    <div class="row">
+                      <table class="row__table" width="100%" align="center" role="presentation" border="0" cellpadding="0" cellspacing="0" style="table-layout: fixed;">
+                        <tr class="row__row">
+                          <td class="mail_cont_name column col-sm-12" width="100%" style="font-weight: 700; text-align: center; display: block; padding-bottom: 0.625em; text-transform: capitalize; width: 100%;" align="center" valign="top">Hello <%= @user.name%>,</td>
+                        </tr>
+                      </table>
+                    </div>
+                    <div class="mail_cont_text row" style="padding-bottom: 1.5em; text-align: center; font-family: 'Raleway',sans-serif; display: block;">
+                      <table class="row__table" width="100%" align="center" role="presentation" border="0" cellpadding="0" cellspacing="0" style="mso-hide: none; table-layout: fixed;">
+                        <tr class="row__row">
+                          <td class="column col-sm-12" width="100%" style="width: 100%;" align="left" valign="top">StoryWeaver was set up to make joyful stories available for children. All the content on it is governed by one of the most liberal Creative Commons licenses, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" class="a"><span class="a__text">CC BY 4.0.</span></a> However, our belief in open source also goes hand-in-hand with a commitment to protect your online privacy.</td>
+                        </tr>
+                      </table>
+                    </div>
+                    <div class="mail_cont_text row" style="padding-bottom: 1.5em; text-align: center; font-family: 'Raleway',sans-serif; display: block;">
+                      <table class="row__table" width="100%" align="center" role="presentation" border="0" cellpadding="0" cellspacing="0" style="mso-hide: none; table-layout: fixed;">
+                        <tr class="row__row">
+                          <td class="column col-sm-12" width="100%" style="width: 100%;" align="left" valign="top">In keeping with global data protection guidelines and requirements, we've updated our existing <a href="https://storyweaver.org.in/privacy_policy" target="_blank" class="a"><span class="a__text">policies</span></a>. We're writing to let you know that by continuing to use our website on or after October 1, 2018, you are agreeing to these updated <a href="https://storyweaver.org.in/terms_and_conditions" target="_blank" class="a"><span class="a__text">terms and conditions</span></a>.</td>
+                        </tr>
+                      </table>
+                    </div>
+                    <div class="mail_cont_text row" style="padding-bottom: 1.5em; text-align: center; font-family: 'Raleway',sans-serif; display: block;">
+                      <table class="row__table" width="100%" align="center" role="presentation" border="0" cellpadding="0" cellspacing="0" style="mso-hide: none; table-layout: fixed;">
+                        <tr class="row__row">
+                          <td class="column col-sm-12" width="100%" style="width: 100%;" align="left" valign="top">If you do not wish to receive news and information from us, all you have to do is click on <a href="<%= unsubscribe_emails_url(:user_id => @user.id,:token => @user.user_token.token)%>" target="blank">unsubscribe</a>. (But we have so many new stories and features lined up – we'd hate to see you go.)</td>
+                        </tr>
+                      </table>
+                    </div>
+                    <div class="row" style="padding-bottom: 0.7em;">
+                      <table class="row__table" width="100%" align="center" role="presentation" border="0" cellpadding="0" cellspacing="0" style="table-layout: fixed;">
+                        <tr class="row__row">
+                          <td class="mail_cont_wishes column col-sm-12" width="100%" style="font-family: 'Raleway',sans-serif; display: block; padding-bottom: 0; width: 100%;" align="left" valign="top">Thank you for reading, creating, and sharing joyful stories.</td>
+                        </tr>
+                      </table>
+                    </div>
+                    <div class="row" style="padding-bottom: 1em;">
+                      <table class="row__table" width="100%" align="center" role="presentation" border="0" cellpadding="0" cellspacing="0" style="table-layout: fixed;">
+                        <tr class="row__row">
+                          <td class="mail_cont_wishes column col-sm-12" width="100%" style="font-family: 'Raleway',sans-serif; display: block; padding-bottom: 0; width: 100%;" align="left" valign="top">Your Friends at StoryWeaver</td>
+                        </tr>
+                      </table>
+                    </div>
+                    <div class="mail_cont_text row" style="padding-bottom: 0.5em; text-align: center; font-family: 'Raleway',sans-serif; display: block;">
+                      <table class="row__table" width="100%" align="center" role="presentation" border="0" cellpadding="0" cellspacing="0" style="mso-hide: none; table-layout: fixed;">
+                        <tr class="row__row">
+                          <td class="column col-sm-12" width="100%" style="width: 100%; font-size: 12px; line-height: 1.2;" align="center" valign="top">If you create content on StoryWeaver and click on unsubscribe, you will no longer receive updates about how the StoryWeaver community is using your work to spread the joy of reading.</td>
+                        </tr>
+                      </table>
+                    </div>
+                  </td>
+                </tr>
+              </table> <!--[if mso | IE]> </td>
+          </tr>
+        </table> <![endif]--> </div>
+    </td>
+  </tr>
+</table>

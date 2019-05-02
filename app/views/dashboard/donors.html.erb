@@ -1,0 +1,50 @@
+<%= render :partial => "errors" %>
+
+<%= render :partial => "tabs" %>
+
+<div class="tab-content">
+  <div role="tabpanel" class="tab-pane active common-class" id="LegacyUpload">
+    <div class="row setroles">
+      <div class="col-md-12 col-sm-12">
+        <%= simple_form_for(:donor, :url => create_donor_path) do |f| %>
+         <label><%= t 'dashboard.donors_tab.add_donor'%></label>
+         <%= f.input :name, label: false , :placeholder => "donor name", input_html: {:class => "new-cat-add" , :style=>"width:25%;float:left;"} %>
+         <%= f.file_field :logo, :id=> "logo", as: :file, :style=>"width:25%;float:left;" %>
+         <%= f.submit "#{t 'dashboard.submit'}" , :class => "btn btn-success" %>
+        <% end %>
+      </div>
+    </div>
+    <table class="table table-striped">
+      <thead>
+      <tr class="table-heading-row">
+        <th><%= t 'dashboard.donors_tab.donor_name'%></th>
+        <th><%= t 'dashboard.donors_tab.logo'%></th>
+        <th><%= t 'dashboard.actions'%></th>
+      </tr>
+      </thead>
+      <tbody class="table-row-details">
+      <% @donors.each do |donor|%>
+       <tr>
+         <td><label><%= donor.name %></label>
+         <td><%= image_tag(donor.logo.url(:original), height: 100, width: 100) if donor.logo.present? %></td>
+         </td>
+        <td style="float: left;">
+          <% if donor.stories.present? %>
+              <%= link_to "#{t 'dashboard.delete'}", "#", class: "btn btn-info disable-donor",  data:{ toggle: "tooltip", title: "Unable to delete this donor because it has stories"} %>
+            <% else %>
+            <%= link_to "Delete", delete_donor_path(donor), :method => "delete", data:{:confirm => "#{t 'dashboard.donors_tab.delete_alert'} '#{donor.name}'?"}, "data-confirm-title" => "StoryWeaver", "data-confirm-cancel" => "#{t 'dashboard.cancel'}", "data-confirm-cancel-class" => "btn btn-info btn-grey", "data-confirm-proceed" => "#{t 'dashboard.ok'}", "data-confirm-proceed-class" => "btn-info edit-btn", :class=>"btn btn-info edit-btn" %>
+            <% end %>
+        </td>
+       </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <%= paginate @donors %>
+  </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>

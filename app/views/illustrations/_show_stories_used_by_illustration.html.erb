@@ -1,0 +1,27 @@
+<div class="dropdown">
+    <a class="btn btn-default dropdown-toggle myclickdrop" 
+    type="button" 
+    id="dropdownMenu1" 
+    data-toggle="dropdown" 
+    aria-expanded="true">
+      <span>View Stories Used in</span>
+      
+    </a>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+      <% @illustration.story_links.each_with_index do|story,index| %>
+        <% unless index >= 1 %>
+          <li role="presentation">
+            <%= link_to story.title, react_stories_show_path(story.to_param), :target => "_blank" if story %>
+          </li>
+        <% else %>
+          <li role="presentation">
+            <%= link_to "More Stories", illustration_used_in_stories_path(@illustration), :target => "_blank"%>
+          </li>
+          <% break %>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>
+<script>
+	$('.dropdown-toggle.myclickdrop').dropdownHover();
+</script>

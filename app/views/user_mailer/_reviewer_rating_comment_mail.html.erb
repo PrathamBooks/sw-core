@@ -1,0 +1,43 @@
+<tr style="color:">
+  <td align="center">
+    <table width="432px" cellspacing="0" cellpadding="0" border="0" align="center">
+
+      <tr style="margin-bottom: 20px; float: left;">
+        <td><strong>Dear Content Manager</strong>, </td>
+      </tr>
+      <tr style="margin-bottom: 20px; float: left;">
+        <td>Community Reviewers' Activity Summary as on <%= @date %>.</td>
+      </tr>
+      <tr style="margin-bottom: 20px; float:left;">
+        <td>
+          <table cellspacing="0" border="0" cols="6"><colgroup width="72"></colgroup><colgroup width="134"></colgroup><colgroup width="108"></colgroup><colgroup width="99"></colgroup><colgroup width="85"></colgroup><colgroup width="224"></colgroup>   <tbody>
+              <tr style="background: #f4a651">
+                <td height="49" align="LEFT" style="border-right: 1px solid #f7bc7c; color: #fff;"><b>Title</b></td>
+                <td align="LEFT" style="border-right: 1px solid #f7bc7c; color: #fff;"><b>Story by</b></td>
+                <td align="LEFT" style="border-right: 1px solid #f7bc7c; color: #fff;"><b>Language</b></td>
+                <td align="LEFT" style="border-right: 1px solid #f7bc7c; color: #fff;"><b>Level</b></td>
+                <td align="LEFT" style="border-right: 1px solid #f7bc7c; color: #fff;"><b>Type</b></td>
+                <td align="LEFT" style="border-right: 1px solid #f7bc7c; color: #fff;"><b>Reviewed by</b></td>
+                <td align="LEFT" style="border-right: 1px solid #f7bc7c; color: #fff;"><b>Star Rating</b></td>
+              </tr>
+              <% @reviewer_comments.each_with_index do |reviewer_comment,index| %>
+                <tr style = "<%= index.even? ? 'background: #fff;' : 'background: #e2e5e8;' %> " >
+                  <td height="19" align="LEFT" style="border-width: 1px; border-style: none; color: #000; "><%=  link_to( reviewer_comment.story.english_title == nil ? reviewer_comment.story.title : reviewer_comment.story.english_title, react_stories_show_url(reviewer_comment.story))  %></td>
+                  <td align="LEFT" style="border-width: 2px;  color: #000;"><%= reviewer_comment.story.authors.collect(&:name).join(",") %></td>
+                  <td align="LEFT" style="border-width: 2px; color: #000;"><%= reviewer_comment.story.language.name %></td>
+                  <td align="LEFT" style="border-width: 2px; color: #000;"><%= reviewer_comment.story.reading_level %></td>
+                  <td align="LEFT" style="border-width: 2px; color: #000;"><%= reviewer_comment.story.derivation_type == nil ? "Original" : (reviewer_comment.story.derivation_type == "translated" ? "Translation" : "Re-levelled") %></td>
+                  <td align="LEFT" style="border-width: 2px; color: #000;"><%= reviewer_comment.user.first_name %></td>
+                  <td align="LEFT" style="border-width: 2px; color: #000;"><%= reviewer_comment.rating %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </td>
+</tr>
+
+
+

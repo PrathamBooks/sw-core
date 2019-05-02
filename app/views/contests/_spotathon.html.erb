@@ -1,0 +1,24 @@
+<%= render :partial => "dashboard/errors" %>
+<div class="row about-row noborder">
+ 	 <div class="row top-border">
+   	<div class="col-md-12 col-sm-12">
+      <h4>Spotathon: An Illustration Campaign to Create a Free, Openly-licensed, Amazing Spotting Book for Children</h4>
+      <p>Children LOVE ‘spotting challenges’. Ask them to spot anything from a detailed illustration and you can be certain that they won’t give up easily. 3 crabs on a beach, 4 tyres in a workshop, 11 spoons in a kitchen... anything! Unfortunately, it’s hard to come by memorable spotting books which are affordable. So...</p>
+    
+    	<p>StoryWeaver is eager and excited to create a fun spotting book for children and make it available for free. We think this will be extra special if it’s a collection of illustrations from different artists around the world. And this, illustrators, is where we need your support.</p>
+    
+    	<p>Just 1 illustration from you can make all the difference!</p>
+    	<p>Spotathon is our campaign to collect ‘spotting’ illustrations from artists around the world to create an openly-licensed spotting book for children made available on <a href="https://storyweaver.org.in">storyweaver.org.in</a>.</p>
+    
+    	<p>While we’ll be picking the best illustrations for a spotting book, Spothathon is much more of a campaign than a contest. Every illustration that is contributed will be available on StoryWeaver as an individual activity book.</p>
+    
+    	<p>For more details on how you can contribute and participate in Spotathon, <a href="https://storyweaver.org.in/blog_posts/84">click here</a>.<p>
+  	</div>
+		<div id="newIllustrationForm">
+		</div>
+		<div class="upload-illustr">
+			<a href="<%= illustration_contest_form_path %>" id="spotathon_contest" class="btn btn-primary btn-lg" data-remote="true">Submit your entry</a>
+		</div>
+	 </div>
+</div>
+<%= render '/stories/desktop_only_action_message' %>

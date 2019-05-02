@@ -1,0 +1,168 @@
+<%= render :partial => "dashboard/dashboard_datatables" %>
+
+<div style="margin-bottom: 10px;">
+  <div class="btn-group" style="margin-left: 300px;"><label>Time Period:</label></div>
+  <div class="btn-group">
+    <i class="dropdown-arrow dropdown-arrow-inverse"></i>
+    <button class="btn btn-app dropdown-toggle filter-btn" data-toggle="dropdown" ><%= params[:search_from] %></button>
+    <button class="btn btn-app dropdown-toggle" data-toggle="dropdown"> <span class="caret"></span></button>
+    <ul class="dropdown-menu dropdown">
+      <li><%= link_to "One Month", all_illustrations_path(:search_from => "One Month") %></li>
+      <li><%= link_to "Three Months", all_illustrations_path(:search_from => "Three Months") %></li>
+      <li><%= link_to "Six Months", all_illustrations_path(:search_from => "Six Months") %></li>
+      <li><%= link_to "One Year", all_illustrations_path(:search_from => "One Year") %></li>
+      <li><%= link_to "All Illustrations", all_illustrations_path(:search_from => "All Illustrations") %></li>
+    </ul>
+  </div>
+  <div class="stories_date_picker">
+    <ul id="myTab" role="tablist" class="nav nav-tabs profile">
+      <li role="presentation" class="pull-right">
+        <div class="input-group date" data-provide="datepicker" style="float: right;">
+          <label>From date</label>
+          <input class="datepicker" id="start_date" data-date-format="yy-mm-dd" value="<%= params[:start_date] if params[:start_date].present? %>">
+          <label>To date</label>
+          <input class="datepicker" id="end_date" data-date-format="yy-mm-dd" value="<%= params[:end_date] if params[:end_date].present? %>">
+          <button id="submit_dates" class="btn btn-app btn-brand-1">Submit</button>
+        </div>
+        <script type="text/javascript">
+          $('.datepicker').datepicker({
+            dateFormat: 'yy-mm-dd', autoclose: true
+          });
+          $("#submit_dates").click(function(){
+            if($("#start_date").val() > $("#end_date").val()){
+              alert("Start Date should be before the End Date");
+            }else{
+              jQuery.ajax({
+                type: "GET",
+                url: "<%= all_illustrations_path %>",
+                data: {start_date: $("#start_date").val(), end_date: $("#end_date").val(), search_from: "selected"},
+                dataType : "script"
+              });
+            }
+          });
+        </script> 
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="btn-group">
+  <span>Number of Illustrations Selected :</span>
+  <span class="badge" id="all_illustrations_count"><%= @illustrations.count %></span>
+</div>
+
+<div class="table_width">
+<table class="table table-striped" id="all_illustrations">
+  <tfoot style="display: table-header-group;">
+    <tr>
+      <th>Illustraion Id  </th>
+      <th>Name            </th>
+      <th>Owner           </th>
+      <th>Publisher       </th>
+      <th>No of views     </th>
+      <th>No of Downloads </th>
+      <th>Style           </th>
+      <th>Created at      </th>
+    </tr>
+  </tfoot>
+  <thead>
+    <tr class="table-heading-row">
+      <th>Illustraion Id  </th>
+      <th>Name            </th>
+      <th>Owner           </th>
+      <th>Organization       </th>
+      <th>No of views     </th>
+      <th>No of Downloads </th>
+      <th>Style           </th>
+      <th>Created at      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @illustrations.each do |f| %>
+      <tr class="illustrations_count">
+        <td><%= f.id %></td>
+        <td><%= link_to f.name, react_illustrations_show_path(f), :target => "_blank" %></td>
+        <td><%= f.uploader.first_name if f.uploader.first_name.present? %></td>
+        <td><%= f.organization.present? ? f.organization.organization_name : 'Storyweaver Community' %></td>
+        <td><%= f.reads %></td>
+        <td><%= f.illustration_downloads.count %></td>
+        <td><%= f.styles.collect(&:name).join(",") %></td>
+        <td><%= print_date_all_stories(f.created_at) if f.created_at.present? %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+</div>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+  var table = $('#all_illustrations').DataTable( {
+    searching: true,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 20,
+    order: [],
+    responsive: {
+        details: false
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  title: formatDatatableTitle('illustrations'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6, 7 ]
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  title: formatDatatableTitle('illustrations'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6, 7 ]
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  title: formatDatatableTitle('illustrations'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6, 7 ]
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  title: formatDatatableTitle('illustrations'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6, 7 ]
+                  }
+              }
+          ]
+      
+  });
+  $('#all_illustrations tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+  });
+
+  var new_table = $('#all_illustrations').dataTable();
+  table.columns().every( function () {
+    var that = this;
+
+    $( 'input', this.footer() ).on( 'keyup change', function () {
+      if ( that.search() !== this.value ) {
+          that
+              .search( this.value )
+              .draw();
+        document.getElementById("all_illustrations_count").innerHTML = document.getElementById('all_illustrations').children[1].childElementCount;
+      }else{
+        document.getElementById("all_illustrations_count").innerHTML = table.rows( '.illustrations_count' ).count(); 
+      }
+    });
+  });
+  $( 'input').on( 'keyup change', function () {
+    document.getElementById("all_illustrations_count").innerHTML = new_table.fnSettings().fnRecordsDisplay();
+  });
+
+  });
+</script>

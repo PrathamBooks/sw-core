@@ -1,0 +1,45 @@
+<%
+  levels = {}
+  Story.reading_levels.each { |index, level| levels[index] = "Level #{ level + 1}" }  
+%>
+
+<%= select_tag("reading_level", options_from_collection_for_select(levels, :first, :last), prompt: "All Reading Levels", :onchange => "reading_level_filters();")%>
+
+
+<script>
+  $(document).ready(function(){
+    $("#reading_level").selectpicker();
+
+    <% if params[:level] %>
+      $("#reading_level").selectpicker('val', '<%= params[:level].present? ?  params[:level].to_i + 1 : '' %>');
+    <% end %>
+  });
+
+  function reading_level_filters(){
+    var reading_level = $("#reading_level").val() - 1;
+    var data = {};
+    if(reading_level >= 0)
+      data["level"] = reading_level;
+    else
+      data["level"] = "";
+      
+
+    if(typeof ajax_filter != "undefined"){
+      ajax_filter("GET", "<%= path %>", data);
+    } else {
+      $.ajax({
+        type: 'GET',
+        url: "<%= path %>",
+        data: data,
+        beforeSend: $.blockUI,
+        success: $.unblockUI,
+        error: function(e){
+          $.unblockUI();
+          alert('There was an error while processing your action, please retry after some time.');
+        },
+        dataType: 'script'
+      });
+    }
+  }
+</script>
+

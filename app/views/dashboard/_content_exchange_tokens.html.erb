@@ -1,0 +1,155 @@
+<%= render :partial => "dashboard_datatables" %>
+
+<br/><p><b>Total Count of Tokens: <%= @tokens.count %></b></p>
+<p><b>Total Count of Story Downloads: <%= @story_download_count %></b></p>
+<p><b>Total Count of Illustration Downloads: <%= @illustration_download_count %></b></p>
+
+<table class="table table-striped" id="token_list">
+  <tfoot style="display: table-header-group;">
+    <tr>
+      <th><%= t 'dashboard.content_exchange_tokens_tab.access_token'%></th>
+      <th><%= t 'dashboard.content_exchange_tokens_tab.story_download_limit'%></th>
+      <th><%= t 'dashboard.content_exchange_tokens_tab.illustration_download_limit'%></th>
+      <th><%= t 'dashboard.content_exchange_tokens_tab.remaining_story_count'%></th>
+      <th><%= t 'dashboard.content_exchange_tokens_tab.remaining_illustration_count'%></th>
+      <th><%= t 'dashboard.content_exchange_tokens_tab.valid_till'%></th>
+      <th><%= t 'dashboard.content_exchange_tokens_tab.organization_name'%></th>
+      <th><%= t 'dashboard.content_exchange_tokens_tab.actions'%></th>
+    </tr>
+  </tfoot>
+  <thead>
+    <tr class="table-heading-row">
+      <th><%= t 'dashboard.content_exchange_tokens_tab.access_token'%></th>
+      <th><%= t 'dashboard.content_exchange_tokens_tab.story_download_limit'%></th>
+      <th><%= t 'dashboard.content_exchange_tokens_tab.illustration_download_limit'%></th>
+      <th><%= t 'dashboard.content_exchange_tokens_tab.remaining_story_count'%></th>
+      <th><%= t 'dashboard.content_exchange_tokens_tab.remaining_illustration_count'%></th>
+      <th><%= t 'dashboard.content_exchange_tokens_tab.valid_till'%></th>
+      <th><%= t 'dashboard.content_exchange_tokens_tab.organization_name'%></th>
+      <th><%= t 'dashboard.content_exchange_tokens_tab.actions'%></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @tokens.each do |token| %>
+      <tr>
+        <td><%= token.access_token %></td>
+        <td><%= token.story_download_limit %></td>
+        <td><%= token.illustration_download_limit %></td>
+        <td><%= token.story_count %></td>
+        <td><%= token.illustration_count %></td>
+        <td><%= ist token.expires_at %></td>
+        <% if token.organization.nil? %>
+          <td><%= "" %></td>
+        <% else %>        
+          <td><%= token.organization.organization_name %></td>
+        <% end %>
+        <td><a class="btn btn-danger delete_token_link" data-token-id="<%= token.id %>"><%= t "dashboard.delete"%></a></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div id="delete_token_dialog" title="Confirmation Required">
+  <%=t 'dashboard.content_exchange_tokens_tab.delete_token_confirmation_msg' %>
+</div>
+
+<script>
+  $(document).ready(function(){
+
+    $('#delete_token_dialog').dialog({
+      autoOpen: false,
+      width: 380,
+      modal: true,
+      buttons : {
+        "Confirm" : function() {
+          $.ajax({
+            type: 'DELETE',
+            dataType: 'script',
+            url: '/v0/dashboard/content_exchange_token/'+$(this).data('tokenId'),
+            beforeSend: $.blockUI,
+            success:  $.unblockUI,
+            error: $.unblockUI
+          });
+          $(this).dialog("close");
+        },
+        "Cancel" : function() {
+          $(this).dialog("close");
+        }
+      },
+      dialogClass: 'change_orientation_dialog'
+    });
+
+    $('.delete_token_link').click(function(evt){
+      evt.preventDefault();
+      $('#delete_token_dialog').data('tokenId', $(this).data('tokenId'));
+      $('#delete_token_dialog').dialog("open");
+    });
+
+    var table = $('#token_list').dataTable( {
+      searching: true,
+      lengthChange: false,
+      showNEntries: false,
+      pageLength: 20,
+      order: [],
+      responsive: {
+          details: false
+      },
+      dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+      buttons: [
+                {
+                    extend: 'copyHtml5',
+                    title: formatDatatableTitle('import-partners'),
+                    exportOptions: {
+                        columns: [ 0, 1, 2, 3, 4, 5, 6]
+                    }
+                },
+                {
+                    extend: 'csvHtml5',
+                    title: formatDatatableTitle('import-partners'),
+                    exportOptions: {
+                        columns: [ 0, 1, 2, 3, 4, 5, 6]
+                    }
+                },
+                {
+                    extend: 'excelHtml5',
+                    title: formatDatatableTitle('import-partners'),
+                    exportOptions: {
+                        columns: [ 0, 1, 2, 3, 4, 5, 6]
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    title: formatDatatableTitle('import-partners'),
+                    exportOptions: {
+                        columns: [ 0, 1, 2, 3, 4, 5, 6]
+                    }
+                }
+              ]
+
+      });
+
+    $('#token_list tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    });
+  
+    table.api().columns().every( function () {
+      var that = this;
+      $( 'input', this.footer() ).on( 'keyup change', function () {
+          if ( that.search() !== this.value ) {
+              that
+                  .search( this.value )
+                  .draw();
+          }
+      });
+    });   
+  });
+</script>
+
+<br><a class="btn btn-success" id="token-create" data-path="<%= new_content_exchange_token_path %>">Generate Token</a>
+
+<script>
+  $("#token-create").click(function() {
+    window.location = $(this).data('path');
+  });
+</script>

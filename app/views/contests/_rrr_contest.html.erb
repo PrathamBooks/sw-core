@@ -1,0 +1,103 @@
+<%= render :partial => "dashboard/errors" %>
+<div class="row about-row noborder">
+    <section id="search-details-temp" style="margin-right:65px !important; margin-top:30px;" >
+      
+       <div class="col-md-12 col-sm-12 red_banner_contest_info">
+        <h4 style ="color: white; font-family: sans-serif">Important information: Contest deadline extended to May 22nd, 2016. </h4>
+       </div>
+
+        <div class="col-md-12 col-sm-12">
+          <h4>Unleash Your Creativity with the Retell, Remix and Rejoice Contest</b></h4>
+          <p>March 20th is World Storytelling Day, an annual event that celebrates the art of spinning a really good yarn. Since 2010, World Storytelling Day has heralded the start of our annual Retell, Remix and Rejoice Contest. New to the contest? Here’s what it is in a nutshell!</h4>
+        </div>
+
+        <div class="col-md-12 col-sm-12">
+          <p>Every year, we share a series of  images from Pratham Books and invite our community to weave a brand new story using them! Be as wacky and creative as possible.</p>
+        </div>
+
+        <div class="col-md-12 col-sm-12">
+          <h4>The first-prize winner gets a printed version of their winning story.</h4>
+           <p>(Psst…<a href=" http://blog.prathambooks.org/2013/12/the-many-lives-of-cat.html">one of our previous winning entries was scooped up by a reputed publishing house</a>, so who   knows what’s in store for you?)
+           If you need a little inspiration, take a look at the sample story written by our editor Mala Kumar - <a href="https://storyweaver.org.in/stories/5360-can-you-smile-when-you-snore">'Can You Smile When You Snore'</a>.You can also take a look at what impressed previous judges by reading <a href="https://storyweaver.org.in/stories/5155-jamun-has-her-wish">‘Jamun Has Her Wish’</a>, a winning entry by by Vibha Batra.</p>
+        </div>
+
+        <div class="col-md-12 col-sm-12 red_banner">
+        <h4 style ="color: white; font-family: sans-serif">Things to remember :</h4>
+        <ol style ="clear: both; color: white; font-family: sans-serif">
+          <li>You can only create your story for the contest by clicking on the button or images below.</li>
+          <li>For this contest, you can make a choice only from the 30 selected images below.</li>
+        </ol>
+       </div>
+
+        <div class="col-md-12 col-sm-12">
+          <b>How to take part</b>
+          <ul style ="clear: both">
+              <li>Log in to StoryWeaver (sign up <a href="https://storyweaver.org.in/users/sign_up">here</a> if you don’t have an account)</li>
+              <li>Choose from the 30 images below & create a story (NOTE : <b>You can only use the 30 images below to create your story.</b> There is no maximum or minimum limit on the number of images you can use from this set of images)</li>
+              <li>Click on the <b>‘Participate in the contest’</b> button and get started! (Watch our quick video <a href="https://youtu.be/LDPyK_sOiv8">tutorial</a> on creating stories.)</li>
+              <li>If you want some time to finish your story, save it as a draft (find it later under your profile page).</li>
+              <li style ="margin-bottom: 15px;">Finished your story? Click on ‘Submit’. Remember, once you’ve submitted your entry you won’t be able to go back and edit it, so make sure that you’re happy with your story before you submit.</li>
+            </ul> 
+        </div>
+
+        <div class="col-md-12 col-sm-12">
+          <b>Contest guidelines</b>
+          <ul style ="clear: both">
+              <li>There are two categories: Adults (over 16) and children (under 16).</li>
+              <li>There will be one winning entry in each of these categories.</li>
+              <li>Entries can be in English, Hindi, Marathi, Kannada or Tamil.</li>
+              <li>You are free to submit multiple stories.</li>
+              <li>The contest deadline is May 22nd, 2016</li>
+              <li>Results will be announced on our website, blog and social media handles.</li>
+              <li style ="margin-bottom: 15px;">Got any queries? Email us at <a href="mailto:storyweaver@prathambooks.org">storyweaver@prathambooks.org</a>.</li>
+            </ul> 
+        </div>
+
+        <div class="col-md-12 col-sm-12">
+          <p>*By submitting your work, you are agreeing to a “Creative Commons – Attribution license” <a href="https://creativecommons.org/licenses/by/4.0/">(CC-BY 4.0)</a> being applied to it. While we encourage participation from all countries, prizes shall be couriered only within India.</p>
+        </div>
+
+        <div class="col-md-12 col-sm-12">
+          <p>Ready to start weaving a story? Browse through the images below or just click on the button below!</p>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4 col-sm-12">
+            <div >
+              <span>
+              <%= link_to "Participate in the Contest", stories_start_path(contest_id: @contest.id), class: "btn btn-warning btn-lg hide-in-mob-create contest_story_create_button"%>       
+              </span>
+            <div id="newStoryForm">
+            </div>
+          </div>
+        </div>
+      </section>
+     <!--<div class="search-page" style="min-height:700px;margin-top:10px;">
+        <div id="illustration-holder">
+            <div id="DIV_ILLUSTRATION_FEED"></div>
+              <div id="NO_RESULTS" class="results-searched hide">
+                <div>Oops! We couldn't find anything related to your illustration search.</div>
+                  <div class="no-results-found-try">Here is what you can try:</div>
+                    <ul>
+                      <li>Make sure the spelling is correct.</li>
+                      <li>Search with other words that are similar in meaning.</li>
+                      <li>Search with fewer filters.</li>
+                    </ul>
+              </div>
+        </div>
+      </div> 
+     <div id="newStoryFromIllustration"></div>
+       <div id="illustration-view"></div>
+        <%#= render :partial => "/illustrations/illustration_card"   RRR 2016%> 
+       </div> -->
+<%= render :partial => "stories/desktop_only_action_message" %>
+
+
+<script>
+/*$(document).ready(function () {
+
+    url = "<%= illustrations_path %>";
+    var contest_id =  <%= @contest.id %>
+    Illustration.contest(url,9,contest_id);
+});*/
+ </script>

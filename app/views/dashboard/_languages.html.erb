@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="col-md-5 col-sm-5">
+    <table class="table table-striped">
+      <thead>
+        <tr class="table-heading-row">
+          <th><%= t 'dashboard.language'%></th>
+        </tr>
+      </thead>
+      <tbody class="table-row-details">     
+        <% @languages.each do |language|%>
+        <tr>
+          <td><label><%= language.name %></label>  
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+     <%= paginate @languages %>
+  </div>
+    <div class="col-md-1 col-sm-1">
+    </div>
+  <div class="col-md-5 col-sm-5">
+    <%= simple_form_for(:language, :url => create_language_path) do |f| %>
+      <%= f.input :name, label: false , :placeholder => "language name", input_html: {:class => "new-cat-add" } %>
+      <input type="text" class = "string required form-control new-cat-add " placeholder= "hindi translation" name="language[translated_name]">
+      <%= f.input :script , as: :select , :label => false ,:collection => @scripts , prompt: "choose script", :input_html => {:class => "new-cat-add" } %>
+      <%= f.input :bilingual, as: :boolean, checked_value: true, unchecked_value: false %>
+      <%= f.input :is_right_to_left, as: :boolean, checked_value: true, unchecked_value: false%>
+      <%= f.submit "#{t 'dashboard.languages_tab.add_new_language'}" , :class=>"btn btn-info new-cat-btn" %>
+    <% end %>
+  </div>
+</div>

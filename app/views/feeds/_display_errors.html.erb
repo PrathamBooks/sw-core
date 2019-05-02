@@ -1,0 +1,7 @@
+<div class="alert alert-danger">
+  <h4>Review the Errors below</h4>
+  <% obj.errors.messages.each do |e,m| %>
+    <div><b><%= e.capitalize  %></b>: <%= m.join(", ") %></div>
+  <% end %>
+</div>
+

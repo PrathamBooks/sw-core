@@ -1,0 +1,85 @@
+<heml>
+  <head>
+    <style>
+      .mail_container {
+        border: 0;
+        background-color: #fff;
+        padding: 0.9375em;
+        text-align: center;
+        max-width: 100%;
+      }
+      .mail_cont_name {
+        display: block;
+        font-weight: bold;
+        text-align: center;
+      }
+      .mail_cont_head {
+        display: block; 
+        margin-bottom: 0.625em;
+      }
+      .mail_cont_head h1 {
+        font-size: 1.375em; 
+        font-family: 'Raleway', sans-serif;
+        margin: 0;
+      }
+      .mail_cont_text {
+        display: block; 
+        font-family: 'Raleway', sans-serif;
+        padding-bottom: 0.625em; 
+        text-align: center;
+      }
+      .mail_cont_wishes {
+        display: block; 
+        font-family: 'Raleway', sans-serif;
+        padding-bottom: 0;
+      }
+      .mail_cont_wishes span {
+        display: block;
+      }
+      .mail_stories_button {
+        background-color: #e94f1d; 
+        border: none; 
+        border-radius: 0.25em; 
+        color: #fff; 
+        display: block; 
+        font-size: 0.6875em; 
+        font-weight: bold; 
+        margin: 0 auto; 
+      }
+    </style>
+  </head>
+  <body>
+    <container class="mail_container">
+      
+      <row>
+        <column class="mail_cont_name">Hello *|FNAME|*,</column>
+      </row>
+
+      <row class="mail_cont_text">
+        <column>StoryWeaver was set up to make joyful stories available for children. All the content on it is governed by one of the most liberal Creative Commons licenses, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0.</a> However, our belief in open source also goes hand-in-hand with a commitment to protect your online privacy.</column>
+      </row>
+
+      <row class="mail_cont_text">
+        <column>In keeping with global data protection guidelines and requirements, we've updated our existing <a href="https://storyweaver.org.in/privacy_policy" target="_blank">policies</a>. We're writing to let you know that by continuing to use our website on or after October 1, 2018, you are agreeing to these updated <a href="https://storyweaver.org.in/terms_and_conditions" target="_blank">terms and conditions</a>.</column>
+      </row>
+
+      <row class="mail_cont_text">
+        <column>If you do not wish to receive news and information from us, all you have to do is click on <a href="<%= unsubscribe_emails_url(:user_id => @user.id,:token => @user.user_token.token)%>" target="_blank">unsubscribe</a>. (But we have so many new stories and features lined up – we'd hate to see you go.)</column>
+      </row>
+
+      <row>
+        <column class="mail_cont_wishes">Thank you for reading, creating, and sharing joyful stories.</column>
+      </row>
+
+      <row>
+        <column class="mail_cont_wishes">Your Friends at StoryWeaver</column>
+      </row>
+
+      <row>
+        <column>If you create content on StoryWeaver and click on unsubscribe, you will no longer receive updates about how the StoryWeaver community is using your work to spread the joy of reading.</column>
+      </row>
+
+    </container>
+
+  </body>
+</heml>

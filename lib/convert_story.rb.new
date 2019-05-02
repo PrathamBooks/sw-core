@@ -1,0 +1,231 @@
+require "imgkit"
+require 'utils/utils'
+
+def copy_organization_logo(story, dir)
+  logo_type = story.organization.present? ? story.organization.logo_content_type : ""
+  extension = ".jpg"
+  if(logo_type == "image/png")
+    extension = ".png"
+  elsif(logo_type == "image/gif")
+    extension = ".gif"
+  end
+  logo_file_name = "#{dir}/publisher_logo#{extension}"
+  FileUtils.cp Utils.download_to_file(organization_logo_pdf(story)), logo_file_name
+  return logo_file_name
+end
+
+def level_band_loc(story)
+  reading_level = params[:reading_level] || story.reading_level
+  lb_name = story.language.level_band ?  story.language.level_band : "English"
+  return Rails.root + "app/assets/images/level_bands/Level_#{reading_level}_#{lb_name}.png"
+end
+
+
+def copy_level_bands(story, dir)
+  level_band_file_name = "#{dir}/level_band.png"
+  FileUtils.cp level_band_loc(story), level_band_file_name
+  return level_band_file_name
+end
+
+def copy_fonts(story, dir)
+  storyFont = story.language.language_font.font.gsub(/\s+/, "")
+  Dir.mkdir("#{dir}/fonts")
+
+  # Adding NotoSans by default
+  Dir.mkdir("#{dir}/fonts/NotoSans")
+  Dir.mkdir("#{dir}/fonts/NotoSans/Regular")
+  Dir.mkdir("#{dir}/fonts/NotoSans/Bold")
+  Dir.mkdir("#{dir}/fonts/NotoSans/Italic")
+  Dir.mkdir("#{dir}/fonts/NotoSans/BoldItalic")
+
+  fonts = []
+
+  ['Regular', 'Bold', 'Italic', 'BoldItalic'].each do |style|
+    style_path = "#{Rails.root}/app/assets/fonts/NotoSans/#{style}/NotoSans-#{style}_gdi.woff"
+    font_file = "#{dir}/fonts/NotoSans/#{style}/NotoSans-#{style}_gdi"
+    fonts << "#{font_file.split('/').last(4).join('/')}.woff"
+    FileUtils.cp open(style_path), "#{font_file}.woff"
+  end
+  
+  if (['NotoNastaliqUrdu', "NotoSansMongolian", "NotoSansOlChiki"].include? storyFont)
+    Dir.mkdir("#{dir}/fonts/#{storyFont}")
+    regular_path = "#{Rails.root}/app/assets/fonts/#{storyFont}/#{storyFont}-Regular.woff"
+    font_file_regular = "#{dir}/fonts/#{storyFont}/#{storyFont}-Regular"
+    fonts << "#{font_file_regular.split('/').last(3).join('/')}.woff"
+    FileUtils.cp open(regular_path), "#{font_file_regular}.woff"
+  elsif storyFont != "NotoSans"
+    Dir.mkdir("#{dir}/fonts/#{storyFont}")
+    Dir.mkdir("#{dir}/fonts/#{storyFont}/Regular")
+    Dir.mkdir("#{dir}/fonts/#{storyFont}/Bold")
+    regular_path = "#{Rails.root}/app/assets/fonts/#{storyFont}/Regular/#{storyFont}-Regular.woff"
+    bold_path = "#{Rails.root}/app/assets/fonts/#{storyFont}/Bold/#{storyFont}-Bold.woff"
+    font_file_regular = "#{dir}/fonts/#{storyFont}/Regular/#{storyFont}-Regular"
+    font_file_bold = "#{dir}/fonts/#{storyFont}/Bold/#{storyFont}-Bold"
+    fonts << "#{font_file_regular.split('/').last(4).join('/')}.woff"
+    fonts << "#{font_file_bold.split('/').last(4).join('/')}.woff"
+    FileUtils.cp open(regular_path), "#{font_file_regular}.woff"
+    FileUtils.cp open(bold_path), "#{font_file_bold}.woff"
+  end
+  fonts
+end
+
+def find_cues(html)
+  data_cues = html.scan(/span data-cue="(\d+)"/) 
+  if data_cues.size > 0
+    return data_cues[0][0].to_i, data_cues[-1][0].to_i
+  else
+    return -1, -1
+  end
+end
+
+def make_one_page_html(page, story, dir)
+  unless page.illustration_crop.nil?
+    image_file = "#{dir}/image_#{page.position}"
+    FileUtils.cp page.illustration_crop.load_image(:size7), "#{image_file}.jpg"
+  end
+
+  templates_dir = "#{Rails.root}/app/views"
+  av = ActionView::Base.new(templates_dir)
+  av.assign({:page => page})
+
+  html = av.render(:template => "pages/show.epub.erb", 
+                   locals: {
+                     :page => page, 
+                     :@story => story, 
+                     :@additional_illustration_license_types => @additional_illustration_license_types, 
+                     :form_authenticity_token => nil,  
+                     :@offline_processing => true
+                   })
+  html.gsub!("<head>", "<head> \n <style type='text/css'> .audio_selected {color:blue !important;} </style>")
+  html.gsub!("/images/publisher_logo.png", "publisher_logo.png")
+  html.gsub!("/images/level_band.png", "level_band.png")
+
+  min_cue, max_cue = find_cues(html)
+
+  page_image_file_names = []
+  crop_w = 0
+  crop_h = 0
+  if (story.page_orientation == "portrait")
+    crop_w = 796
+    crop_h = 1200
+  end
+
+  if min_cue == -1
+    page_file_name = "#{dir}/#{page.position}.xhtml"
+    f = File.new(page_file_name, 'w')
+    f.puts(html)
+    f.close()
+
+    if (crop_w > 0)
+      kit = IMGKit.new(File.open(page_file_name, "r"), :crop_w => crop_w, :crop_h => crop_h, :width=>1700)
+    else
+      kit = IMGKit.new(File.open(page_file_name, "r"), :width=>1700)
+    end
+    page_image_file_name = "#{dir}/#{page.position}.jpg"
+    file = kit.to_file(page_image_file_name)
+    page_image_file_names << page_image_file_name
+  else
+    min_cue.upto max_cue do |i|
+      page_file_name = "#{dir}/#{page.position}_#{i}.xhtml"
+      f = File.new(page_file_name, 'w')
+      whtml = html.gsub('data-cue="'+i.to_s+'"', 'class="audio_selected" data-cue="'+i.to_s+'"')
+      f.puts(whtml)
+      f.close()
+
+      if (crop_w > 0)
+        kit = IMGKit.new(File.open(page_file_name, "r"), :crop_w => crop_w, :crop_h => crop_h, :width=>1700)
+      else
+        kit = IMGKit.new(File.open(page_file_name, "r"), :width=>1700)
+      end
+
+      page_image_file_name = "#{dir}/#{page.position}_#{i}.jpg"
+      file = kit.to_file(page_image_file_name)
+      page_image_file_names << page_image_file_name
+    end
+  end
+
+  return page_image_file_names
+end
+
+# time looks like: 00_00_03-880
+def conv_time(str)
+  str[1..2].to_i*3600 + str[4..5].to_i*60 + str[7..8].to_i + str[10..12].to_i * 0.001
+end
+
+def get_durations(story, directory)
+    durations = []
+    csv_file = directory.files.get("stories/#{story.id}/csv/#{story.to_param}.csv").public_url 
+    data = open(csv_file)
+    data = data.read    
+    word_data = []
+    CSV.parse(data) do |row|
+      word_data << row
+    end
+    word_times = []
+    word_data[1..-1].each do |row|
+      word_times << row[-1]
+    end
+    0.upto word_times.size-2 do |i|
+      durations << conv_time(word_times[i + 1]) - conv_time(word_times[i])
+    end
+    durations 
+end
+
+def create_cfg_file(story_page_files, durations, dir)
+  cfg_file_name = "#{dir}/ffmpeg.cfg"
+  File.open(cfg_file_name, "w") do |f|
+    durations << durations[-1]
+    0.upto durations.size-1 do |i|
+      f.write "file '#{story_page_files[i]}' \n"
+      f.write "duration #{durations[i]} \n"
+    end
+  end
+  cfg_file_name
+end
+
+def download_audio_file(story, directory, dir)
+    audio_file_main = directory.files.get("stories/#{story.id}/audios/story/#{story.to_param}.mp3").public_url 
+    audio_file_main_name = "#{dir}/audio_main.mp3"
+    File.open(audio_file_main_name, "wb") do |f|
+      f.write(open(audio_file_main).read)
+    end
+    audio_file_cover_name = "#{dir}/audio_cover.mp3"
+    audio_file_cover = directory.files.get("stories/#{story.id}/audios/cover/#{story.to_param}.mp3").public_url 
+    File.open(audio_file_cover_name, "wb") do |f|
+      f.write(open(audio_file_cover).read)
+    end
+    return audio_file_cover_name, audio_file_main_name
+end
+
+def create_video(cover_page_file, audio_file_cover, story_page_files, durations, audio_file_main, dir)
+  ffmpeg_cfg_file = create_cfg_file(story_page_files, durations, dir)
+  fix_for_horizontal_stories = '-vf "scale=trunc(iw/2)*2:trunc(ih/2)*2"'
+  out_cover_file = "#{dir}/out_cover.mp4"
+  out_main_file = "#{dir}/out_main.mp4"
+  `ffmpeg -i #{audio_file_cover} -i #{dir}/1.jpg -strict -2 -pix_fmt yuv420p #{fix_for_horizontal_stories} #{out_cover_file}`
+  `ffmpeg -i #{audio_file_main} -f concat -safe 0 -i #{ffmpeg_cfg_file} -strict -2 -vsync vfr -pix_fmt yuv420p #{fix_for_horizontal_stories} #{out_main_file}`
+  concat_cfg_file = "#{dir}/concat.cfg"
+  File.open(concat_cfg_file, "w") do |f|
+    f.write "file #{out_cover_file} \n"
+    f.write "file #{out_main_file} \n"
+  end
+  video_file_name = "#{dir}/out.mp4"
+  `ffmpeg -f concat -safe 0 -i #{concat_cfg_file} -strict -2 #{video_file_name}`
+  return video_file_name
+end
+
+def save_story_video(story, story_revision, directory)
+    dir = Dir.mktmpdir
+    copy_organization_logo(story, dir)
+    copy_level_bands(story, dir)
+    copy_fonts(story, dir)
+    story_page_files=[]
+    cover_page_file = make_one_page_html(story.front_cover_page, story, dir)[0]
+    story.story_pages.each do |page|
+      story_page_files += make_one_page_html(page, story, dir)
+    end
+    durations = get_durations(story, directory)
+    audio_file_cover_name, audio_file_main_name = download_audio_file(story, directory, dir)
+    video_file = create_video(cover_page_file, audio_file_cover_name, story_page_files, durations, audio_file_main_name, dir)
+end
+

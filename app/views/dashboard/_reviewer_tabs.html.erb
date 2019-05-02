@@ -1,0 +1,23 @@
+<%= render :partial => "dashboard_datatables" %>
+<div class="row full-content-dash prof-act">
+  <div class="col-md-12">
+    <ul id="myTab" role="tablist" class="nav nav-tabs profile">
+      <li role="presentation" class="<%= @current_tab == 'reviewed_stories' ? 'active' : '' %>">
+        <%= link_to "<span>Rated Stories</span>".html_safe , reviewed_stroies_path %>
+      </li>
+       <li role="presentation" class="<%= @current_tab == 'un_reviewed_stories' ? 'active' : '' %>">
+        <%= link_to "<span>Stories to Rate</span>".html_safe , un_reviewed_stories_path %>
+      </li>
+      <li role="presentation" class="<%= @current_tab == 'assign_reviewer' ? 'active' : '' %>">
+        <%= link_to "<span>Rating Resources</span>".html_safe , assign_reviewer_path %>
+      </li>
+      <li role="presentation" class="<%= @current_tab == 'reviewer_analytics' ? 'active' : '' %>">
+        <%= link_to "<span>Analytics</span>".html_safe , reviewer_analytics_path %>
+      </li>
+      <li role="presentation" class="<%= @current_tab == 'reviewer_summary' ? 'active' : '' %>">
+        <%= link_to "<span>Summary</span>".html_safe , reviewer_summary_path %>
+      </li>
+    </ul>
+  </div>
+  <hr>
+</div>

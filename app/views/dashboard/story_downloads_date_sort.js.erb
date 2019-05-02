@@ -1,0 +1,1 @@
+$("#illustrations-list").html("<%= escape_javascript(render :partial => "bulk_downloads", :locals => {:stories => @stories, :flag => @flag,:start_date => @start_date, :end_date => @end_date}) %>");

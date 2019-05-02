@@ -1,0 +1,864 @@
+// Place all the styles related to the profile controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.profile-page{
+  font-family: Raleway;
+  font-size: 16px;
+  margin-top: 20px;
+  padding-left: 0;
+  label{
+    float: left;
+    width: 100%;
+    font-weight: normal;
+  }
+  .pro-inp{
+    height:40px;
+    background-color: #dcdde0;
+    border: 1px solid #bdbdbe;
+    margin-bottom:0;
+    width:100%;
+  }
+  .edit-btn{
+    border-radius: 3px;
+    margin-top: 25px;
+    font-weight:bold;
+  }
+
+  .signup_user .open_sign_up_model {
+    float: left;
+    margin-left: 16px;
+    padding: 8px 0;
+    width: 80%;
+  }
+
+  .signup_user .level-tooltip {
+    position: relative;
+    right: 10px;
+    top: 35px;
+  }
+  
+  .email-pro{
+    width:100%;
+  }
+  .change-pass a{
+    text-decoration:underline;
+    margin-top:8px;
+    background:transparent;
+    border:none;
+    padding:0;
+    color:#000;
+    font-size: 14px;
+  }
+  .disable-delete{
+    cursor: default;
+    background-color: gray !important;
+    border-color: gray !important;
+  }
+}
+
+.bulk-download-signup .modal-content .error {
+  > .controls > input[type="text"] {
+    border: 1px solid #cdcdcd;
+  }
+}
+
+.prof-act {
+  font-family: Raleway;
+  font-size: 16px;
+
+  .col-md-12 {
+    padding: 0;
+  }
+  #myTab.profile{
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  margin-top:20px;
+    li{
+      display: inline-block;
+      float: left;
+      margin-bottom: 4px;
+      a{
+        border:none;
+        background: #fff;
+        border-radius: 0;
+        color: #4a90e2 !important;
+        display: table;
+        font-weight: bold;
+        height: 55px;
+        margin-right: 0;
+        padding: 0px 15px;
+        text-align:center;
+        span {
+          box-sizing: content-box !important;
+          -webkit-box-sizing: content-box !important;
+          display: table-cell;
+          vertical-align: middle;
+        }
+      }
+    }
+    li.active > a, li.active > a:hover, li.active > a:focus{
+      background-color: #fff !important;
+      color: #fff;
+    }
+    li.active > a {
+      border-bottom: 6px solid #4a90e2;
+      cursor: pointer;
+    }
+  }
+}
+
+.user_private_img {
+  margin-top: 20px;
+}
+
+.user_dashboard {
+  .table-heading-row {
+    background-color: #fff;
+    text-transform: uppercase;
+
+    th {
+      border: none;
+      color: #424345;
+      font-size: 12px;
+      letter-spacing: 2px;
+      padding: 12px !important;
+    }
+  }
+
+  .underline-class {
+    a {
+      color: #427fed;
+      font-family: "Raleway";
+      font-weight: bold;
+    }
+  }
+}
+
+.user_org_details {
+  margin-top: 20px;
+}
+
+.hide_mobile_dialog {
+  display: none;
+}
+
+.full-content-dash{
+  hr{
+   border-top: 1px solid rgba(0, 0, 0, 0.12);
+   float: left;
+   width: 100%;
+  }
+}
+
+.user_dashboard_row {
+  font-size: 16px;
+}
+
+.user_dashboard_row td {
+  border-top: 0 !important;
+  padding: 12px !important;
+}
+
+.user_dash_drafts_edit {
+  padding-right: 10px;
+}
+
+.user_dashboard_edit-btn {
+  background-color: #4990e2;
+  border: solid 1px #4990e2;
+  color: #fff;
+  font-size: 14px;
+  font-weight: bold;
+  margin-right: 20px;
+}
+
+.user_dashboard_edit-btn:hover, .user_dashboard_edit-btn:active, .user_dashboard_edit-btn:focus {
+  background-color: #4990e2;
+  border: solid 1px #4990e2;
+  color: #fff;
+}
+
+.profile-page .table-row-details tr:nth-child(odd) {
+  background-color: #f5f5f5;
+}
+.profile-page .table-row-details tr:nth-child(even) {
+  background-color: #fff;
+}
+.review_guidelines{
+  color: #f7931d;
+  font-size: 29px;
+  line-height: 1.2em;
+  margin-top: 5px;
+  font-family: 'Calibri-Bold';
+  width: 100%;
+  float: left;
+}
+
+.illustration_stories:hover{
+  color: #427fed !important;
+}
+.illustration_stories_dropdown{
+  display: inline !important;
+  margin-left: -70px !important;
+  position: relative !important;
+  margin-right: 100px !important; 
+  .illustration_stories{
+   padding: 3px 70px !important;
+  }
+}
+#passwordModal{
+ .modal-body {
+   background: #585c63;
+   label{
+     color:#fff;
+     margin-top: 3px;
+   }
+   .mod-inp{
+     width:100%;
+     height: 40px;
+     border:none;
+     float: left;
+   }
+  }
+  .modal-dialog{
+    width:330px;
+  }
+  .modal-footer{
+    border:none;
+  }
+}
+.un_reviewed_prompt{
+  margin-top: -14px;
+  margin-left: 14px;
+  width: 50%;
+}
+.check-box-prof{
+  float:left;
+  span{
+    float:right;
+    width:95%;
+    margin-top:20px;
+    padding-left: -40px;
+  }
+  label{
+  float:left;
+  width:5%;
+  margin-top:7px;
+  left: 30px;
+  }
+}
+.check-box-prof input[type="checkbox"]{
+    height: 16px;
+    top: 12px;
+    margin-left: 0px;
+    left: -10px;
+    width: 50%;
+  }
+.label_note{
+  margin-bottom: 15px;
+  margin-top: 15px;
+}
+.save_button{
+  margin-top: 3px;
+}
+
+.prof_wrapper {
+    width: 100%;
+  }
+
+.col-md-12 {
+    clear: both;
+  }
+
+  .prof_wrapper .pro-inp {
+    background-color: #fff;
+  }
+  .profile_img {
+    position: relative;
+    display: inline-block;
+    width: 185px;
+  }
+  .profile_img img{
+    border-radius: 100%;
+    width: 150px; 
+    height: 150px; 
+    border: 2px solid #cdcdcd; 
+    padding: 4px;
+    position: relative;
+  }
+
+  .prof_edit {
+    background-color: #585858;
+    color: #e4e4e4;
+    right: 40px;
+    position: absolute;
+    bottom: 36px;
+    border: 1px solid #e4e4e4;
+    border-radius: 50%;
+  }
+
+  .prof_edit i {
+    cursor: pointer;
+    font-size: 20px;
+  }
+
+  .prof_edit label {
+    margin-bottom: 0px;
+    padding: 4px 6px;
+  }
+
+  .num_child {
+    padding-left: 0px;
+  }
+
+  .num_class {
+    padding-right: 0px;
+  }
+
+  .prof_wrapper input[type="file"] {
+    display: none;
+  }
+
+  .prof_edit input[type="file"] {
+    display: none;
+  }
+
+  .prof_wrapper .disabled {
+    opacity: 1;
+  }
+
+  .prof_form {
+    float: left;
+    margin-bottom: 20px;
+    width: 80%;
+  }
+
+  .prof_form .form_head {
+    padding-bottom: 20px;
+    margin-bottom: 0;
+  }
+
+  .prof_form .name_field {
+    padding: 10px 0;
+    position: relative;
+  }
+
+  .prof_form .label_note {
+    margin: 10px 0;
+  }
+
+  .last_name, .email_field, .website_field, .bio_field {
+    position: relative;
+  }
+
+  .prof_form .check-box-prof {
+    float: inherit;
+  }
+  
+  .prof_form .check-box-prof input[type="checkbox"] {
+    top: -23px;
+    left: -30px;
+  }
+
+  .prof_form .check-box-prof {
+    float: left;
+    margin-top: 10px;
+  }
+
+  .prof_form .check-box-prof span {
+    padding-left: 20px;
+    margin: 0;
+    width: 100%;
+  }
+
+  .prof_form .check-box-prof label {
+    min-height: 0;
+    padding-top: 0;
+  }
+
+  .prof_form .change-pass {
+    margin: 10px 0;
+  }
+
+  .prof_form .prof_website {
+    margin: 10px 0;
+  }
+
+  .prof_form .prof_bio {
+    margin: 10px 0;
+  }
+
+  .prof_form .signup_user {
+    float: left;
+    margin-top: 15px;
+    position: relative;
+    left: -3px;
+    width: 30%;
+  }
+
+  .profile-page .edit-btn {
+    margin-top: 10px;
+  }
+
+  .prof_user .open_sign_up_model {
+    margin-left: 198px !important;
+    margin-top: 0;
+    margin-bottom: 15px;
+    width: 30% !important;
+  }
+
+  .prof_user .level-tooltip {
+    top: 10px !important;
+  }
+
+  .prof_form .open_sign_up_model {
+    margin-left: 0px !important;
+  }
+
+  .prof_form .save_button {
+    float: left;
+    left: 0px;
+  }
+
+  .prof_read_pre {
+    clear: both;
+    margin: 10px 0;
+  }
+
+  .prof_read_pre h2 {
+    margin: 10px 0;
+  }
+
+  .prof_read_pre .lang_pre {
+    padding-right: 15px !important;
+  }
+  .org_details_form {
+    font-weight: bold !important;
+  }
+
+  .org_form .pro-inp {
+    height: 40px;
+  }
+
+  .org_form .name_field {
+    padding: 0;
+  }
+
+  .org_form .save_button {
+    margin-top: 10px;
+  }
+
+  .org_form .edit-btn {
+    font-weight: bold;
+  }
+
+  //Pagination
+
+  .pagination {
+    font-family: "Raleway";
+    font-size: 16px;
+    text-align: center;
+
+    span {
+      background: none;
+      margin-right: 0;
+      a {
+        border: 0;
+        box-shadow: unset;
+        color: rgba(0, 0, 0, 0.54);
+        font-weight: bold;
+        text-shadow: unset;
+      }
+    }
+  }
+
+  .pagination span.prev a, .pagination span.next a{
+    background-color: #f9f9f9;
+    border: 1px solid #d0d0d0;
+    border-radius: 4px;
+    color: #101010;
+    font-weight: bold;
+  }
+
+  .pagination span.prev a, .pagination span.next a{
+    padding: 8px 12px;
+  }
+
+  .pagination span.current {
+    background: none;
+    border: 0;
+    box-shadow: unset;
+    color: #4990e2;
+    font-weight: bold;
+    text-shadow: unset;
+    padding: 0;
+  }
+
+  .profile-page #search-details-dropdown>div.dropdown .dropdown-toggle {
+    float: inherit !important;
+    padding: 4px 0 !important;
+    position: relative;
+    top: 5px;
+    width: 20px !important;
+  }
+
+  @-moz-document url-prefix() { 
+    .profile-page #search-details-dropdown>div.dropdown .dropdown-toggle {
+       display: inline-block;
+       top: 8px;
+    }
+  }
+
+  .profile-page #search-details-dropdown>div.dropdown .dropdown-toggle>i {
+    display: block;
+    float: inherit !important;
+    height: auto;
+    text-align: center;
+    width: auto;
+  }
+
+  .profile-page .modal-body .edit-btn {
+    display: block;
+    float: initial;
+    margin: 0 auto;
+    margin-top: 15px;
+  }
+
+@media screen and (min-width: 1024px) and (max-width: 1280px) {
+    .prof_form {
+      width: 80%;
+    }
+
+    .prof_user .open_sign_up_model {
+      width: 34% !important;
+    }
+
+    .org_form .save_button {
+      left: 4px !important;
+    }
+
+    .prof_form .signup_user .level-tooltip {
+      right: -8%;
+    }
+  }
+
+  @media (max-width: 1200px) {
+    .prof-act {
+      font-size: 14px;
+      overflow-x: auto;
+      white-space: nowrap;
+      overflow-scrolling: touch;
+      -ms-overflow-style: -ms-autohiding-scrollbar;
+      #myTab.profile{
+        li{
+          float: inherit;
+          margin-bottom: -1px;
+          width: inherit !important;
+        }
+      }
+    }    
+
+    .profile-page .edit-btn{
+      margin-right:0;
+    }
+
+    .prof_user .level-tooltip {
+      right: -4px !important;
+    }
+  }
+  @media screen and (min-width: 768px) and (max-width: 1023px) {
+    .prof_form .form_head {
+      line-height: 1.4em;
+    }
+
+   .prof_form {
+      width: 75%;
+    }
+
+    .check-box-prof input[type="checkbox"] {
+      width: 100%;
+    }
+
+    .prof_form .signup_user {
+      width: 66%;
+    }
+
+    .prof_user .open_sign_up_model {
+      margin-left: 202px !important;
+      width: 34% !important;
+    }
+
+    .prof_form .signup_user .level-tooltip {
+      right: -8%;
+    }
+
+    .prof_form .save_btn .edit-btn{
+      margin-left: 50px;
+    }
+  }
+
+  @media (max-width: 991px) {
+    .profile-page {
+      overflow-x: auto;
+      white-space: nowrap;
+      overflow-scrolling: touch;
+      -ms-overflow-style: -ms-autohiding-scrollbar;
+      
+      .edit-btn{
+        margin-left: 0px;
+        float: left;
+      }
+    }
+    .user_dash_details, .user_org_details {
+      white-space: initial;
+    }
+    .user_dash_org_download, .user_private_img {
+      overflow-x: auto;
+      white-space: nowrap;
+      overflow-scrolling: touch;
+      -ms-overflow-style: -ms-autohiding-scrollbar;
+    }
+    #search-details-dropdown .dropdown-menu {
+      .illustration_stories {
+        padding: 3px 10px !important;
+        white-space: inherit;
+      }
+    }
+
+    #search-details-dropdown a {
+      margin-left: 10px !important;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    .prof_form .form_head {
+      padding-top: 15px;
+      padding-bottom: 0;
+    }
+
+   .prof_form {
+      width: 86%;
+    }
+
+    .user_dashboard .table-heading-row th {
+      font-size: 0.6em;
+      letter-spacing: 0;
+    }
+
+    .user_dashboard_row td {
+      font-size: 0.8em !important;
+    }
+
+    .profile-page .change-pass a {
+      margin-left: 0;
+      margin-top: 20px;
+    }
+
+    .prof_form .check-box-prof {
+      margin-top: 0;
+    }
+
+    .prof_form .check-box-prof span {
+      margin-bottom: 0;
+      padding-left: 10px;
+    }
+
+    .prof_form .check-box-prof input[type="checkbox"] {
+      left: -36px;
+      top: -32px;
+      width: 20px;
+    }
+
+    .prof_form .signup_user .level-tooltip {
+      right: -12%;
+      top: 100px;
+    }
+
+    .org_form .save_button {
+      margin-top: 0;
+    }
+    .full-content-dash{
+      #myTab.adult_contest{
+        li a {
+          font-size: 12px;
+          width: auto;
+        }
+      }
+    }
+    .profile-page {
+      .pro-inp{
+        float:left;
+      }
+      .change-pass a{
+        margin-top: 30px;
+      }
+    }
+    .prof_form .num_last_class {
+      padding: 0;
+    } 
+    .user_email_preference{
+      width:200px;
+    }
+    .check-box-prof{
+      width: 100%;
+      margin-left: 20px;
+    }
+     .full-content-dash #myTab.content-manager li a {
+       font-size: 12px;
+       width: 100px;
+     }
+    .prof_user .open_sign_up_model {
+      margin-left: 14px !important;
+      width: 80% !important;
+    }
+    .prof_form .save_btn .edit-btn{
+      margin-left: 20px;
+    }
+    .prof_read_pre .lang_pre {
+      padding-right: 0px !important;
+    }
+    .num_class {
+      padding-left: 0;
+    }
+    .num_child {
+      padding-right: 0px;
+    }
+    .user_dashboard_edit-btn {
+      font-size: 12px;
+    }
+    .user_dashboard_row .hide-in-edit-mob {
+      padding: 12px 1px !important;
+
+      .user_dash_drafts_edit {
+        padding-right: 2px;
+      }
+
+      a {
+        float: left;
+      }
+    }
+    #search-details-dropdown .dropdown label {
+      width: 20px !important;
+    }
+  }
+
+  @media screen and (min-width: 736px) and (max-width: 767px) {
+    .prof_form .check-box-prof input[type="checkbox"] {
+      top: -24px !important;
+      left: -50px !important;
+    }
+
+    .prof_form .signup_user .level-tooltip {
+      right: 54% !important;
+    }
+  }
+
+  @media screen and (min-width: 667px) and (max-width: 735px) {
+    .prof_form .check-box-prof input[type="checkbox"] {
+      top: -24px !important;
+      left: -50px !important;
+    }
+
+    .prof_form .signup_user .level-tooltip {
+      right: 50% !important;
+    }
+  }
+
+  @media (max-width: 600px) {
+    #search-details-dropdown {
+      width: 80px !important;
+
+      .dropdown label {
+        width: 30px !important;
+      }
+    }
+  }
+
+  @media screen and (min-width: 480px) and (max-width: 666px) {
+    .prof_form .check-box-prof input[type="checkbox"] {
+      top: -24px !important;
+      left: -50px !important;
+    }
+
+    .prof_form .signup_user .level-tooltip {
+      right: 29% !important;
+    }
+  }
+
+  @media (max-width: 480px) {
+  .full-content-dash #myTab.content-manager li a {
+     font-size: 0.5em;
+     width: 65px;
+  }
+  .table-heading-row th{
+     font-size:0.5em;
+  }
+  .profile-page .edit-btn{
+     padding: 5px 18px;
+     font-size: 1em;
+  }
+  .table-striped .table-row-details td{
+     font-size: 0.6em;
+  }
+  .label_note{
+    float: left;
+  }
+  .check-box-prof{
+    float:left;
+    margin-top:-72px;
+    span{
+      float:right;
+      width:96%;
+      margin-top:20px;
+    }
+    label{
+      float: left;
+      width: 3% !important;
+      margin-top: 7px;
+      left: 16px;
+    }
+  }
+  .save_button{
+    left: 0px;
+    top: 10px;
+  }
+  #search-details-dropdown .dropdown label {
+    width: 10px !important;
+  }
+}
+
+  @media screen and (min-width: 414px) and (max-width: 479px) {
+    .prof_form .check-box-prof input[type="checkbox"] {
+      top: -24px !important;
+    }
+
+    .prof_form .signup_user .level-tooltip {
+      right: 16% !important;
+    }
+  }
+
+  @media screen and (min-width: 375px) and (max-width: 413px) {
+    .prof_form .check-box-prof input[type="checkbox"] {
+      top: -24px !important;
+    }
+
+    .prof_form .signup_user .level-tooltip {
+      right: 6% !important;
+    }
+  }
+  @media screen and (min-width: 360px) and (max-width: 374px) {
+    .prof_form .signup_user .level-tooltip {
+      right: 2% !important;
+    }
+  }
+
+  @media screen and (min-width: 320px) and (max-width: 340px) {
+    .full-content-dash{
+      #myTab.adult_contest{
+        li a {
+          font-size: 12px;
+          width: 150px;
+        }
+      }
+    }
+  }

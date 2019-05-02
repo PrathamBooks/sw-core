@@ -1,0 +1,250 @@
+<%= simple_form_for :search, url: '/search' , method: :get, html: { class: 'form-vertical' } do |f| %>
+<section id="search-results" >
+    <div class="row top-border">
+    	<a id="apply-filters" class="btn-slide slide-left-sidebar" href="#">Apply filters</a>
+    	<div class="col-md-3 col-sm-5 books-cat-filter">
+      <h2 class="mobile-hide">modify search</h2>
+      <div class="left-sidebar">
+      <h3 id="sort-head-id" class="sort-head hide">sort by</h3>
+      <div class="filters hide" viewChild="5">
+      <ul class="myList sort-full">
+ 		   <li><input type="radio" value="New Arrivals" name="New Arrivals">New Arrivals</li>
+ 		   <li> <input type="radio" value="Most Read" name="Most Read">Most Read</li>
+ 		   <li><input type="radio" value="Most Liked" name="Most Liked">Most Liked</li>
+ 		   <li><input type="radio" value="Recommended" name="Recommended">Recommended</li>
+ 		 </ul>
+ 	  </div>
+    <%= f.input :query, as: :hidden , :input_html => {:value =>  @search_params[:query] ?  @search_params[:query] : '' } %>
+	  <h3 id="cat-head-id" class="cat-head">Categories</h3>
+	  <div class="filters" viewChild="5">
+	  <ul class="myList cate-full">
+        <li>
+          <span>
+            <input id="all_categories" type="checkbox" value="all" name="search[categories][]" <%= "checked" if @search_params[:categories].nil? || @search_params[:categories].empty? %>>
+                    <label for="all_categories" class="collection_check_boxes">All Categories</label>
+          </span>
+        </li>    
+      <% sorted_story_categories.each do |sc| %>
+  	  	<li>
+          <span>
+            <input type="checkbox" class="category_check_box" value="<%= sc.name %>" name="search[categories][]" id="search_categories_<%= sc.name.underscore %>" <%= checked(@search_params[:categories],sc.name) %>>
+            <label for="search_categories_<%= sc.name.underscore %>" class="collection_check_boxes"><%= sc.name %></label>
+          </span>
+        </li>
+      <% end %>
+		</ul>
+		<div class="loadMore">&#9660 Show more</div>
+		<div class="showLess">&#9650 Show less</div>
+		</div>
+	 <h3 id="level-head-id" class="level-head">Language</h3>
+	  <div class="filters" viewChild="5">
+	  <ul class="myList level-full">
+      <li>
+          <span>
+            <input id="all_languages" type="checkbox" value="all" name="search[languages][]" <%= "checked" if @search_params[:languages].nil? || @search_params[:languages].empty? %>>
+                    <label for="all_languages" class="collection_check_boxes">All Languages</label>
+          </span>
+      </li>  
+      <% Language.published_languages.each do |lang| %>
+        <li>
+          <span>
+            <input type="checkbox" class="language_check_box" value="<%= lang.name %>" name="search[languages][]" id="search_categories_<%= lang.name.underscore %>" <%= checked(@search_params[:languages],lang.name) %> >
+            <label for="search_categories_<%= lang.name.underscore %>" class="collection_check_boxes"><%= lang.name %></label>
+          </span>
+        </li>
+      <% end %>
+		</ul>
+		<div class="loadMore">&#9660 Show more</div>
+		<div class="showLess">&#9650 Show less</div>
+		</div>
+    <h3 id="lang-head-id" class="lang-head">Reading Level</h3>
+    <div class="filters" viewChild="5">
+      <ul class="myList lang-full">
+        <li>
+        <span>
+          <input id="all_reading_levels"  type="checkbox" value="all" name="search[reading_levels][]" <%= "checked" if @search_params[:reading_levels].nil? || @search_params[:reading_levels].empty? %>>
+          <label for="all_reading_levels" class="collection_check_boxes">All Reading Levels</label>
+        </span>
+        </li>
+        <% Story::READING_LEVELS.keys.each do |level| %>
+          <li>
+            <span>
+              <input type="checkbox" class="reading_level_check_box" value="<%= level %>" name="search[reading_levels][]" id="search_categories_<%= level %>" <%= checked(@search_params[:reading_levels],level) %> >
+              <label for="search_categories_<%= level %>" class="collection_check_boxes">Level <%= level %></label>
+              <i class="fa fa-info-circle level-tooltip" data-toggle="tooltip" data-title="<%= reading_level_tooltip(level) %>"></i>
+            </span>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+		<div class="ser-home-filters">
+            <div class="col-md-6">
+                <div class="show-bt-home">
+                  <input type="submit" value="Show" name="commit" class="btn-slide animation animated-item-3 cat-home-show">
+                </div>
+            </div>
+            <div class="col-md-6">
+            <% unless (!@filters.nil? && @filters[:language].nil? && @filters[:categories].nil? && @filters[:reading_level].nil?) %>
+    		 <div class="reset-ser-bt1"><%= link_to "Reset", search_path(:search => {:query => @search_params[:query]}), class:'btn-slide animation animated-item-3 cat-reset' %>
+			</div>
+			<% end %>                
+                
+            </div>
+        </div>
+	</div>
+	</div>
+    	<div class="col-md-9 col-sm-7">
+    		<div class="row results-row">
+  	<div class="col-md-6">
+	    <div class="search-txt">
+	      
+	      <span class="results-searched"><%=  @results && @results.empty? ? "0" : @results.total_count %> results found 
+          <%= raw("<span>for <span class='keyword'>#{@search_params[:query]}</span></span>") unless @search_params[:query].blank? %></span>
+	    </div>
+    </div>
+  </div>
+  <div class="row right-book search-page">
+    <% unless @results.empty? %>
+      <% @results.each do |result| %>
+          <div class="item">
+          	<div class="well">
+              	<div class="books-full-container">
+                  <div class="book-img"><img src="<%= asset_path(result['image_url']) rescue '/assets/original/missing.png'%>">
+    	              <% if result.recommended? %>
+    	                <div class="recommended"><%= image_tag("recommended.png",width: 50,height: 50) %></div>
+    	              <% end %>
+      			        <div class="reader-btns search-for">
+      		             <div class="hover-back">
+      		              <a class="btn-slide animation animated-item-3" href="#"><i class='fa fa-eye'></i></a>
+      		              <a class="btn-slide animation animated-item-3" href="#"><i class="fa fa-share"></i></a>
+      		              <a class="btn-slide animation animated-item-3" href="#"><i class="fa fa-download"></i></a>
+      		            </div>
+      		          </div>
+                  </div>
+                </div>
+                <div class="sear-books-details">
+                      <div class="book-titl <%= result.script %>"><%= link_to(result.title, react_stories_show_path(result.url_slug)) %></div>
+                      <div class="author-sear"><em>by <span class="auth-nam"><%= result.authors.join(', ') %></span></em></div>
+                      <div class="search-lang"><span>Language  </span><strong class="lang-read"><%= result.language %></strong></div>
+                      <div class="level-lang">Reading <strong>Level  <span class="level-read"><%= result.reading_level %></span></strong></div>                  
+                      <div class="views"><a href="#"><i class='fa fa-eye fa-2x'></i></a><span>1100</span></div> 
+                      <div class="likes"><a href="#"><i class='fa fa-eye fa-2x'></i></a> <span>367</span></div>                 
+                      <div class="desc-sear"><span class="synop-desc <%= result.script %> showmore"><%= result.synopsis %></span></div>
+                </div>
+            </div>
+          </div>
+      <% end %>   
+   </div>
+   <div class="pull-right">
+   <%= paginate @results%>
+    <% end %>
+    </div>
+   </div>
+</section>
+<% end %>
+
+<script>
+$(document).ready(function () {
+    $('[data-toggle="tooltip"]').tooltip();
+    $(".filters").each(function (index) {
+        $(this).find('.myList li:lt(' + $(this).attr('viewChild') + ')').show();
+    });
+
+    $('.loadMore').click(function () {
+        var $myWrapper= $(this).closest('.filters');
+        var x= parseInt($myWrapper.attr('viewChild'),10);
+        var liSize=$myWrapper.find('.myList li').size();
+        x = (x + 21 <= liSize) ? x + 21 : liSize;
+        $myWrapper.attr('viewChild',x)
+        $myWrapper.find('.myList li:lt(' + x + ')').show();
+        $myWrapper.find('.showLess').show();
+        if (x == liSize) {
+            $myWrapper.find('.loadMore').hide();
+        }
+    });
+    $('.showLess').click(function () {
+        var $myWrapper= $(this).closest('.filters');
+        var x= $myWrapper.attr('viewChild')
+        x = (x - 18 < 0) ? 5 : x - 18;
+        $myWrapper.attr('viewChild',x)
+        $myWrapper.find('.myList li').not(':lt(' + x + ')').hide();
+        $myWrapper.find('.loadMore').show();
+        $myWrapper.find('.showLess').show();
+        if (x == 5) {
+            $myWrapper.find('.showLess').hide();
+        }
+    });
+});
+
+$(document).ready(function () {
+  $(".slide-left-sidebar").click(function(){
+    $(".left-sidebar").animate({width: 'toggle'}).focus();
+    if($('#apply-filters').hasClass('tog-open')){
+    $(".slide-left-sidebar").removeClass('tog-open');
+    } else {
+    $(".slide-left-sidebar").addClass('tog-open');
+    }
+    });
+  $(".cat-head").click(function(){
+    $(".cate-full").slideToggle('fast');
+    if($('#cat-head-id').hasClass('tog-open')){
+    $(".cat-head").removeClass('tog-open');
+    } else {
+    $(".cat-head").addClass('tog-open');
+    }
+    });
+  $(".lang-head").click(function(){
+    $(".lang-full").slideToggle('fast');
+    if($('#lang-head-id').hasClass('tog-open')){
+    $(".lang-head").removeClass('tog-open');
+    } else {
+    $(".lang-head").addClass('tog-open');
+    }
+    });
+  $(".level-head").click(function(){
+    $(".level-full").slideToggle('fast');
+    if($('#level-head-id').hasClass('tog-open')){
+    $(".level-head").removeClass('tog-open');
+    } else {
+    $(".level-head").addClass('tog-open');
+    }
+    });
+  $(".sort-head").click(function(){
+    $(".sort-full").slideToggle('fast');
+    if($('#sort-head-id').hasClass('tog-open')){
+    $(".sort-head").removeClass('tog-open');
+    } else {
+    $(".sort-head").addClass('tog-open');
+    }
+    });
+  $('.showmore').shorten({
+    moreText: 'Show more',
+    lessText: 'Show less',
+    showChars: '50'
+  });
+});
+
+var unselectFilters = function(all,other){
+    
+    $(all).click(function(){
+     if($(this).is(':checked')){
+       $(other).prop('checked', false);
+     }
+    });
+
+    $(other).click(function(){
+     if($(all).is(':checked')){
+       $(all).prop('checked', false);
+     }
+    });
+ }
+
+ 
+ $(function(){
+   unselectFilters('#all_categories','.category_check_box');
+   unselectFilters('#all_languages','.language_check_box');
+   unselectFilters('#all_reading_levels','.reading_level_check_box');
+ });
+
+</script>
+

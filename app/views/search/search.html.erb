@@ -1,0 +1,535 @@
+<%= simple_form_for :search, url: '/search' , method: :get, :remote => true , html: { class: 'form-vertical' , id: "story_search_form"} do |f| %>
+  <section id="search-results" class="<%= current_user && current_user.organization.present? ? 
+  'org_search_download' : ''%>" >
+  <div class="row top-border">
+  <div class="input-group tab-search filter_search">
+          <div class="control-group string required search_query">
+            <div class="controls">
+              <input class="form-control" placeholder="Search for stories, languages, authors or categories" type="text" id="search_query" value=<%= @search_query ? @search_query : '' %> >
+              <% if @bulk_download_page %>
+                <input type="hidden" value=<%=@bulk_download_page%> name="bulk_download">
+              <% end %>
+            </div>
+          </div>
+          <div class="input-group-btn tooltip-icon">
+            <button type="submit" name="commit" class="btn btn-warning" onclick="Story.submitForm();">
+              <span class='glyphicon glyphicon-search'></span>
+              <span class="arrow-left"></span>
+            </button>
+          </div>
+        </div>
+    <a id="apply-filters" class="btn-slide slide-left-sidebar" href="#">Apply filters</a>
+    <div class="col-md-3 col-sm-5 books-cat-filter">
+      
+      <h2 class="mobile-hide">Modify Search</h2>
+      <div class="left-sidebar">
+          <h3 id="sort-head-id" class="sort-head">Sort By</h3>
+          <a id="ClearSortRead" href="javascript:void(0);" class="hide">Clear Sort</a>
+        <div class="filters" viewChild="5">
+          <ul id="StorySortOptions" class="myList sort-full">
+            <li><input type="radio" value="published_at" name="sort">New Arrivals</li>
+            <li> <input type="radio" value="reads" name="sort">Most Read</li>
+            <li><input type="radio" value="likes" name="sort">Most Liked</li>
+            <li><input type="radio" value="recommendation" name="sort">Editor's Picks</li>
+            <% if current_user && current_user.content_manager? %>
+             <li><input type="radio" value="ratings" name="sort">Ratings</li>
+            <% end %>
+            <div class="col-md-6 go_button" style="margin-left: 88px;">
+              <button type="btn" value="Show" name="commit" class="btn-slide animation animated-item-3 cat-home-show" onclick="Story.submitForm();">Go</button>
+            </div>
+          </ul>
+        </div>
+        
+       <%if (current_user && current_user.organization.present?) && @bulk_download_page %>
+
+        <h3 id="cat-head-id" class="cat-head">Bulk Download</h3>
+          <div class="filters" viewChild="5">
+            <ul id="BulkOptions" class="myList cate-full">
+              <li>
+                <span>
+                  <input id="show_all_stories" type="checkbox" checked="true" value="all">
+                  <label>All stories</label>
+                </span>
+              </li>
+              <li>
+               <span>
+                 <input id="show_downloaded" type="checkbox" value="not_downloaded">
+                 <label>Not Downloaded</label>
+               </span>
+              </li>
+            </ul>
+            <div class="col-md-6 go_button" style="margin-left: 111px;">
+              <button type="btn" value="Show" name="commit" class="btn-slide animation animated-item-3 cat-home-show" onclick="Story.submitForm();">Go</button>
+          </div>
+          </div>
+        <% end %>
+
+        <% if current_user && current_user.content_manager? %>
+         <h3 id="level-head-id" class="level-head">Type of Story</h3>
+         <div class="filters" viewChild="5">
+          <ul id="Derivation_Type" class="myList level-full">
+            <li>
+             <span>
+              <input id="all_derivation_types"  type="checkbox" value="all" name="search[derivation_type][]" <%= "checked" if @search_params[:derivation_type].nil? || @search_params[:derivation_type].empty? %>>
+              <label for="all_derivation_types" class="collection_check_boxes">All Story Types</label>
+             </span>
+            </li>
+            <li>
+              <span>
+               <input type="checkbox" class="derivation_type_check_box" value="nil" name="search[derivation_type][]" id="search_categories_original" <%= checked(@search_params[:derivation_type],"original") %> >
+               <label for="search_categories_original" class="collection_check_boxes">Original</label>
+             </span>
+            </li>
+            <li>
+              <span>
+               <input type="checkbox" class="derivation_type_check_box"  value="translated" name="search[derivation_type][]" id="search_categories_translation" <%= checked(@search_params[:derivation_type],"translation") %> >
+               <label for="search_categories_translation" class="collection_check_boxes">Translation</label>
+             </span>
+            </li>
+            <li>
+              <span >
+               <input type="checkbox"  class="derivation_type_check_box" value="relevelled" name="search[derivation_type][]" id="search_categories_re_level" <%= checked(@search_params[:derivation_type],"re_level") %> >
+               <label for="search_categories_re_level" class="collection_check_boxes">Re-level</label>
+              </span>
+            </li>
+          </ul>
+          <div class="col-md-6 go_button" style="margin-left: 111px;">
+              <button type="btn" value="Show" name="commit" class="btn-slide animation animated-item-3 cat-home-show" onclick="Story.submitForm();">Go</button>
+          </div>
+         </div>
+        <% end %>
+
+
+        <h3 id="level-head-id" class="level-head">Reading Level</h3>
+        <div class="filters" viewChild="5">
+          <ul id="StoryLevels" class="myList level-full">
+            <li>
+            <span>
+              <input id="all_reading_levels"  type="checkbox" value="all" name="search[reading_levels][]" <%= "checked" if @search_params[:reading_levels].nil? || @search_params[:reading_levels].empty? %>>
+              <label for="all_reading_levels" class="collection_check_boxes">All Reading Levels</label>
+            </span>
+            </li>
+            <% Story::READING_LEVELS.keys.each do |level| %>
+              <li>
+            <span>
+              <input type="checkbox" class="reading_level_check_box" value="<%= level %>" name="search[reading_levels][]" id="search_categories_<%= level %>" <%= checked(@search_params[:reading_levels],level) %> >
+              <label for="search_categories_<%= level %>" class="collection_check_boxes">Level <%= level %></label>
+              <i class="fa fa-info-circle level-tooltip" data-toggle="tooltip" data-title="<%= reading_level_tooltip(level) %>"></i>
+            </span>
+            </li>
+          <% end %>
+          </ul>
+          <div class="col-md-6 go_button" style="margin-left: 111px;">
+              <button type="btn" value="Show" name="commit" class="btn-slide animation animated-item-3 cat-home-show" onclick="Story.submitForm();">Go</button>
+          </div>
+        </div>
+
+        <h3 id="lang-head-id" class="lang-head">Language</h3>
+        <div class="filters" viewChild="5">
+          <ul id="StoryLanguages" class="myList lang-full">
+            <li>
+            <span>
+              <input id="all_languages" type="checkbox" value="all" name="search[languages][]" <%= "checked" if @search_params[:languages].nil? || @search_params[:languages].empty? %>>
+              <label for="all_languages" class="collection_check_boxes">All Languages</label>
+            </span>
+            </li>  
+            <% Language.published_languages.each do |lang| %>
+              <li>
+            <span>
+              <input type="checkbox" class="language_check_box" value="<%= lang.name %>" name="search[languages][]" id="search_categories_<%= lang.name.underscore %>" <%= checked(@search_params[:languages],lang.name) %> >
+              <label for="search_categories_<%= lang.name.underscore %>" class="collection_check_boxes"><%= lang.name %></label>
+            </span>
+            </li>
+          <% end %>
+          </ul>
+          <div class="loadMore">&#9660 Show more</div>
+          <div class="showLess">&#9650 Show less</div>
+          <div class="col-md-6 go_button">
+              <button type="btn" value="Show" name="commit" class="btn-slide animation animated-item-3 cat-home-show" onclick="Story.submitForm();">Go</button>
+          </div>
+        </div>
+
+        <h3 id="lang-head-id" class="lang-head">Publisher</h3>
+        <div class="filters" viewChild="5">
+          <ul id="StoryPublishers" class="myList lang-full">
+            <li>
+            <span>
+              <input id="all_publishers" type="checkbox" value="all" name="search[organizations][]" <%= "checked" if @search_params[:organizations].nil? || @search_params[:organizations].empty? %>>
+              <label for="all_publishers" class="collection_check_boxes">All</label>
+            </span>
+            </li>
+            <% Organization.story_publishers.each do |organization| %>
+                <li>
+            <span>
+              <input type="checkbox" class="publisher_check_box" value="<%= organization.organization_name %>" name="search[organizations][]" id="search_categories_<%= organization.organization_name.underscore %>" <%= checked(@search_params[:organizations],organization.organization_name) %> >
+              <label for="search_categories_<%= organization.organization_name.underscore %>" class="collection_check_boxes"><%= organization.organization_name %></label>
+            </span>
+                </li>
+            <% end %>
+            <li>
+                <span>
+                  <input type="checkbox" class="publisher_check_box" value="true" name="search[child_created]" id="search_categories_child-created" <%= checked(@search_params[:child_created], true) %> >
+                  <label for="search_categories_child_created" class="collection_check_boxes">Created by Children</label>
+                </span>
+            </li>
+            <li>
+                <span>
+                  <input type="checkbox" class="publisher_check_box" value="storyweaver" name="search[organizations][]" id="search_categories_storyweaver" <%= checked(@search_params[:organizations],'storyweaver') %> >
+                  <label for="search_categories_storyweaver" class="collection_check_boxes">StoryWeaver Community</label>
+                </span>
+            </li>
+          </ul>
+          <div class="loadMore">&#9660 Show more</div>
+          <div class="showLess">&#9650 Show less</div>
+          <div class="col-md-6 go_button">
+              <button type="btn" value="Show" name="commit" class="btn-slide animation animated-item-3 cat-home-show" onclick="Story.submitForm();">Go</button>
+          </div>
+        </div>
+
+        <h3 id="cat-head-id" class="cat-head">Category</h3>
+        <div class="filters" viewChild="5">
+          <ul id="StoryCategories" class="myList cate-full">
+            <li>
+            <span>
+              <input id="all_categories" type="checkbox" value="all" name="search[categories][]" <%= "checked" if @search_params[:categories].nil? || @search_params[:categories].empty? %>>
+              <label for="all_categories" class="collection_check_boxes">All Categories</label>
+            </span>
+            </li>    
+            <% sorted_story_categories.each do |sc| %>
+              <li>
+            <span>
+              <input type="checkbox" class="category_check_box" value="<%= sc.name %>" name="search[categories][]" id="search_categories_<%= sc.name.underscore %>" <%= checked(@search_params[:categories],sc.name) %>>
+              <label for="search_categories_<%= sc.name.underscore %>" class="collection_check_boxes"><%= sc.name %></label>
+            </span>
+            </li>
+          <% end %>
+          </ul>
+          <div class="loadMore">&#9660 Show more</div>
+          <div class="showLess">&#9650 Show less</div>
+        </div>
+        
+        <div class="ser-home-filters">
+          <div class="col-md-6">
+            <div class="show-bt-home">
+              <button type="btn" value="Show" name="commit" class="btn-slide animation animated-item-3 cat-home-show" onclick="Story.submitForm();">Go</button>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="show-bt-home">
+              <button type="btn" value="Show" name="commit" class="btn-slide animation animated-item-3 cat-home-show" onclick="Story.resetForm();">Reset</button>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <% unless (!@filters.nil? && @filters[:language].nil? && @filters[:categories].nil? && @filters[:reading_level].nil? && @filters[:derivation_type].nil?) %>
+              <div class="reset-ser-bt1"><%= link_to "Reset", search_path(:search => {:query => @search_params[:query]}), class:'btn-slide animation animated-item-3 cat-reset' %>
+              </div>
+            <% end %>                
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-9 col-sm-7 search-result search_filter">
+      <%if current_user && current_user.organization.present? %>
+         <ul class="nav nav-tabs nav-tabs-alt nav-tabs-image-drawer" role="tablist">
+          <li role="presentation" class="<%= @bulk_download == 'reader' ? 'active' : ''%>">
+            <a href="<%= search_path %>"  remote="true">Read Now</a>
+          </li>
+          <li role="presentation" class="<%= @bulk_download == 'bulk_download' ? 'active' : '' %>">
+            <a href="<%= search_path(:bulk_download => true) %>" remote="true">Download Now</a>
+          </li>
+        </ul>
+      <%end%>
+         <%if @bulk_download_page %>
+          <div class="downloadOp-container">
+            <div>
+              <input type="checkbox" id="select_all">
+              <label class="panel-filter-label" >Select All</label>
+            </div>
+            <div>
+              <input type="checkbox" id="de_select_all">
+              <label class="panel-filter-label">De-select All</label>
+            </div>
+            <div>
+              <select class="select-images-sort form-control no-radius download_format">
+                <option value="">Download story as</option>
+                <option value="low_pdf">Low resolution pdf</option>
+                <option value="high_pdf">A4 size (Print ready pdf)</option>
+                <option value="epub">epub</option>
+                <option value="text_only">Text only</option>
+                <option value="images_only">Images only</option>
+              </select>
+            </div>
+
+            <div class="move-right">
+              <a id = "collect_stories" class="btn btn-app btn-brand-1 btn-block" remote="true" style="color:black">Download</a>
+            </div>
+          </div>
+      <% end %>
+
+      <div class="row results-row">
+        <div class="col-md-6">
+          <div id="query_holder" class="search-txt">
+
+          </div>
+        </div>
+      </div>
+      <div class="search-page">
+        <div id="story-holder">
+          <div id="DIV_STORY_FEED">
+
+          </div>
+          <div id="NO_RESULTS" class="results-searched hide">
+            <div>Oops! We couldn't find anything related to your search.</div>
+            <div class="no-results-found-try">Here is what you can try:</div>
+            <ul>
+              <li>Make sure the spelling is correct.</li>
+              <li>Search with other words that are similar in meaning.</li>
+              <li>Search with fewer filters.</li>
+              <li>Search using any other language that StoryWeaver supports.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    <div id="storyReader"></div>
+    </section>
+  <% end %>
+  <% if @contest.present? %>
+    <%#= render :partial => "story_card", locals(contest_id: @contest.id ) %>
+    <%= render :partial => "story_card" %>
+  <% else %>
+    <%= render :partial => "story_card" %>
+  <% end %>
+
+  <div id="download_limit_alert" title="Bulk Download Limit" class="modal">You can download only 10 stories</div>
+  <div id="selected_stories_list" class="modal modal--story-creator fade" tabindex="-1" role="dialog">
+  </div>
+  <div id="organization_signup_model" class="modal fade"  tabindex="-1" role="dialog">
+  </div>
+  <div id="download_erroe_pop" title="Bulk Download" class="modal">Please select stories and format to download.</div>
+
+  <div id="hide_mobile_like" class="hide_mobile_dialog" title="Message">
+    Please log in to like the story.
+ </div>
+
+<script type="text/javascript">
+
+$(document).ready(function () {
+  /*url = "<%= params[:illustration_id].present? ? search_path(:search =>{:illustration_id => params[:illustration_id]}) : search_path %>"*/
+  /*search_path(:bulk_downloaded) is used for the bulk download page*/
+  <% if params[:bulk_download].present? %>
+    $(".publisher_check_box").each(function () {
+      if($(this).val() != "true" && $(this).val() != "storyweaver"){
+        $(this).prop('checked', true)
+        if($("#all_publishers").is(':checked')){
+          $("#all_publishers").prop('checked', false);
+        }
+      }
+    });
+  <%end%>
+  url = "<%= params[:bulk_download].present? ? search_path(:bulk_download => true) : search_path %>"
+    Story.initialize(url,9,false);
+    $('#select_all').prop('checked',false);
+    $('#de_select_all').prop('checked',false);
+    $('.check_story').prop('checked',false);
+    $(".download_format").val("");
+    $('[data-toggle="tooltip"]').tooltip();
+    $(".filters").each(function (index) {
+      $(this).find('.myList li:lt(' + $(this).attr('viewChild') + ')').show();
+        });
+
+      $('.loadMore').click(function () {
+        var $myWrapper= $(this).closest('.filters');
+        var x= parseInt($myWrapper.attr('viewChild'),10);
+        var liSize=$myWrapper.find('.myList li').size();
+        x = (x + 21 <= liSize) ? x + 21 : liSize;
+        $myWrapper.attr('viewChild',x)
+        $myWrapper.find('.myList li:lt(' + x + ')').show();
+          $myWrapper.find('.showLess').show();
+          if (x == liSize) {
+          $myWrapper.find('.loadMore').hide();
+          }
+          });
+        $('.showLess').click(function () {
+          var $myWrapper= $(this).closest('.filters');
+          var x= $myWrapper.attr('viewChild')
+          x = (x - 18 < 0) ? 5 : x - 18;
+          $myWrapper.attr('viewChild',x)
+          $myWrapper.find('.myList li').not(':lt(' + x + ')').hide();
+            $myWrapper.find('.loadMore').show();
+            $myWrapper.find('.showLess').show();
+            if (x == 5) {
+            $myWrapper.find('.showLess').hide();
+            }
+            });
+          });
+
+$(document).ready(function () {
+    $(".slide-left-sidebar").click(function(){
+      $(".left-sidebar").animate({width: 'toggle'},"fast");
+      if($('#apply-filters').hasClass('tog-open')){
+      $(".slide-left-sidebar").removeClass('tog-open');
+      } else {
+      $(".slide-left-sidebar").addClass('tog-open');
+      }
+      });
+    $(".cat-head").click(function(){
+      $(".cate-full").slideToggle('fast');
+      if($('#cat-head-id').hasClass('tog-open')){
+      $(".cat-head").removeClass('tog-open');
+      } else {
+      $(".cat-head").addClass('tog-open');
+      }
+      });
+    $(".lang-head").click(function(){
+      $(".lang-full").slideToggle('fast');
+      if($('#lang-head-id').hasClass('tog-open')){
+      $(".lang-head").removeClass('tog-open');
+      } else {
+      $(".lang-head").addClass('tog-open');
+      }
+      });
+    $(".level-head").click(function(){
+        $(".level-full").slideToggle('fast');
+        if($('#level-head-id').hasClass('tog-open')){
+        $(".level-head").removeClass('tog-open');
+        } else {
+        $(".level-head").addClass('tog-open');
+        }
+        });
+    $(".sort-head").click(function(){
+        $(".sort-full").slideToggle('fast');
+        if($('#sort-head-id').hasClass('tog-open')){
+        $(".sort-head").removeClass('tog-open');
+        } else {
+        $(".sort-head").addClass('tog-open');
+        }
+        });
+    $('.showmore').shorten({
+    moreText: 'Show more',
+    lessText: 'Show less',
+    showChars: '50'
+    });
+
+    $(".hide_mobile_dialog").dialog({
+      autoOpen: false,
+      width: 300,
+      modal: true,
+      buttons : {
+        "Ok" : function() {
+        $(this).dialog("close");
+        }
+      },
+      dialogClass: 'change_orientation_dialog'
+    });
+
+   $("#download_limit_alert").dialog({
+      autoOpen: false,
+      width: 300,
+      modal: true,
+      buttons : {
+        "Ok" : function() {
+        $(this).dialog("close");
+        }
+      },
+      dialogClass: 'change_orientation_dialog'
+    });
+ 
+   $("#download_erroe_pop").dialog({
+      autoOpen: false,
+      width: 300,
+      modal: true,
+      buttons : {
+        "Ok" : function() {
+        $(this).dialog("close");
+        }
+      },
+      dialogClass: 'change_orientation_dialog'
+    });
+  
+    $("#collect_stories").click(function(){
+      if($('[name="select_to_download"]:checked').length >= 1 && $(".download_format").val() != "" ){
+        send_download_info();
+      }else{
+          $('#download_erroe_pop').dialog("open");
+      }
+    });
+});
+
+var send_download_info = function(){
+  var array =[]
+  var download_format;
+  var resolution;
+  if($(".download_format").val() == "high_pdf"){
+    download_format = "pdf";
+    resolution = true
+  }else if($(".download_format").val() == "low_pdf"){
+    download_format = "pdf";
+    resolution = false
+  }else if($(".download_format").val() == "epub"){
+    download_format = "epub";
+  }else if($(".download_format").val() == "text_only"){
+    download_format = "text_only";
+  }else if($(".download_format").val() == "images_only"){
+    download_format = "images_only";
+  }
+    $(".check_story").each(function(){
+      if($(this).is(':checked')){  
+        array.push($(this).data('storyId'))
+      }
+    });
+     $.ajax({
+        url: "/stories/show_selected_stories",
+        type: 'POST',
+        data: {stories_to_download: array, type: download_format,resolution: resolution},
+        dataType : "script",
+        sucess: function(){
+        },
+        failure: function(result) {
+          console.error('Unable to bulk download.');
+        }
+     });
+};
+
+
+var unselectFilters = function(all,other){
+
+  $(all).click(function(){
+      if($(this).is(':checked')){
+      $(other).prop('checked', false);
+      }
+      });
+
+  $(other).click(function(){
+      if($(all).is(':checked')){
+      $(all).prop('checked', false);
+      }else if(!$(other).is(":checked")){
+        $(all).prop('checked', true);
+      }
+      });
+
+  $(".sort-full").find("input").click(function(){
+    if($(".sort-full").find(":checked")){
+      $("#ClearSortRead").removeClass('hide')
+    }
+  });
+
+  $("#ClearSortRead").click(function(){
+    $(this).addClass("hide");
+    $(".sort-full").find("input").prop('checked', false);
+  });
+  
+}
+
+
+$(function(){
+    unselectFilters('#all_categories','.category_check_box');
+    unselectFilters('#all_languages','.language_check_box');
+    unselectFilters('#all_publishers','.publisher_check_box');
+    unselectFilters('#all_reading_levels','.reading_level_check_box');
+    unselectFilters('#all_derivation_types','.derivation_type_check_box');
+    unselectFilters('#show_all_stories','#show_downloaded')
+    });
+
+    </script>
+

@@ -1,0 +1,90 @@
+iframe.wysihtml-sandbox {
+    resize: both;
+}
+ul.wysihtml-toolbar {
+    margin: 0;
+    padding: 0;
+    display: block;
+}
+ul.wysihtml-toolbar:after {
+    clear: both;
+    display: table;
+    content: "";
+}
+ul.wysihtml-toolbar > li {
+    float: left;
+    display: list-item;
+    list-style: none;
+    margin: 0 5px 10px 0;
+}
+ul.wysihtml-toolbar a[data-wysihtml-command=bold] {
+    font-weight: bold;
+}
+ul.wysihtml-toolbar a[data-wysihtml-command=italic] {
+    font-style: italic;
+}
+ul.wysihtml-toolbar a[data-wysihtml-command=underline] {
+    text-decoration: underline;
+}
+ul.wysihtml-toolbar a.btn.wysihtml-command-active {
+    background-image: none;
+    -webkit-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+    background-color: #E6E6E6;
+    background-color: #D9D9D9;
+    outline: 0;
+}
+ul.wysihtml-commands-disabled .dropdown-menu {
+    display: none !important;
+}
+ul.wysihtml-toolbar div.wysihtml-colors {
+    display: block;
+    width: 50px;
+    height: 20px;
+    margin-top: 2px;
+    margin-left: 5px;
+    position: absolute;
+    pointer-events: none;
+}
+ul.wysihtml-toolbar a.wysihtml-colors-title {
+    padding-left: 70px;
+}
+ul.wysihtml-toolbar div[data-wysihtml-command-value="black"] {
+    background: black !important;
+}
+ul.wysihtml-toolbar div[data-wysihtml-command-value="silver"] {
+    background: silver !important;
+}
+ul.wysihtml-toolbar div[data-wysihtml-command-value="gray"] {
+    background: gray !important;
+}
+ul.wysihtml-toolbar div[data-wysihtml-command-value="maroon"] {
+    background: maroon !important;
+}
+ul.wysihtml-toolbar div[data-wysihtml-command-value="red"] {
+    background: red !important;
+}
+ul.wysihtml-toolbar div[data-wysihtml-command-value="purple"] {
+    background: purple !important;
+}
+ul.wysihtml-toolbar div[data-wysihtml-command-value="green"] {
+    background: green !important;
+}
+ul.wysihtml-toolbar div[data-wysihtml-command-value="olive"] {
+    background: olive !important;
+}
+ul.wysihtml-toolbar div[data-wysihtml-command-value="navy"] {
+    background: navy !important;
+}
+ul.wysihtml-toolbar div[data-wysihtml-command-value="blue"] {
+    background: blue !important;
+}
+ul.wysihtml-toolbar div[data-wysihtml-command-value="orange"] {
+    background: orange !important;
+}
+.bootstrap-wysihtml-insert-table-modal .current-heading {
+    display: inline-block;
+    width: 96%;
+    text-align: left;
+}

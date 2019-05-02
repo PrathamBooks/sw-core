@@ -1,0 +1,117 @@
+<div id="storyReader"></div>
+  <%if @current_tab != "reviewed_stories" %>
+    <div class="<%= @current_tab == "reviewed_stories" ? "" : "alert alert-success un_reviewed_prompt"  %>" >
+        <b><%="Click on any of the titles below to START with rating a story." if @current_tab != "reviewed_stories"%></b>
+    </div>
+  <% end %>
+  <div class="btn-group" style="margin-left: 15px;"><label>Filters:</div>
+   <%if @current_user.content_manager? %>
+     <%= render :partial => "/dashboard/language_filter", :locals => {:path => get_reviewer_language_stories_path(:level=> params[:level] ? params[:level] : '', :limit => params[:limit]? params[:limit] : 10, :current_tab => @current_tab, :story_type  => params[:story_type] ? params[:story_type] : '', :languages => @languages )} %>
+   <% else %>
+    <div class="btn-group">
+      <i class="dropdown-arrow dropdown-arrow-inverse"></i>
+      <button class="btn btn-app dropdown-toggle filter-btn " data-toggle="dropdown" ><%= params[:language] && params[:language] != '' ? params[:language] : "All Languages" %></button>
+      <button class="btn btn-app dropdown-toggle" data-toggle="dropdown"> <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu dropdown">
+        <li><%= link_to "All Languages", get_reviewer_language_stories_path(:language => '', :level=> params[:level] ? params[:level] : '', :limit => params[:limit]? params[:limit] : 10, :current_tab => @current_tab, :story_type  => params[:story_type] ? params[:story_type] : '' ), :remote => true%></li>
+        <% @languages.each do |language| %>
+          <li><%= link_to language.name, get_reviewer_language_stories_path(:language => language.name, :level=> params[:level] ? params[:level] : '', :limit => params[:limit]? params[:limit] : 10,:current_tab => @current_tab,:story_type  => params[:story_type] ? params[:story_type] : '') , :remote => true%></li>
+        <% end %>
+      </ul>
+    </div>  
+   <% end %>
+    <div class="btn-group">
+      <i class="dropdown-arrow dropdown-arrow-inverse"></i>
+      <button class="btn btn-app dropdown-toggle filter-btn" data-toggle="dropdown" ><%= params[:level] && params[:level] != ''? "Level #{params[:level].to_i + 1}" : "All Reading Levels" %></button>
+      <button class="btn btn-app dropdown-toggle" data-toggle="dropdown"> <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu dropdown">
+        <li><%= link_to "All Reading Levels", get_reviewer_language_stories_path(:level => '', :language=>params[:language]? params[:language] : '', :limit => params[:limit]? params[:limit] : 10,:current_tab => @current_tab,:story_type  => params[:story_type] ? params[:story_type] : ''), :remote => true%></li>
+        <% (0..3).each do |level| %>
+         <li><%= link_to "Level #{level+1}", get_reviewer_language_stories_path(:level => level, :language=>params[:language]? params[:language] : '', :limit => params[:limit]? params[:limit] : 10,:current_tab => @current_tab,:story_type  => params[:story_type] ? params[:story_type] : ''), :remote => true%></li>
+        <% end %>
+      </ul>
+    </div>
+    <div class="btn-group">
+      <i class="dropdown-arrow dropdown-arrow-inverse"></i>
+      <button class="btn btn-app dropdown-toggle filter-btn" data-toggle="dropdown" ><%= params[:story_type] && params[:story_type] != ''? params[:story_type] : "All Story Types" %></button>
+      <button class="btn btn-app dropdown-toggle" data-toggle="dropdown"> <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu dropdown">
+        <li><%= link_to "All Story Types", get_reviewer_language_stories_path(:story_type => '',:level => params[:level] ? params[:level] : '', :language => params[:language] ? params[:language] : '', :limit => params[:limit] ? params[:limit] : 10,:current_tab => @current_tab), :remote => true%></li>
+        <% ["Translation", "Original", "Re-levelled"].each do |story_type| %>
+         <li><%= link_to story_type, get_reviewer_language_stories_path(:story_type => story_type,:level => params[:level] ? params[:level] : '', :language=>params[:language] ? params[:language] : '', :limit => params[:limit] ? params[:limit] : 10,:current_tab => @current_tab), :remote => true%></li>
+        <% end %>
+      </ul>
+    </div>
+  <div class="col-md-12">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>
+          <%if @current_tab == "reviewed_stories" %>
+                <% if @stories.total_count > 0 %>
+                  <%= @languages_sort.blank? ? "Wow, you have rated #{@stories.total_count} #{@stories.total_count == 1 ? 'story' : 'stories'}! Way to go! "  : "You have reviewed #{@stories.total_count} #{@stories.total_count == 1 ? 'story' : 'stories'} in #{@languages_sort}." %>
+                <%else %>
+                  <%= @languages_sort.blank? ? "No stories reviewed" : "No stories reviewed in #{@languages_sort}." %>
+                <% end %> 
+            <% end %>
+          </th>
+        </tr>
+        <tr class="table-heading-row">           
+          <th>Story Title</th>
+          <th>Language</th>
+          <th>Reading Level</th>     
+            <% if @current_tab == "reviewed_stories" %>
+              <th>Rated on</th>
+              <th>Your rating</th>
+              <th>Comments</th>
+            <% else %>
+              <th>Number of Pages</th>
+            <% end %>
+          <th>Story Type</th>
+          </th>
+        </tr>
+      </thead>
+      <tbody class="table-row-details">    
+        <% @stories.each do |story| %>
+          <% if @current_tab == "reviewed_stories" %>
+            <tr>
+              <td><%= link_to story.title, story_page_path(story, story.pages.first), :remote => true %></td>
+              <td><%= story.language.name %></td>
+              <td style="text-align: center;"><%= story.reading_level %></td>
+              <td><%= story.reviewer_comment.created_at.localtime.strftime("%b %d, %Y") %></td>
+              <td><input class="rating sample" value = "<%= story.reviewer_comment.rating %>" data-size = 's' readonly="true"></td>
+              <td><%= ReviewerComment.construct_comment_text(story.reviewer_comment.comments) %></td>
+              <td><%= story.derivation_type == nil ? "Original" : (story.derivation_type == "translated" ? "Translation" : "Re-levelled") %></td>
+            </tr>
+          <% else %>
+              <tr>
+                <td><%= link_to story.title, story_page_path(story, story.pages.first), :remote => true %></td>
+                <td><%= story.language.name %></td>
+                <td style="text-align: center;"><%= story.reading_level %></td>
+                <td style="text-align: center;"><%= story.pages.count %></td>
+                <td><%= story.derivation_type == nil ? "Original" : (story.derivation_type == "translated" ? "Translation" : "Re-levelled") %></td>
+              </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% if @page == "language_stories"  %>
+  <%= paginate @stories, :remote => true %>
+<% else %>
+  <%= paginate @stories %>
+<% end %>
+<script>
+$(document).ready(function(){
+  var blurred = false;
+  $(document).blur(function() { blurred = true; });
+  $(document).focus(function() {
+    if(blurred){
+     window.location.reload();
+    }
+  });
+})
+</script>

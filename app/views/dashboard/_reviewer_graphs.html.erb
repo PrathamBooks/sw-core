@@ -1,0 +1,29 @@
+<% if @language_stories %>
+	<h2>Total Stories to Rate<%= "(#{@un_reviewed_count}) in #{@language.name}"%></h2>
+	<h2>Total Rated Stories<%= "(#{@reviewed_count}) in #{@language.name}"%></h2>
+<% else %>
+	<h2>Total Stories to Rate<%= "(#{@un_reviewed_story_count})"%></h2>
+	<h2>Total Rated Stories<%= "(#{@reviewed_stories_count})"%></h2>
+<% end %>
+<div class="btn-group" style="float: right;margin-top: -48px; margin-right: 180px !important;">
+<%= render :partial => "language_filter", :locals => {:path => reviewer_analytics_path} %>
+</div>
+<% if @language_stories %>
+	<div class="days">
+		<%= link_to "week", reviewer_analytics_path(:group=>"week", :language => params[:language]), :remote=>true, :class=>(params[:group]=="week" || params[:group]== nil ? "btn active" : "btn")%>
+		<%= link_to "month", reviewer_analytics_path(:group=>"month",:language => params[:language]), :remote=>true, :class=>(params[:group]=="month" ? "btn active" : "btn")%>
+	</div>
+	<div id="stories">
+  <%= line_chart @language_stories[0..1]%>
+</div>
+<% else %>
+	<div class="days">
+	  <%= link_to "week", reviewer_analytics_path(:group=>"week"), :remote=>true, :class=>(params[:group]=="week" || params[:group]== nil ? "btn active" : "btn")%>
+	  <%= link_to "month", reviewer_analytics_path(:group=>"month"), :remote=>true, :class=>(params[:group]=="month" ? "btn active" : "btn")%>
+	</div>
+<div id="stories">
+  <%= line_chart @stories[0..1]%>
+</div>
+<% end %>
+
+<%= render :partial => "reviewer_tables" %>

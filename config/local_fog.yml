@@ -1,0 +1,9 @@
+production:
+  provider: local
+  local_root: 'public'
+development:
+  provider: local
+  local_root: 'public'
+test:
+  provider: local
+  local_root: 'public'

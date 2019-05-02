@@ -1,0 +1,61 @@
+<%= render :partial => "dashboard/errors" %>
+
+<div class="row about-row google_camp">
+  <div id="search-details-temp noborder">
+
+    <div class="col-md-12 col-sm-12">  
+      <h2> #1000books. Unlimited joy.</h2>
+
+      <p>Welcome Googlers! Thank you so much for volunteering your time and talent for the StoryWeaver #1000books campaign. During the month of September, StoryWeaver and Google will be collaborating to translate and create 1,000 books for children around the world to read. On behalf of children in classrooms, after-school resource centres and libraries around the world who use StoryWeaver, we truly appreciate your help. Ready to get started?</p>
+    </div>
+
+      <div class="col-md-12 col-sm-12 google_trans_btn">
+        <%= link_to "To translate a story click here", stories_translate_path(contest_id: @contest.id), class: "btn btn-warning pull-left btn-lg hide-in-mob-create campaign_create_button"%>
+      </div>
+      <div class="col-md-12 col-sm-12 google_story_btn">
+        <%= link_to "To create a story click here", new_story_path(contest_id: @contest.id), remote: true, class: "btn btn-warning pull-left btn-lg hide-in-mob-create campaign_create_button"%>
+      </div>
+
+    <div class="col-md-12 col-sm-12 google_tips">  
+      <label>Tips &amp; Tricks</label>
+      <p>Before publishing your story, don’t forget to tag your book with the #1000books tag. This will help keep track of all Googlers’ contributions (and count towards your office competition)! If you can’t find the language you’re fluent in listed on StoryWeaver, send us an email at <strong>storyweaver@prathambooks.org</strong></p>
+    </div>
+
+    <div class="col-md-12 col-sm-12 google_abt">  
+      <label>About StoryWeaver</label>
+      <p>StoryWeaver is a digital repository of openly licensed stories for children who have traditionally lacked access to books due to affordability and accessibility. With StoryWeaver, users can read, create or translate stories in the language of their choice for no cost. Today, StoryWeaver has over 4500 titles in 84 languages. Here are some of the ways that StoryWeaver is democratising access to books for children:</p>
+    </div>
+    
+    <div class="col-sm-12 col-md-12">
+      <div class="col-md-4 col-sm-4 google_part">
+        <div class="odd-google">
+          <span><img src="<%= asset_path('AsiaFoundation.jpg') %>"></span>
+          <div class="google-content">
+            <p>
+            <%= link_to "The Asia Foundation", "https://storyweaver.org.in/blog_posts/114-the-asia-foundation-taking-joyful-stories-to-children-in-developing-asia" %> is creating stories in Thai, Vietnamese and Bangla for children across developing Asia by translating on StoryWeaver. 
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 col-sm-4 google_part">
+        <div class="even-google">
+          <span><img src="<%= asset_path('BookShare.jpg') %>"></span>
+          <div class="google-content">
+            <p><%= link_to "Bookshare", " https://storyweaver.org.in/blog_posts/161-from-their-favourite-stories-to-class-curriculum-india-s-visually-impaired-kids-can-now-read-it-all" %> is leveraging our open source, open format digital books to create accessible readers for print impaired children.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 col-sm-4 google_part">
+        <div class="odd-google">
+          <span><img src="<%= asset_path('Suchana.jpg') %>"></span>
+          <div class="google-content">
+            <p><%= link_to "Suchana’s", "https://storyweaver.org.in/blog_posts/85-children-from-adivasi-background-get-their-own-language-of-literacy" %> educator translators have translated over 60 books into the tribal languages of Kora and Santali and have printed 10,000 copies to distribute via mobile libraries in 6 villages.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%= render :partial => "stories/desktop_only_action_message" %>

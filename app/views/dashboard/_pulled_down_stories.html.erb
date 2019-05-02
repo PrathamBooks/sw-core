@@ -1,0 +1,166 @@
+<%= render :partial => "dashboard_datatables" %>
+
+<%= render :partial => "flagged_content_tabs" %>
+
+  <div class="row">
+    <div class="col-md-12 col-sm-12">
+    	<label class="allusers">
+        <span><%= t 'dashboard.number_of_stories_selected'%> :</span>
+        <span class="badge" id="pulled_down_stories_count"><%= @stories.count %></span>
+      </label>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 col-sm-12" id="user_details">
+      <table class="table table-striped" id="all_pulled_stories">
+        <tfoot style="display: table-header-group;">
+          <tr>
+            <th><%= t 'dashboard.pulled_down_stories_tab.story_title'%></th>
+            <th><%= t 'dashboard.pulled_down_stories_tab.user_comment'%></th>
+            <th><%= t 'dashboard.pulled_down_stories_tab.cm_comments'%></th>
+            <th><%= t 'dashboard.pulled_down_stories_tab.flagged_by'%></th>
+            <th><%= t 'dashboard.pulled_down_stories_tab.time_of_pulled_down'%></th>
+            <th><%= t 'dashboard.pulled_down_stories_tab.authors_email_id'%></th>
+            <th><%= t 'dashboard.actions'%></th>
+          </tr>
+        </tfoot>
+        <thead>
+          <tr class="table-heading-row">
+            <th><%= t 'dashboard.pulled_down_stories_tab.story_title'%></th>
+            <th><%= t 'dashboard.pulled_down_stories_tab.user_comment'%></th>
+            <th><%= t 'dashboard.pulled_down_stories_tab.cm_comments'%></th>
+            <th><%= t 'dashboard.pulled_down_stories_tab.flagged_by'%></th>
+            <th><%= t 'dashboard.pulled_down_stories_tab.time_of_pulled_down'%></th>
+            <th><%= t 'dashboard.pulled_down_stories_tab.authors_email_id'%></th>
+            <th><%= t 'dashboard.actions'%></th>
+          </tr>
+        </thead>
+        <tbody class="table-row-details">    
+          <% @stories.each do |story|%>
+            <% if story.pulled_downs.present? && story.pulled_downs.first.present? %>
+              <tr class="stories_count">
+                <td><%= link_to get_title(story.language, story.title).html_safe, react_stories_show_path(story.to_param) %></td>
+                <td><%= story.flaggings.try(:first).try(:reason) %></td>
+                <td><%= story.pulled_downs.try(:first).try(:reason) %></td>
+                <td>
+                  <%= story.flaggings.try(:first).try(:flagger).try(:name) %><br/>
+                  (<%= story.flaggings.try(:first).try(:flagger).try(:email) %>)
+                </td>
+                <td><%= story.pulled_downs.try(:first).try(:created_at).localtime.strftime("%Y-%m-%d %H:%M:%S") %></td>
+                <td><%= story.authors.collect(&:email).join(", ") %></td>
+                <td>
+                  <a class="btn btn-sm btn-success activate_story" style="padding:5px 10px;" data-path = "<%= activate_story_path(story) %>" ><%= t 'dashboard.pulled_down_stories_tab.clear_flag_&_activate_story'%></a>
+                </td>
+              </tr>
+            <% end %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="activate_story_dialog" title="Confirmation Required">
+    <%= t 'dashboard.pulled_down_stories_tab.activate_story_alert'%>
+  </div>
+
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+  initClearStoryFlagDialog();
+});
+
+function initClearStoryFlagDialog(){
+  var activate_story_dialog = $("#activate_story_dialog");
+  activate_story_dialog.dialog({
+      autoOpen: false,
+      width: 700,
+      modal: true,
+      buttons : {
+        "Confirm" : function() {
+          window.location = activate_story_path;
+        },
+        "Cancel" : function() {
+          $(this).dialog("close");
+        }
+      },
+      dialogClass: 'change_orientation_dialog'
+  });
+}
+
+
+$(".activate_story").click(function(){
+   activate_story_path = $(this).data('path');
+   $("#activate_story_dialog").dialog("open");
+});
+
+$(document).ready(function() {
+  var table = $('#all_pulled_stories').DataTable( {
+    searching: true,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 20,
+    order: [],
+    responsive: {
+        details: false
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  title: formatDatatableTitle('pulled-down-stories'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6 ]
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  title: formatDatatableTitle('pulled-down-stories'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6 ]
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  title: formatDatatableTitle('pulled-down-stories'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6 ]
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  title: formatDatatableTitle('pulled-down-stories'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6 ]
+                  }
+              }
+          ]
+      
+  });
+  $('#all_pulled_stories tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+  });
+
+  var new_table = $('#all_pulled_stories').dataTable();
+  table.columns().every( function () {
+    var that = this;
+
+    $( 'input', this.footer() ).on( 'keyup change', function () {
+      if ( that.search() !== this.value ) {
+          that
+              .search( this.value )
+              .draw();
+        document.getElementById("pulled_down_stories_count").innerHTML = document.getElementById('all_pulled_stories').children[1].childElementCount;
+      }else{
+        document.getElementById("pulled_down_stories_count").innerHTML = table.rows( '.stories_count' ).count(); 
+      }
+    });
+  });
+  $( 'input').on( 'keyup change', function () {
+    document.getElementById("pulled_down_stories_count").innerHTML = new_table.fnSettings().fnRecordsDisplay();
+  });
+
+  });
+</script>

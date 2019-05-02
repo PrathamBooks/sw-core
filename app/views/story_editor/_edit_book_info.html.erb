@@ -1,0 +1,111 @@
+<% synopsis_label = if @story.is_derivation? && @story.is_translated?
+                      "(Since you have translated this story, please use the above synopsis and translate the same in the language of the story.)"
+                    elsif @story.is_derivation? && @story.is_relevelled?
+                      "(Since you have re-levelled the story please alter the reference synopsis text given above to suit your story. Use the box below for the same. If you have not changed the storyline too much, we recommend copy pasting the above synopsis in the box below.)"
+                    else
+                      "(#{t 'editor.editor_page.book_info.synopsis_message'})"
+                    end
+%>
+<div style="display:hiden;" id="StoryId" data-story-id="<%= @story.id %>"></div>
+<div class="modal modal-image-drawer fade modal--story-creator" id="modal-edit-book" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body modal-body-app">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <%= simple_nested_form_for @story, url: '',
+                                   html: { class: 'edit_book_form',  multipart: true, id: "book_edit_from"}, authenticity_token: true do |f| %>
+          <div class="form-group">
+            <div class="spacing-half-v"></div>
+            <div class="heading-title"><%=t 'editor.editor_page.edit_book_information.header'%></div>
+            <div class="spacing-half-v"></div>
+          </div>
+          <div class="row row-gutter">
+            <div class="col-sm-6">
+              <% if @story.is_derivation? %>
+                <div class="alert alert-info text"><%=t 'editor.editor_page.book_info.story_title'%>: <b><%= @story.parent.title %></b></div>
+              <% end %>
+              <div class="form-group required form-group-lg-pad">
+                <label class="heading-section"><%=t 'editor.editor_page.original_story_title'%></label>
+                <div class="help-block help-block-brand"><%=t 'editor.editor_page.book_info.story_title_original_message'%></div>
+                <%= f.input :title ,label: false, required: true, input_html: { autocomplete: 'off', value: @story.user_title? ? @story.title.strip : '',  placeholder: "Write your story title here", class: "input-brand input-brand--lg #{@story.language.script}"} %>
+              </div>
+              <% unless @story.language.name == 'English' %>
+                <div class="form-group required form-group-lg-pad">
+                  <% text = @story.is_derivation? && @story.is_translated? ? "(Please type the local language title here phonetically in English. e.g. If your Hindi title is मोटा राजा दुबला कुत्ता, type Mota Raja Dubla Kutta here. If your Kannada title is ಡುಮ್ಮರಾಜ ಸಣಕಲು ನಾಯಿ, type Dummaraja Sanakalu Naayi here)" : "(In English)" %>
+                  <label class="heading-section"><%=t 'editor.editor_page.book_info.story_title'%></label>
+                  <div class="help-block help-block-brand"><%= text %></div>
+                  <%= f.input :english_title ,label: false, required: true, input_html: {class: "input-brand input-brand--lg"} %>
+                </div>
+              <% end %>
+              <% if @story.is_derivation? %>
+                <div class="alert alert-info text">
+                  <b><%=t 'editor.editor_page.book_info.original_story_synopsis'%></b>: <%= @story.parent.synopsis %>
+                </div>
+              <% end %>
+              <div class="form-group form-group-lg-pad">
+                <label class="heading-section"><%=t 'editor.editor_page.book_info.synopsis'%></label>
+                <div class="help-block help-block-brand"><%= synopsis_label %></div>
+                <%= f.input :synopsis, label: false,
+                            required: true, as: :text, input_html: { maxlength: 750, class: "input-brand input-brand--lg #{@story.language.script}"} %>
+              </div>
+              <% unless @story.is_translation? %>
+                <div class="form-group form-group-lg-pad">
+                  <label class="heading-section"><%=t 'editor.editor_page.book_info.category'%></label>
+                  <div class="col-md-12 nopadding">
+                    <%= f.association :categories, collection: @categories, multiple: true, label: false, required: true, input_html: {class: "input-brand input-brand--lg", id: "storyCategories"} %>
+                  </div>
+                </div>
+              <% end %>
+            </div> <!-- /col -->
+            <div class="col-sm-6">
+              <% unless @story.is_translation? %>
+                <div class="form-group form-group-lg-pad">
+                  <label class="heading-section required">
+                    <abbr title="required">*</abbr> <%= t 'dashboard.reading_level' %>
+                  </label>
+                  <div class="radio radio-no-margin">
+                    <div>
+                      <% if @contest.present? && @contest.name == "RetellRemixRejoice2018" %>
+                        <%= f.input :reading_level, label: false, as: :radio_buttons, collection: Story::CONTEST_READING_LEVELS.collect {|key,value| ["<strong>Level #{key}:</strong> #{Story::READING_LEVEL_INFO[key]}".html_safe,key] }.compact%>
+                      <% else %>
+                        <%= f.input :reading_level, label: false, as: :radio_buttons, collection: Story::READING_LEVELS.collect {|key,value| ["<strong>Level #{key}:</strong> #{Story::READING_LEVEL_INFO[key]}".html_safe,key] }.compact%>
+                      <% end %>
+                    </div>
+                  </div> <!-- /radio -->
+                </div> <!-- /form-group -->
+              <% end %>
+              <div class="form-group form-group-lg-pad">
+                <div class="help-block help-block-brand"><%=t 'editor.editor_page.book_info.child_message'%></div>
+                <%= f.input :more_info, label: false, as: :text, input_html: { maxlength: 125, class: "input-brand textarea-lg" }%>
+              </div> <!-- /form-group -->
+            </div> <!-- /col -->
+          </div> <!-- /row -->
+
+          <div class="row row-gutter">
+            <div class="col-xs-6">
+              <div class="btn btn-link btn-link-underline" data-dismiss="modal"><%= t 'dashboard.cancel' %></div>
+            </div>
+            <div class="col-xs-6 text-right">
+              <%= button_tag "Save", id: "save_book_info", type: 'button' , class: "btn btn-app btn-brand-1"  %>
+              <!-- <span class="btn btn-app btn-brand-1" >save</span> -->
+            </div>
+          </div>
+        <% end %>
+      </div> <!-- /modal-body -->
+    </div> <!-- /modal-content -->
+  </div> <!-- /modal-dialog -->
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('.disable_action *').children().prop('disabled', true);
+    var story_editor = new StoryEditor(new StoryEditorPage(), new StoryEditorService());
+    story_editor.init_publish_story_form();
+    $(".add_child_link").click(function(){
+      $(this).text("Add details of another child");
+    });
+    /*$('.multiselect').multiselect({
+     numberDisplayed: 1,
+     });*/
+  });
+</script>

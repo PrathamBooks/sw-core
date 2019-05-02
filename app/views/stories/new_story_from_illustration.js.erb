@@ -1,0 +1,7 @@
+$('#newStoryFromIllustration').html("<%= escape_javascript(render(:partial=>"new_story_from_illustration",:locals => {:contest => @contest}))%>");
+$(document).ready(function() {
+	$('#storyModalFromIllustration').modal({
+		show: true
+	});
+});
+

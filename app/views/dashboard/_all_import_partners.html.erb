@@ -1,0 +1,116 @@
+<%= render :partial => "dashboard_datatables" %>
+
+<br/><p><b>Total Count of Import Partners: <%= @import_partners.count %></b></p>
+
+<table class="table table-striped" id="import_partner_list">
+  <tfoot style="display: table-header-group;">
+    <tr>
+      <th><%= t 'dashboard.import_partners_tab.id'%></th>
+      <th><%= t 'dashboard.import_partners_tab.attribution_name'%></th>
+      <th><%= t 'dashboard.import_partners_tab.url'%></th>
+      <th><%= t 'dashboard.import_partners_tab.prefix'%></th>
+      <th><%= t 'dashboard.import_partners_tab.organization_name'%></th>
+      <th><%= t 'import_partner.user_action'%></th>
+    </tr>
+  </tfoot>
+  <thead>
+    <tr class="table-heading-row">
+      <th><%= t 'dashboard.import_partners_tab.id'%></th>
+      <th><%= t 'dashboard.import_partners_tab.attribution_name'%></th>
+      <th><%= t 'dashboard.import_partners_tab.url'%></th>
+      <th><%= t 'dashboard.import_partners_tab.prefix'%></th>
+      <th><%= t 'dashboard.import_partners_tab.organization_name'%></th>
+      <th><%= t 'import_partner.user_action'%></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @import_partners.each do |import_partner| %>
+      <tr>
+        <td><%= import_partner.id %></td>
+        <td><%= import_partner.attribution_name %></td>
+        <td><%= import_partner.url %></td>
+        <td><%= import_partner.prefix %></td>
+        <% unless import_partner.organization.nil? %>
+          <td><%= import_partner.organization.organization_name %></td>
+        <% else %>
+          <td><%= "" %></td>
+        <% end %>
+        <td><a class="btn btn-success import_partner_edit" data-path="<%= edit_dashboard_import_partner_path(import_partner.id) %>">Edit</a></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<script>
+$(document).ready(function() {
+  var table = $('#import_partner_list').dataTable( {
+    searching: true,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 20,
+    order: [],
+    responsive: {
+        details: false
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  title: formatDatatableTitle('import-partners'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4]
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  title: formatDatatableTitle('import-partners'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4]
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  title: formatDatatableTitle('import-partners'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4]
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  title: formatDatatableTitle('import-partners'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4]
+                  }
+              }
+            ]
+  });
+
+  $('#import_partner_list tfoot th').each( function () {
+    var title = $(this).text();
+    $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+  });
+
+  table.api().columns().every( function () {
+    var that = this;
+    $( 'input', this.footer() ).on( 'keyup change', function () {
+        if ( that.search() !== this.value ) {
+            that
+                .search( this.value )
+                .draw();
+        }
+    });
+  });
+});
+</script>
+
+<br><a class="btn btn-success" id="import_partner_create" data-path="<%= dashboard_import_partner_new_path %>">Create Import Partner</a>
+
+<script>
+  $("#import_partner_create").click(function() {
+    window.location = $(this).data('path');
+  });
+
+  $(".import_partner_edit").click(function() {
+    window.location = $(this).data('path');
+  });
+</script>

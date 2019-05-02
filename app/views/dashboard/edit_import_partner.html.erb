@@ -1,0 +1,34 @@
+<%= render :partial => "tabs" %>
+
+<div class="col-md-12">
+  <ul id="tabs" class="nav nav-tabs">
+    <li class="active"><a href="#import-partners" data-toggle="tab">Import Partners</a>
+    </li>
+  </ul>
+  <div class="row">
+    <div class="col-md-5">
+      <%= simple_form_for @import_partner, url: edit_dashboard_import_partner_path(@import_partner.id), html: {class: 'form-horizontal'} do |f| %>
+        <%= f.input :attribution_name %>
+        <%= f.input :url %>
+        <%= f.input :prefix %>
+        <%= label_tag 'organization_name', 'Organization' %><br>
+        <%= text_field_tag 'organization_name', @import_partner.organization.organization_name, data: {autocomplete_source: Organization.all.map { |t| { :label =>  "#{t.organization_name} #{t.city} #{t.email}", :value => t.id } } }, class: "organization_autocomplete" %>
+        <%= f.hidden_field :organization_id, id: 'organization_id' %> 
+        <br/><br/>
+        <%= f.submit "Update", :class => "btn btn-success" %>
+        <%= link_to "Cancel", :back, {:class=>"btn btn-info btn disable-donor"} %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+$('#organization_name').autocomplete({
+  source: $('#organization_name').data('autocomplete-source'),
+  select: function(event, ui) {
+    event.preventDefault();
+    $(this).val(ui.item.label);
+    $('#organization_id').val(ui.item.value);
+  }
+});
+</script>

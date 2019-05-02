@@ -1,0 +1,53 @@
+<table class="table table-striped">
+  <thead>
+  <tr class="table-heading-row">
+     <th><%= @stories ? "#{@stories[0][:type]}" : "#{@language_stories[0][:type]}" %></th>
+     <th>Stories during <%= @stories ? "#{@stories[0][:type]}" : "#{@language_stories[0][:type]}" %></th>
+     <th>Rated stories</th>
+     <th>Un-Rated stories</th>
+     <th>Rating resource assigned</th>
+     <th>Active rating resource</th>
+   </tr>
+  </thead>
+  <tbody class="table-row-details">
+  <% if @stories %>
+    <% ReviewerComment.analytics_story_keys(@stories).each do |key| %>
+     <tr>
+       <td><%= key.localtime.strftime("%b %d,%Y") %></td>
+       <td>
+         <%= @stories[0][:data][key].nil? ? 0 : @stories[0][:data][key] %>
+       </td>
+       <td>
+         <%= @stories[1][:data][key].nil? ? 0 : @stories[1][:data][key] %>
+       </td>
+       <td><%= @stories[2][:data][key].nil? ? 0 : @stories[2][:data][key] %></td>
+       <td>
+         <%= @stories[3][:data][key].nil? ? 0 : @stories[3][:data][key] %>
+       </td>
+       <td>
+         <%= @stories[4][:data][key].nil? ? 0 : @stories[4][:data][key] %>
+       </td>
+     </tr>
+    <% end %>
+  <% else %>
+    <% ReviewerComment.analytics_language_story_keys(@language_stories).each do |key,value| %>
+     <tr>
+       <td><%= key.localtime.strftime("%b %d,%Y") %></td>
+       <td><%= @language_stories[0][:data][key].nil? ? 0 : @language_stories[0][:data][key] %></td>
+       <td>
+         <%= @language_stories[1][:data][key].nil? ? 0 : @language_stories[1][:data][key] %>
+       </td>
+       <td>
+         <%= @language_stories[2][:data][key].nil? ? 0 : @language_stories[2][:data][key] %>
+       </td>
+       <td>
+         <%= @language_stories[3][:data][key].nil? ? 0 : @language_stories[3][:data][key] %>
+       </td>
+       <td>
+         <%= @language_stories[4][:data][key].nil? ? 0 : @language_stories[4][:data][key] %>
+       </td>
+     </tr>
+    <% end %> 
+  <% end  %>
+  </tbody>
+</table>

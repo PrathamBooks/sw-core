@@ -1,0 +1,7 @@
+$('#story_publish_form').html("<%= escape_javascript(render(:partial=>"storycard_view"))%>");
+
+$(document).ready(function() {
+	$('#storycardModal').modal({
+		show: true
+	});
+});

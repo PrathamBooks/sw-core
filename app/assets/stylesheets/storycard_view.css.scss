@@ -1,0 +1,167 @@
+
+#story-card{
+  height: 15.75rem;
+}
+.storycard-view__heading--style {
+  margin: 1rem 0.75rem;
+  font-size: 1.75rem;
+  font-weight: bold;
+}
+
+.storycard-view__content--style{
+  margin: 0 0.75rem;
+  background: #f2f2f2;
+  border-radius: 0.5rem;
+  border: solid 1px #d5d5d5;
+}
+
+.storycard-view__inner-container--style{
+  margin: 1rem;
+  background: #ffffff;
+  border: solid 1px #e1e1e1;
+}
+.storycard-view__template--style {
+  display: inline-block;
+  margin: 3rem;
+}
+
+#story-card-img{
+  overflow: hidden; 
+  position: relative; 
+  width: 9.75rem;
+  height: 9.4375rem;
+}
+
+#storycard-image{
+  position: absolute; 
+}
+
+.pb-book-card__container{
+  border-radius: 4px;
+  -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.24);
+  color: #555d67;
+  overflow: hidden;
+  text-align: left;
+}
+
+.pb-book-card__meta-wrapper{
+  background-color: #fff;
+  margin: 0;
+  min-height: 38.195302843%;
+}
+
+.pb-book-card--level-3{
+  background-color: #a6ce39;
+}
+.pb-book-card--level-1 {
+  background-color: #ffdd00;
+}
+
+.pb-book-card--level-4 {
+  background-color: #3777bc;
+}
+
+.pb-book-card--level-2 {
+  background-color: #ed1c24;
+}
+
+.pb-book-card__level-strip{
+  color: #fff;
+  display: block;
+  font-size: 0.71rem;
+  font-weight: bold;
+  letter-spacing: 0.06em;
+  padding: 0.125rem 0.25rem;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.pb-book-card__meta {
+  margin: 0;
+  padding: 0.25rem;
+}
+
+.pb-book-card__title {
+  display: block;
+  font-size: 0.71rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.pb-book-card__names{
+  display: block;
+  font-size: 0.71rem;
+  font-weight: normal;
+}
+
+.pb-book-card__names + .pb-book-card__names {
+      margin-top: 0.25rem;
+}
+
+.storycard__about-view{
+  display: inline-block;
+  width: 28.375rem;
+  vertical-align: top;
+  margin: 6rem 0 0 0.625rem;
+}
+
+.storycard__about-view-header{
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0;
+  margin-bottom: 1rem;
+  color: rgba(0,0,0,0.87);
+}
+
+.storycard__about-view-content{
+  margin: 0;
+  font-size: 1rem;
+  font-family: Raleway;
+  width: 396px;
+  color: rgba(0,0,0,0.87);
+}
+  
+.upload__back-btn--style{
+  margin: 1rem 0.75rem 0 0.75rem;
+  width: 5.3125rem;
+  height: 2.5rem;
+  background: #f9f9f9;
+  border: solid 1px #d0d0d0;
+  padding: 0;
+  border-radius: 0.5rem;
+}
+
+.upload__btn-icon--size {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin: 0.5rem;
+}
+
+.upload__back-btn--space{
+  padding: 0.25rem 0.29125rem;
+}
+
+.upload__btn-text--size{
+  font-size: 0.75rem;
+  font-weight: bold;
+  margin-right: 1rem;
+}
+
+.upload__done-btn--space{
+  padding: 0.375rem 0.25rem;
+}
+
+.upload__done-btn--style{
+  position: absolute;
+  right: 2rem;
+  bottom: 1.25rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  padding: 0;
+  background: #ffc855;
+  width: 7.0625rem;
+  font-size: 0.75rem;
+  font-weight: BOLD;
+}
+

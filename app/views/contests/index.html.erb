@@ -1,0 +1,26 @@
+
+<%= render :partial => "dashboard/errors" %>
+
+<table class="table table-striped">
+  <thead>
+  <tr class="table-heading-row">
+    <th>Name</th>
+    <th>Type</th>
+    <th>Event</th>
+    <th>Start date</th>
+    <th>End date</th>
+  </tr>
+  </thead>
+  <tbody class="table-row-details">
+  <% @contests.each do |contest| %>
+   <tr>
+     <td><%=link_to contest.name, contest_details_path(contest.to_param), :target => "_blank" %></td>
+     <td><%= contest.contest_type %></td>
+     <td><%= contest.is_campaign == true ? "Campaign" : "Contest" %></td>
+     <td><%= contest.start_date.localtime.strftime("%d-%m-%y") %></td>
+     <td><%= contest.end_date.localtime.strftime("%d-%m-%y") %></td>
+   </tr>
+  <% end %>
+  </tbody>
+</table>
+<div><a class="btn btn-warning btn-lg hide-in-mob-create" href = "<%= new_contest_path %>" >Create contest / campaign</a></div>

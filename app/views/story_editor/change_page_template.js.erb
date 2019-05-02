@@ -1,0 +1,16 @@
+
+$('#pages_ribbon').replaceWith("<%= escape_javascript(render(:partial=>"pages_ribbon")) %>");
+
+<% if @page.page_template.orientation == "portrait" %>
+	$('#right_side_editor').addClass('portrait_editor');
+<% else %>
+	$('#right_side_editor').removeClass('portrait_editor');
+<% end %>
+$('#toolbarHead').html("<%= escape_javascript(render(:partial=>"editor_toolbar")) %>");
+$('#right_side_editor').html("<%= escape_javascript(render(:partial=>"page_editor")) %>");
+/*$('#selected_page').html("<%#= escape_javascript(render(:partial=>"page_edit")) %>");*/
+$('.page-template').removeClass('selected');
+$(".page-template.<%= @page.page_template.name %>").addClass('selected');
+story_editor.hide_illustration_drawer_based_on_orientation();
+
+

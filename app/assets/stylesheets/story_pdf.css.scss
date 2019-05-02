@@ -1,0 +1,459 @@
+.pdf_body{
+  margin-bottom: 0;
+}
+
+#story_pdf {
+  .page-container-landscape{
+    display:block;
+    clear:both;
+    page-break-after:always;
+    position:relative;
+    overflow: hidden;
+    width: 284mm;
+    height: 204mm;
+
+    .text-font-largest {
+      font-size: 29.36px;
+      display: inline;
+    }
+    .text-font-large {
+      font-size: 26.36px;
+      display: inline;
+    }
+    .text-font-normal {
+      font-size: 21.36px;
+      display: inline;
+    }
+    .text-font-medium {
+      font-size: 19.36px;
+      display: inline;
+    }
+    .text-font-small {
+      font-size: 17.36px;
+      display: inline;
+    }
+    .text-font-smallest {
+      font-size: 15.36px;
+      display: inline;
+    }
+    .devanagri {
+      .text-font-largest{
+        font-size: 31.36px;
+      }
+
+      .text-font-large{
+        font-size: 27.36px;
+      }
+
+      .text-font-normal{
+        font-size: 23.36px;
+      }
+
+      .text-font-medium{
+        font-size: 20.36px;
+      }
+
+      .text-font-small{
+        font-size: 17.86px;
+      }
+
+      .text-font-smallest{
+        font-size: 16.36px;
+      }
+    }
+    .kannada {
+      .text-font-largest{
+        font-size: 31.36px;
+      }
+
+      .text-font-large{
+        font-size: 27.36px;
+      }
+
+      .text-font-normal{
+        font-size: 22.36px;
+      }
+
+      .text-font-medium{
+        font-size: 20.36px;
+      }
+
+      .text-font-small{
+          font-size: 17.86px;
+      }
+
+      .text-font-smallest{
+          font-size: 15.36px;
+      }
+    }
+    .tamil {
+      .text-font-largest{
+        font-size: 30.36px;
+      }
+
+      .text-font-large{
+        font-size: 27.36px;
+      }
+
+      .text-font-normal{
+        font-size: 22.36px;
+      }
+
+      .text-font-medium{
+        font-size: 19.86px;
+      }
+
+      .text-font-small{
+        font-size: 18.36px;
+      }
+
+      .text-font-smallest{
+        font-size: 15.86px;
+      }
+    }
+    .telugu{
+      .text-font-largest{
+        font-size: 31.36px;
+      }
+
+      .text-font-large{
+        font-size: 27.36px;
+      }
+
+      .text-font-normal{
+        font-size: 23.36px;
+      }
+
+      .text-font-medium{
+        font-size: 20.36px;
+      }
+
+      .text-font-small{
+        font-size: 18.36px;
+      }
+
+      .text-font-smallest{
+        font-size: 15.86px;
+      }
+    }
+    .gujrati {
+      .text-font-largest{
+        font-size: 31.36px;
+      }
+
+      .text-font-large{
+        font-size: 27.36px;
+      }
+
+      .text-font-normal{
+        font-size: 23.36px;
+      }
+
+      .text-font-medium{
+        font-size: 20.36px;
+      }
+
+      .text-font-small{
+        font-size: 18.36px;
+      }
+
+      .text-font-smallest{
+        font-size: 16.36px;
+      }
+    }
+    .bengali {
+      .text-font-largest{
+        font-size: 31.36px;
+      }
+
+      .text-font-large{
+        font-size: 28.36px;
+      }
+
+      .text-font-normal{
+        font-size: 23.36px;
+      }
+
+      .text-font-medium{
+        font-size: 21.36px;
+      }
+
+      .text-font-small{
+        font-size: 18.36px;
+      }
+
+      .text-font-smallest{
+        font-size: 16.86px;
+      }
+    }
+    .urdu {
+      .text-font-largest {
+          font-size: 24.86px;
+      }
+      .text-font-large {
+          font-size: 22.36px;
+      }
+      .text-font-normal {
+          font-size: 18.06px;
+      }
+      .text-font-medium {
+          font-size: 16.46px;
+      }
+      .text-font-small {
+          font-size: 14.76px;
+      }
+      .text-font-smallest {
+          font-size: 13.11px;
+      }
+    }
+  }
+  .page-container-portrait{
+    display:block;
+    clear:both;
+    page-break-after:always;
+    position:relative;
+    overflow: hidden;
+    width: 197mm;
+    height: 291mm;
+    .text-font-largest{
+      font-size: 44px;
+      display: inline;
+    }
+    .text-font-large{
+      font-size: 37px;
+      display: inline;
+    }
+    .text-font-normal{
+      font-size: 28px;
+      display: inline;
+    }
+    .text-font-medium{
+      font-size: 26.3px;
+      display: inline;
+    }
+    .text-font-small{
+      font-size: 26px;
+      display: inline;
+    }
+    .text-font-smallest{
+      font-size: 24px;
+      display: inline;
+    }
+    .tamil {
+      .text-font-largest{
+        font-size: 45.2px;
+      }
+      .text-font-large{
+        font-size: 40.5px;
+      }
+      .text-font-normal{
+        font-size: 32.7px;
+      }
+      .text-font-medium{
+        font-size: 28.8px;
+      }
+      .text-font-small{
+        font-size: 26.5px;
+      }
+      .text-font-smallest{
+        font-size: 22.6px;
+      }
+    }
+    .devanagri {
+      .text-font-largest{
+        font-size: 46.5px;
+      }
+      .text-font-large{
+        font-size: 40.3px;
+      }
+      .text-font-normal{
+        font-size: 34.1px;
+      }
+      .text-font-medium{
+        font-size: 29.45px;
+      }
+      .text-font-small{
+        font-size: 25.57px;
+      }
+      .text-font-smallest{
+        font-size: 23.25px;
+      }
+    }
+    .telugu{
+      .text-font-largest {
+        font-size: 46.5px;
+      }
+      .text-font-large{
+        font-size: 40.3px;
+      }
+      .text-font-normal{
+        font-size: 34.1px;
+      }
+      .text-font-medium{
+        font-size: 29.45px;
+      }
+      .text-font-small{
+        font-size: 26.35px;
+      }
+      .text-font-smallest{
+        font-size: 22.475px;
+      }
+    }
+    .kannada {
+      .text-font-largest{
+        font-size: 46.5px;
+      }
+      .text-font-large{
+        font-size: 40.3px;
+      }
+      .text-font-normal{
+        font-size: 34.1px;
+      }
+      .text-font-medium{
+        font-size: 29.45px;
+      }
+      .text-font-small{
+        font-size: 25.57px;
+      }
+      .text-font-smallest {
+        font-size: 21.7px;
+      }
+    }
+    .gujrati{
+      .text-font-largest{
+        font-size: 46.5px;
+      }
+      .text-font-large{
+        font-size: 40.3px;
+      }
+      .text-font-normal{
+        font-size: 34.1px;
+      }
+      .text-font-medium{
+        font-size: 29.45px;
+      }
+      .text-font-small{
+        font-size: 26.35px;
+      }
+      .text-font-smallest{
+        font-size: 23.25px;
+      }
+    }
+    .bengali {
+      .text-font-largest{
+        font-size: 46.5px;
+      }
+      .text-font-large{
+        font-size: 41.85px;
+      }
+      .text-font-normal{
+        font-size: 34.1px;
+      }
+      .text-font-medium{
+        font-size: 31px;
+      }
+      .text-font-small{
+        font-size: 26.35px;
+      }
+      .text-font-smallest{
+        font-size: 24.025px;
+      }
+    }
+    .urdu {
+      .text-font-largest{
+        font-size: 37.75px;
+      }
+      .text-font-large{
+        font-size: 33.7px;
+      }
+      .text-font-normal{
+        font-size: 26.97px;
+      }
+      .text-font-medium{
+        font-size: 24.27px;
+      }
+      .text-font-small{
+        font-size: 21.57px;
+      }
+      .text-font-smallest{
+        font-size: 18.87px;
+      }
+    }
+  }
+  .content-container:not(.bic_h_c100):not(.bc_h_c100):not(.bc_v_c100):not(.bic_v_c100):not(.sp_h_iL66_cR33):not(.sp_h_iL50_cR50){
+    display: block;
+  }
+  .sp_h_iL66_cR33.content-container{
+    padding: 0;
+    display: block;
+  }
+  .sp_h_iL50_cR50.content-container{
+    padding: 0;
+    display: block;
+  }
+  .content{
+    box-sizing: border-box;
+    padding: 1.8em;
+  }
+  .content:not(.bc_h_c100):not(.bic_h_c100):not(.bic_v_c100):not(.bc_v_c100) p{
+    margin: 0;
+  }
+  .sp_h_iL66_cR33, .sp_h_iL50_cR50, .sp_h_text_overlay, .sp_h_iT75_cB25 {
+    span{
+      display: initial;
+    }
+  }
+  .bc_v_c100.content .reading_level_help{
+    height: 6.2%;
+    margin-top: 12px;
+  }
+
+  .sp_h_text_overlay.content {
+    margin-left: 15% !important;
+    margin-top: 4.7% !important;
+    font-size: 22.5px;
+  }
+
+// Wkhtml2pdf and Chromium are adding margin-top to p elements. It is not clear where 
+// the margin is coming from. Override it here. Note that newer browsers do not show that margin. 
+  .sp_h_text_overlay1.content > p {
+    margin: 0px;
+  }
+  .sp_h_text_overlay1.content.text-font-normal, .sp_h_text_overlay1.content .text-font-normal {
+    font-size: 22px;
+  }
+
+  .sp_h_text_overlay1.content .text-font-large, .sp_h_text_overlay1.content.text-font-large {
+    font-size: 28px;
+  }
+
+  .sp_h_text_overlay1.content .text-font-largest, .sp_h_text_overlay1.content.text-font-largest {
+    font-size: 32px;
+  }
+
+  .sp_h_text_overlay1.content .text-font-medium, .sp_h_text_overlay1.content.text-font-medium {
+    font-size: 21px;
+  }
+
+  .sp_h_text_overlay1.content .text-font-small, .sp_h_text_overlay1.content.text-font-small {
+    font-size: 17.5px;
+  }
+
+  .sp_h_text_overlay1.content .text-font-smallest, .sp_h_text_overlay1.content.text-font-smallest {
+    font-size: 15.5px;
+  }
+}
+
+#story_pdf .page-container-portrait .fc_v_iT66_cB33.content .logo-level .pub-logo {
+  width: 45% !important;
+}
+#story_pdf .page-container-landscape .fc_h_iT66_cB33.content .logo-level .pub-logo {
+  width: 36% !important;
+}
+
+// SW - 2863: In PDF one of the template which it is having text above and image below is not 
+// working, as it is appearing normally. To show like that we need to add position absolute for that // template.
+
+#story_pdf .sp_h_iB66_cT33.illustration, #story_pdf .sp_v_iB66_cT33.illustration{
+  position: absolute;
+}

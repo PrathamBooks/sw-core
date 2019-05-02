@@ -1,0 +1,24 @@
+<%
+  languages ||= Language.all
+%>
+
+<%= select_tag("translate_language", options_from_collection_for_select(languages, "id", 'name', params[:translate_language]), :prompt => "Select Language", :onchange => "translate_language_select();")%>
+
+<script>
+  $(document).ready(function(){
+    $('#translate_language').selectpicker({
+      liveSearch:true
+    });
+    <% if params[:translate_language] %>
+      $('#translate_language').selectpicker('val', "<%= params[:translate_language]%>");
+    <% end %>
+  });
+  function translate_language_select(){
+    var language = $("#translate_language").val();
+    var data = { translate_language: language };
+
+    if(typeof ajax_filter !== "undefined" ){
+      ajax_filter("GET", "<%= path %>", data);
+    }
+  }
+</script>

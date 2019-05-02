@@ -1,0 +1,373 @@
+<%= render :partial => "dashboard_datatables" %>
+<%= render :partial => "flagged_content_tabs" %>
+
+  <div class="row">
+    <div class="col-md-12 col-sm-12">
+    	  <label class="allusers"><%= t 'dashboard.flagged_stories_tab.all_flagged_stories'%></label>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 col-sm-12" id="user_details">
+      <table class="table table-striped" id="flaged_stories">
+        <tfoot style="display: table-header-group;">
+          <tr>
+            <th><%= t 'dashboard.flagged_stories_tab.story_title'%></th>
+            <th><%= t 'dashboard.flagged_stories_tab.user_comment'%></th>
+            <th><%= t 'dashboard.flagged_stories_tab.flagged_by'%></th>
+            <th><%= t 'dashboard.flagged_stories_tab.flagged_type'%></th>
+            <th><%= t 'dashboard.flagged_stories_tab.time_of_flagging'%></th>       
+            <th><%= t 'dashboard.flagged_stories_tab.authors_email_id'%></th>
+            <th><%= t 'dashboard.actions'%></th>
+            <th></th>
+          </tr>
+        </tfoot>  
+        <thead>
+          <tr class="table-heading-row">
+            <th><%= t 'dashboard.flagged_stories_tab.story_title'%></th>
+            <th><%= t 'dashboard.flagged_stories_tab.user_comment'%></th>
+            <th><%= t 'dashboard.flagged_stories_tab.flagged_by'%></th>
+            <th><%= t 'dashboard.flagged_stories_tab.flagged_type'%></th>
+            <th><%= t 'dashboard.flagged_stories_tab.time_of_flagging'%></th>       
+            <th><%= t 'dashboard.flagged_stories_tab.authors_email_id'%></th>
+            <th><%= t 'dashboard.actions'%></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody class="table-row-details">    
+        <% flagged_stories.each_with_index do |story, index|%> 
+          <tr id="<%= story.id %>">
+            <td><%= link_to get_title(story.language, story.title).html_safe, react_stories_show_path(story.to_param) %></td>
+            <td><%= ReviewerComment.construct_comment_text(story.flaggings.try(:first).try(:reason)) %></td>
+            <td>
+              <%= story.flaggings.try(:first).try(:flagger).try(:name) %><br/>
+              (<%= story.flaggings.try(:first).try(:flagger).try(:email) %>)
+            </td>
+            <td>
+              <% if story.flaggings.try(:first).try(:reason) =~ /stories-.*/ %>
+                Reviewer
+              <% else %>
+                User 
+              <% end %>
+            </td>
+            <td><%= story.flaggings.try(:first).try(:created_at).localtime.strftime("%Y-%m-%d %H:%M:%S") %></td>
+            <td><%= story.authors.collect(&:email).join(", ") %></td>
+            <td>
+              <a class="btn btn-sm btn-success clear_story_flag reason_button" style="padding:5px 10px;" data-path = "<%= clear_story_flag_path(story) %>" ><%= t 'dashboard.flagged_illustrations_tab.clear_flag' %></a>
+            </td>
+            <td></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="pull_down_story_dialog" title="Confirmation Required">
+    <%= t 'dashboard.flagged_stories_tab.pulled_down_story_alert'%>
+  </div>
+
+  <div id="clear_story_flag_dialog" title="Confirmation Required">
+    <%= t 'dashboard.flagged_stories_tab.clear_flag_story_alert'%>
+  </div>
+
+  <div id="no_story_selected_dialog" title="Note">
+    <%= "Please select atleast 1 story to perform this action" %>
+  </div>
+
+  <div id="reasons_for_pull_down_dialog" title="Choose reason(s) for pull-down:">
+    <ul>
+      <input class="reason_for_pull_down" type="checkbox" value="Not an original creation." name="reason"/>Not an original creation.<br>
+      <input class="reason_for_pull_down" type="checkbox" value="Inappropriate for children." name="reason" />Inappropriate for children.<br>
+      <input class="reason_for_pull_down" type="checkbox" value="Blank." name="reason" />Blank.<br>
+      <input class="reason_for_pull_down" type="checkbox" value="Contains images that are copyrighted." name="reason" />Contains images that are copyrighted.<br>
+      <input class="reason_for_pull_down" type="checkbox" value="Looks like spam!" name="reason" />Looks like spam!<br>
+      <input class="reason_for_pull_down" id="other_comment" type="checkbox" value="Other comments: Please Specify" name="reason" />Other comments: Please Specify<br>
+      <input type="text" id="other_reason_for_pull_down" class="form-control other_reasons" style="display: none;"><br>
+      <div class="row">
+        <div class="pull-left">
+          <a class="btn btn-sm btn-danger" id="save_button" data-path="<%= bulk_pull_down_stories_path %>" style="width: 80px; display: none;">Pull Down</a><br>
+        </div>
+        <div class="pull-right">
+          <a class="btn btn-sm btn-success" id="cancel_button">Cancel</a><br>
+        </div>
+      </div>
+    </ul>
+  </div>
+  
+<script type="text/javascript">
+
+$(document).ready(function(){
+  initPulledDownStoryDialog();
+  initClearStoryFlagDialog();
+  initNoStorySelectedDialog();
+  initReasonsForBulkPullDownDialog();
+  for (var i =0 ; i <= <%=flagged_stories.size - 1%>; i++) {
+    if ($("#reason_"+i+" li").find("input:checked").length > 0){
+      if($(".other_options_"+i).is(":checked")){
+        $("#other_reason_"+i).show()
+      }
+      $("#reason_save_"+i).show();
+    }
+  };
+});
+
+function initNoStorySelectedDialog(){
+  var no_story_selected = $("#no_story_selected_dialog");
+  no_story_selected.dialog({
+    autoOpen: false,
+    width: 400,
+    modal: true,
+    buttons : {
+      "Ok" : function() {
+        $(this).dialog("close");
+      }
+    },
+    dialogClass: 'change_orientation_dialog'
+  });
+}
+
+
+function initPulledDownStoryDialog(){
+  var pull_down_story_dialog = $("#pull_down_story_dialog");
+  pull_down_story_dialog.dialog({
+      autoOpen: false,
+      width: 700,
+      modal: true,
+      buttons : {
+        "Confirm" : function() {
+          window.location = pull_down_story_path;
+        },
+        "Cancel" : function() {
+          $(this).dialog("close");
+        }
+      },
+      dialogClass: 'change_orientation_dialog'
+  });
+}
+
+function initClearStoryFlagDialog(){
+  var clear_story_flag_dialog = $("#clear_story_flag_dialog");
+  clear_story_flag_dialog.dialog({
+      autoOpen: false,
+      width: 700,
+      modal: true,
+      buttons : {
+        "Confirm" : function() {
+          window.location = clear_story_flag_path;
+        },
+        "Cancel" : function() {
+          $(this).dialog("close");
+        }
+      },
+      dialogClass: 'change_orientation_dialog'
+  });
+}
+
+function initReasonsForBulkPullDownDialog(){
+  var reasons_for_bulk_pull_down = $("#reasons_for_pull_down_dialog");
+  reasons_for_bulk_pull_down.dialog({
+    autoOpen: false,
+    width: 500,
+    modal: true,
+    dialogClass: 'change_orientation_dialog'
+  });
+}
+
+
+$(".clear_story_flag").click(function(){
+   clear_story_flag_path = $(this).data('path');
+   $("#clear_story_flag_dialog").dialog("open");
+});
+for (var i =0 ; i <= <%=flagged_stories.size - 1%>; i++) {
+  story_pulled_down_resons(i)
+};
+function story_pulled_down_resons(i){
+  $("#reason_"+i+" li").click(function () {
+    if ($("#reason_"+i+" li").find("input:checked").length > 0){
+      if($(".other_options_"+i).is(":checked")){
+        $("#other_reason_"+i).show()
+      }else{
+        $("#other_reason_"+i).hide()
+      }
+      $("#reason_save_"+i).show();
+    }else
+    {
+      $("#reason_save_"+i).hide();
+      $("#other_reason_"+i).hide()
+    }   
+  });
+
+  $("#reason_save_"+i).click(function(){
+    var collect_reason = [];
+     $("#reason_"+i+" li").find("input:checked").each(function () {
+        if($(this).val() == "Other comments: Please Specify"){
+          collect_reason.push($("#other_reason_"+i).val().replace(/\./g,' '));
+        }else{
+          collect_reason.push($(this).val().replace(/\./g,' '));
+        }    
+        });
+     pull_down_story_path = $(this).data('path')+'?reasons='+collect_reason;
+      window.location = pull_down_story_path;
+  });
+}
+
+$(".reason_for_pull_down").click(function () {
+  var atleast_one_reason_chosen = false;
+  $(".reason_for_pull_down").each(function() {
+    if ($(this).prop("checked")) {
+      atleast_one_reason_chosen = true;
+    }
+  });
+  if (atleast_one_reason_chosen) {
+    if ($("#other_comment").is(":checked")) {
+      $("#other_reason_for_pull_down").show();
+    } else {
+      $("#other_reason_for_pull_down").hide();
+    }
+    $("#save_button").show(); 
+  } else {
+    $("#other_reason_for_pull_down").hide();
+    $("#save_button").hide(); 
+  }
+});
+
+$(document).ready(function() {
+  var table = $('#flaged_stories').dataTable( {
+    "bStateSave": true,
+    searching: true,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 20,
+    order: [],
+    responsive: {
+        details: false
+    },
+    columnDefs: [ 
+      {
+        orderable: false,
+        className: 'select-checkbox',
+        targets: 7
+      } 
+    ],
+    select: {
+      'style': 'multi'
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  title: formatDatatableTitle('flagged-stories'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6 ]
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  title: formatDatatableTitle('flagged-stories'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6 ]
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  title: formatDatatableTitle('flagged-stories'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6 ]
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  title: formatDatatableTitle('flagged-stories'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5 ]
+                  }
+              },
+              {
+                text: 'Pull Down',
+                attr: {
+                  id: 'bulk-pull-down'
+                }
+              },
+              {
+                text: 'Select All',
+                action: function() {table.api().rows({page: 'current'}).select();}
+              },
+              {
+                text: 'Select None',
+                action: function() {table.api().rows({page: 'current'}).deselect();},
+                attr: {
+                  id: 'select-none'
+                }
+              }
+            ],
+    "aoColumns": [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    { "bSearchable": false }
+                ]
+
+  });
+
+  $("#save_button").click(function(){
+    var collect_reason = [];
+    $(".reason_for_pull_down").each(function () {
+      if ($(this).prop("checked")) {    
+        if($(this).val() == "Other comments: Please Specify") {
+          collect_reason.push($("#other_reason_for_pull_down").val().replace(/\./g,' '));
+        } else {
+          collect_reason.push($(this).val().replace(/\./g,' '));
+        }
+      }
+    });
+    var story_ids = table.api().rows({selected: true}).ids().toArray();
+    bulk_pull_down_story_path = $(this).data('path')+'?story_ids=' + story_ids + '&reasons='+collect_reason;
+    window.location = bulk_pull_down_story_path;
+  });
+
+  $("#bulk-pull-down").click(function() {
+    var num_of_selected_rows = table.api().rows({selected: true}).count();
+    if (num_of_selected_rows < 1) {
+      $("#no_story_selected_dialog").dialog("open");
+    } else {
+      $("#reasons_for_pull_down_dialog").dialog("open");
+    }
+  });
+
+  // reset elements in reasons dialog when user clicks on select none button
+  $("#select-none").click(function() {
+    $(".reason_for_pull_down").prop("checked", false);
+    $("#other_reason_for_pull_down").val("");
+    $("#other_reason_for_pull_down").hide();
+    $("#save_button").hide();    
+  });
+
+  $("#cancel_button").click(function() {
+    $("#reasons_for_pull_down_dialog").dialog("close");
+  });
+
+  $('#flaged_stories tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+  });
+
+  table.api().columns().every( function () {
+    var that = this;
+    $( 'input', this.footer() ).on( 'keyup change', function () {
+        if ( that.search() !== this.value ) {
+            that
+                .search( this.value )
+                .draw();
+        }
+    });
+  });
+});
+
+</script>
+
+
+

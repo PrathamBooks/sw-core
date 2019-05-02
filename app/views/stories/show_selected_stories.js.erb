@@ -1,0 +1,37 @@
+$('#selected_stories_list').html("<%= escape_javascript(render :partial => "bulk_download_stories_list", :locals => {:stories => @stories}) %>");
+$('#selected_stories_list').modal("show");
+$(document).ready(function() {
+  $("#download_ok").click(function(){
+    var array =[];
+    $(".final_selected_stories").each(function(){
+      if($(this).is(':checked')){  
+       array.push($(this).data('storyId'))
+      }
+    });
+    if (array.length > 0){  
+     var new_tab ="/stories/bulk_download?high_resolution=<%=@high_resolution%>&format=<%=@format%>&stories_to_download="+array;
+     $('#selected_stories_list').modal('hide');
+      window.open(new_tab, '_blank');
+      for(i=0; i<array.length;i++){
+       $("#story_"+array[i]).addClass('card-disabled')
+      }
+      $("#tiles_selected_text").html("")
+      $("#select_all").prop('checked',false);
+      $("#de_select_all").prop('checked',false);
+      $('.download_format').prop('selected', function() {
+        $('.download_format').val("")
+      });
+      $(".check_story").each(function(){
+        if($(this).is(':checked')){  
+         $(this).prop('checked',false);
+        }
+      });
+      //window.location.reload();
+     }else{
+       $("#validated_selected").css({"display":"block"}).delay(3000).fadeOut();;
+     }
+  })
+  $("#cancel").click(function(){
+    $('#selected_stories_list').modal('hide');
+  })
+});

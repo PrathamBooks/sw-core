@@ -1,0 +1,2 @@
+$('#toolbarHead').html("<%= escape_javascript(render(:partial=>"editor_toolbar")) %>");
+$('#selected_page').html("<%= escape_javascript(render(:partial=>"page_edit", locals: { textbox_id: @textbox_id})) %>");

@@ -1,0 +1,10 @@
+$('#illustration-view').html("<%= escape_javascript(render(:partial=>"illustration_view"))%>");
+
+$(document).ready(function() {
+	$('#imagemodal').modal({
+		show: true
+	});
+});
+Statistics.trackIllustrationRead(<%= @illustration.id %>);
+$('#illustration-views-<%= @illustration.id %>').text(parseInt($('#illustration-views-<%= @illustration.id %>').text())+1);
+

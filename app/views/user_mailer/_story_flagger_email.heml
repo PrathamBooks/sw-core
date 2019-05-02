@@ -1,0 +1,65 @@
+<heml>
+  <head>
+    <style>
+      .mail_container {
+        border: 0;
+        background-color: #fff;
+        padding: 0.9375em;
+        text-align: center;
+        max-width: 100%;
+      }
+      .mail_cont_name {
+        display: block;
+        font-weight: bold;
+        text-align: center;
+      }
+      .mail_cont_head {
+        display: block; 
+        margin-bottom: 0.625em;
+      }
+      .mail_cont_head h1 {
+        font-size: 1.6em; 
+        font-family: 'Raleway', sans-serif;
+        margin: 0;
+      }
+      .mail_cont_text {
+        display: block; 
+        font-family: 'Raleway', sans-serif;
+        padding-bottom: 0.625em; 
+        text-align: center;
+      }
+      .mail_cont_wishes {
+        display: block; 
+        font-family: 'Raleway', sans-serif;
+        padding-bottom: 0;
+      }
+      .mail_cont_wishes span {
+        display: block;
+      }
+      .mail_stories_button {
+        background-color: #e94f1d; 
+        border: none; 
+        border-radius: 0.25em; 
+        color: #fff; 
+        display: block; 
+        font-size: 0.6875em; 
+        font-weight: bold; 
+        margin: 0 auto; 
+      }
+    </style>
+  </head>
+  <body>
+    <container class="mail_container">
+
+      <row>
+        <column class="mail_cont_name">Dear <%= @flaggers.name.titleize %></column>
+      </row>
+
+      <row class="mail_cont_text">
+        <column>Thanks for drawing our attention to inappropriate content on StoryWeaver. The (<%= link_to( @story.title, react_stories_show_url(@story)) %>) you had reported earlier has been taken down. We're really glad you're watching out for us and hope you will continue to do so!</column>
+      </row>
+
+    </container>
+
+  </body>
+</heml>

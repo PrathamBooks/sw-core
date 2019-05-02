@@ -1,0 +1,11 @@
+<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+  <% @template_options.each do |template| %>
+    <li role="presentation">
+      <a role="menuitem" href="#">
+        <img src="/assets/story_page_templates/<%= template.name %>.png", width=100,height=100/>
+     </a>
+    </li>
+<% end %>
+</ul>
+
+

@@ -1,0 +1,16 @@
+$("#storyModal").hide();
+$(document.body).removeClass('modal-open');
+$('#pages_ribbon').replaceWith("<%= escape_javascript(render(:partial=>"pages_ribbon")) %>");
+$(".heading-title").html("<%= @story.title %>");
+<% if @page.page_template.orientation == "portrait" %>
+  $('#right_side_editor').addClass('portrait_editor');
+<% else %>
+  $('#right_side_editor').removeClass('portrait_editor');
+<% end %>
+$('#toolbarHead').html("<%= escape_javascript(render(:partial=>"editor_toolbar")) %>");
+$('#right_side_editor').html("<%= escape_javascript(render(:partial=>"page_editor")) %>");
+$('#page_templates').html("<%= escape_javascript(render(:partial=>"page_templates")) %>");
+story_editor.hide_illustration_drawer_based_on_orientation();
+if ("<%= session[:start_with_images] %>" == "true"){
+  $("#modal-image-drawer").modal('show');
+}

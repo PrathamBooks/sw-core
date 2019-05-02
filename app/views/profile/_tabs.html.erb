@@ -1,0 +1,68 @@
+<link href="https://fonts.googleapis.com/css?family=Bree+Serif|Raleway:400,700" rel="stylesheet">
+<% 
+  number_of_columns = 7
+
+  if current_user.organization.present? && (current_user.organization_roles != nil && current_user.organization_roles.include?("admin"))
+    number_of_columns += 1
+  end
+  if current_user.organization? || current_user.content_manager?
+    number_of_columns += 1
+  end
+  if current_user.is_editor? 
+    number_of_columns += 2
+  end
+  if current_user.organization.present?
+    number_of_columns += 1
+  end
+%>
+<div class="row full-content-dash prof-act">
+  <div class="col-md-12">
+    <ul id="myTab" role="tablist" class="nav nav-tabs profile">
+      <li class="<%= @current_tab == 'details' ? 'active' : '' %>" role="presentation" style="
+      width: <%= (100.0 / number_of_columns.to_f) %>%;">
+        <%= link_to "<span>#{t "dashboard.my_details_title"}</span>".html_safe , profile_path %>
+      </li>
+      <% if current_user.organization.present? && (current_user.organization_roles != nil && current_user.organization_roles.include?("admin"))  %>
+       <li  class="<%= @current_tab == 'organization_details' ? 'active' : '' %>" style="width: <%= 100.0 / number_of_columns.to_f %>%;">
+        <%= link_to "<span>My Org</span>".html_safe, user_org_details_path(:org_id => current_user.organization) %>
+      </li>
+      <% end %>
+      <li class="<%= @current_tab == 'stories' ? 'active' : '' %>" role="presentation" style="width: <%= 100.0 / number_of_columns.to_f %>%;">
+        <%= link_to "<span>#{t "dashboard.my_published_stories"}</span>".html_safe, profile_stories_path %>
+      </li>
+      <li class="<%= @current_tab == 'edit_in_progress' ? 'active' : '' %>" role="presentation" style="width: <%= 100.0 / number_of_columns.to_f %>%;">
+        <%= link_to "<span>#{t "dashboard.published_stories_under_edit"}</span>".html_safe, profile_edit_in_progress_stories_path %>
+      </li>
+      <li class="<%= @current_tab == 'illustrations' ? 'active' : '' %>" role="presentation" style="width: <%= 100.0 / number_of_columns.to_f %>%;">
+        <%= link_to "<span>#{t "dashboard.my_illustrations"}</span>".html_safe, profile_illustrations_path %>
+      </li>
+      <li class="<%= @current_tab == 'drafts' ? 'active' : '' %>" role="presentation" style="width: <%= 100.0 / number_of_columns.to_f %>%;">
+        <%= link_to "<span>#{t "dashboard.my_drafts"}</span>".html_safe, profile_drafts_path %>
+      </li>
+      <li class="<%= @current_tab == 'deactivated' ? 'active' : '' %>" role="presentation" style="width: <%= 100.0 / number_of_columns.to_f %>%;">
+        <%= link_to "<span>#{t "dashboard.deactivated_stories"}</span>".html_safe, profile_de_activated_stories_path %>
+      </li>
+      <li class="<%= @current_tab == 'submitted' ? 'active' : '' %>" role="presentation" style="width: <%= 100.0 / number_of_columns.to_f %>%;">
+        <%= link_to "<span>#{t "dashboard.my_submitted_stories"}</span>".html_safe, profile_submitted_stories_path %>
+      </li>
+      <% if current_user.is_editor? %>
+        <li class="<%= @current_tab == 'un_edited_stories' ? 'active' : '' %>" role="presentation" style="width: <%= 100.0 / number_of_columns.to_f %>%;">
+          <%= link_to "<span>#{t "dashboard.un_edited_stories"}</span>".html_safe, profile_un_edited_stories_path %>
+        </li>
+        <li class="<%= @current_tab == 'edited_stories' ? 'active' : '' %>" role="presentation" style="width: <%= 100.0 / number_of_columns.to_f %>%;">
+          <%= link_to "<span>#{t "dashboard.edited_stories"}</span>".html_safe, profile_edited_stories_path %>
+        </li>
+      <% end %>
+      <% if current_user.organization? || current_user.content_manager? %>
+       <li role="presentation" class="<%= @current_tab == 'private_images' ? 'active' : '' %>" style="width: <%= 100.0 / number_of_columns.to_f %>%;">
+        <%= link_to "<span>#{t "dashboard.private_images"}</span>".html_safe, private_images_path %>
+      </li>
+      <% end %>
+      <% if current_user.organization.present? %>
+       <li  class="<%= @current_tab == 'organization_downloads' ? 'active' : '' %>" style="width: <%= 100.0 / number_of_columns.to_f %>%;">
+        <%= link_to "<span>#{t "dashboard.organisational_downloads_title"}</span>".html_safe, user_organization_downloads_path %>
+      </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

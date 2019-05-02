@@ -1,0 +1,41 @@
+<div role="tabpanel" class="tab-pane user_dashboard" id="profile-drafts">
+  <div class="col-md-12">
+    <table class="table table-striped">
+      <thead>
+      <tr class="table-heading-row">
+        <th><%= t "dashboard.story_title" %></th>
+        <th><%= t "dashboard.parent_story" %></th>
+        <th><%= t "dashboard.last_updated_on" %></th>
+        <th><%= t "dashboard.actions" %></th>
+      </tr>
+      </thead>
+      <tbody class="table-row-details">
+      <% @edit_in_progress_stories.each do |story| %>
+       <tr class="user_dashboard_row">
+         <td class="underline-class"><a href="<%= react_stories_show_path(story.to_param) %>"><%= story.title? ? get_title(story.language, story.title).html_safe : "Untitled" %></a></td>
+         <td>
+           <% if story.parent.present? %>
+            <a href="<%= react_stories_show_path(story.parent.to_param) %>"><%= get_title(story.language, story.parent.title).html_safe %></a>
+           <% end %>
+         </td>
+         <td><%= default_date_format(story.updated_at) %></td>
+         <td class="user_dash_progress_edit hide-in-edit">
+            <%= link_to story_editor_path(story) do %>
+              <img src='<%= asset_path('edit.png') %>'/>
+            <% end %>
+         </td>
+
+       </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%= paginate @edit_in_progress_stories %>
+<%= render '/stories/desktop_only_action_message' %>
+<script>
+	$(document).ready(function(){
+		$('[data-toggle="tooltip"]').tooltip();
+	});
+</script>

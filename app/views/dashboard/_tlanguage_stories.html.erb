@@ -1,0 +1,218 @@
+<%= render :partial => "dashboard_datatables" %>
+
+<div id="storyReader"></div>
+<div style="margin-bottom: 10px;">
+  <div class="btn-group" style="margin-left: 15px;"><label>Filters:</label></div>
+  <%= render :partial => "language_filter", :locals => {:path => get_tlanguage_stories_path(:level=> params[:level] ? params[:level] : '', :limit => params[:limit]? params[:limit] : 10, :current_tab => @current_tab, :story_type  => params[:story_type] ? params[:story_type] : '' )} %>
+
+  <div class="btn-group">
+    <i class="dropdown-arrow dropdown-arrow-inverse"></i>
+    <button class="btn btn-app dropdown-toggle filter-btn" data-toggle="dropdown" ><%= params[:level] && params[:level] != ''? "Level #{params[:level].to_i + 1}" : "All Reading Levels" %></button>
+    <button class="btn btn-app dropdown-toggle" data-toggle="dropdown"> <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu dropdown">
+      <li><%= link_to "All Reading Levels", get_tlanguage_stories_path(:level => '', :language=>params[:language]? params[:language] : '', :limit => params[:limit]? params[:limit] : 10,:current_tab => @current_tab,:story_type  => params[:story_type] ? params[:story_type] : ''), :remote => true%></li>
+      <% (0..3).each do |level| %>
+       <li><%= link_to "Level #{level+1}", get_tlanguage_stories_path(:level => level, :language=>params[:language]? params[:language] : '', :limit => params[:limit]? params[:limit] : 10,:current_tab => @current_tab,:story_type  => params[:story_type] ? params[:story_type] : ''), :remote => true%></li>
+      <% end %>
+    </ul>
+  </div>
+  <%if @current_tab == "translated_stories" %>
+    <div style="margin-left: 15px; margin-top:5px">
+      <b><%= @stories.count == 1 ? "#{@stories.count} story have been translated" : "#{@stories.count} stories have been translated"%></b>
+    </div>
+  <% end %>
+</div>
+
+<div class="btn-group" style="margin-left: 15px;">
+  <span>Number of Stories Selected :</span>
+  <span class="badge" id="<%= @current_tab == 'un_translated_stories' ? 'un_translated_stories_count' : 'translated_stories_count' %>"><%= @stories.count %></span>
+</div>
+
+<div class="col-md-9 tr_stories_dashboard">
+  <table class="table table-striped" id="<%= @current_tab == 'un_translated_stories' ? 'un_tr_stories' : 'tr_stories' %>">
+    <tfoot style="display: table-header-group;">
+      <tr>
+        <th>Story in English         </th>
+        <th>Reading Level            </th>
+        <th>Language                 </th>
+        <th>Translation Draft        </th>
+        <% if @current_tab == "translated_stories" %>
+          <th>Translated by          </th>
+          <th>Rating                 </th>
+          <th>Comments               </th>
+        <% end %>
+      </tr>
+    </tfoot>
+    <thead>
+      <tr class="table-heading-row">
+        <th>Story in English              </th>
+        <th>Reading Level                 </th>
+        <th>Language                      </th>
+        <th>Translation Draft             </th>
+        <% if @current_tab == "translated_stories" %>
+          <th>Translated by               </th>
+          <th>Rating                      </th>
+          <th>Comments                    </th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody class="table-row-details">
+      <% @stories.each do |story| %>
+        <tr class="<%= @current_tab == 'un_translated_stories' ? 'un_tr_stories_count' : 'tr_stories_count' %>">
+          <td><%= link_to story.parent.title, story_page_path(story.parent, story.parent.pages.first), :remote => true %></td>
+          <td style="text-align: center;"><%= story.reading_level %></td>
+          <td><%= story.language.name %></td>
+          <td><%= link_to story.title, story_page_path(story, story.pages.first), :remote => true %></td>
+          <% if @current_tab == "translated_stories" %>
+            <td><%= story.authors[0].name %> <br> <span type = 'email'><%= story.authors[0].email%></span> </td>
+            <td><%= story.get_story_rating_comments("rating") %></td>
+            <td><%= story.get_story_rating_comments("comment") %></td>
+          <% end %> 
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+  var table = $('#un_tr_stories').DataTable( {
+    searching: true,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 20,
+    order: [],
+    responsive: {
+        details: false
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  title: formatDatatableTitle('tlanguages'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3 ]
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  title: formatDatatableTitle('tlanguages'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3 ]
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  title: formatDatatableTitle('tlanguages'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3 ]
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  title: formatDatatableTitle('tlanguages'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3 ]
+                  }
+              }
+          ]
+      
+  });
+  $('#un_tr_stories tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+  });
+
+  var new_table = $('#un_tr_stories').dataTable();
+  table.columns().every( function () {
+    var that = this;
+
+    $( 'input', this.footer() ).on( 'keyup change', function () {
+      if ( that.search() !== this.value ) {
+          that
+              .search( this.value )
+              .draw();
+        document.getElementById("un_translated_stories_count").innerHTML = document.getElementById('un_tr_stories').children[1].childElementCount;
+      }else{
+        document.getElementById("un_translated_stories_count").innerHTML = table.rows( '.un_tr_stories_count' ).count(); 
+      }
+    });
+  });
+  $( 'input').on( 'keyup change', function () {
+    document.getElementById("un_translated_stories_count").innerHTML = new_table.fnSettings().fnRecordsDisplay();
+  });
+
+  });
+
+$(document).ready(function() {
+  var table = $('#tr_stories').DataTable( {
+    searching: true,
+    lengthChange: false,
+    showNEntries: false,
+    pageLength: 20,
+    order: [],
+    responsive: {
+        details: false
+    },
+    dom: '<"col-md-6 col-sm-6"B><"col-md-6 col-sm-6"f><"col-md-12 col-sm-12"p>rti',
+    buttons: [
+              {
+                  extend: 'copyHtml5',
+                  title: formatDatatableTitle('tlanguages'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6 ]
+                  }
+              },
+              {
+                  extend: 'csvHtml5',
+                  title: formatDatatableTitle('tlanguages'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6 ]
+                  }
+              },
+              {
+                  extend: 'excelHtml5',
+                  title: formatDatatableTitle('tlanguages'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6 ]
+                  }
+              },
+              {
+                  extend: 'pdfHtml5',
+                  title: formatDatatableTitle('tlanguages'),
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3, 4, 5, 6 ]
+                  }
+              }
+          ]
+      
+  });
+  $('#tr_stories tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+  });
+
+  var new_table = $('#tr_stories').dataTable();
+  table.columns().every( function () {
+    var that = this;
+
+    $( 'input', this.footer() ).on( 'keyup change', function () {
+      if ( that.search() !== this.value ) {
+          that
+              .search( this.value )
+              .draw();
+        document.getElementById("translated_stories_count").innerHTML = document.getElementById('tr_stories').children[1].childElementCount;
+      }else{
+        document.getElementById("translated_stories_count").innerHTML = table.rows( '.tr_stories_count' ).count(); 
+      }
+    });
+  });
+  $( 'input').on( 'keyup change', function () {
+    document.getElementById("translated_stories_count").innerHTML = new_table.fnSettings().fnRecordsDisplay();
+  });
+
+  });
+
+</script>
