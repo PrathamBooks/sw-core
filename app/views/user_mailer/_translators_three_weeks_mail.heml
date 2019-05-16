@@ -56,7 +56,7 @@
       </row>
 
       <row class="mail_cont_text">
-        <column>Click <%= link_to "here", react_stories_show_url(@story) %> to finish your translation and hit 'Publish'. If you have any questions, drop us an email at <a href="mailto:storyweaver@prathambooks.org">storyweaver@prathambooks.org</a></column>
+        <column>Click <%= link_to "here", react_stories_show_url(@story) %> to finish your translation and hit 'Publish'. If you have any questions, drop us an email at <a href="mailto:storyweaver@example.com">storyweaver@example.com</a></column>
       </row>
 
       <row>

@@ -14,15 +14,15 @@ Background:
 
   When I create list with "1" stories with category "Writing Prompts" has number of reads as "10" with likes of "7" by "Wordless Picture Books"
 
-  When I create "1" stories with category "Fantasy" and language as "English" with reading_level "2" from the author as "pratham" with the title "Handmade in india" and the flaggings_count as "0" and with org "admin@prathambooks.org"
+  When I create "1" stories with category "Fantasy" and language as "English" with reading_level "2" from the author as "pratham" with the title "Handmade in india" and the flaggings_count as "0" and with org "admin@example.com"
 
-  When I create "1" stories with category "Fantasy" and language as "English" with reading_level "2" from the author as "pratham" with the title "Asura and boy" and the flaggings_count as "4" and with org "admin@prathambooks.org"
+  When I create "1" stories with category "Fantasy" and language as "English" with reading_level "2" from the author as "pratham" with the title "Asura and boy" and the flaggings_count as "4" and with org "admin@example.com"
 
-  When I create "1" stories with category "Fantasy" and language as "English" with reading_level "2" from the author as "pratham" with the title "The boat ride" and the flaggings_count as "4" and with org "admin@prathambooks.org"
+  When I create "1" stories with category "Fantasy" and language as "English" with reading_level "2" from the author as "pratham" with the title "The boat ride" and the flaggings_count as "4" and with org "admin@example.com"
 
-  When I create "1" stories with category "Fantasy" and language as "English" with reading_level "2" from the author as "pratham" with the title "glassdoor" and the flaggings_count as "4" and with org "admin@prathambooks.org"
+  When I create "1" stories with category "Fantasy" and language as "English" with reading_level "2" from the author as "pratham" with the title "glassdoor" and the flaggings_count as "4" and with org "admin@example.com"
 
-  When I create "1" stories with category "Fantasy" and language as "English" with reading_level "2" from the author as "pratham" with the title "samplestory" and the flaggings_count as "4" and with org "admin@prathambooks.org"
+  When I create "1" stories with category "Fantasy" and language as "English" with reading_level "2" from the author as "pratham" with the title "samplestory" and the flaggings_count as "4" and with org "admin@example.com"
 
 Scenario: To Validate the listpage
   Given I open StoryWeaver
@@ -49,7 +49,7 @@ Scenario: To Validate List Details page
 
 Scenario: To Validate Categories filters in list page
   Given I login to StoryWeaver with
-    |Email    | admin@prathambooks.org             |
+    |Email    | admin@example.com             |
     |Password | prathambooks                    |
   When I navigate to List Page
   And I apply the following filters in list page
@@ -95,7 +95,7 @@ Scenario: To Validate read views count from storydetails page
   And I read the complete story
   When I "Sign Out" from storyweaver
   Given I login to StoryWeaver with
-    |Email    | admin@prathambooks.org       |
+    |Email    | admin@example.com       |
     |Password | prathambooks              |
   When I navigate to List Page
   And I choose "Wordless Picture Books" following list from list page

@@ -56,7 +56,7 @@
       </row>
 
       <row class="mail_cont_text">
-        <column>We'd hate for you to lose your work, so please click <%= link_to "here", react_stories_show_url(@story) %> to complete your story and hit 'Submit'. If you have any questions, drop us an email at <a href="mailto:storyweaver@prathambooks.org" target="_blank">storyweaver@prathambooks.org</a></column>
+        <column>We'd hate for you to lose your work, so please click <%= link_to "here", react_stories_show_url(@story) %> to complete your story and hit 'Submit'. If you have any questions, drop us an email at <a href="mailto:storyweaver@example.com" target="_blank">storyweaver@example.com</a></column>
       </row>
       <row>
         <column class="mail_cont_wishes"><span>Warmly,</span>Team StoryWeaver</column>

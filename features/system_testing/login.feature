@@ -202,7 +202,7 @@ Scenario: Re-send Forgot password link for unconfirmed email
   When I fill in "user[email]" with "automation1299@yopmail.com"
   When I press "Resend confirmation instructions"
   Then I should see "You will receive an email with instructions for how to confirm your email address in a few minutes."
-  Then I should see from and to address as "no-reply@prathambooks.org" and "automation1299@yopmail.com"
+  Then I should see from and to address as "no-reply@example.com" and "automation1299@yopmail.com"
   And I wait 5 seconds
   When I follow the confirmation link in the confirmation email
 

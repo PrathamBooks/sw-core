@@ -62,13 +62,13 @@ Scenario: To Validate upload image for normal user and same is reflected in dash
 
 Scenario: To Validate Publisher should be able to upload png images
   Given I login to StoryWeaver with
-    |Email    | orguser@prathambooks.org       |
+    |Email    | orguser@example.com       |
     |Password | password                 |
   When I navigate to Image Page
   And I select upload image
   And I fill the image upload fields with following details
     | ImageType | burger-logo.png |
-    | IllustratorEmail | orguser@prathambooks.org |
+    | IllustratorEmail | orguser@example.com |
     | IllustrtorFirstname | Pratham Books |
   And I upload the image successfully
   And I select Profile from UserDashBoard
@@ -89,13 +89,13 @@ Scenario: To Validate upload 'jpg image' for normal user and same is reflected i
 
 Scenario: To Validate Publisher should be able to upload jpg images
   Given I login to StoryWeaver with
-    |Email    | orguser@prathambooks.org       |
+    |Email    | orguser@example.com       |
     |Password | password                 |
   When I navigate to Image Page
   And I select upload image
   And I fill the image upload fields with following details
     | ImageType | Staff_Room.jpg |
-    | IllustratorEmail | orguser@prathambooks.org |
+    | IllustratorEmail | orguser@example.com |
     | IllustrtorFirstname | Pratham Books |
   And I upload the image successfully
   And I select Profile from UserDashBoard
@@ -183,13 +183,13 @@ Scenario: To Validate CM should be able to upload gif images
 
 Scenario: To Validate Publisher should be able to upload gif images
   Given I login to StoryWeaver with
-    |Email    | orguser@prathambooks.org       |
+    |Email    | orguser@example.com       |
     |Password | password                 |
   When I navigate to Image Page
   And I select upload image
   And I fill the image upload fields with following details
     | ImageType | rotating_earth.gif |
-    | IllustratorEmail | orguser@prathambooks.org |
+    | IllustratorEmail | orguser@example.com |
     | IllustrtorFirstname | Pratham Books |
   And I upload the image successfully
   And I select Profile from UserDashBoard

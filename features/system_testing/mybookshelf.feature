@@ -2,15 +2,15 @@ Feature: My Bookshelf
 
 Background:
 
-  When I create "1" stories with category "Fantasy" and language as "English" with reading_level "2" from the author as "pratham" with the title "Handmade in india" and the flaggings_count as "0" and with org "admin@prathambooks.org"
+  When I create "1" stories with category "Fantasy" and language as "English" with reading_level "2" from the author as "pratham" with the title "Handmade in india" and the flaggings_count as "0" and with org "admin@example.com"
 
-  When I create "1" stories with category "Fantasy" and language as "English" with reading_level "2" from the author as "pratham" with the title "Asura and boy" and the flaggings_count as "4" and with org "admin@prathambooks.org"
+  When I create "1" stories with category "Fantasy" and language as "English" with reading_level "2" from the author as "pratham" with the title "Asura and boy" and the flaggings_count as "4" and with org "admin@example.com"
 
-  When I create "1" stories with category "Fantasy" and language as "English" with reading_level "2" from the author as "pratham" with the title "The boat ride" and the flaggings_count as "4" and with org "admin@prathambooks.org"
+  When I create "1" stories with category "Fantasy" and language as "English" with reading_level "2" from the author as "pratham" with the title "The boat ride" and the flaggings_count as "4" and with org "admin@example.com"
 
-  When I create "1" stories with category "Fantasy" and language as "English" with reading_level "2" from the author as "pratham" with the title "glassdoor" and the flaggings_count as "4" and with org "admin@prathambooks.org"
+  When I create "1" stories with category "Fantasy" and language as "English" with reading_level "2" from the author as "pratham" with the title "glassdoor" and the flaggings_count as "4" and with org "admin@example.com"
 
-  When I create "1" stories with category "Fantasy" and language as "English" with reading_level "2" from the author as "pratham" with the title "samplestory" and the flaggings_count as "4" and with org "admin@prathambooks.org"
+  When I create "1" stories with category "Fantasy" and language as "English" with reading_level "2" from the author as "pratham" with the title "samplestory" and the flaggings_count as "4" and with org "admin@example.com"
 
 Scenario: Creating My bookshelf.
   Given I login to StoryWeaver with

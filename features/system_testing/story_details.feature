@@ -1,11 +1,11 @@
 Feature: Story Details Page
 Background:
-  When I create "1" stories with category "Biographies" and language as "English" with reading_level "3" from the author as "pratham" with the title "Mockstory" and the flaggings_count as "0" and with org "admin@prathambooks.org"
-  When I create "1" stories with category "Biographies" and language as "English" with reading_level "3" from the author as "pratham" with the title "Handmade in india" and the flaggings_count as "0" and with org "admin@prathambooks.org"
-  When I create "1" stories with category "Biographies" and language as "English" with reading_level "3" from the author as "pratham" with the title "Asura and boy" and the flaggings_count as "4" and with org "admin@prathambooks.org"
-  When I create "1" stories with category "Biographies" and language as "English" with reading_level "3" from the author as "pratham" with the title "The boat ride" and the flaggings_count as "4" and with org "admin@prathambooks.org"
-  When I create "1" stories with category "Biographies" and language as "English" with reading_level "3" from the author as "pratham" with the title "glassdoor" and the flaggings_count as "4" and with org "admin@prathambooks.org"
-  When I create "1" stories with category "Biographies" and language as "English" with reading_level "3" from the author as "pratham" with the title "samplestory" and the flaggings_count as "4" and with org "admin@prathambooks.org"
+  When I create "1" stories with category "Biographies" and language as "English" with reading_level "3" from the author as "pratham" with the title "Mockstory" and the flaggings_count as "0" and with org "admin@example.com"
+  When I create "1" stories with category "Biographies" and language as "English" with reading_level "3" from the author as "pratham" with the title "Handmade in india" and the flaggings_count as "0" and with org "admin@example.com"
+  When I create "1" stories with category "Biographies" and language as "English" with reading_level "3" from the author as "pratham" with the title "Asura and boy" and the flaggings_count as "4" and with org "admin@example.com"
+  When I create "1" stories with category "Biographies" and language as "English" with reading_level "3" from the author as "pratham" with the title "The boat ride" and the flaggings_count as "4" and with org "admin@example.com"
+  When I create "1" stories with category "Biographies" and language as "English" with reading_level "3" from the author as "pratham" with the title "glassdoor" and the flaggings_count as "4" and with org "admin@example.com"
+  When I create "1" stories with category "Biographies" and language as "English" with reading_level "3" from the author as "pratham" with the title "samplestory" and the flaggings_count as "4" and with org "admin@example.com"
 
 Scenario: To Validate the story card details
   Given I open StoryWeaver

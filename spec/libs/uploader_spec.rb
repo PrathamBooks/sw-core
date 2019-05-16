@@ -14,7 +14,7 @@ describe "Uploader" do
     FactoryGirl.create(:back_cover_page_template, default: true, orientation: 'landscape')
     FactoryGirl.create(:style,name: 'Watercolour')
     FactoryGirl.create(:story_page_template, name: 'story_page_template_4')
-    FactoryGirl.create(:publisher, email: 'admin@prathambooks.org')
+    FactoryGirl.create(:publisher, email: 'admin@example.com')
   end
 
   after do

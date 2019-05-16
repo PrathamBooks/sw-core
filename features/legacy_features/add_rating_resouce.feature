@@ -82,7 +82,7 @@ Scenario: Add Rate a story option to dropdown
 @javascript
 Scenario: Validate original story to rate and review
   
-  When I create "1" stories with "Fantasy" and "English" and "2" by "user@sample.com" with "test reviewer story" and "2" and with "admin@prathambooks.org"
+  When I create "1" stories with "Fantasy" and "English" and "2" by "user@sample.com" with "test reviewer story" and "2" and with "admin@example.com"
   When I create "2" stories with "Fantasy" and "English" and "2" by "user@sample.com" with "English story of orginal type" and "nil"
 
   When I login as "content_manager@sample.com" with "content_manager"
@@ -144,7 +144,7 @@ Scenario: Validate original story to rate and review
 @javascript
 Scenario: Validate filters for Rate a story
 
-  When I create "1" stories with "Fantasy" and "English" and "2" by "user@sample.com" with "test reviewer story" and "2" and with "admin@prathambooks.org"
+  When I create "1" stories with "Fantasy" and "English" and "2" by "user@sample.com" with "test reviewer story" and "2" and with "admin@example.com"
 
   When I create "2" stories with "Fantasy" and "English" and "2" by "user@sample.com" with "English Story of Orginal type" and "nil"
 
@@ -224,7 +224,7 @@ Scenario: Validate filters for Rate a story
 @javascript
 Scenario: Validate Flag/Rate another story
   
-  When I create "1" stories with "Fantasy" and "English" and "2" by "user@sample.com" with "test reviewer story" and "2" and with "admin@prathambooks.org"
+  When I create "1" stories with "Fantasy" and "English" and "2" by "user@sample.com" with "test reviewer story" and "2" and with "admin@example.com"
 
   When I create "2" stories with "Fantasy" and "English" and "2" by "user@sample.com" with "English Story of Orginal type" and "nil"
 

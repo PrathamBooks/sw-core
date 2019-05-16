@@ -102,7 +102,7 @@ class ImageUpload::ImageUploader
       illustrators << illustrator3[:items] if illustrator3
       # Find uploader, organizations
       organization  =  Organization.find_by email: c_fields["publisher"].strip
-      uploader = User.find_by_email("pbsw@prathambooks.org")
+      uploader = User.find_by_email("pbsw@example.com")
       copyright_holder = assign_organization_as_copyright_holder(organization)
       illustration_attributes = {
         name: i_fields["name"],

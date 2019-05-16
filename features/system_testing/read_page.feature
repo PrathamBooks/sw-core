@@ -1,6 +1,6 @@
 Feature: Read Page
 Background:
-  When I create "1" stories with category "Biographies" and language as "English" with reading_level "3" from the author as "pratham" with the title "mockstory" and the flaggings_count as "0" and with org "admin@prathambooks.org"
+  When I create "1" stories with category "Biographies" and language as "English" with reading_level "3" from the author as "pratham" with the title "mockstory" and the flaggings_count as "0" and with org "admin@example.com"
 
 Scenario: To Validate the story card details
   Given I open StoryWeaver

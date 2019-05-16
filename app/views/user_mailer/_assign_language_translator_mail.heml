@@ -62,7 +62,7 @@
       </row>
 
       <row class="mail_cont_text">
-        <column>We're so happy to have you translate stories in <%= @language.name %> on StoryWeaver. Every time you translate a story, you help it fly higher and farther. Hope you enjoy our machine-aided translation experience. If you have any questions, drop us an email at <a href="mailto:storyweaver@prathambooks.org">storyweaver@prathambooks.org</a></column>
+        <column>We're so happy to have you translate stories in <%= @language.name %> on StoryWeaver. Every time you translate a story, you help it fly higher and farther. Hope you enjoy our machine-aided translation experience. If you have any questions, drop us an email at <a href="mailto:storyweaver@example.com">storyweaver@example.com</a></column>
       </row>
       
       <row>

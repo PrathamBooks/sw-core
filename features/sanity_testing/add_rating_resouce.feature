@@ -4,7 +4,7 @@ Feature: Add Rating Resource
 @javascript
 Scenario: Validate original story to rate and review
   
-  When I create "1" stories with "Fantasy" and "English" and "2" by "user@sample.com" with "test reviewer story" and "2" and with "admin@prathambooks.org"
+  When I create "1" stories with "Fantasy" and "English" and "2" by "user@sample.com" with "test reviewer story" and "2" and with "admin@example.com"
   When I create "2" stories with "Fantasy" and "English" and "2" by "user@sample.com" with "English story of orginal type" and "nil"
 
   When I login as "content_manager@sample.com" with "content_manager"

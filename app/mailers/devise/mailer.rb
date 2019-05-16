@@ -1,6 +1,6 @@
 class Devise::Mailer < ActionMailer::Base
      
-  default from: "no-reply@prathambooks.org"
+  default from: "no-reply@example.com"
  
   def reset_password_instructions(record, token, opts={})
     @token = token

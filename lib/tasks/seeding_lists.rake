@@ -54,7 +54,7 @@ namespace :lists do
     end
 
     list_data.each do |k, v|
-      list_data[k][:user_id] = User.find_by_email("amna@prathambooks.org").id
+      list_data[k][:user_id] = User.find_by_email("sample@example.com").id
       list = List.create!(v)
       stories_data[k].values.each do |data|
         data[:list_id] = list.id

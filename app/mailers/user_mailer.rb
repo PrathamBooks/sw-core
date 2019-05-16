@@ -1,5 +1,5 @@
 class UserMailer < ActionMailer::Base
-  default from: "no-reply@prathambooks.org"
+  default from: "no-reply@example.com"
   after_filter :stop_sending_emails, :except   => [:root_story_derivation_for_org, :child_story_derivation_for_org, :unsubscribe]
 
   def pulled_down_story_mail(user,story,reasons)

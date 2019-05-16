@@ -459,8 +459,8 @@ class Illustration < ActiveRecord::Base
       user = User.find(self.illustrators.first.user_id)
       self.update_attribute(:copy_right_holder, user)
     else
-      sw_organization = Organization.find_by_email("storyweaver@prathambooks.org")
-      pratham_organization = Organization.find_by_email("pbsw@prathambooks.org")
+      sw_organization = Organization.find_by_email("storyweaver@example.com")
+      pratham_organization = Organization.find_by_email("pbsw@example.com")
       begin
         organization = current_user.content_manager? ? Organization.find(params[:organization_id]) : (current_user.organization? ?  current_user.organization : nil)
       rescue ActiveRecord::RecordNotFound => e

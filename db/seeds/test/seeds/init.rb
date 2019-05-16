@@ -154,7 +154,7 @@ end
   DedicationPageTemplate.create!(name: 'dd_v_c100', default: true, orientation: 'portrait', image_position: 'nil', content_position: 'fill', image_dimension: 0, content_dimension: 100)
 
   Organization.create!(organization_name: 'Test organization', organization_type: "Publisher", country: "India", city: nil, number_of_classrooms: 10, children_impacted: 10, status: "Approved", email: "test_org@gmail.com")
-  Organization.create!(organization_name: 'Pratham Books', organization_type: "Publisher", country: "India", city: nil, number_of_classrooms: 10, children_impacted: 10, status: "Approved", email: "admin@prathambooks.org")
+  Organization.create!(organization_name: 'Pratham Books', organization_type: "Publisher", country: "India", city: nil, number_of_classrooms: 10, children_impacted: 10, status: "Approved", email: "admin@example.com")
   Organization.create!(organization_name: 'creative thoughts', organization_type: "Publisher", country: "India", city: nil, number_of_classrooms: 10, children_impacted: 10, status: "Approved", email: "user@sample.com")
   Organization.create!(organization_name: 'Logical Thinking', organization_type: "Publisher", country: "India", city: nil, number_of_classrooms: 10, children_impacted: 10, status: "Approved", email: "content_manager@sample.com")
   Organization.create!(organization_name: 'GlassDoor', organization_type: "Publisher", country: "India", city: nil, number_of_classrooms: 10, children_impacted: 10, status: "Approved", email: "autotranslate@yopmail.com")
